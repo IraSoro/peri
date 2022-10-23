@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "period-tracker-2.0",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

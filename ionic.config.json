@@ -1,0 +1,8 @@
+{
+  "name": "period-tracker-2.0",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "ddb5d18d"
+}
