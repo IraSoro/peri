@@ -74,14 +74,26 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** my **/
+  --ion-color-basic: #ded2fe;
+	--ion-color-basic-rgb: 222,210,254;
+	--ion-color-basic-contrast: #000000;
+	--ion-color-basic-contrast-rgb: 0,0,0;
+	--ion-color-basic-shade: #c3b9e0;
+	--ion-color-basic-tint: #e1d7fe;
 }
 
-@media (prefers-color-scheme: dark) {
-  /*
-   * Dark Colors
-   * -------------------------------------------
-   */
+.ion-color-basic {
+	--ion-color-base: var(--ion-color-basic);
+	--ion-color-base-rgb: var(--ion-color-basic-rgb);
+	--ion-color-contrast: var(--ion-color-basic-contrast);
+	--ion-color-contrast-rgb: var(--ion-color-basic-contrast-rgb);
+	--ion-color-shade: var(--ion-color-basic-shade);
+	--ion-color-tint: var(--ion-color-basic-tint);
+}
 
+/* @media (prefers-color-scheme: dark) {
   body {
     --ion-color-primary: #6a64ff;
     --ion-color-primary-rgb: 106, 100, 255;
@@ -147,11 +159,6 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-light-tint: #383a3e;
   }
 
-  /*
-   * iOS Dark Theme
-   * -------------------------------------------
-   */
-
   .ios body {
     --ion-background-color: #000000;
     --ion-background-color-rgb: 0,0,0;
@@ -190,12 +197,6 @@ http://ionicframework.com/docs/theming/ */
     --ion-toolbar-border-color: var(--ion-color-step-250);
   }
 
-
-  /*
-   * Material Design Dark Theme
-   * -------------------------------------------
-   */
-
   .md body {
     --ion-background-color: #121212;
     --ion-background-color-rgb: 18,18,18;
@@ -233,4 +234,4 @@ http://ionicframework.com/docs/theming/ */
 
     --ion-card-background: #1e1e1e;
   }
-}
+} */
