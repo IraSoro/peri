@@ -7,11 +7,15 @@ import {
   IonTabButton,
   IonTabs,
   setupIonicReact,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
   IonContent,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import TabHome from './pages/TabHome';
 import TabHistory from './pages/TabHistory';
+import './App.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -37,6 +41,12 @@ setupIonicReact();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
+      <IonHeader class="ion-no-border">
+        <IonToolbar color="basic">
+          <IonTitle>Hi, Ira</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
       <IonContent>
         <IonTabs>
           <IonRouterOutlet>

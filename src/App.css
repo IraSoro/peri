@@ -1,0 +1,13 @@
+ion-title {
+    text-align: center;
+}
+
+ion-tab-bar {
+    height: 30px;
+}
+
+ion-tab-button.tab-selected{ 
+    background:#c5b0ff;
+    /* box-shadow: 2px 2px #9c78ff inset; */
+    border: 2px #9c78ff solid;
+}
