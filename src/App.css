@@ -6,8 +6,9 @@ ion-tab-bar {
     height: 30px;
 }
 
-ion-tab-button.tab-selected{ 
-    background:#c5b0ff;
-    /* box-shadow: 2px 2px #9c78ff inset; */
-    border: 2px #9c78ff solid;
+ion-tab-button.tab-selected {
+    background: #ffffff;
+    border: 2px #b6b3c0 solid;
+    border-radius: 10px;
+    height: 25px;
 }
