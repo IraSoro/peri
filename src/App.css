@@ -6,9 +6,25 @@ ion-tab-bar {
     height: 30px;
 }
 
+ion-tab-button {
+    color: #ffffff;
+    border: 2px #ffffff solid;
+    border-radius: 10px;
+    max-width: 30%;
+    margin-right: 5%;
+    margin-left: 5%;
+    font-weight: bold;
+    font-size: 15px;
+    height: 25px;
+}
+
 ion-tab-button.tab-selected {
     background: #ffffff;
-    border: 2px #b6b3c0 solid;
     border-radius: 10px;
-    height: 25px;
+    color: #ded2fe;
+}
+
+ion-title {
+    font-weight: bold;
+    font-size: 20px;
 }

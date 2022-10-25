@@ -43,7 +43,7 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonHeader class="ion-no-border">
         <IonToolbar color="basic">
-          <IonTitle>Hi, Ira</IonTitle>
+          <IonTitle color="light">Hi, Ira</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -63,10 +63,10 @@ const App: React.FC = () => (
 
           <IonTabBar slot="top" color="basic">
             <IonTabButton tab="home" href="/home">
-              <IonLabel>home</IonLabel>
+              <IonLabel>Home</IonLabel>
             </IonTabButton>
             <IonTabButton tab="history" href="/history">
-              <IonLabel>history</IonLabel>
+              <IonLabel>History</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
