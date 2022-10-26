@@ -1,23 +1,26 @@
+import React from 'react';
 import {
   IonContent,
-  IonHeader,
-  IonLabel,
   IonPage,
-  IonTitle,
-  IonToolbar
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
 } from '@ionic/react';
 import './TabHome.css';
 
 const TabHome: React.FC = () => {
+
   return (
     <IonPage>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonLabel>Home page</IonLabel>
+      <IonContent color="basic" fullscreen>
+        <IonCard color="light">
+          <IonCardHeader>
+            <IonCardTitle>Date:</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+          </IonCardContent>
+        </IonCard>
       </IonContent>
     </IonPage>
   );

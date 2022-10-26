@@ -4,6 +4,7 @@ ion-title {
 
 ion-tab-bar {
     height: 30px;
+    border: 0;
 }
 
 ion-tab-button {
