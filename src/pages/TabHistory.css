@@ -1,5 +1,5 @@
 #rectangle {
     width: 100%;
     height: 30%;
-    background: #ded2fe;
+    background: rgb(var(--ion-color-basic-rgb));
 }

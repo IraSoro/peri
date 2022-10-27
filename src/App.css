@@ -22,7 +22,7 @@ ion-tab-button {
 ion-tab-button.tab-selected {
     background: #ffffff;
     border-radius: 10px;
-    color: #ded2fe;
+    color: rgb(var(--ion-color-basic-rgb));
 }
 
 ion-title {
