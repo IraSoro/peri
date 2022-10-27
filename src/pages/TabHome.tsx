@@ -5,7 +5,10 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardTitle,
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal,
+  IonItem,
 } from '@ionic/react';
 import './TabHome.css';
 
@@ -16,7 +19,12 @@ const TabHome: React.FC = () => {
       <IonContent color="basic" fullscreen>
         <IonCard color="light">
           <IonCardHeader>
-            <IonCardTitle>Date:</IonCardTitle>
+            <IonItem lines="none">
+              <IonDatetimeButton color="basic" class="button" datetime="datetime"></IonDatetimeButton>
+            </IonItem>
+            <IonModal keepContentsMounted={true}>
+              <IonDatetime color="basic" presentation="date" id="datetime" locale="es-ES"></IonDatetime>
+            </IonModal>
           </IonCardHeader>
           <IonCardContent>
           </IonCardContent>

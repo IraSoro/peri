@@ -4,3 +4,13 @@ ion-card {
     box-shadow: none !important;
 }
 
+ion-datetime-button {
+    font-size: 20px;
+    border-radius: 10px;
+    border: 2px #ffffff solid;
+    margin-left: 20%;
+    margin-right: 20%;
+
+    --ion-color-step-300: rgb(var(--ion-color-basic-rgb));
+    --ion-text-color: #ffffff;
+}
