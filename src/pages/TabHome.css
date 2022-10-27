@@ -14,3 +14,12 @@ ion-datetime-button {
     --ion-color-step-300: rgb(var(--ion-color-basic-rgb));
     --ion-text-color: #ffffff;
 }
+
+ion-title.title-large {
+    font-size: 30px;
+}
+
+.align {
+    margin-left: 25%;
+    margin-right: 25%;
+}
