@@ -45,7 +45,7 @@ const TabHome: React.FC = () => {
                   <IonTitle size="large" color="dark-basic">7 Days</IonTitle>
                 </IonRow>
                 <IonRow>
-                  <IonButton class="align" color="opposite">Mark</IonButton>
+                  <IonButton class="align">Mark</IonButton>
                 </IonRow>
               </IonCol>
             </IonRow>

@@ -23,3 +23,10 @@ ion-title.title-large {
     margin-left: 25%;
     margin-right: 25%;
 }
+
+ion-button {
+    --border-radius: 10px;
+    --box-shadow:none;
+    --color: rgb(var(--ion-color-dark-basic-rgb));
+    --background: rgb(var(--ion-color-opposite-rgb));
+}
