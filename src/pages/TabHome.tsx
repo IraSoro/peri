@@ -29,10 +29,11 @@ const TabHome: React.FC = () => {
               <IonDatetimeButton color="basic" class="button" datetime="datetime"></IonDatetimeButton>
             </IonItem>
             <IonModal keepContentsMounted={true}>
-              <IonDatetime color="basic" presentation="date" id="datetime" locale="es-ES"></IonDatetime>
+              <IonDatetime color="basic" presentation="date" id="datetime" locale="en-US"></IonDatetime>
             </IonModal>
           </IonCardHeader>
           <IonCardContent>
+            <IonItem lines="none"></IonItem>
             <IonRow>
               <IonCol no-padding>
                 <IonImg src='../../assets/3.png' />
@@ -49,6 +50,7 @@ const TabHome: React.FC = () => {
                 </IonRow>
               </IonCol>
             </IonRow>
+            <IonItem lines="none"></IonItem>
             <IonCard color="basic">
               <IonCardContent>
                 <IonItem color="basic" lines="full">
