@@ -10,6 +10,7 @@ const TabHistory: React.FC = () => {
       <IonContent color="light" fullscreen>
         <div id="rectangle"></div>
         <div id="circle"></div>
+        <div id="rectangle-angle"></div>
       </IonContent>
     </IonPage>
   );
