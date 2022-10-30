@@ -21,4 +21,12 @@
     border-width: 10px 10px 10px 10px;
     border-radius: 50%;
     transform: translate(70px, -220px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.align {
+    margin-left: 25%;
+    margin-right: 25%;
 }
