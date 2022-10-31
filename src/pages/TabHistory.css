@@ -2,6 +2,9 @@
     width: 100%;
     height: 40%;
     background: rgb(var(--ion-color-basic-rgb));
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #rectangle-angle {
@@ -20,7 +23,6 @@
     border-style: solid;
     border-width: 10px 10px 10px 10px;
     border-radius: 50%;
-    transform: translate(70px, -220px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,4 +31,23 @@
 .align {
     margin-left: 25%;
     margin-right: 25%;
+}
+
+ion-progress-bar {
+    height: 2%;
+}
+
+ion-progress-bar::part(progress) {
+    border-radius: 20px;
+    background: rgb(var(--ion-color-dark-basic-rgb));
+}
+
+ion-progress-bar::part(track) {
+    border-radius: 20px;
+    background: rgb(var(--ion-color-basic-rgb));
+}
+
+ion-progress-bar::part(stream) {
+    border-radius: 20px;
+    background: #ffffff;
 }
