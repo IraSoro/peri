@@ -13,7 +13,6 @@ import {
   IonLabel,
   IonRow,
   IonCol,
-  IonTitle,
   IonButton,
 } from '@ionic/react';
 import './TabHome.css';
@@ -25,29 +24,26 @@ const TabHome: React.FC = () => {
       <IonContent color="basic" fullscreen>
         <IonCard color="light">
           <IonCardHeader>
-            <IonItem lines="none">
-              <IonDatetimeButton color="basic" class="button" datetime="datetime"></IonDatetimeButton>
-            </IonItem>
+            <IonDatetimeButton color="basic" class="button" datetime="datetime"></IonDatetimeButton>
             <IonModal keepContentsMounted={true}>
               <IonDatetime color="basic" presentation="date" id="datetime" locale="en-US"></IonDatetime>
             </IonModal>
           </IonCardHeader>
           <IonCardContent>
-            <IonItem lines="none"></IonItem>
-            <IonRow>
-              <IonCol no-padding>
+            <IonRow style={{ height: "50%" }}>
+              <IonCol>
                 <IonImg src='../../assets/3.png' />
               </IonCol>
-              <IonCol no-padding>
-                <IonRow>
-                  <IonLabel class="align"><h2>Period in</h2></IonLabel>
-                </IonRow>
-                <IonRow>
-                  <IonTitle size="large" color="dark-basic">7 Days</IonTitle>
-                </IonRow>
-                <IonRow>
-                  <IonButton class="align">Mark</IonButton>
-                </IonRow>
+              <IonCol>
+                <div>
+                  <IonLabel style={{ textAlign: "center" }}>
+                    <h2>Period in</h2>
+                  </IonLabel>
+                  <IonLabel style={{ textAlign: "center" }} color="dark-basic">
+                    <h1 style={{ fontWeight: "bold" }}>7 Days</h1>
+                  </IonLabel>
+                  <IonButton>Mark</IonButton>
+                </div>
               </IonCol>
             </IonRow>
             <IonItem lines="none"></IonItem>

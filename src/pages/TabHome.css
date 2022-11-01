@@ -8,25 +8,29 @@ ion-datetime-button {
     font-size: 19px;
     border-radius: 10px;
     border: 2px #ffffff solid;
-    margin-left: 20%;
-    margin-right: 20%;
 
     --ion-color-step-300: rgb(var(--ion-color-basic-rgb));
     --ion-text-color: #ffffff;
 }
 
-ion-title.title-large {
-    font-size: 30px;
-}
-
-.align {
-    margin-left: 25%;
-    margin-right: 25%;
-}
-
 ion-button {
     --border-radius: 10px;
-    --box-shadow:none;
+    --box-shadow: none;
     --color: rgb(var(--ion-color-dark-basic-rgb));
     --background: rgb(var(--ion-color-opposite-rgb));
+}
+
+ion-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+ion-img {
+    max-width: 300px;
+    max-height: auto;
+    height: auto;
+    width: auto;
+    object-fit: contain;
 }
