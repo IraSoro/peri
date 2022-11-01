@@ -3,6 +3,8 @@ import {
   IonPage,
   IonLabel,
   IonProgressBar,
+  IonItem,
+  IonList,
 } from '@ionic/react';
 import './TabHistory.css';
 
@@ -23,17 +25,82 @@ const TabHistory: React.FC = () => {
           </div>
         </div>
         <div id="rectangle-bottom">
-          <IonLabel style={{ fontSize: "12px" }}>12 Seb - Current</IonLabel>
-          <IonProgressBar value={.05 * 3} buffer={.25 * 3}></IonProgressBar>
+          <IonList class="bg-transparent">
+            <IonItem class="bg-transparent" lines="none">
+              <IonLabel position="stacked">
+                <h2>7 Days</h2>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <p>Current cycle</p>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <IonProgressBar value={.05 * 3} buffer={.06 * 3}></IonProgressBar>
+              </IonLabel>
+            </IonItem>
 
-          <IonLabel style={{ fontSize: "12px" }}>12 Aug - 1 Seb</IonLabel>
-          <IonProgressBar value={.05 * 3} buffer={.26 * 3}></IonProgressBar>
+            <IonItem class="bg-transparent" lines="none">
+              <IonLabel position="stacked">
+                <h2>26 Days</h2>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <p>12 Aug - 1 Sept</p>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <IonProgressBar value={.05 * 3} buffer={.26 * 3}></IonProgressBar>
+              </IonLabel>
+            </IonItem>
 
-          <IonLabel style={{ fontSize: "12px" }}>12 July - 1 Aug</IonLabel>
-          <IonProgressBar value={.04 * 3} buffer={.23 * 3}></IonProgressBar>
+            <IonItem class="bg-transparent" lines="none">
+              <IonLabel position="stacked">
+                <h2>23 Days</h2>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <p>12 July - 1 Aug</p>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <IonProgressBar value={.04 * 3} buffer={.23 * 3}></IonProgressBar>
+              </IonLabel>
+            </IonItem>
+
+            <IonItem class="bg-transparent" lines="none">
+              <IonLabel position="stacked">
+                <h2>26 Days</h2>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <p>12 June - 1 July</p>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <IonProgressBar value={.05 * 3} buffer={.26 * 3}></IonProgressBar>
+              </IonLabel>
+            </IonItem>
+
+            <IonItem class="bg-transparent" lines="none">
+              <IonLabel position="stacked">
+                <h2>23 Days</h2>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <p>12 May - 1 June</p>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <IonProgressBar value={.04 * 3} buffer={.23 * 3}></IonProgressBar>
+              </IonLabel>
+            </IonItem>
+
+            <IonItem class="bg-transparent" lines="none">
+              <IonLabel position="stacked">
+                <h2>23 Days</h2>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <p>12 May - 1 June</p>
+              </IonLabel>
+              <IonLabel position="stacked">
+                <IonProgressBar value={.04 * 3} buffer={.23 * 3}></IonProgressBar>
+              </IonLabel>
+            </IonItem>
+          </IonList>
         </div>
       </IonContent>
-    </IonPage>
+    </IonPage >
   );
 };
 
