@@ -27,11 +27,6 @@
     justify-content: center;
 }
 
-.align {
-    margin-left: 25%;
-    margin-right: 25%;
-}
-
 ion-progress-bar {
     height: 60%;
     border-radius: 20px;

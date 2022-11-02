@@ -29,7 +29,7 @@ const TabHome: React.FC = () => {
               <IonDatetime color="basic" presentation="date" id="datetime" locale="en-US"></IonDatetime>
             </IonModal>
           </IonCardHeader>
-          <IonCardContent>
+          <IonCardContent style={{ position: "absolute", bottom: "10px", width: "100%" }}>
             <IonRow style={{ height: "50%" }}>
               <IonCol>
                 <IonImg src='../../assets/3.png' />
@@ -46,7 +46,6 @@ const TabHome: React.FC = () => {
                 </div>
               </IonCol>
             </IonRow>
-            <IonItem lines="none"></IonItem>
             <IonCard color="basic">
               <IonCardContent>
                 <IonItem color="basic" lines="full">
