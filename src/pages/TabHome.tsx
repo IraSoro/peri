@@ -4,7 +4,6 @@ import {
   IonPage,
   IonCard,
   IonCardContent,
-  IonCardHeader,
   IonDatetime,
   IonDatetimeButton,
   IonModal,
@@ -22,15 +21,13 @@ const TabHome: React.FC = () => {
   return (
     <IonPage>
       <IonContent color="basic" fullscreen>
-        <IonCard color="light">
-          <IonCardHeader>
-            <IonDatetimeButton color="basic" class="button" datetime="datetime"></IonDatetimeButton>
+        <IonCard class="large-card" color="light">
+          <IonCardContent class="align-center">
+          <IonDatetimeButton color="basic" class="button" datetime="datetime"></IonDatetimeButton>
             <IonModal keepContentsMounted={true}>
               <IonDatetime color="basic" presentation="date" id="datetime" locale="en-US"></IonDatetime>
             </IonModal>
-          </IonCardHeader>
-          <IonCardContent style={{ position: "absolute", bottom: "10px", width: "100%" }}>
-            <IonRow style={{ height: "50%" }}>
+            <IonRow>
               <IonCol>
                 <IonImg src='../../assets/3.png' />
               </IonCol>

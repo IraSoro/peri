@@ -1,5 +1,8 @@
-ion-card {
+.large-card {
     height: 96%;
+}
+
+ion-card {
     border-radius: 20px;
     box-shadow: none !important;
 }
@@ -33,4 +36,11 @@ ion-img {
     height: auto;
     width: auto;
     object-fit: contain;
+}
+
+.align-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
