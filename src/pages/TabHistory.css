@@ -47,7 +47,15 @@ ion-progress-bar::part(stream) {
     background: #ffffff;
 }
 
-.bg-transparent {
-    --ion-item-background: transparent;
+ion-item {
+    --min-height: 60px;
 }
 
+.transparent-center {
+    --ion-item-background: transparent;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}

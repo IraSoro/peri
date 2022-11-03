@@ -25,8 +25,8 @@ const TabHistory: React.FC = () => {
           </div>
         </div>
         <div id="rectangle-bottom">
-          <IonList class="bg-transparent">
-            <IonItem class="bg-transparent" lines="none">
+          <IonList class="transparent-center">
+            <IonItem class="transparent-center" lines="none">
               <IonLabel position="stacked">
                 <h2>7 Days</h2>
               </IonLabel>
@@ -38,7 +38,7 @@ const TabHistory: React.FC = () => {
               </IonLabel>
             </IonItem>
 
-            <IonItem class="bg-transparent" lines="none">
+            <IonItem class="transparent-center" lines="none">
               <IonLabel position="stacked">
                 <h2>26 Days</h2>
               </IonLabel>
@@ -50,7 +50,7 @@ const TabHistory: React.FC = () => {
               </IonLabel>
             </IonItem>
 
-            <IonItem class="bg-transparent" lines="none">
+            <IonItem class="transparent-center" lines="none">
               <IonLabel position="stacked">
                 <h2>23 Days</h2>
               </IonLabel>
@@ -62,7 +62,7 @@ const TabHistory: React.FC = () => {
               </IonLabel>
             </IonItem>
 
-            <IonItem class="bg-transparent" lines="none">
+            <IonItem class="transparent-center" lines="none">
               <IonLabel position="stacked">
                 <h2>26 Days</h2>
               </IonLabel>
@@ -74,7 +74,7 @@ const TabHistory: React.FC = () => {
               </IonLabel>
             </IonItem>
 
-            <IonItem class="bg-transparent" lines="none">
+            <IonItem class="transparent-center" lines="none">
               <IonLabel position="stacked">
                 <h2>23 Days</h2>
               </IonLabel>
@@ -86,7 +86,7 @@ const TabHistory: React.FC = () => {
               </IonLabel>
             </IonItem>
 
-            <IonItem class="bg-transparent" lines="none">
+            <IonItem class="transparent-center" lines="none">
               <IonLabel position="stacked">
                 <h2>23 Days</h2>
               </IonLabel>
@@ -97,6 +97,7 @@ const TabHistory: React.FC = () => {
                 <IonProgressBar value={.04 * 3} buffer={.23 * 3}></IonProgressBar>
               </IonLabel>
             </IonItem>
+
           </IonList>
         </div>
       </IonContent>
