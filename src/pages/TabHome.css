@@ -16,6 +16,10 @@ ion-datetime-button {
     --ion-text-color: #ffffff;
 }
 
+ion-datetime{
+    color: var(--ion-color-dark) !important;
+}
+
 ion-button {
     --border-radius: 10px;
     --box-shadow: none;

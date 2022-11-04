@@ -2,7 +2,16 @@
 http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
+
+@font-face {
+  font-family: 'DMSans-Medium';
+  src: url('../fonts/DMSans-Medium.ttf');
+}
+
 :root {
+  /** fonts **/
+  --ion-font-family: 'DMSans-Medium';
+
   /** primary **/
   --ion-color-primary: #5260ff;
   --ion-color-primary-rgb: 82, 96, 255;
