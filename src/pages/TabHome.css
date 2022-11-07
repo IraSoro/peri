@@ -34,14 +34,6 @@ ion-col {
     text-align: center;
 }
 
-ion-img {
-    max-width: 300px;
-    max-height: auto;
-    height: auto;
-    width: auto;
-    object-fit: contain;
-}
-
 .align-center {
     display: flex;
     flex-direction: column;

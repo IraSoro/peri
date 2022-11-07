@@ -29,7 +29,7 @@ const TabHome: React.FC = () => {
             </IonModal>
             <IonRow>
               <IonCol>
-                <IonImg src='../../assets/3.png' />
+                <IonImg src='../../assets/uterus.svg' />
               </IonCol>
               <IonCol>
                 <div>
