@@ -8,6 +8,7 @@ ion-tab-bar {
 }
 
 ion-tab-button {
+    background: rgb(var(--ion-color-basic-rgb));
     color: #ffffff;
     border: 2px #ffffff solid;
     border-radius: 10px;
@@ -23,6 +24,11 @@ ion-tab-button.tab-selected {
     background: #ffffff;
     border-radius: 10px;
     color: rgb(var(--ion-color-basic-rgb));
+}
+
+ion-tab-button:hover {
+    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    --color-selected: rgb(var(--ion-color-dark-basic-rgb));
 }
 
 ion-title {
