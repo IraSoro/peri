@@ -23,7 +23,12 @@ const TabHome: React.FC = () => {
       <IonContent color="basic" fullscreen>
         <IonCard class="large-card" color="light">
           <IonCardContent class="align-center">
-          <IonDatetimeButton color="basic" class="button" datetime="datetime"></IonDatetimeButton>
+            <IonRow>
+              <IonCol>
+                <IonDatetimeButton color="basic" class="button" datetime="datetime">
+                </IonDatetimeButton>
+              </IonCol>
+            </IonRow>
             <IonModal keepContentsMounted={true}>
               <IonDatetime color="basic" presentation="date" id="datetime" locale="en-US"></IonDatetime>
             </IonModal>

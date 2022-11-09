@@ -10,13 +10,36 @@ ion-card {
 ion-datetime-button {
     font-size: 19px;
     border-radius: 10px;
-    border: 2px #ffffff solid;
+    border: 2px rgb(var(--ion-color-basic-rgb)) solid;
 
-    --ion-color-step-300: rgb(var(--ion-color-basic-rgb));
-    --ion-text-color: #ffffff;
+    --ion-color-step-300: #ffffff;
+    --ion-text-color: rgb(var(--ion-color-basic-rgb));
 }
 
-ion-datetime{
+ion-datetime-button:hover {
+    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    --ion-text-color: rgb(var(--ion-color-dark-basic-rgb));
+}
+
+@font-face {
+    font-family: "Ionicons";
+    src: url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.eot?v=2.0.1");
+    src: url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.woff?v=2.0.1") format("woff"), url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+ion-datetime-button::after {
+    /* content: "📅"; */
+    font-family: "Ionicons";
+    content: "\f117";
+    padding-right: 10px;
+    background-color: #ffffff;
+    color: rgb(var(--ion-color-basic-rgb));
+    text-align: right;
+}
+
+ion-datetime {
     color: var(--ion-color-dark) !important;
 }
 
@@ -25,6 +48,11 @@ ion-button {
     --box-shadow: none;
     --color: rgb(var(--ion-color-dark-basic-rgb));
     --background: rgb(var(--ion-color-opposite-rgb));
+}
+
+ion-button:hover {
+    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    border-radius: 10px;
 }
 
 ion-col {
