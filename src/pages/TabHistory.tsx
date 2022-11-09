@@ -34,7 +34,7 @@ const TabHistory: React.FC = () => {
                 <p>Current cycle</p>
               </IonLabel>
               <IonLabel position="stacked">
-                <IonProgressBar value={.05 * 3} buffer={.06 * 3}></IonProgressBar>
+                <IonProgressBar class="current-progress" value={.05 * 3} buffer={.08 * 3}></IonProgressBar>
               </IonLabel>
             </IonItem>
 
