@@ -71,6 +71,21 @@ ion-button {
     border-radius: 10px;
 }
 
+.ok-modal {
+    font-size: 20px;
+    width: 20%;
+
+    --background: rgb(var(--ion-color-opposite-rgb));
+    --border-radius: 10px;
+    --box-shadow: none;
+    --color: rgb(var(--ion-color-dark-basic-rgb));
+}
+
+.ok-modal:hover {
+    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    border-radius: 10px;
+}
+
 ion-col {
     display: flex;
     align-items: center;
@@ -95,7 +110,7 @@ ion-col {
     align-items: center;
     justify-content: center;
 
-    transform: translateX(-15%);
+    transform: translateX(-10%);
 }
 
 #small-rectangle {
@@ -106,4 +121,20 @@ ion-col {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#button-rectangle {
+    width: 100%;
+    height: 10%;
+    background: rgb(var(--ion-color-opposite-rgb));
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+
+    transform: translateX(85%);
+}
+
+.transparent {
+    --ion-item-background: transparent;
 }

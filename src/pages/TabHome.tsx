@@ -13,9 +13,8 @@ import {
   IonRow,
   IonCol,
   IonButton,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
+  IonTitle,
+  IonList,
 } from '@ionic/react';
 import './TabHome.css';
 
@@ -24,21 +23,49 @@ interface PropsModal {
   setIsOpen: (newIsOpen: boolean) => void;
 }
 
-
 const InfoModal = (props: PropsModal) => {
   return (
     <IonModal isOpen={props.isOpen}>
-      <IonHeader class="ion-no-border">
-        <IonToolbar color="basic">
-          <IonButtons slot="end">
-            <IonButton color="light" onClick={() => props.setIsOpen(false)}>Close</IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
+      <div id="small-rectangle"></div>
       <IonContent className="ion-padding" color="basic">
-        <div id="rectangle"></div>
+        <div id="rectangle">
+          <IonList class="transparent">
+            <IonItem>
+              <IonTitle color="dark-basic">Luteal phase</IonTitle>
+            </IonItem>
+            <IonItem lines="none">
+              <IonLabel>progesterone levels rise</IonLabel>
+            </IonItem>
+            <IonItem lines="none">
+              <IonLabel>estrogen levels rise</IonLabel>
+            </IonItem>
+          </IonList>
+        </div>
         <div id="small-rectangle"></div>
-        <div id="rectangle"></div>
+        <div id="rectangle">
+          <IonList class="transparent">
+            <IonItem>
+              <IonTitle color="dark-basic">Symptoms</IonTitle>
+            </IonItem>
+            <IonItem lines="none">
+              <IonLabel>
+                <p>Increased appetite</p>
+                <p>Tiredness</p>
+                <p>Acne</p>
+                <p>Fatigue</p>
+                <p>Oily hair and skin</p>
+              </IonLabel>
+            </IonItem>
+          </IonList>
+        </div>
+        <div id="small-rectangle"></div>
+        <div id="button-rectangle">
+          <IonButton
+            class="ok-modal"
+            onClick={() => props.setIsOpen(false)}>
+            Ok
+          </IonButton>
+        </div>
       </IonContent>
     </IonModal>
   );
