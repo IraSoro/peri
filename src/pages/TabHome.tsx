@@ -13,7 +13,6 @@ import {
   IonRow,
   IonCol,
   IonButton,
-  IonTitle,
   IonHeader,
   IonToolbar,
   IonButtons,
@@ -29,20 +28,17 @@ interface PropsModal {
 const InfoModal = (props: PropsModal) => {
   return (
     <IonModal isOpen={props.isOpen}>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Modal</IonTitle>
+      <IonHeader class="ion-no-border">
+        <IonToolbar color="basic">
           <IonButtons slot="end">
-            <IonButton onClick={() => props.setIsOpen(false)}>Close</IonButton>
+            <IonButton color="light" onClick={() => props.setIsOpen(false)}>Close</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
-          reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui.
-          Eaque, dicta.
-        </p>
+      <IonContent className="ion-padding" color="basic">
+        <div id="rectangle"></div>
+        <div id="small-rectangle"></div>
+        <div id="rectangle"></div>
       </IonContent>
     </IonModal>
   );
