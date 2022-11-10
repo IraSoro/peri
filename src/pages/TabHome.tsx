@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IonContent,
   IonPage,
@@ -13,10 +13,43 @@ import {
   IonRow,
   IonCol,
   IonButton,
+  IonTitle,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
 } from '@ionic/react';
 import './TabHome.css';
 
+interface PropsModal {
+  isOpen: boolean;
+  setIsOpen: (newIsOpen: boolean) => void;
+}
+
+
+const InfoModal = (props: PropsModal) => {
+  return (
+    <IonModal isOpen={props.isOpen}>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Modal</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={() => props.setIsOpen(false)}>Close</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
+          reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui.
+          Eaque, dicta.
+        </p>
+      </IonContent>
+    </IonModal>
+  );
+};
+
 const TabHome: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <IonPage>
@@ -44,7 +77,7 @@ const TabHome: React.FC = () => {
                   <IonLabel style={{ textAlign: "center" }} color="dark-basic">
                     <h1 style={{ fontWeight: "bold" }}>7 Days</h1>
                   </IonLabel>
-                  <IonButton>Mark</IonButton>
+                  <IonButton class="mark-button">Mark</IonButton>
                 </div>
               </IonCol>
             </IonRow>
@@ -70,6 +103,8 @@ const TabHome: React.FC = () => {
                 </IonItem>
               </IonCardContent>
             </IonCard>
+            <IonButton onClick={() => setIsOpen(true)} class="info-button">learn more about the current state</IonButton>
+            <InfoModal isOpen={isOpen} setIsOpen={setIsOpen} />
           </IonCardContent>
         </IonCard>
       </IonContent>

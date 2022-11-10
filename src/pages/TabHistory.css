@@ -10,14 +10,14 @@
 #rectangle-bottom {
     width: 100%;
     height: 65%;
-    background: rgb(var(--ion-color-light-rgb));
+    background: #ffffff;
     /* border-radius: 20px; */
 }
 
 #circle {
     width: 180px;
     height: 180px;
-    background: rgb(var(--ion-color-light-rgb));
+    background: #ffffff;
     border-color: #d7d7d7;
     border-style: solid;
     border-width: 10px 10px 10px 10px;

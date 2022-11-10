@@ -44,13 +44,29 @@ ion-datetime {
 }
 
 ion-button {
-    --border-radius: 10px;
     --box-shadow: none;
+}
+
+.mark-button {
+    --border-radius: 10px;
     --color: rgb(var(--ion-color-dark-basic-rgb));
     --background: rgb(var(--ion-color-opposite-rgb));
 }
 
-ion-button:hover {
+.mark-button:hover {
+    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    border-radius: 10px;
+}
+
+.info-button {
+    font-size: 10px;
+
+    --border-radius: 10px;
+    --color: rgb(var(--ion-color-dark-basic-rgb));
+    --background: #ffffff;
+}
+
+.info-button:hover {
     border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
     border-radius: 10px;
 }
