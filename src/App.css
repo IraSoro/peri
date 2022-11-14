@@ -18,17 +18,21 @@ ion-tab-button {
     font-weight: bold;
     font-size: 15px;
     height: 25px;
+
+    --color-selected: rgb(var(--ion-color-dark-basic-rgb));
 }
 
 ion-tab-button.tab-selected {
     background: #ffffff;
-    border-radius: 10px;
     color: rgb(var(--ion-color-basic-rgb));
-}
-
-ion-tab-button:hover {
-    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
-    --color-selected: rgb(var(--ion-color-dark-basic-rgb));
+    border: 2px #ffffff solid;
+    border-radius: 10px;
+    max-width: 30%;
+    margin-right: 5%;
+    margin-left: 5%;
+    font-weight: bold;
+    font-size: 15px;
+    height: 25px;
 }
 
 ion-title {

@@ -44,7 +44,7 @@ ion-progress-bar::part(track) {
 
 .current-progress::part(track) {
     border-radius: 20px;
-    background: rgb(var(--ion-color-opposite-rgb));
+    background: #d7d7d7;
 }
 
 ion-progress-bar::part(stream) {
