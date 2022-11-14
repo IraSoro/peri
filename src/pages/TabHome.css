@@ -7,7 +7,7 @@ ion-card {
     box-shadow: none !important;
 }
 
-ion-datetime-button {
+.calendar-button {
     font-size: 19px;
     border-radius: 10px;
     border: 2px rgb(var(--ion-color-basic-rgb)) solid;
@@ -16,7 +16,7 @@ ion-datetime-button {
     --ion-text-color: rgb(var(--ion-color-basic-rgb));
 }
 
-ion-datetime-button:hover {
+.calendar-button:hover {
     border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
     --ion-text-color: rgb(var(--ion-color-dark-basic-rgb));
 }
@@ -29,7 +29,7 @@ ion-datetime-button:hover {
     font-style: normal;
 }
 
-ion-datetime-button::after {
+.calendar-button::after {
     /* content: "📅"; */
     font-family: "Ionicons";
     content: "\f117";

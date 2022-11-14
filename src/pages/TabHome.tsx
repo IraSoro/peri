@@ -81,7 +81,7 @@ const TabHome: React.FC = () => {
           <IonCardContent class="align-center">
             <IonRow>
               <IonCol>
-                <IonDatetimeButton color="basic" class="button" datetime="datetime">
+                <IonDatetimeButton class="calendar-button" color="basic" datetime="datetime">
                 </IonDatetimeButton>
               </IonCol>
             </IonRow>

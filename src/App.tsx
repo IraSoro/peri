@@ -16,6 +16,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import TabHome from './pages/TabHome';
 import TabHistory from './pages/TabHistory';
+import SwiperStart from './pages/Swiper';
 import './App.css';
 
 /* Core CSS required for Ionic components to work properly */
@@ -54,6 +55,7 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
+      <SwiperStart />
       <IonReactRouter>
         <IonHeader class="ion-no-border">
           <IonToolbar color="basic">
@@ -70,8 +72,11 @@ const App: React.FC = () => {
               <Route exact path="/details">
                 <TabHistory />
               </Route>
+              <Route path="/swiper">
+                <SwiperStart />
+              </Route>
               <Route exact path="/">
-                <Redirect to="/home" />
+                <Redirect to="/swiper" />
               </Route>
             </IonRouterOutlet>
 
