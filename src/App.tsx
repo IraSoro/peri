@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -36,44 +37,59 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { createStore } from './data/Storage';
+
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonHeader class="ion-no-border">
-        <IonToolbar color="basic">
-          <IonTitle color="light">Hi, Ira</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+const App: React.FC = () => {
 
-      <IonContent>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/home">
-              <TabHome />
-            </Route>
-            <Route exact path="/history">
-              <TabHistory />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
-          </IonRouterOutlet>
+  useEffect(() => {
 
-          <IonTabBar slot="top" color="basic">
-            <IonTabButton tab="home" href="/home">
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="history" href="/history">
-              <IonLabel>History</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonContent>
+    const setupStore = () => {
+      createStore("PeriodDB");
+    }
+    setupStore();
 
-    </IonReactRouter>
-  </IonApp>
-);
+  }, []);
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonHeader class="ion-no-border">
+          <IonToolbar color="basic">
+            <IonTitle color="light">Hello!</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+
+        <IonContent>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/home">
+                <TabHome />
+              </Route>
+              <Route exact path="/details">
+                <TabHistory />
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/home" />
+              </Route>
+            </IonRouterOutlet>
+
+            <IonTabBar slot="top" color="basic">
+              <IonTabButton tab="home" href="/home">
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="details" href="/details">
+                <IonLabel>Details</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonContent>
+
+      </IonReactRouter>
+    </IonApp>
+  )
+};
 
 export default App;
+
