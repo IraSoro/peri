@@ -50,16 +50,63 @@ body {
 }
 
 .continue-button {
-  border: 2px rgb(var(--ion-color-opposite-rgb)) solid;
+  border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
   border-radius: 10px;
 
   --border-radius: 10px;
-  --color: rgb(var(--ion-color-opposite-rgb));
+  --color: rgb(var(--ion-color-dark-basic-rgb));
   --background: rgb(var(--ion-color-basic-rgb));
 }
 
 .continue-button:hover {
   border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
   border-radius: 10px;
-  --color: rgb(var(--ion-color-dark-basic-rgb));
+
+  --background: rgb(var(--ion-color-dark-basic-rgb));
+  --color: rgb(var(--ion-color-basic-rgb));
+}
+
+#swiper-rectangle {
+  width: 100%;
+  height: 45%;
+  background: #ffffff;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(10%);
+}
+
+#swiper-rectangle-bottom {
+  width: 100%;
+  height: 50%;
+  background: #ffffff;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(20%);
+}
+
+#small-rectangle {
+  width: 100%;
+  height: 15%;
+  background: rgb(var(--ion-color-basic-rgb));
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transparent-list {
+  --ion-item-background: transparent;
+}
+
+.img-swiper {
+  height: 100px;
+  width: auto;
 }
