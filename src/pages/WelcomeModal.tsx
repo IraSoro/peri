@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     IonButton,
     IonContent,
@@ -7,17 +7,20 @@ import {
     IonLabel,
     IonModal,
     IonInput,
-    IonDatetimeButton,
     IonDatetime,
     IonCol,
     IonImg,
     IonTitle,
     IonToolbar,
     IonHeader,
+    IonIcon,
+    IonButtons,
 } from '@ionic/react';
 import './WelcomeModal.css';
 
 import { set } from '../data/Storage';
+
+import { calendarClear } from 'ionicons/icons';
 
 interface PropsWelcomeModal {
     isOpen: boolean;
@@ -25,6 +28,18 @@ interface PropsWelcomeModal {
 }
 
 const Welcome = (props: PropsWelcomeModal) => {
+    const modal = useRef<HTMLIonModalElement>(null);
+    const input = useRef<HTMLIonInputElement>(null);
+    const datetime = useRef<null | HTMLIonDatetimeElement>(null);
+
+    const now = new Date().toISOString().slice(0, 10);
+    const [date, setDate] = useState(now);
+
+    const confirmDate = () => {
+        datetime.current?.confirm();
+        modal.current?.dismiss(input.current?.value, 'confirm');
+    }
+
     return (
         <IonModal isOpen={props.isOpen}>
             <IonHeader class="ion-no-border">
@@ -50,6 +65,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 placeholder="none"
                                 min="14"
                                 max="99"
+                                onIonChange={(e) => console.log(e.detail.value!)}
                             >
                             </IonInput>
                         </IonItem>
@@ -60,20 +76,35 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 placeholder="none"
                                 min="1"
                                 max="9"
+                                onIonChange={(e) => console.log(e.detail.value!)}
                             >
                             </IonInput>
                         </IonItem>
-                        <IonItem lines="none" color="light">
+                        <IonItem lines="none" color="light" id="choose-date">
                             <IonLabel>Start of last period</IonLabel>
-                            <IonDatetimeButton datetime="datetime">
-                            </IonDatetimeButton>
-                            <IonModal keepContentsMounted={true}>
+                            <IonIcon slot="end" color="dark" size="small" icon={calendarClear}></IonIcon>
+                            <p>{date}</p>
+                            <IonModal
+                                id="choose-date-modal"
+                                ref={modal}
+                                trigger="choose-date"
+                            >
                                 <IonDatetime
+                                    ref={datetime}
                                     color="basic"
                                     presentation="date"
                                     id="datetime"
                                     locale="en-US"
+                                    onIonChange={(e) => {
+                                        if (e.detail.value) {
+                                            setDate(e.detail.value.toString().slice(0, 10));
+                                            console.log(e.detail.value.toString().slice(0, 10));
+                                        }
+                                    }}
                                 >
+                                    <IonButtons slot="buttons">
+                                        <IonButton color="basic" onClick={confirmDate}>Confirm</IonButton>
+                                    </IonButtons>
                                 </IonDatetime>
                             </IonModal>
                         </IonItem>
