@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonContent,
   IonPage,
@@ -18,12 +18,16 @@ import {
 } from '@ionic/react';
 import './TabHome.css';
 
-interface PropsModal {
+import Welcome from './WelcomeModal';
+
+import { get} from '../data/Storage';
+
+interface PropsInfoModal {
   isOpen: boolean;
   setIsOpen: (newIsOpen: boolean) => void;
 }
 
-const InfoModal = (props: PropsModal) => {
+const InfoModal = (props: PropsInfoModal) => {
   return (
     <IonModal isOpen={props.isOpen}>
       <div id="small-rectangle"></div>
@@ -72,13 +76,24 @@ const InfoModal = (props: PropsModal) => {
 };
 
 const TabHome: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isInfoModal, setIsInfoModal] = useState(false);
+  const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+
+  useEffect(() => {
+    get("welcome").then(result => {
+      if (!result) {
+        setIsWelcomeModal(true);
+      }
+    });
+
+  }, []);
 
   return (
     <IonPage>
       <IonContent color="basic" fullscreen>
         <IonCard class="large-card" color="light">
           <IonCardContent class="align-center">
+            <Welcome isOpen={isWelcomeModal} setIsOpen={setIsWelcomeModal} />
             <IonRow>
               <IonCol>
                 <IonDatetimeButton class="calendar-button" color="basic" datetime="datetime">
@@ -126,8 +141,8 @@ const TabHome: React.FC = () => {
                 </IonItem>
               </IonCardContent>
             </IonCard>
-            <IonButton onClick={() => setIsOpen(true)} class="info-button">learn more about the current state</IonButton>
-            <InfoModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <IonButton onClick={() => setIsInfoModal(true)} class="info-button">learn more about the current state</IonButton>
+            <InfoModal isOpen={isInfoModal} setIsOpen={setIsInfoModal} />
           </IonCardContent>
         </IonCard>
       </IonContent>
