@@ -15,6 +15,7 @@ import {
     IonHeader,
     IonIcon,
     IonButtons,
+    useIonAlert,
 } from '@ionic/react';
 import './WelcomeModal.css';
 
@@ -27,6 +28,19 @@ interface PropsWelcomeModal {
     setIsOpen: (newIsOpen: boolean) => void;
 }
 
+class inputData {
+    lenCycle: number = 0;
+    lenPeriod: number = 0;
+    lastDate: string = "";
+
+    isEmpty(): boolean {
+        if (!this.lenCycle || !this.lenPeriod || !this.lastDate) {
+            return true;
+        }
+        return false;
+    }
+}
+
 const Welcome = (props: PropsWelcomeModal) => {
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
@@ -34,6 +48,9 @@ const Welcome = (props: PropsWelcomeModal) => {
 
     const now = new Date().toISOString().slice(0, 10);
     const [date, setDate] = useState(now);
+
+    const [confirmAlert] = useIonAlert();
+    const [setting, setSetting] = useState(new inputData());
 
     const confirmDate = () => {
         datetime.current?.confirm();
@@ -59,29 +76,37 @@ const Welcome = (props: PropsWelcomeModal) => {
                             </IonLabel>
                         </IonCol>
                         <IonItem color="light">
-                            <IonLabel>Cycle length</IonLabel>
+                            <IonLabel color="basic">Cycle length</IonLabel>
                             <IonInput
                                 type="number"
                                 placeholder="none"
                                 min="14"
                                 max="99"
-                                onIonChange={(e) => console.log(e.detail.value!)}
+                                onIonChange={(e) => {
+                                    // console.log(Number(e.detail.value!));
+                                    setting.lenCycle = Number(e.detail.value!);
+                                    setSetting(setting);
+                                }}
                             >
                             </IonInput>
                         </IonItem>
                         <IonItem color="light">
-                            <IonLabel>Period length</IonLabel>
+                            <IonLabel color="basic">Period length</IonLabel>
                             <IonInput
                                 type="number"
                                 placeholder="none"
                                 min="1"
                                 max="9"
-                                onIonChange={(e) => console.log(e.detail.value!)}
+                                onIonChange={(e) => {
+                                    // console.log(Number(e.detail.value!));
+                                    setting.lenPeriod = Number(e.detail.value!);
+                                    setSetting(setting);
+                                }}
                             >
                             </IonInput>
                         </IonItem>
                         <IonItem lines="none" color="light" id="choose-date">
-                            <IonLabel>Start of last period</IonLabel>
+                            <IonLabel color="basic">Start of last period</IonLabel>
                             <IonIcon slot="end" color="dark" size="small" icon={calendarClear}></IonIcon>
                             <p>{date}</p>
                             <IonModal
@@ -98,7 +123,9 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     onIonChange={(e) => {
                                         if (e.detail.value) {
                                             setDate(e.detail.value.toString().slice(0, 10));
-                                            console.log(e.detail.value.toString().slice(0, 10));
+                                            // console.log("date = ", date);
+                                            setting.lastDate = date;
+                                            setSetting(setting);
                                         }
                                     }}
                                 >
@@ -126,8 +153,54 @@ const Welcome = (props: PropsWelcomeModal) => {
                         <IonButton
                             class="continue-button"
                             onClick={() => {
-                                props.setIsOpen(false);
-                                set("welcome", true);
+                                if (setting.isEmpty()) {
+                                    confirmAlert({
+                                        header: 'Continue?',
+                                        subHeader: "You have not entered all the data",
+                                        message: 'Forecast will not be generated.',
+                                        buttons: [
+                                            {
+                                                text: 'Cancel',
+                                                cssClass: 'alert-button-cancel',
+                                                role: 'cancel',
+                                                handler: () => {
+                                                },
+                                            },
+                                            {
+                                                text: 'OK',
+                                                cssClass: 'alert-button-confirm',
+                                                role: 'confirm',
+                                                handler: () => {
+                                                    props.setIsOpen(false);
+                                                    set("welcome", true);
+                                                },
+                                            },
+                                        ],
+                                    })
+                                } else {
+                                    confirmAlert({
+                                        header: 'Continue?',
+                                        buttons: [
+                                            {
+                                                text: 'Cancel',
+                                                cssClass: 'alert-button-cancel',
+                                                role: 'cancel',
+                                                handler: () => {
+                                                },
+                                            },
+                                            {
+                                                text: 'OK',
+                                                cssClass: 'alert-button-confirm',
+                                                role: 'confirm',
+                                                handler: () => {
+                                                    props.setIsOpen(false);
+                                                    set("welcome", true);
+                                                },
+                                            },
+                                        ],
+                                    })
+
+                                }
                             }}
                         >
                             Continue

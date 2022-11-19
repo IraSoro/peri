@@ -54,3 +54,11 @@
       --border-radius: 6px;
       --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
   }
+
+  button.alert-button.alert-button-confirm {
+      color: var(--ion-color-basic);
+  }
+
+  button.alert-button.alert-button-cancel {
+      color: var(--ion-color-basic);
+  }
