@@ -46,7 +46,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -68,7 +70,9 @@
   },
   "devDependencies": {
     "@capacitor/cli": "4.4.0",
-    "@ionic/lab": "3.2.15"
+    "@ionic/lab": "3.2.15",
+    "gh-pages": "^4.0.0"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "homepage": "http://irasoro.github.io/period-tracker-2-0"
 }
