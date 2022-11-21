@@ -1,6 +1,7 @@
 {
   "name": "period-tracker-2-0",
   "version": "0.0.1",
+  "homepage": "https://irasoro.github.io/period-tracker-2-0/",
   "private": true,
   "dependencies": {
     "@capacitor/android": "4.4.0",
@@ -73,6 +74,5 @@
     "@ionic/lab": "3.2.15",
     "gh-pages": "^4.0.0"
   },
-  "description": "An Ionic project",
-  "homepage": "http://irasoro.github.io/period-tracker-2-0"
+  "description": "An Ionic project"
 }

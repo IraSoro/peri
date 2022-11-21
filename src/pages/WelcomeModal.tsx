@@ -22,6 +22,7 @@ import './WelcomeModal.css';
 import { set } from '../data/Storage';
 
 import { calendarClear } from 'ionicons/icons';
+import whiteUterus from '../assets/white-uterus.svg';
 
 interface PropsWelcomeModal {
     isOpen: boolean;
@@ -147,7 +148,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                         </IonLabel>
                     </IonCol>
                     <IonCol>
-                        <IonImg class="img-welcome" src='../../assets/white-uterus.svg' />
+                        <IonImg class="img-welcome" src={whiteUterus} />
                     </IonCol>
                     <IonCol>
                         <IonButton

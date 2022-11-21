@@ -20,7 +20,9 @@ import './TabHome.css';
 
 import Welcome from './WelcomeModal';
 
-import { get} from '../data/Storage';
+import uterus from '../assets/uterus.svg';
+
+import { get } from '../data/Storage';
 
 interface PropsInfoModal {
   isOpen: boolean;
@@ -81,9 +83,9 @@ const TabHome: React.FC = () => {
 
   useEffect(() => {
     get("welcome").then(result => {
-      if (!result) {
-        setIsWelcomeModal(true);
-      }
+      // if (!result) {
+      setIsWelcomeModal(true);
+      // }
     });
 
   }, []);
@@ -105,7 +107,7 @@ const TabHome: React.FC = () => {
             </IonModal>
             <IonRow>
               <IonCol>
-                <IonImg src='../../assets/uterus.svg' />
+                <IonImg src={uterus} />
               </IonCol>
               <IonCol>
                 <div>
