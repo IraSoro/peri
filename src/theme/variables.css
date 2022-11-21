@@ -13,12 +13,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-font-family: 'DMSans-Medium';
 
   /** primary **/
-  --ion-color-primary: #5260ff;
-  --ion-color-primary-rgb: 82, 96, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #4854e0;
-  --ion-color-primary-tint: #6370ff;
+  --ion-color-primary: #C0B6F2;
+  --ion-color-primary-rgb: 192, 182, 242;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #a9a0d5;
+  --ion-color-primary-tint: #c6bdf3;
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;

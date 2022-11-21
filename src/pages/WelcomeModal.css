@@ -38,7 +38,7 @@
       transform: translateY(-50%);
   }
 
-  .transparent-list {
+  .transparent {
       --ion-item-background: transparent;
   }
 

@@ -6,7 +6,6 @@ import {
     IonList,
     IonLabel,
     IonModal,
-    IonInput,
     IonDatetime,
     IonCol,
     IonImg,
@@ -16,6 +15,8 @@ import {
     IonIcon,
     IonButtons,
     useIonAlert,
+    IonSelect,
+    IonSelectOption,
 } from '@ionic/react';
 import './WelcomeModal.css';
 
@@ -42,6 +43,44 @@ class inputData {
     }
 }
 
+interface Day {
+    id: number;
+    name: string;
+}
+
+const cycleDays: Day[] = [
+    { id: 14, name: '14', },
+    { id: 15, name: '15', },
+    { id: 16, name: '16', },
+    { id: 17, name: '17', },
+    { id: 18, name: '18', },
+    { id: 19, name: '19', },
+    { id: 20, name: '20', },
+    { id: 21, name: '21', },
+    { id: 22, name: '22', },
+    { id: 23, name: '23', },
+    { id: 24, name: '24', },
+    { id: 25, name: '25', },
+    { id: 26, name: '26', },
+    { id: 27, name: '27', },
+    { id: 28, name: '28', },
+    { id: 29, name: '29', },
+    { id: 30, name: '30', },
+    { id: 31, name: '31', },
+];
+
+const periodDays: Day[] = [
+    { id: 1, name: '1', },
+    { id: 2, name: '2', },
+    { id: 3, name: '3', },
+    { id: 4, name: '4', },
+    { id: 5, name: '5', },
+    { id: 6, name: '6', },
+    { id: 7, name: '7', },
+    { id: 8, name: '8', },
+    { id: 9, name: '9', },
+];
+
 const Welcome = (props: PropsWelcomeModal) => {
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
@@ -67,7 +106,7 @@ const Welcome = (props: PropsWelcomeModal) => {
             </IonHeader>
             <IonContent fullscreen color="basic">
                 <div id="welcome-rectangle">
-                    <IonList class="transparent-list">
+                    <IonList class="transparent">
                         <IonCol>
                             <IonLabel
                                 style={{ fontWeight: "bold" }}
@@ -76,37 +115,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 Please enter your details so that you can already make a forecast.
                             </IonLabel>
                         </IonCol>
-                        <IonItem color="light">
-                            <IonLabel color="basic">Cycle length</IonLabel>
-                            <IonInput
-                                type="number"
-                                placeholder="none"
-                                min="14"
-                                max="99"
-                                onIonChange={(e) => {
-                                    // console.log(Number(e.detail.value!));
-                                    setting.lenCycle = Number(e.detail.value!);
-                                    setSetting(setting);
-                                }}
-                            >
-                            </IonInput>
-                        </IonItem>
-                        <IonItem color="light">
-                            <IonLabel color="basic">Period length</IonLabel>
-                            <IonInput
-                                type="number"
-                                placeholder="none"
-                                min="1"
-                                max="9"
-                                onIonChange={(e) => {
-                                    // console.log(Number(e.detail.value!));
-                                    setting.lenPeriod = Number(e.detail.value!);
-                                    setSetting(setting);
-                                }}
-                            >
-                            </IonInput>
-                        </IonItem>
-                        <IonItem lines="none" color="light" id="choose-date">
+                        <IonItem class="transparent" id="choose-date">
                             <IonLabel color="basic">Start of last period</IonLabel>
                             <IonIcon slot="end" color="dark" size="small" icon={calendarClear}></IonIcon>
                             <p>{date}</p>
@@ -136,10 +145,44 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 </IonDatetime>
                             </IonModal>
                         </IonItem>
+                        <IonItem class="transparent">
+                            <IonLabel color="basic">Cycle length</IonLabel>
+                            <IonSelect
+                                placeholder="none"
+                                onIonChange={(ev) => {
+                                    // console.log(ev.detail.value.id);
+                                    setting.lenCycle = Number(ev.detail.value.id);
+                                    setSetting(setting);
+                                }}
+                            >
+                                {cycleDays.map((day) => (
+                                    <IonSelectOption key={day.id} value={day}>
+                                        {day.name}
+                                    </IonSelectOption>
+                                ))}
+                            </IonSelect>
+                        </IonItem>
+                        <IonItem class="transparent" lines="none">
+                            <IonLabel color="basic">Period length</IonLabel>
+                            <IonSelect
+                                placeholder="none"
+                                onIonChange={(ev) => {
+                                    // console.log(ev.detail.value.id);
+                                    setting.lenPeriod = Number(ev.detail.value.id);
+                                    setSetting(setting);
+                                }}
+                            >
+                                {periodDays.map((day) => (
+                                    <IonSelectOption key={day.id} value={day}>
+                                        {day.name}
+                                    </IonSelectOption>
+                                ))}
+                            </IonSelect>
+                        </IonItem>
                     </IonList>
                 </div>
                 <div id="welcome-rectangle-bottom"></div>
-                <IonList class="transparent-list">
+                <IonList class="transparent">
                     <IonCol>
                         <IonLabel color="dark-basic">
                             <h2 style={{ fontWeight: "bold" }}>
