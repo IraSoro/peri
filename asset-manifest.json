@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/period-tracker-2-0/static/css/main.4f51c548.css",
-    "main.js": "/period-tracker-2-0/static/js/main.1aeb7cb0.js",
+    "main.css": "/period-tracker-2-0/static/css/main.884a1612.css",
+    "main.js": "/period-tracker-2-0/static/js/main.08a51a9e.js",
     "static/js/443.cdd17b4c.chunk.js": "/period-tracker-2-0/static/js/443.cdd17b4c.chunk.js",
     "static/js/738.33d1974e.chunk.js": "/period-tracker-2-0/static/js/738.33d1974e.chunk.js",
     "static/js/372.6588ef27.chunk.js": "/period-tracker-2-0/static/js/372.6588ef27.chunk.js",
@@ -17,8 +17,8 @@
     "static/media/white-uterus.svg": "/period-tracker-2-0/static/media/white-uterus.d37e04d9dd41105974182a45c7a903b6.svg",
     "static/media/uterus.svg": "/period-tracker-2-0/static/media/uterus.c8eeae6b16bbe58cc8cb53682ce75986.svg",
     "index.html": "/period-tracker-2-0/index.html",
-    "main.4f51c548.css.map": "/period-tracker-2-0/static/css/main.4f51c548.css.map",
-    "main.1aeb7cb0.js.map": "/period-tracker-2-0/static/js/main.1aeb7cb0.js.map",
+    "main.884a1612.css.map": "/period-tracker-2-0/static/css/main.884a1612.css.map",
+    "main.08a51a9e.js.map": "/period-tracker-2-0/static/js/main.08a51a9e.js.map",
     "443.cdd17b4c.chunk.js.map": "/period-tracker-2-0/static/js/443.cdd17b4c.chunk.js.map",
     "738.33d1974e.chunk.js.map": "/period-tracker-2-0/static/js/738.33d1974e.chunk.js.map",
     "372.6588ef27.chunk.js.map": "/period-tracker-2-0/static/js/372.6588ef27.chunk.js.map",
@@ -31,7 +31,7 @@
     "377.bd31c8d7.chunk.js.map": "/period-tracker-2-0/static/js/377.bd31c8d7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4f51c548.css",
-    "static/js/main.1aeb7cb0.js"
+    "static/css/main.884a1612.css",
+    "static/js/main.08a51a9e.js"
   ]
 }
