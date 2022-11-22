@@ -20,7 +20,11 @@ import {
 } from '@ionic/react';
 import './WelcomeModal.css';
 
-import { set } from '../data/Storage';
+import { remove, set } from '../data/Storage';
+import {
+    getInfo,
+    InfoCycle
+} from '../data/Сalculations';
 
 import { calendarClear } from 'ionicons/icons';
 import whiteUterus from '../assets/white-uterus.svg';
@@ -28,6 +32,7 @@ import whiteUterus from '../assets/white-uterus.svg';
 interface PropsWelcomeModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
+    setInfo: (newDay: InfoCycle) => void;
 }
 
 class inputData {
@@ -86,8 +91,7 @@ const Welcome = (props: PropsWelcomeModal) => {
     const input = useRef<HTMLIonInputElement>(null);
     const datetime = useRef<null | HTMLIonDatetimeElement>(null);
 
-    const now = new Date().toISOString().slice(0, 10);
-    const [date, setDate] = useState(now);
+    const [date, setDate] = useState("");
 
     const [confirmAlert] = useIonAlert();
     const [setting, setSetting] = useState(new inputData());
@@ -134,7 +138,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                         if (e.detail.value) {
                                             setDate(e.detail.value.toString().slice(0, 10));
                                             // console.log("date = ", date);
-                                            setting.lastDate = date;
+                                            setting.lastDate = e.detail.value.toString().slice(0, 10);
                                             setSetting(setting);
                                         }
                                     }}
@@ -170,6 +174,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     // console.log(ev.detail.value.id);
                                     setting.lenPeriod = Number(ev.detail.value.id);
                                     setSetting(setting);
+                                    // console.log("set-per", setting);
                                 }}
                             >
                                 {periodDays.map((day) => (
@@ -217,6 +222,10 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                 handler: () => {
                                                     props.setIsOpen(false);
                                                     set("welcome", true);
+
+                                                    // remove("cycle-length");
+                                                    // remove("period-length");
+                                                    // remove("current-cycle");
                                                 },
                                             },
                                         ],
@@ -239,6 +248,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                 handler: () => {
                                                     props.setIsOpen(false);
                                                     set("welcome", true);
+
+                                                    set("current-cycle", setting.lastDate);
+                                                    set("cycle-length", setting.lenCycle);
+                                                    set("period-length", setting.lenPeriod);
+
+                                                    props.setInfo(getInfo(setting.lastDate, setting.lenCycle));
                                                 },
                                             },
                                         ],
