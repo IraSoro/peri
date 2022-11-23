@@ -25,7 +25,7 @@ import uterus from '../assets/uterus.svg';
 import { get } from '../data/Storage';
 import {
   getInfo,
-  InfoCycle
+  InfoCurrentCycle
 } from '../data/Сalculations';
 
 interface PropsInfoModal {
@@ -85,11 +85,13 @@ const TabHome: React.FC = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
 
-  const [info, setInfo] = useState<InfoCycle>(
+  const [info, setInfo] = useState<InfoCurrentCycle>(
     {
       cycleDay: "none",
       ovulationDay: "none",
-      pregnantChance: "none"
+      pregnantChance: "none",
+      periodIn: "none",
+      periodInTitle: "Period in",
     });
 
   useEffect(() => {
@@ -137,10 +139,10 @@ const TabHome: React.FC = () => {
               <IonCol>
                 <div>
                   <IonLabel style={{ textAlign: "center" }}>
-                    <h2>Period in</h2>
+                    <h2>{info.periodInTitle}</h2>
                   </IonLabel>
                   <IonLabel style={{ textAlign: "center" }} color="dark-basic">
-                    <h1 style={{ fontWeight: "bold" }}>7 Days</h1>
+                    <h1 style={{ fontWeight: "bold" }}>{info.periodIn}</h1>
                   </IonLabel>
                   <IonButton class="mark-button">Mark</IonButton>
                 </div>

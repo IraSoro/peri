@@ -23,7 +23,8 @@ import './WelcomeModal.css';
 import { remove, set } from '../data/Storage';
 import {
     getInfo,
-    InfoCycle
+    InfoCurrentCycle,
+    CycleData
 } from '../data/Сalculations';
 
 import { calendarClear } from 'ionicons/icons';
@@ -32,20 +33,7 @@ import whiteUterus from '../assets/white-uterus.svg';
 interface PropsWelcomeModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
-    setInfo: (newDay: InfoCycle) => void;
-}
-
-class inputData {
-    lenCycle: number = 0;
-    lenPeriod: number = 0;
-    lastDate: string = "";
-
-    isEmpty(): boolean {
-        if (!this.lenCycle || !this.lenPeriod || !this.lastDate) {
-            return true;
-        }
-        return false;
-    }
+    setInfo: (newDay: InfoCurrentCycle) => void;
 }
 
 interface Day {
@@ -94,7 +82,7 @@ const Welcome = (props: PropsWelcomeModal) => {
     const [date, setDate] = useState("");
 
     const [confirmAlert] = useIonAlert();
-    const [setting, setSetting] = useState(new inputData());
+    const [setting, setSetting] = useState(new CycleData());
 
     const confirmDate = () => {
         datetime.current?.confirm();
@@ -223,9 +211,11 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                     props.setIsOpen(false);
                                                     set("welcome", true);
 
-                                                    // remove("cycle-length");
-                                                    // remove("period-length");
-                                                    // remove("current-cycle");
+                                                    remove("cycle-length");
+                                                    remove("period-length");
+                                                    remove("current-cycle");
+
+                                                    props.setInfo(getInfo("none", 0));
                                                 },
                                             },
                                         ],
@@ -258,7 +248,6 @@ const Welcome = (props: PropsWelcomeModal) => {
                                             },
                                         ],
                                     })
-
                                 }
                             }}
                         >
