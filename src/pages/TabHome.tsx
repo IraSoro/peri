@@ -19,6 +19,7 @@ import {
 import './TabHome.css';
 
 import Welcome from './WelcomeModal';
+import MarkModal from './MarkModal';
 
 import uterus from '../assets/uterus.svg';
 
@@ -84,6 +85,7 @@ const InfoModal = (props: PropsInfoModal) => {
 const TabHome: React.FC = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [isMarkModal, setIsMarkModal] = useState(false);
 
   const [info, setInfo] = useState<InfoCurrentCycle>(
     {
@@ -108,8 +110,6 @@ const TabHome: React.FC = () => {
         });
       }
     });
-
-
 
   }, []);
 
@@ -144,7 +144,11 @@ const TabHome: React.FC = () => {
                   <IonLabel style={{ textAlign: "center" }} color="dark-basic">
                     <h1 style={{ fontWeight: "bold" }}>{info.periodIn}</h1>
                   </IonLabel>
-                  <IonButton class="mark-button">Mark</IonButton>
+                  <IonButton class="mark-button" onClick={() => setIsMarkModal(true)}>Mark</IonButton>
+                  <MarkModal
+                    isOpen={isMarkModal}
+                    setIsOpen={setIsMarkModal}
+                  />
                 </div>
               </IonCol>
             </IonRow>

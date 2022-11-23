@@ -1,0 +1,11 @@
+.mark-modal {
+    --height: 30%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.align-center-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
