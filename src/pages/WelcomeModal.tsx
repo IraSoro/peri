@@ -126,7 +126,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                         if (e.detail.value) {
                                             setDate(e.detail.value.toString().slice(0, 10));
                                             // console.log("date = ", date);
-                                            setting.lastDate = e.detail.value.toString().slice(0, 10);
+                                            setting.startDate = e.detail.value.toString().slice(0, 10);
                                             setSetting(setting);
                                         }
                                     }}
@@ -214,6 +214,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                     remove("cycle-length");
                                                     remove("period-length");
                                                     remove("current-cycle");
+                                                    remove("cycles");
 
                                                     props.setInfo(getInfo("none", 0));
                                                 },
@@ -239,11 +240,14 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                     props.setIsOpen(false);
                                                     set("welcome", true);
 
-                                                    set("current-cycle", setting.lastDate);
+                                                    let cycle: CycleData = new CycleData();
+                                                    cycle.lenPeriod = setting.lenPeriod;
+                                                    cycle.startDate = setting.startDate;
+                                                    set("current-cycle", cycle);
                                                     set("cycle-length", setting.lenCycle);
                                                     set("period-length", setting.lenPeriod);
 
-                                                    props.setInfo(getInfo(setting.lastDate, setting.lenCycle));
+                                                    props.setInfo(getInfo(setting.startDate, setting.lenCycle));
                                                 },
                                             },
                                         ],

@@ -26,7 +26,8 @@ import uterus from '../assets/uterus.svg';
 import { get } from '../data/Storage';
 import {
   getInfo,
-  InfoCurrentCycle
+  InfoCurrentCycle,
+  CycleData
 } from '../data/Сalculations';
 
 interface PropsInfoModal {
@@ -103,10 +104,11 @@ const TabHome: React.FC = () => {
       // }
     });
 
-    get("current-cycle").then(resultDate => {
-      if (resultDate) {
+    get("current-cycle").then(resultData => {
+      if (resultData) {
         get("cycle-length").then(resultLen => {
-          setInfo(getInfo(resultDate, resultLen));
+          const cycle: CycleData = resultData;
+          setInfo(getInfo(cycle.startDate, resultLen));
         });
       }
     });
@@ -148,6 +150,7 @@ const TabHome: React.FC = () => {
                   <MarkModal
                     isOpen={isMarkModal}
                     setIsOpen={setIsMarkModal}
+                    setInfo={setInfo}
                   />
                 </div>
               </IonCol>

@@ -36,7 +36,8 @@ const TabHistory: React.FC = () => {
 
     get("current-cycle").then(result => {
       if (result) {
-        setDateStartCycle(result);
+        const cycle: CycleData = result;
+        setDateStartCycle(cycle.startDate);
       }
     });
 
@@ -92,10 +93,10 @@ const TabHistory: React.FC = () => {
       return "date: none";
     }
 
-    let date: Date = new Date(cycles[idx].lastDate);
+    let date: Date = new Date(cycles[idx].startDate);
     date.setDate(date.getDate() + Number(cycles[idx].lenCycle));
 
-    return cycles[idx].lastDate.toString() + " - " + date.toString();
+    return cycles[idx].startDate.toString() + " - " + date.toString();
   }
 
   return (

@@ -1,10 +1,16 @@
 export class CycleData {
   lenCycle: number = 0;
   lenPeriod: number = 0;
-  lastDate: string = "";
+  startDate: string = "";
+
+  constructor() {
+    this.lenCycle = 0;
+    this.lenPeriod = 0;
+    this.startDate = "";
+  }
 
   isEmpty(): boolean {
-    if (!this.lenCycle || !this.lenPeriod || !this.lastDate) {
+    if (!this.lenCycle || !this.lenPeriod || !this.startDate) {
       return true;
     }
     return false;
@@ -19,7 +25,7 @@ export interface InfoCurrentCycle {
   periodInTitle: string;
 }
 
-export const getInfo = (date: string, cycleLen: number) => {
+export const getInfo = (date: string, cycleLen: number = 25) => {
   let info: InfoCurrentCycle = {
     cycleDay: "none",
     ovulationDay: "none",

@@ -16,10 +16,17 @@ import {
 import './MarkModal.css';
 
 import { calendarClear } from 'ionicons/icons';
+import { get, set } from "../data/Storage"
+import {
+    CycleData,
+    InfoCurrentCycle,
+    getInfo
+} from '../data/Сalculations';
 
 interface PropsMarkModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
+    setInfo: (newDay: InfoCurrentCycle) => void;
 }
 
 interface Day {
@@ -54,6 +61,15 @@ const MarkModal = (props: PropsMarkModal) => {
         modal.current?.dismiss(input.current?.value, 'confirm');
     }
 
+    const calculationsCycleLen = (dateNow: string, dateLast: string) => {
+        const msInDay = 24 * 60 * 60 * 1000;
+
+        let now: Date = new Date(dateNow);
+        let last: Date = new Date(dateLast);
+
+        return Math.round(Math.abs(Number(now) - Number(last)) / msInDay);
+    }
+
     return (
         <IonModal isOpen={props.isOpen} class="mark-modal">
             <IonContent color="light">
@@ -76,7 +92,6 @@ const MarkModal = (props: PropsMarkModal) => {
                                 onIonChange={(e) => {
                                     if (e.detail.value) {
                                         setDate(e.detail.value.toString().slice(0, 10));
-                                        console.log("date = ", e.detail.value.toString().slice(0, 10));
                                     }
                                 }}
                             >
@@ -91,7 +106,6 @@ const MarkModal = (props: PropsMarkModal) => {
                         <IonSelect
                             placeholder="none"
                             onIonChange={(ev) => {
-                                console.log(ev.detail.value.id);
                                 setPeriod(Number(ev.detail.value.id));
                             }}
                         >
@@ -123,6 +137,36 @@ const MarkModal = (props: PropsMarkModal) => {
                                 })
                             } else {
                                 props.setIsOpen(false);
+                                get("current-cycle").then(resultCur => {
+                                    if (resultCur) {
+                                        get("cycles").then(resultArr => {
+                                            resultCur.lenCycle = calculationsCycleLen(date, resultCur.startDate);
+                                            //TODO: add set cycle array
+                                            if (resultArr) {
+                                                resultArr.unshift(resultCur);
+                                                set("cycles", resultArr);
+                                            } else {
+                                                let cycles: CycleData[] = [];
+                                                cycles.push(resultCur);
+                                                set("cycles", cycles);
+                                            }
+                                            let currentCycle: CycleData = new CycleData();
+                                            currentCycle.lenPeriod = period;
+                                            currentCycle.startDate = date;
+                                            set("current-cycle", currentCycle);
+                                            get("cycle-length").then(resultLenCycle => {
+                                                //TODO: add a count of the mean value of the cycle length
+                                                props.setInfo(getInfo(date, resultLenCycle));
+                                            });
+                                        });
+
+                                    } else {
+                                        let currentCycle: CycleData = new CycleData();
+                                        currentCycle.lenPeriod = period;
+                                        currentCycle.startDate = date;
+                                        props.setInfo(getInfo(date));
+                                    }
+                                })
                             }
                         }}
                     >
