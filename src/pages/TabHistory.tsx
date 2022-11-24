@@ -96,7 +96,7 @@ const TabHistory: React.FC = () => {
     let date: Date = new Date(cycles[idx].startDate);
     date.setDate(date.getDate() + Number(cycles[idx].lenCycle));
 
-    return cycles[idx].startDate.toString() + " - " + date.toString();
+    return new Date(cycles[idx].startDate).toLocaleDateString() + " - " + date.toLocaleDateString();
   }
 
   return (

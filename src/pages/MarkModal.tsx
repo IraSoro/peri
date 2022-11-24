@@ -145,17 +145,28 @@ const MarkModal = (props: PropsMarkModal) => {
                                             if (resultArr) {
                                                 resultArr.unshift(resultCur);
                                                 set("cycles", resultArr);
+
+                                                let countCycle: number = 0;
+                                                let countPeriod: number = 0;
+                                                for (var idx in resultArr) {
+                                                    countCycle += resultArr[idx].lenCycle;
+                                                    countPeriod += resultArr[idx].lenPeriod;
+                                                }
+                                                set("cycle-length", Math.trunc(countCycle / resultArr.length));
+                                                set("period-length", Math.trunc(countPeriod / resultArr.length));
                                             } else {
                                                 let cycles: CycleData[] = [];
                                                 cycles.push(resultCur);
                                                 set("cycles", cycles);
+
+                                                set("cycle-length", resultCur.lenCycle);
+                                                set("period-length", resultCur.lenPeriod);
                                             }
                                             let currentCycle: CycleData = new CycleData();
                                             currentCycle.lenPeriod = period;
                                             currentCycle.startDate = date;
                                             set("current-cycle", currentCycle);
                                             get("cycle-length").then(resultLenCycle => {
-                                                //TODO: add a count of the mean value of the cycle length
                                                 props.setInfo(getInfo(date, resultLenCycle));
                                             });
                                         });
@@ -166,6 +177,7 @@ const MarkModal = (props: PropsMarkModal) => {
                                         currentCycle.startDate = date;
                                         props.setInfo(getInfo(date));
                                     }
+                                    setDate("");
                                 })
                             }
                         }}
