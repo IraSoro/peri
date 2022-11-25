@@ -27,13 +27,15 @@ import { get } from '../data/Storage';
 import {
   getInfo,
   InfoCurrentCycle,
-  CycleData
+  CycleData,
+  MainProps
 } from '../data/Сalculations';
 
 interface PropsInfoModal {
   isOpen: boolean;
   setIsOpen: (newIsOpen: boolean) => void;
 }
+
 
 const InfoModal = (props: PropsInfoModal) => {
   return (
@@ -83,7 +85,7 @@ const InfoModal = (props: PropsInfoModal) => {
   );
 };
 
-const TabHome: React.FC = () => {
+const TabHome = (props: MainProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isMarkModal, setIsMarkModal] = useState(false);
@@ -146,11 +148,24 @@ const TabHome: React.FC = () => {
                   <IonLabel style={{ textAlign: "center" }} color="dark-basic">
                     <h1 style={{ fontWeight: "bold" }}>{info.periodIn}</h1>
                   </IonLabel>
-                  <IonButton class="mark-button" onClick={() => setIsMarkModal(true)}>Mark</IonButton>
+                  <IonButton class="mark-button" onClick={() => {
+                    setIsMarkModal(true);
+                  }}
+                  >
+                    Mark</IonButton>
                   <MarkModal
                     isOpen={isMarkModal}
                     setIsOpen={setIsMarkModal}
                     setInfo={setInfo}
+
+                    lenCycle={props.lenCycle}
+                    setLenCycle={props.setLenCycle}
+                    lenPeriod={props.lenPeriod}
+                    setLenPeriod={props.setLenPeriod}
+                    dateStartCycle={props.dateStartCycle}
+                    setDateStartCycle={props.setDateStartCycle}
+                    cycles={props.cycles}
+                    setCycles={props.setCycles}
                   />
                 </div>
               </IonCol>

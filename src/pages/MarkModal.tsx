@@ -27,6 +27,18 @@ interface PropsMarkModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
     setInfo: (newDay: InfoCurrentCycle) => void;
+
+    lenCycle: number;
+    setLenCycle: (newIsOpen: number) => void;
+
+    lenPeriod: number;
+    setLenPeriod: (newIsOpen: number) => void;
+
+    dateStartCycle: string;
+    setDateStartCycle: (newDateStartCycle: string) => void;
+
+    cycles?: CycleData[];
+    setCycles: (newCycles: CycleData[]) => void;
 }
 
 interface Day {
@@ -141,10 +153,10 @@ const MarkModal = (props: PropsMarkModal) => {
                                     if (resultCur) {
                                         get("cycles").then(resultArr => {
                                             resultCur.lenCycle = calculationsCycleLen(date, resultCur.startDate);
-                                            //TODO: add set cycle array
                                             if (resultArr) {
                                                 resultArr.unshift(resultCur);
                                                 set("cycles", resultArr);
+                                                props.setCycles(resultArr);
 
                                                 let countCycle: number = 0;
                                                 let countPeriod: number = 0;
@@ -153,19 +165,26 @@ const MarkModal = (props: PropsMarkModal) => {
                                                     countPeriod += resultArr[idx].lenPeriod;
                                                 }
                                                 set("cycle-length", Math.trunc(countCycle / resultArr.length));
+                                                props.setLenCycle(Math.trunc(countCycle / resultArr.length));
                                                 set("period-length", Math.trunc(countPeriod / resultArr.length));
+                                                props.setLenPeriod(Math.trunc(countPeriod / resultArr.length));
                                             } else {
                                                 let cycles: CycleData[] = [];
                                                 cycles.push(resultCur);
                                                 set("cycles", cycles);
+                                                props.setCycles(cycles);
 
                                                 set("cycle-length", resultCur.lenCycle);
+                                                props.setLenCycle(resultCur.lenCycle);
                                                 set("period-length", resultCur.lenPeriod);
+                                                props.setLenPeriod(resultCur.lenPeriod);
                                             }
                                             let currentCycle: CycleData = new CycleData();
                                             currentCycle.lenPeriod = period;
                                             currentCycle.startDate = date;
                                             set("current-cycle", currentCycle);
+                                            props.setDateStartCycle(date);
+
                                             get("cycle-length").then(resultLenCycle => {
                                                 props.setInfo(getInfo(date, resultLenCycle));
                                             });
@@ -175,6 +194,10 @@ const MarkModal = (props: PropsMarkModal) => {
                                         let currentCycle: CycleData = new CycleData();
                                         currentCycle.lenPeriod = period;
                                         currentCycle.startDate = date;
+
+                                        set("current-cycle", currentCycle);
+                                        props.setDateStartCycle(date);
+
                                         props.setInfo(getInfo(date));
                                     }
                                     setDate("");

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   IonContent,
   IonPage,
@@ -12,91 +12,89 @@ import './TabHistory.css';
 import { get } from '../data/Storage';
 import {
   CycleData,
-  getCurrentCycleDay
+  getCurrentCycleDay,
+  MainProps
 } from '../data/Сalculations';
 
-const TabHistory: React.FC = () => {
-  const [lenCycle, setLenCycle] = useState(0);
-  const [lenPeriod, setLenPeriod] = useState(0);
-  const [dateStartCycle, setDateStartCycle] = useState("none");
-  const [cycles, setCycles] = useState<CycleData[]>();
 
+
+const TabHistory = (props: MainProps) => {
   useEffect(() => {
     get("cycle-length").then(result => {
       if (result) {
-        setLenCycle(result);
+        props.setLenCycle(result);
       }
     });
 
     get("period-length").then(result => {
       if (result) {
-        setLenPeriod(result);
+        props.setLenPeriod(result);
       }
     });
 
     get("current-cycle").then(result => {
       if (result) {
         const cycle: CycleData = result;
-        setDateStartCycle(cycle.startDate);
+        props.setDateStartCycle(cycle.startDate);
       }
     });
 
     get("cycles").then(result => {
       if (result) {
-        setCycles(result);
+        props.setCycles(result);
       }
     });
 
-  }, []);
+  });
 
   const getCycleDay = () => {
-    if (dateStartCycle === "none") {
+    if (props.dateStartCycle === "none") {
       return 30;
     }
-    const day: number = Number(getCurrentCycleDay(dateStartCycle));
+    const day: number = Number(getCurrentCycleDay(props.dateStartCycle));
     return day;
   }
 
   const getTitleCycleDay = () => {
-    if (dateStartCycle === "none") {
+    if (props.dateStartCycle === "none") {
       return "none";
     }
-    const day: string = getCurrentCycleDay(dateStartCycle);
+    const day: string = getCurrentCycleDay(props.dateStartCycle);
     if (day === "1")
       return "1 Day";
     return day + " Days";
   }
 
   const getLenCycle = (idx: number) => {
-    if (!cycles || idx >= cycles.length) {
+    if (!props.cycles || idx >= props.cycles.length) {
       return "none Days";
     }
-    return cycles[idx].lenCycle + " Days";
+    return props.cycles[idx].lenCycle + " Days";
   }
 
   const getLenProgressBar = (idx: number) => {
-    if (!cycles || idx >= cycles.length) {
+    if (!props.cycles || idx >= props.cycles.length) {
       return 30;
     }
-    return cycles[idx].lenCycle;
+    return props.cycles[idx].lenCycle;
   }
 
   const getLenPeriod = (idx: number) => {
-    if (!cycles || idx >= cycles.length) {
+    if (!props.cycles || idx >= props.cycles.length) {
       return 0;
     }
-    return cycles[idx].lenPeriod;
+    return props.cycles[idx].lenPeriod;
   }
 
   const getDates = (idx: number) => {
-    if (!cycles || idx >= cycles.length) {
+    if (!props.cycles || idx >= props.cycles.length) {
       return "date: none";
     }
 
-    let date: Date = new Date(cycles[idx].startDate);
-    date.setDate(date.getDate() + Number(cycles[idx].lenCycle));
+    let date: Date = new Date(props.cycles[idx].startDate);
+    date.setDate(date.getDate() + Number(props.cycles[idx].lenCycle));
 
-    return new Date(cycles[idx].startDate).toLocaleDateString() + " - " + date.toLocaleDateString();
+    return new Date(props.cycles[idx].startDate).toLocaleDateString() + " - " + date.toLocaleDateString();
   }
 
   return (
@@ -106,9 +104,9 @@ const TabHistory: React.FC = () => {
           <div id="circle">
             <IonLabel >
               <p style={{ fontSize: "10px", color: "rgb(var(--ion-color-basic-rgb))", textAlign: "center" }}>Period length</p>
-              <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-dark-basic-rgb))", textAlign: "center" }}>{lenPeriod} Days</h1>
+              <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-dark-basic-rgb))", textAlign: "center" }}>{props.lenPeriod} Days</h1>
               <p style={{ fontSize: "10px", color: "rgb(var(--ion-color-basic-rgb))", textAlign: "center" }}>Cycle length</p>
-              <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-dark-basic-rgb))", textAlign: "center" }}>{lenCycle} Days</h1>
+              <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-dark-basic-rgb))", textAlign: "center" }}>{props.lenCycle} Days</h1>
             </IonLabel>
           </div>
         </div>
@@ -122,7 +120,7 @@ const TabHistory: React.FC = () => {
                 <p>Current cycle</p>
               </IonLabel>
               <IonLabel position="stacked">
-                <IonProgressBar class="current-progress" value={Number(lenPeriod) / 100 * 3} buffer={getCycleDay() / 100 * 3}></IonProgressBar>
+                <IonProgressBar class="current-progress" value={Number(props.lenPeriod) / 100 * 3} buffer={getCycleDay() / 100 * 3}></IonProgressBar>
               </IonLabel>
             </IonItem>
 

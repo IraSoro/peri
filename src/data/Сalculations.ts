@@ -1,3 +1,18 @@
+export interface MainProps {
+  lenCycle: number;
+  setLenCycle: (newIsOpen: number) => void;
+
+  lenPeriod: number;
+  setLenPeriod: (newIsOpen: number) => void;
+
+  dateStartCycle: string;
+  setDateStartCycle: (newDateStartCycle: string) => void;
+
+  cycles?: CycleData[];
+  setCycles: (newCycles: CycleData[]) => void;
+}
+
+
 export class CycleData {
   lenCycle: number = 0;
   lenPeriod: number = 0;
@@ -55,7 +70,7 @@ export const getCurrentCycleDay = (date: string) => {
 
   let date1: Date = new Date(date);
   let now: Date = new Date();
-  let currentDay = Math.round(Math.abs(Number(now) - Number(date1)) / msInDay);
+  let currentDay = Math.ceil(Math.abs(Number(now) - Number(date1)) / msInDay);
 
   return currentDay.toString();
 }
