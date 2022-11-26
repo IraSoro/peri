@@ -13,13 +13,12 @@ import {
   IonRow,
   IonCol,
   IonButton,
-  IonTitle,
-  IonList,
 } from '@ionic/react';
 import './TabHome.css';
 
 import Welcome from './WelcomeModal';
 import MarkModal from './MarkModal';
+import InfoModal from './InfoModal';
 
 import uterus from '../assets/uterus.svg';
 
@@ -30,60 +29,6 @@ import {
   CycleData,
   MainProps
 } from '../data/Сalculations';
-
-interface PropsInfoModal {
-  isOpen: boolean;
-  setIsOpen: (newIsOpen: boolean) => void;
-}
-
-
-const InfoModal = (props: PropsInfoModal) => {
-  return (
-    <IonModal isOpen={props.isOpen}>
-      <div id="small-rectangle"></div>
-      <IonContent className="ion-padding" color="basic">
-        <div id="rectangle">
-          <IonList class="transparent">
-            <IonItem>
-              <IonTitle color="dark-basic">Luteal phase</IonTitle>
-            </IonItem>
-            <IonItem lines="none">
-              <IonLabel>progesterone levels rise</IonLabel>
-            </IonItem>
-            <IonItem lines="none">
-              <IonLabel>estrogen levels rise</IonLabel>
-            </IonItem>
-          </IonList>
-        </div>
-        <div id="small-rectangle"></div>
-        <div id="rectangle">
-          <IonList class="transparent">
-            <IonItem>
-              <IonTitle color="dark-basic">Symptoms</IonTitle>
-            </IonItem>
-            <IonItem lines="none">
-              <IonLabel>
-                <p>Increased appetite</p>
-                <p>Tiredness</p>
-                <p>Acne</p>
-                <p>Fatigue</p>
-                <p>Oily hair and skin</p>
-              </IonLabel>
-            </IonItem>
-          </IonList>
-        </div>
-        <div id="small-rectangle"></div>
-        <div id="button-rectangle">
-          <IonButton
-            class="ok-modal"
-            onClick={() => props.setIsOpen(false)}>
-            Ok
-          </IonButton>
-        </div>
-      </IonContent>
-    </IonModal>
-  );
-};
 
 const TabHome = (props: MainProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);

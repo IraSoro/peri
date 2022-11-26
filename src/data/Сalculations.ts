@@ -40,7 +40,7 @@ export interface InfoCurrentCycle {
   periodInTitle: string;
 }
 
-export const getInfo = (date: string, cycleLen: number = 25) => {
+export const getInfo = (date: string, cycleLen: number = 28) => {
   let info: InfoCurrentCycle = {
     cycleDay: "none",
     ovulationDay: "none",
