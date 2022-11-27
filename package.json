@@ -1,7 +1,6 @@
 {
   "name": "period-tracker-2-0",
   "version": "0.0.1",
-  "homepage": "https://irasoro.github.io/period-tracker-2-0/",
   "private": true,
   "dependencies": {
     "@capacitor/android": "4.4.0",
@@ -47,9 +46,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -71,8 +68,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "4.4.0",
-    "@ionic/lab": "3.2.15",
-    "gh-pages": "^4.0.0"
+    "@ionic/lab": "3.2.15"
   },
   "description": "An Ionic project"
 }
