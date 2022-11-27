@@ -31,7 +31,7 @@ import {
   InfoPhase,
   phases,
   getPhase,
-} from '../data/Сalculations';
+} from '../data/Calculations';
 
 const TabHome = (props: MainProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);

@@ -7,18 +7,18 @@ import {
   IonItem,
   IonList,
 } from '@ionic/react';
-import './TabHistory.css';
+import './TabDetails.css';
 
 import { get } from '../data/Storage';
 import {
   CycleData,
   getCurrentCycleDay,
   MainProps
-} from '../data/Сalculations';
+} from '../data/Calculations';
 
 
 
-const TabHistory = (props: MainProps) => {
+const TabDetails = (props: MainProps) => {
   useEffect(() => {
     get("cycle-length").then(result => {
       if (result) {
@@ -44,8 +44,9 @@ const TabHistory = (props: MainProps) => {
         props.setCycles(result);
       }
     });
+    console.log("details");
 
-  });
+  }, []);
 
   const getCycleDay = () => {
     if (props.dateStartCycle === "none") {
@@ -191,4 +192,4 @@ const TabHistory = (props: MainProps) => {
   );
 };
 
-export default TabHistory;
+export default TabDetails;

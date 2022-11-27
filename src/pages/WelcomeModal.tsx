@@ -27,7 +27,7 @@ import {
     CycleData,
     InfoPhase,
     getPhase
-} from '../data/Сalculations';
+} from '../data/Calculations';
 
 import { calendarClear } from 'ionicons/icons';
 import whiteUterus from '../assets/white-uterus.svg';

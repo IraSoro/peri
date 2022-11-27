@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import TabHome from './pages/TabHome';
-import TabHistory from './pages/TabHistory';
+import TabDetails from './pages/TabDetails';
 import './App.css';
 
 /* Core CSS required for Ionic components to work properly */
@@ -38,7 +38,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 import { createStore } from './data/Storage';
-import { CycleData } from './data/Сalculations';
+import { CycleData } from './data/Calculations';
 
 setupIonicReact();
 
@@ -82,7 +82,7 @@ const App: React.FC = () => {
                 />
               </Route>
               <Route exact path="/details">
-                <TabHistory
+                <TabDetails
                   lenCycle={lenCycle}
                   setLenCycle={setLenCycle}
                   lenPeriod={lenPeriod}

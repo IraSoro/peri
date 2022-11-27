@@ -23,7 +23,7 @@ import {
     getInfo,
     InfoPhase,
     getPhase
-} from '../data/Сalculations';
+} from '../data/Calculations';
 
 interface PropsMarkModal {
     isOpen: boolean;

@@ -11,7 +11,7 @@ import './InfoModal.css';
 
 import {
     InfoPhase
-} from '../data/Сalculations';
+} from '../data/Calculations';
 
 interface PropsInfoModal {
     isOpen: boolean;
