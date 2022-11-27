@@ -27,7 +27,10 @@ import {
   getInfo,
   InfoCurrentCycle,
   CycleData,
-  MainProps
+  MainProps,
+  InfoPhase,
+  phases,
+  getPhase,
 } from '../data/Сalculations';
 
 const TabHome = (props: MainProps) => {
@@ -44,6 +47,8 @@ const TabHome = (props: MainProps) => {
       periodInTitle: "Period in",
     });
 
+  const [phase, setPhase] = useState<InfoPhase>({ phaseTitle: phases[0], symptoms: 0 });
+
   useEffect(() => {
     get("welcome").then(result => {
       // if (!result) {
@@ -56,6 +61,7 @@ const TabHome = (props: MainProps) => {
         get("cycle-length").then(resultLen => {
           const cycle: CycleData = resultData;
           setInfo(getInfo(cycle.startDate, resultLen));
+          setPhase(getPhase(cycle, resultLen));
         });
       }
     });
@@ -71,6 +77,7 @@ const TabHome = (props: MainProps) => {
               isOpen={isWelcomeModal}
               setIsOpen={setIsWelcomeModal}
               setInfo={setInfo}
+              setPhase={setPhase}
             />
             <IonRow>
               <IonCol>
@@ -111,6 +118,8 @@ const TabHome = (props: MainProps) => {
                     setDateStartCycle={props.setDateStartCycle}
                     cycles={props.cycles}
                     setCycles={props.setCycles}
+
+                    setPhase={setPhase}
                   />
                 </div>
               </IonCol>
@@ -138,7 +147,11 @@ const TabHome = (props: MainProps) => {
               </IonCardContent>
             </IonCard>
             <IonButton onClick={() => setIsInfoModal(true)} class="info-button">learn more about the current state</IonButton>
-            <InfoModal isOpen={isInfoModal} setIsOpen={setIsInfoModal} />
+            <InfoModal
+              isOpen={isInfoModal}
+              setIsOpen={setIsInfoModal}
+              info={phase}
+            />
           </IonCardContent>
         </IonCard>
       </IonContent>

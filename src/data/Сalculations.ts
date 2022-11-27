@@ -40,6 +40,64 @@ export interface InfoCurrentCycle {
   periodInTitle: string;
 }
 
+export const phases: string[][] = [
+  ["none phase", "none progesterone levels", "none estrogen levels"],
+  ["Menstrual phase", "low progesterone levels", "low estrogen levels"],
+  ["Follicular phase", "progesterone levels rise", "estrogen levels rise"],
+  ["Ovulation phase", "high progesterone levels", "high estrogen levels"],
+  ["Luteal phase", "progesterone levels drop", "estrogen levels drop"],
+  ["Luteal phase", "progesterone levels rise", "estrogen levels rise"],
+  ["Luteal phase", "progesterone levels drop", "estrogen levels drop"],
+];
+
+export interface InfoPhase {
+  phaseTitle: string[];
+  symptoms: number;
+}
+
+const getCurrentCycleDayNum = (date: string) => {
+  const msInDay = 24 * 60 * 60 * 1000;
+
+  let date1: Date = new Date(date);
+  let now: Date = new Date();
+  let currentDay = Math.ceil(Math.abs(Number(now) - Number(date1)) / msInDay);
+
+  return currentDay;
+}
+
+export const getPhase = (cycle: CycleData, cycleLen: number = 28) => {
+  let info: InfoPhase = { phaseTitle: phases[0], symptoms: 0 };
+  if (cycle.startDate === "") {
+    return info;
+  }
+
+  const currentDay: number = getCurrentCycleDayNum(cycle.startDate);
+  const lutealPhase: number = (cycleLen - 14) / 3;
+  const periodLen = cycle.lenPeriod;
+
+  if (currentDay <= periodLen) {
+    info.phaseTitle = phases[1];
+    info.symptoms = 1;
+  } else if (currentDay < 12) {
+    info.phaseTitle = phases[2];
+    info.symptoms = 1;
+  } else if (currentDay >= 12 && currentDay <= 15) {
+    info.phaseTitle = phases[3];
+    info.symptoms = 2;
+  } else if (currentDay <= (14 + lutealPhase)) {
+    info.phaseTitle = phases[4];
+    info.symptoms = 3;
+  } else if (currentDay <= (14 + lutealPhase * 2)) {
+    info.phaseTitle = phases[5];
+    info.symptoms = 3;
+  } else {
+    info.phaseTitle = phases[6];
+    info.symptoms = 3;
+  }
+
+  return info;
+}
+
 export const getInfo = (date: string, cycleLen: number = 28) => {
   let info: InfoCurrentCycle = {
     cycleDay: "none",

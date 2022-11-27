@@ -20,7 +20,9 @@ import { get, set } from "../data/Storage"
 import {
     CycleData,
     InfoCurrentCycle,
-    getInfo
+    getInfo,
+    InfoPhase,
+    getPhase
 } from '../data/Сalculations';
 
 interface PropsMarkModal {
@@ -39,6 +41,8 @@ interface PropsMarkModal {
 
     cycles?: CycleData[];
     setCycles: (newCycles: CycleData[]) => void;
+
+    setPhase: (newPhase: InfoPhase) => void;
 }
 
 interface Day {
@@ -187,6 +191,8 @@ const MarkModal = (props: PropsMarkModal) => {
 
                                             get("cycle-length").then(resultLenCycle => {
                                                 props.setInfo(getInfo(date, resultLenCycle));
+
+                                                props.setPhase(getPhase(currentCycle, resultLenCycle));
                                             });
                                         });
 
@@ -199,6 +205,7 @@ const MarkModal = (props: PropsMarkModal) => {
                                         props.setDateStartCycle(date);
 
                                         props.setInfo(getInfo(date));
+                                        props.setPhase(getPhase(currentCycle));
                                     }
                                     setDate("");
                                 })

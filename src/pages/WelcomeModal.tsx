@@ -24,7 +24,9 @@ import { remove, set } from '../data/Storage';
 import {
     getInfo,
     InfoCurrentCycle,
-    CycleData
+    CycleData,
+    InfoPhase,
+    getPhase
 } from '../data/Сalculations';
 
 import { calendarClear } from 'ionicons/icons';
@@ -34,6 +36,8 @@ interface PropsWelcomeModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
     setInfo: (newDay: InfoCurrentCycle) => void;
+
+    setPhase: (newDay: InfoPhase) => void;
 }
 
 interface Day {
@@ -217,6 +221,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                     remove("cycles");
 
                                                     props.setInfo(getInfo("none", 0));
+                                                    props.setPhase(getPhase(new CycleData()));
                                                 },
                                             },
                                         ],
@@ -248,6 +253,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                     set("period-length", setting.lenPeriod);
 
                                                     props.setInfo(getInfo(setting.startDate, setting.lenCycle));
+                                                    props.setPhase(getPhase(cycle, setting.lenCycle));
                                                 },
                                             },
                                         ],
