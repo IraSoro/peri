@@ -4,7 +4,7 @@
   <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="./public/assets/icon/icon.svg" alt="Logo" width="80" height="80">
   </a>
-  <h2 align="center">Peri</h2>
+  <h3 align="center">Peri</h3>
 
   <p align="center">
     Simple Period Tracker App
@@ -15,17 +15,17 @@
 </p>
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+### About The Project
 
 Peri is easy-to-use application that helps women keep track of periods, cycle, ovulation, and fertile days.
 
-## Built With
+### Built With
 * [Ionic](https://ionicframework.com/)
 * [React](https://reactjs.org/)
 * [Ionic Storage](https://github.com/ionic-team/ionic-storage)
 
 <!-- USAGE EXAMPLES -->
-## Usage
+### Usage
 
 <table>
   <tr>
@@ -43,7 +43,7 @@ Peri is easy-to-use application that helps women keep track of periods, cycle, o
  </table>
 
  <!-- ICON -->
-## Icon
+### Icon
 From https://www.svgrepo.com/svg/14201/uterus-and-fallopian-tube-inside-woman-body-outline
 
 
