@@ -81,6 +81,7 @@ const App: React.FC = () => {
                   setCycles={setCycles}
                 />
               </Route>
+
               <Route exact path="/details">
                 <TabDetails
                   lenCycle={lenCycle}
@@ -93,9 +94,15 @@ const App: React.FC = () => {
                   setCycles={setCycles}
                 />
               </Route>
+
               <Route exact path="/">
                 <Redirect to="/home" />
               </Route>
+
+              <Route exact path="/peri/">
+                <Redirect to="/home" />
+              </Route>
+
             </IonRouterOutlet>
 
             <IonTabBar slot="top" color="basic">
