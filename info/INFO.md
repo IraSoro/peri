@@ -75,3 +75,75 @@
 - https://www.kotex.ru/blog/pms/gormony-vo-vremya-menstrualnogo-cikla-i-pms
 - https://puls.ua/ru/fazy-menstrualnogo-cikla-i-kak-oni-vlijajut-na-vashe-zdorove/
 - Нина Брокманн, Эллен Даль – Viva la vagina
+
+
+### Info on the InfoModal
+
+### 1. Menstrual phase 
+#### Approximate cycle days: 1-7
+
+At this time, rejection of the mucous membrane (endometrium) occurs. This cycle is accompanied by low hormone levels.
+
+---------------------------------------------------
+
+Frequent symptoms:
+- lack of energy and strength;
+- pain; 
+- weakness and irritability;
+- increased appetite.
+
+### 2. Follicular phase
+#### Approximate cycle days: 7-14
+
+At this time, the follicle matures in the ovaries, in which, in turn, a new egg will mature. The restoration of the endometrium in the uterus also begins. The level of estrogen in this phase rises and reaches a maximum level.
+
+---------------------------------------------------
+
+Frequent symptoms:
+- strength and vigor appear; 
+- endurance increases;
+- new ideas and plans appear; 
+- libido increases.
+
+### 3. Ovulation
+#### Approximate cycle days: 14-21
+
+Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone. During this time, the follicle ruptures - an egg ready for fertilization comes out of it.
+
+---------------------------------------------------
+
+Frequent positive symptoms:
+- there is a lot of strength and confidence; 
+- increased sexual desire; 
+- optimistic mood.
+
+Frequent negative symptoms: 
+- mild fever;
+- lower abdominal pain;
+-  chest discomfort and bloating.
+
+Also, ovulation is accompanied by characteristic secretions.
+
+### 4. Luteal phase
+#### Approximate days of the cycle: from the day of ovulation to the start of the next cycle
+
+Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase. During this phase, there is often a phenomenon such as premenstrual syndrome.
+
+---------------------------------------------------
+
+Frequent symptoms:
+- increased breast tenderness;
+- puffiness;
+- headaches;
+- fatigue;
+- acne and skin rashes;
+- irritability;
+- bloated belly;
+- increased appetite;
+- anxiety;
+- sadness;
+- diarrhea or constipation;
+- depressed mood;
+- abdominal pain;
+- sensitivity to light and sound;
+- insomnia.
