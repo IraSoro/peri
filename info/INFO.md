@@ -120,7 +120,7 @@ Frequent positive symptoms:
 Frequent negative symptoms: 
 - mild fever;
 - lower abdominal pain;
--  chest discomfort and bloating.
+- chest discomfort and bloating.
 
 Also, ovulation is accompanied by characteristic secretions.
 
