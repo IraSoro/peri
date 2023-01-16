@@ -40,15 +40,18 @@ ion-card-header.info {
 
 ion-button.ok-modal {
     font-size: 20px;
-    width: 20%;
+    width: 30%;
+    height: 10%;
 
     --background: rgb(var(--ion-color-opposite-rgb));
-    --border-radius: 10px;
+    --border-radius: 20px;
     --box-shadow: none;
     --color: rgb(var(--ion-color-dark-basic-rgb));
+
+    transform: translateX(-40%);
 }
 
 ion-button.ok-modal:hover {
     border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
-    border-radius: 10px;
+    border-radius: 20px;
 }

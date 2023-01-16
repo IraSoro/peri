@@ -103,13 +103,11 @@ const InfoModal = (props: PropsInfoModal) => {
                     </IonCard>
                 </div>
                 <div id="small-rectangle"></div>
-                <div id="button-rectangle">
-                    <IonButton
-                        class="ok-modal"
-                        onClick={() => props.setIsOpen(false)}>
-                        Ok
-                    </IonButton>
-                </div>
+                <IonButton
+                    class="ok-modal"
+                    onClick={() => props.setIsOpen(false)}>
+                    Ok
+                </IonButton>
             </IonContent>
         </IonModal>
     );
