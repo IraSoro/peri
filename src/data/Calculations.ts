@@ -41,13 +41,11 @@ export interface InfoCurrentCycle {
 }
 
 export const phases: string[][] = [
-  ["none phase", "none progesterone levels", "none estrogen levels"],
-  ["Menstrual phase", "low progesterone levels", "low estrogen levels"],
-  ["Follicular phase", "progesterone levels rise", "estrogen levels rise"],
-  ["Ovulation phase", "high progesterone levels", "high estrogen levels"],
-  ["Luteal phase", "progesterone levels drop", "estrogen levels drop"],
-  ["Luteal phase", "progesterone levels rise", "estrogen levels rise"],
-  ["Luteal phase", "progesterone levels drop", "estrogen levels drop"],
+  ["The menstrual cycle can be divided into 4 phases.", "When information about your cycle appears, it will be reported which phase you are in."],
+  ["Menstrual phase", "This cycle is accompanied by low hormone levels."],
+  ["Follicular phase", "The level of estrogen in this phase rises and reaches a maximum level."],
+  ["Ovulation phase", "Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone."],
+  ["Luteal phase", "Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase."],
 ];
 
 export interface InfoPhase {
@@ -72,27 +70,22 @@ export const getPhase = (cycle: CycleData, cycleLen: number = 28) => {
   }
 
   const currentDay: number = getCurrentCycleDayNum(cycle.startDate);
-  const lutealPhase: number = (cycleLen - 14) / 3;
+  // const lutealPhase: number = (cycleLen - 14) / 3;
   const periodLen = cycle.lenPeriod;
+  const follicularPhase: number = cycleLen - 14;
 
   if (currentDay <= periodLen) {
     info.phaseTitle = phases[1];
     info.symptoms = 1;
-  } else if (currentDay < 12) {
+  } else if (currentDay <= (follicularPhase - 2)) {
     info.phaseTitle = phases[2];
-    info.symptoms = 1;
-  } else if (currentDay >= 12 && currentDay <= 15) {
-    info.phaseTitle = phases[3];
     info.symptoms = 2;
-  } else if (currentDay <= (14 + lutealPhase)) {
-    info.phaseTitle = phases[4];
-    info.symptoms = 3;
-  } else if (currentDay <= (14 + lutealPhase * 2)) {
-    info.phaseTitle = phases[5];
+  } else if (currentDay <= (follicularPhase + 2)) {
+    info.phaseTitle = phases[3];
     info.symptoms = 3;
   } else {
-    info.phaseTitle = phases[6];
-    info.symptoms = 3;
+    info.phaseTitle = phases[4];
+    info.symptoms = 4;
   }
 
   return info;
