@@ -15,6 +15,7 @@ import {
     IonCard,
     IonCardHeader,
     IonCardContent,
+    IonCol,
 } from '@ionic/react';
 import './WelcomeModal.css';
 
@@ -145,7 +146,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     ))}
                                 </IonSelect>
                             </IonItem>
-                            <IonItem>
+                            <IonItem lines="none">
                                 <IonLabel color="basic">Period length</IonLabel>
                                 <IonSelect
                                     placeholder="none"
@@ -161,83 +162,83 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     ))}
                                 </IonSelect>
                             </IonItem>
-                            {/* <IonItem lines="none"> */}
-                            <IonButton
-                                class="continue"
-                                onClick={() => {
-                                    if (setting.isEmpty()) {
-                                        confirmAlert({
-                                            header: 'Continue?',
-                                            subHeader: "You have not entered all the data",
-                                            message: 'Forecast will not be generated.',
-                                            buttons: [
-                                                {
-                                                    text: 'Cancel',
-                                                    cssClass: 'alert-button-cancel',
-                                                    role: 'cancel',
-                                                    handler: () => {
-                                                    },
-                                                },
-                                                {
-                                                    text: 'OK',
-                                                    cssClass: 'alert-button-confirm',
-                                                    role: 'confirm',
-                                                    handler: () => {
-                                                        props.setIsOpen(false);
-                                                        set("welcome", true);
-
-                                                        remove("cycle-length");
-                                                        remove("period-length");
-                                                        remove("current-cycle");
-                                                        remove("cycles");
-
-                                                        props.setInfo(getInfo("none", 0));
-                                                        props.setPhase(getPhase(new CycleData()));
-                                                    },
-                                                },
-                                            ],
-                                        })
-                                    } else {
-                                        confirmAlert({
-                                            header: 'Continue?',
-                                            buttons: [
-                                                {
-                                                    text: 'Cancel',
-                                                    cssClass: 'alert-button-cancel',
-                                                    role: 'cancel',
-                                                    handler: () => {
-                                                    },
-                                                },
-                                                {
-                                                    text: 'OK',
-                                                    cssClass: 'alert-button-confirm',
-                                                    role: 'confirm',
-                                                    handler: () => {
-                                                        props.setIsOpen(false);
-                                                        set("welcome", true);
-
-                                                        let cycle: CycleData = new CycleData();
-                                                        cycle.lenPeriod = setting.lenPeriod;
-                                                        cycle.startDate = setting.startDate;
-                                                        set("current-cycle", cycle);
-                                                        set("cycle-length", setting.lenCycle);
-                                                        set("period-length", setting.lenPeriod);
-
-                                                        props.setInfo(getInfo(setting.startDate, setting.lenCycle));
-                                                        props.setPhase(getPhase(cycle, setting.lenCycle));
-                                                    },
-                                                },
-                                            ],
-                                        })
-                                    }
-                                }}
-                            >
-                                Continue
-                            </IonButton>
-                            {/* </IonItem> */}
                         </IonList>
                     </IonCardContent>
                 </IonCard>
+                <IonCol>
+                    <IonButton
+                        class="continue"
+                        onClick={() => {
+                            if (setting.isEmpty()) {
+                                confirmAlert({
+                                    header: 'Continue?',
+                                    subHeader: "You have not entered all the data",
+                                    message: 'Forecast will not be generated.',
+                                    buttons: [
+                                        {
+                                            text: 'Cancel',
+                                            cssClass: 'alert-button-cancel',
+                                            role: 'cancel',
+                                            handler: () => {
+                                            },
+                                        },
+                                        {
+                                            text: 'OK',
+                                            cssClass: 'alert-button-confirm',
+                                            role: 'confirm',
+                                            handler: () => {
+                                                props.setIsOpen(false);
+                                                set("welcome", true);
+
+                                                remove("cycle-length");
+                                                remove("period-length");
+                                                remove("current-cycle");
+                                                remove("cycles");
+
+                                                props.setInfo(getInfo("none", 0));
+                                                props.setPhase(getPhase(new CycleData()));
+                                            },
+                                        },
+                                    ],
+                                })
+                            } else {
+                                confirmAlert({
+                                    header: 'Continue?',
+                                    buttons: [
+                                        {
+                                            text: 'Cancel',
+                                            cssClass: 'alert-button-cancel',
+                                            role: 'cancel',
+                                            handler: () => {
+                                            },
+                                        },
+                                        {
+                                            text: 'OK',
+                                            cssClass: 'alert-button-confirm',
+                                            role: 'confirm',
+                                            handler: () => {
+                                                props.setIsOpen(false);
+                                                set("welcome", true);
+
+                                                let cycle: CycleData = new CycleData();
+                                                cycle.lenPeriod = setting.lenPeriod;
+                                                cycle.startDate = setting.startDate;
+                                                set("current-cycle", cycle);
+                                                set("cycle-length", setting.lenCycle);
+                                                set("period-length", setting.lenPeriod);
+
+                                                props.setInfo(getInfo(setting.startDate, setting.lenCycle));
+                                                props.setPhase(getPhase(cycle, setting.lenCycle));
+                                            },
+                                        },
+                                    ],
+                                })
+                            }
+                        }}
+                    >
+                        Continue
+                    </IonButton>
+                </IonCol>
             </IonContent>
         </IonModal>
     );

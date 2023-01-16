@@ -1,18 +1,14 @@
 ion-button.continue {
-    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    /* border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid; */
     border-radius: 10px;
 
     --border-radius: 10px;
     --color: rgb(var(--ion-color-dark-basic-rgb));
-    --background: rgb(var(--ion-color-basic-rgb));
+    --background: transparent;
 }
 
 ion-button.continue:hover {
-    border: 2px rgb(var(--ion-color-light-rgb)) solid;
-    border-radius: 10px;
-
     --background: rgb(var(--ion-color-basic-rgb));
-    --color: rgb(var(--ion-color-light-rgb));
 }
 
 ion-modal.choose-date-modal {
