@@ -1,64 +1,48 @@
-  .continue-button {
-      border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
-      border-radius: 10px;
+ion-button.continue {
+    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    border-radius: 10px;
 
-      --border-radius: 10px;
-      --color: rgb(var(--ion-color-dark-basic-rgb));
-      --background: rgb(var(--ion-color-basic-rgb));
-  }
+    --border-radius: 10px;
+    --color: rgb(var(--ion-color-dark-basic-rgb));
+    --background: rgb(var(--ion-color-basic-rgb));
+}
 
-  .continue-button:hover {
-      border: 2px rgb(var(--ion-color-light-rgb)) solid;
-      border-radius: 10px;
+ion-button.continue:hover {
+    border: 2px rgb(var(--ion-color-light-rgb)) solid;
+    border-radius: 10px;
 
-      --background: rgb(var(--ion-color-basic-rgb));
-      --color: rgb(var(--ion-color-light-rgb));
-  }
+    --background: rgb(var(--ion-color-basic-rgb));
+    --color: rgb(var(--ion-color-light-rgb));
+}
 
-  #welcome-rectangle {
-      width: 100%;
-      height: 40%;
-      background: #ffffff;
+ion-modal.choose-date-modal {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
+ion-button.alert-button.alert-button-confirm {
+    color: var(--ion-color-basic);
+}
 
-  #welcome-rectangle-bottom {
-      width: 100%;
-      height: 5%;
-      background: #ffffff;
-      border-radius: 20px;
+ion-button.alert-button.alert-button-cancel {
+    color: var(--ion-color-basic);
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+ion-card-header.welcome {
+    color: rgb(var(--ion-color-dark-basic-rgb));
+    text-align: center;
+}
 
-      transform: translateY(-50%);
-  }
+ion-card.welcome {
+    border-radius: 20px;
+    box-shadow: none !important;
+    margin-top: 20%;
+}
 
-  .transparent {
-      --ion-item-background: transparent;
-  }
-
-  .img-welcome {
-      height: 100px;
-      width: auto;
-  }
-
-  ion-modal#choose-date-modal {
-      --width: fit-content;
-      --min-width: 250px;
-      --height: fit-content;
-      --border-radius: 6px;
-      --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-  }
-
-  button.alert-button.alert-button-confirm {
-      color: var(--ion-color-basic);
-  }
-
-  button.alert-button.alert-button-cancel {
-      color: var(--ion-color-basic);
-  }
+ion-content.gradient {
+    /* --background: linear-gradient(#4C3B9D, #C0B6F2); */
+    --background: linear-gradient(#C0B6F2, #E0DBF7);
+}
