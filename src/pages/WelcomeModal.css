@@ -42,3 +42,13 @@ ion-content.gradient {
     /* --background: linear-gradient(#4C3B9D, #C0B6F2); */
     --background: linear-gradient(#C0B6F2, #E0DBF7);
 }
+
+ion-item.welcome {
+    font-size: 14px;
+    color: var(--ion-color-basic);
+    margin: 0;
+}
+
+ion-select.welcome {
+    color: var(--ion-color-dark-basic);
+}

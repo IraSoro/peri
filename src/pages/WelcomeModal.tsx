@@ -100,10 +100,10 @@ const Welcome = (props: PropsWelcomeModal) => {
                     </IonCardHeader>
                     <IonCardContent>
                         <IonList>
-                            <IonItem id="choose-date">
-                                <IonLabel color="basic">Start of last period</IonLabel>
-                                <IonIcon slot="end" color="dark" size="small" icon={calendarClear}></IonIcon>
-                                <p>{date}</p>
+                            <IonItem lines="full" class="welcome" id="choose-date">
+                                <IonLabel class="welcome">Start of last period</IonLabel>
+                                <IonIcon slot="end" color="basic" size="small" icon={calendarClear}></IonIcon>
+                                <p style={{ color: "var(--ion-color-dark-basic)" }}>{date}</p>
                                 <IonModal
                                     class="choose-date-modal"
                                     ref={modal}
@@ -118,7 +118,6 @@ const Welcome = (props: PropsWelcomeModal) => {
                                         onIonChange={(e) => {
                                             if (e.detail.value) {
                                                 setDate(e.detail.value.toString().slice(0, 10));
-                                                // console.log("date = ", date);
                                                 setting.startDate = e.detail.value.toString().slice(0, 10);
                                                 setSetting(setting);
                                             }
@@ -130,9 +129,10 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     </IonDatetime>
                                 </IonModal>
                             </IonItem>
-                            <IonItem>
-                                <IonLabel color="basic">Cycle length</IonLabel>
+                            <IonItem lines="full" class="welcome">
+                                <IonLabel>Cycle length</IonLabel>
                                 <IonSelect
+                                    class="welcome"
                                     placeholder="none"
                                     onIonChange={(ev) => {
                                         setting.lenCycle = Number(ev.detail.value.id);
@@ -146,9 +146,10 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     ))}
                                 </IonSelect>
                             </IonItem>
-                            <IonItem lines="none">
-                                <IonLabel color="basic">Period length</IonLabel>
+                            <IonItem lines="none" class="welcome">
+                                <IonLabel>Period length</IonLabel>
                                 <IonSelect
+                                    class="welcome"
                                     placeholder="none"
                                     onIonChange={(ev) => {
                                         setting.lenPeriod = Number(ev.detail.value.id);
