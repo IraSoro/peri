@@ -91,6 +91,11 @@ const Welcome = (props: PropsWelcomeModal) => {
         modal.current?.dismiss(input.current?.value, 'confirm');
     }
 
+    const cancelDate = () => {
+        datetime.current?.cancel();
+        modal.current?.dismiss(input.current?.value, 'cancel');
+      }
+
     return (
         <IonModal isOpen={props.isOpen}>
             <IonContent fullscreen class="gradient">
@@ -124,7 +129,8 @@ const Welcome = (props: PropsWelcomeModal) => {
                                         }}
                                     >
                                         <IonButtons slot="buttons">
-                                            <IonButton color="basic" onClick={confirmDate}>Confirm</IonButton>
+                                            <IonButton class="uppercase" color="basic" onClick={cancelDate}>Cancel</IonButton>
+                                            <IonButton class="uppercase" color="dark-basic" onClick={confirmDate}>Confirm</IonButton>
                                         </IonButtons>
                                     </IonDatetime>
                                 </IonModal>
@@ -180,8 +186,6 @@ const Welcome = (props: PropsWelcomeModal) => {
                                             text: 'Cancel',
                                             cssClass: 'alert-button-cancel',
                                             role: 'cancel',
-                                            handler: () => {
-                                            },
                                         },
                                         {
                                             text: 'OK',
@@ -210,8 +214,6 @@ const Welcome = (props: PropsWelcomeModal) => {
                                             text: 'Cancel',
                                             cssClass: 'alert-button-cancel',
                                             role: 'cancel',
-                                            handler: () => {
-                                            },
                                         },
                                         {
                                             text: 'OK',

@@ -1,5 +1,4 @@
 ion-button.continue {
-    /* border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid; */
     border-radius: 10px;
 
     --border-radius: 10px;
@@ -19,12 +18,14 @@ ion-modal.choose-date-modal {
     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
 
-ion-button.alert-button.alert-button-confirm {
-    color: var(--ion-color-basic);
+button.alert-button.alert-button-confirm {
+    color: var(--ion-color-dark-basic);
+    text-transform: none;
 }
 
-ion-button.alert-button.alert-button-cancel {
+button.alert-button.alert-button-cancel {
     color: var(--ion-color-basic);
+    text-transform: none;
 }
 
 ion-card-header.welcome {
@@ -51,4 +52,8 @@ ion-item.welcome {
 
 ion-select.welcome {
     color: var(--ion-color-dark-basic);
+}
+
+ion-button.uppercase {
+    text-transform: none;
 }
