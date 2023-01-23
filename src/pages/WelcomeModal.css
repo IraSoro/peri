@@ -28,6 +28,11 @@ button.alert-button.alert-button-cancel {
     text-transform: none;
 }
 
+.header-color {
+    --ion-text-color: var(--ion-color-dark-basic);
+    --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
+}
+
 ion-card-header.welcome {
     color: rgb(var(--ion-color-dark-basic-rgb));
     text-align: center;

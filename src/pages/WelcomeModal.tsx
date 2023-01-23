@@ -185,7 +185,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                             if (setting.isEmpty()) {
                                 confirmAlert({
                                     header: 'Continue?',
-                                    subHeader: "You have not entered all the data",
+                                    cssClass: "header-color",
                                     message: 'Forecast will not be generated.',
                                     buttons: [
                                         {
@@ -215,9 +215,10 @@ const Welcome = (props: PropsWelcomeModal) => {
                             } else {
                                 confirmAlert({
                                     header: 'Continue?',
+                                    cssClass: "header-color",
                                     buttons: [
                                         {
-                                            text: 'Cancel',
+                                            text: 'CANCEL',
                                             cssClass: 'alert-button-cancel',
                                             role: 'cancel',
                                         },
