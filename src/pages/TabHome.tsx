@@ -51,9 +51,9 @@ const TabHome = (props: MainProps) => {
 
   useEffect(() => {
     get("welcome").then(result => {
-      if (!result) {
+      // if (!result) {
         setIsWelcomeModal(true);
-      }
+      // }
     });
 
     get("current-cycle").then(resultData => {
