@@ -94,7 +94,11 @@ const Welcome = (props: PropsWelcomeModal) => {
     const cancelDate = () => {
         datetime.current?.cancel();
         modal.current?.dismiss(input.current?.value, 'cancel');
-      }
+    }
+
+    const selectOptions = {
+        cssClass: "welcome-select-header",
+    };
 
     return (
         <IonModal isOpen={props.isOpen}>
@@ -129,8 +133,8 @@ const Welcome = (props: PropsWelcomeModal) => {
                                         }}
                                     >
                                         <IonButtons slot="buttons">
-                                            <IonButton class="uppercase" color="basic" onClick={cancelDate}>Cancel</IonButton>
-                                            <IonButton class="uppercase" color="dark-basic" onClick={confirmDate}>Confirm</IonButton>
+                                            <IonButton class="uppercase" color="basic" onClick={cancelDate}>CANCEL</IonButton>
+                                            <IonButton class="uppercase" color="dark-basic" onClick={confirmDate}>OK</IonButton>
                                         </IonButtons>
                                     </IonDatetime>
                                 </IonModal>
@@ -139,6 +143,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 <IonLabel>Cycle length</IonLabel>
                                 <IonSelect
                                     class="welcome"
+                                    interfaceOptions={selectOptions}
                                     placeholder="none"
                                     onIonChange={(ev) => {
                                         setting.lenCycle = Number(ev.detail.value.id);
@@ -156,6 +161,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 <IonLabel>Period length</IonLabel>
                                 <IonSelect
                                     class="welcome"
+                                    interfaceOptions={selectOptions}
                                     placeholder="none"
                                     onIonChange={(ev) => {
                                         setting.lenPeriod = Number(ev.detail.value.id);
@@ -183,7 +189,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     message: 'Forecast will not be generated.',
                                     buttons: [
                                         {
-                                            text: 'Cancel',
+                                            text: 'CANCEL',
                                             cssClass: 'alert-button-cancel',
                                             role: 'cancel',
                                         },
