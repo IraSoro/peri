@@ -46,7 +46,7 @@ const TabDetails = (props: MainProps) => {
     });
     console.log("details");
 
-  }, []);
+  });
 
   const getCycleDay = () => {
     if (props.dateStartCycle === "none") {
@@ -58,7 +58,7 @@ const TabDetails = (props: MainProps) => {
 
   const getTitleCycleDay = () => {
     if (props.dateStartCycle === "none") {
-      return "none";
+      return "Cycle days";
     }
     const day: string = getCurrentCycleDay(props.dateStartCycle);
     if (day === "1")
@@ -68,7 +68,7 @@ const TabDetails = (props: MainProps) => {
 
   const getLenCycle = (idx: number) => {
     if (!props.cycles || idx >= props.cycles.length) {
-      return "none Days";
+      return "Cycle length";
     }
     return props.cycles[idx].lenCycle + " Days";
   }
@@ -89,7 +89,7 @@ const TabDetails = (props: MainProps) => {
 
   const getDates = (idx: number) => {
     if (!props.cycles || idx >= props.cycles.length) {
-      return "date: none";
+      return "date";
     }
 
     let date: Date = new Date(props.cycles[idx].startDate);
@@ -118,7 +118,7 @@ const TabDetails = (props: MainProps) => {
                 <h2>{getTitleCycleDay()}</h2>
               </IonLabel>
               <IonLabel position="stacked">
-                <p>Current cycle</p>
+                <p>current cycle</p>
               </IonLabel>
               <IonLabel position="stacked">
                 <IonProgressBar class="current-progress" value={Number(props.lenPeriod) / 100 * 3} buffer={getCycleDay() / 100 * 3}></IonProgressBar>
