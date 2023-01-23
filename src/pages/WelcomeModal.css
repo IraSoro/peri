@@ -21,6 +21,8 @@ ion-modal.choose-date-modal {
 .header-color {
     --ion-text-color: var(--ion-color-dark-basic);
     --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
+
+    --ion-color-step-550: var(--ion-color-dark-basic);
 }
 
 ion-card-header.welcome {
