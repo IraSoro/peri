@@ -142,7 +142,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     >
                                         <IonButtons slot="buttons">
                                             <IonButton class="uppercase" color="basic" onClick={cancelDate}>CANCEL</IonButton>
-                                            <IonButton class="uppercase" color="dark-basic" onClick={confirmDate}>OK</IonButton>
+                                            <IonButton class="uppercase" color="basic" onClick={confirmDate}>OK</IonButton>
                                         </IonButtons>
                                     </IonDatetime>
                                 </IonModal>
@@ -198,12 +198,10 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     buttons: [
                                         {
                                             text: 'CANCEL',
-                                            cssClass: 'alert-button-cancel',
                                             role: 'cancel',
                                         },
                                         {
                                             text: 'OK',
-                                            cssClass: 'alert-button-confirm',
                                             role: 'confirm',
                                             handler: () => {
                                                 props.setIsOpen(false);
@@ -227,12 +225,10 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     buttons: [
                                         {
                                             text: 'CANCEL',
-                                            cssClass: 'alert-button-cancel',
                                             role: 'cancel',
                                         },
                                         {
                                             text: 'OK',
-                                            cssClass: 'alert-button-confirm',
                                             role: 'confirm',
                                             handler: () => {
                                                 props.setIsOpen(false);
