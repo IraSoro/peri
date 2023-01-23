@@ -7,16 +7,18 @@ import {
     IonLabel,
     IonModal,
     IonDatetime,
-    IonCol,
-    IonImg,
-    IonTitle,
-    IonToolbar,
-    IonHeader,
     IonIcon,
     IonButtons,
     useIonAlert,
     IonSelect,
     IonSelectOption,
+    IonCard,
+    IonCardHeader,
+    IonCardContent,
+    IonCol,
+    IonTitle,
+    IonHeader,
+    IonToolbar,
 } from '@ionic/react';
 import './WelcomeModal.css';
 
@@ -30,7 +32,6 @@ import {
 } from '../data/Calculations';
 
 import { calendarClear } from 'ionicons/icons';
-import whiteUterus from '../assets/white-uterus.svg';
 
 interface PropsWelcomeModal {
     isOpen: boolean;
@@ -93,178 +94,165 @@ const Welcome = (props: PropsWelcomeModal) => {
         modal.current?.dismiss(input.current?.value, 'confirm');
     }
 
+    const cancelDate = () => {
+        datetime.current?.cancel();
+        modal.current?.dismiss(input.current?.value, 'cancel');
+    }
+
+    const selectOptions = {
+        cssClass: "welcome-select-header",
+    };
+
     return (
         <IonModal isOpen={props.isOpen}>
             <IonHeader class="ion-no-border">
-                <IonToolbar color="light">
-                    <IonTitle color="dark-basic">Hello!</IonTitle>
+                <IonToolbar color="basic">
+                    <IonTitle color="light">Welcome to Peri</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen color="basic">
-                <div id="welcome-rectangle">
-                    <IonList class="transparent">
-                        <IonCol>
-                            <IonLabel
-                                style={{ fontWeight: "bold" }}
-                                color="dark-basic"
-                            >
-                                Please enter your details so that you can already make a forecast.
-                            </IonLabel>
-                        </IonCol>
-                        <IonItem class="transparent" id="choose-date">
-                            <IonLabel color="basic">Start of last period</IonLabel>
-                            <IonIcon slot="end" color="dark" size="small" icon={calendarClear}></IonIcon>
-                            <p>{date}</p>
-                            <IonModal
-                                id="choose-date-modal"
-                                ref={modal}
-                                trigger="choose-date"
-                            >
-                                <IonDatetime
-                                    ref={datetime}
-                                    color="basic"
-                                    presentation="date"
-                                    id="datetime"
-                                    locale="en-US"
-                                    onIonChange={(e) => {
-                                        if (e.detail.value) {
-                                            setDate(e.detail.value.toString().slice(0, 10));
-                                            // console.log("date = ", date);
-                                            setting.startDate = e.detail.value.toString().slice(0, 10);
-                                            setSetting(setting);
-                                        }
+            <IonContent fullscreen class="gradient">
+                <IonCard class="welcome">
+                    <IonCardHeader class="welcome">
+                        Please enter your details so that you can already make a forecast.
+                    </IonCardHeader>
+                    <IonCardContent>
+                        <IonList>
+                            <IonItem lines="full" class="welcome" id="choose-date">
+                                <IonLabel class="welcome">Start of last period</IonLabel>
+                                <IonIcon slot="end" color="basic" size="small" icon={calendarClear}></IonIcon>
+                                <p style={{ color: "var(--ion-color-dark-basic)" }}>{date}</p>
+                                <IonModal
+                                    class="choose-date-modal"
+                                    ref={modal}
+                                    trigger="choose-date"
+                                >
+                                    <IonDatetime
+                                        ref={datetime}
+                                        color="basic"
+                                        presentation="date"
+                                        id="datetime"
+                                        locale="en-US"
+                                        onIonChange={(e) => {
+                                            if (e.detail.value) {
+                                                setDate(e.detail.value.toString().slice(0, 10));
+                                                setting.startDate = e.detail.value.toString().slice(0, 10);
+                                                setSetting(setting);
+                                            }
+                                        }}
+                                    >
+                                        <IonButtons slot="buttons">
+                                            <IonButton class="uppercase" color="basic" onClick={cancelDate}>CANCEL</IonButton>
+                                            <IonButton class="uppercase" color="basic" onClick={confirmDate}>OK</IonButton>
+                                        </IonButtons>
+                                    </IonDatetime>
+                                </IonModal>
+                            </IonItem>
+                            <IonItem lines="full" class="welcome">
+                                <IonLabel>Cycle length</IonLabel>
+                                <IonSelect
+                                    class="welcome"
+                                    interfaceOptions={selectOptions}
+                                    placeholder="none"
+                                    onIonChange={(ev) => {
+                                        setting.lenCycle = Number(ev.detail.value.id);
+                                        setSetting(setting);
                                     }}
                                 >
-                                    <IonButtons slot="buttons">
-                                        <IonButton color="basic" onClick={confirmDate}>Confirm</IonButton>
-                                    </IonButtons>
-                                </IonDatetime>
-                            </IonModal>
-                        </IonItem>
-                        <IonItem class="transparent">
-                            <IonLabel color="basic">Cycle length</IonLabel>
-                            <IonSelect
-                                placeholder="none"
-                                onIonChange={(ev) => {
-                                    // console.log(ev.detail.value.id);
-                                    setting.lenCycle = Number(ev.detail.value.id);
-                                    setSetting(setting);
-                                }}
-                            >
-                                {cycleDays.map((day) => (
-                                    <IonSelectOption key={day.id} value={day}>
-                                        {day.name}
-                                    </IonSelectOption>
-                                ))}
-                            </IonSelect>
-                        </IonItem>
-                        <IonItem class="transparent" lines="none">
-                            <IonLabel color="basic">Period length</IonLabel>
-                            <IonSelect
-                                placeholder="none"
-                                onIonChange={(ev) => {
-                                    // console.log(ev.detail.value.id);
-                                    setting.lenPeriod = Number(ev.detail.value.id);
-                                    setSetting(setting);
-                                    // console.log("set-per", setting);
-                                }}
-                            >
-                                {periodDays.map((day) => (
-                                    <IonSelectOption key={day.id} value={day}>
-                                        {day.name}
-                                    </IonSelectOption>
-                                ))}
-                            </IonSelect>
-                        </IonItem>
-                    </IonList>
-                </div>
-                <div id="welcome-rectangle-bottom"></div>
-                <IonList class="transparent">
-                    <IonCol>
-                        <IonLabel color="dark-basic">
-                            <h2 style={{ fontWeight: "bold" }}>
-                                But also you can just continue by clicking on the button.
-                            </h2>
-                        </IonLabel>
-                    </IonCol>
-                    <IonCol>
-                        <IonImg class="img-welcome" src={whiteUterus} />
-                    </IonCol>
-                    <IonCol>
-                        <IonButton
-                            class="continue-button"
-                            onClick={() => {
-                                if (setting.isEmpty()) {
-                                    confirmAlert({
-                                        header: 'Continue?',
-                                        subHeader: "You have not entered all the data",
-                                        message: 'Forecast will not be generated.',
-                                        buttons: [
-                                            {
-                                                text: 'Cancel',
-                                                cssClass: 'alert-button-cancel',
-                                                role: 'cancel',
-                                                handler: () => {
-                                                },
-                                            },
-                                            {
-                                                text: 'OK',
-                                                cssClass: 'alert-button-confirm',
-                                                role: 'confirm',
-                                                handler: () => {
-                                                    props.setIsOpen(false);
-                                                    set("welcome", true);
+                                    {cycleDays.map((day) => (
+                                        <IonSelectOption key={day.id} value={day}>
+                                            {day.name}
+                                        </IonSelectOption>
+                                    ))}
+                                </IonSelect>
+                            </IonItem>
+                            <IonItem lines="none" class="welcome">
+                                <IonLabel>Period length</IonLabel>
+                                <IonSelect
+                                    class="welcome"
+                                    interfaceOptions={selectOptions}
+                                    placeholder="none"
+                                    onIonChange={(ev) => {
+                                        setting.lenPeriod = Number(ev.detail.value.id);
+                                        setSetting(setting);
+                                    }}
+                                >
+                                    {periodDays.map((day) => (
+                                        <IonSelectOption key={day.id} value={day}>
+                                            {day.name}
+                                        </IonSelectOption>
+                                    ))}
+                                </IonSelect>
+                            </IonItem>
+                        </IonList>
+                    </IonCardContent>
+                </IonCard>
+                <IonCol>
+                    <IonButton
+                        class="continue"
+                        onClick={() => {
+                            if (setting.isEmpty()) {
+                                confirmAlert({
+                                    header: 'Continue?',
+                                    cssClass: "header-color",
+                                    message: 'Forecast will not be generated.',
+                                    buttons: [
+                                        {
+                                            text: 'CANCEL',
+                                            role: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            role: 'confirm',
+                                            handler: () => {
+                                                props.setIsOpen(false);
+                                                set("welcome", true);
 
-                                                    remove("cycle-length");
-                                                    remove("period-length");
-                                                    remove("current-cycle");
-                                                    remove("cycles");
+                                                remove("cycle-length");
+                                                remove("period-length");
+                                                remove("current-cycle");
+                                                remove("cycles");
 
-                                                    props.setInfo(getInfo("none", 0));
-                                                    props.setPhase(getPhase(new CycleData()));
-                                                },
+                                                props.setInfo(getInfo("none", 0));
+                                                props.setPhase(getPhase(new CycleData()));
                                             },
-                                        ],
-                                    })
-                                } else {
-                                    confirmAlert({
-                                        header: 'Continue?',
-                                        buttons: [
-                                            {
-                                                text: 'Cancel',
-                                                cssClass: 'alert-button-cancel',
-                                                role: 'cancel',
-                                                handler: () => {
-                                                },
-                                            },
-                                            {
-                                                text: 'OK',
-                                                cssClass: 'alert-button-confirm',
-                                                role: 'confirm',
-                                                handler: () => {
-                                                    props.setIsOpen(false);
-                                                    set("welcome", true);
+                                        },
+                                    ],
+                                })
+                            } else {
+                                confirmAlert({
+                                    header: 'Continue?',
+                                    cssClass: "header-color",
+                                    buttons: [
+                                        {
+                                            text: 'CANCEL',
+                                            role: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            role: 'confirm',
+                                            handler: () => {
+                                                props.setIsOpen(false);
+                                                set("welcome", true);
 
-                                                    let cycle: CycleData = new CycleData();
-                                                    cycle.lenPeriod = setting.lenPeriod;
-                                                    cycle.startDate = setting.startDate;
-                                                    set("current-cycle", cycle);
-                                                    set("cycle-length", setting.lenCycle);
-                                                    set("period-length", setting.lenPeriod);
+                                                let cycle: CycleData = new CycleData();
+                                                cycle.lenPeriod = setting.lenPeriod;
+                                                cycle.startDate = setting.startDate;
+                                                set("current-cycle", cycle);
+                                                set("cycle-length", setting.lenCycle);
+                                                set("period-length", setting.lenPeriod);
 
-                                                    props.setInfo(getInfo(setting.startDate, setting.lenCycle));
-                                                    props.setPhase(getPhase(cycle, setting.lenCycle));
-                                                },
+                                                props.setInfo(getInfo(setting.startDate, setting.lenCycle));
+                                                props.setPhase(getPhase(cycle, setting.lenCycle));
                                             },
-                                        ],
-                                    })
-                                }
-                            }}
-                        >
-                            Continue
-                        </IonButton>
-                    </IonCol>
-                </IonList>
+                                        },
+                                    ],
+                                })
+                            }
+                        }}
+                    >
+                        Continue
+                    </IonButton>
+                </IonCol>
             </IonContent>
         </IonModal>
     );

@@ -1,64 +1,57 @@
-  .continue-button {
-      border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
-      border-radius: 10px;
+ion-button.continue {
+    border-radius: 10px;
 
-      --border-radius: 10px;
-      --color: rgb(var(--ion-color-dark-basic-rgb));
-      --background: rgb(var(--ion-color-basic-rgb));
-  }
+    --border-radius: 10px;
+    --color: rgb(var(--ion-color-dark-basic-rgb));
+    --background: transparent;
+}
 
-  .continue-button:hover {
-      border: 2px rgb(var(--ion-color-light-rgb)) solid;
-      border-radius: 10px;
+ion-button.continue:hover {
+    --background: rgb(var(--ion-color-basic-rgb));
+}
 
-      --background: rgb(var(--ion-color-basic-rgb));
-      --color: rgb(var(--ion-color-light-rgb));
-  }
+ion-modal.choose-date-modal {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
 
-  #welcome-rectangle {
-      width: 100%;
-      height: 40%;
-      background: #ffffff;
+.header-color {
+    --ion-text-color: var(--ion-color-dark-basic);
+    --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
+ion-card-header.welcome {
+    color: rgb(var(--ion-color-dark-basic-rgb));
+    text-align: center;
+}
 
-  #welcome-rectangle-bottom {
-      width: 100%;
-      height: 5%;
-      background: #ffffff;
-      border-radius: 20px;
+ion-card.welcome {
+    border-radius: 20px;
+    box-shadow: none !important;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+ion-content.gradient {
+    --background: var(--ion-color-basic);
+}
 
-      transform: translateY(-50%);
-  }
+ion-item.welcome {
+    font-size: 14px;
+    color: var(--ion-color-basic);
+    margin: 0;
+}
 
-  .transparent {
-      --ion-item-background: transparent;
-  }
+ion-select.welcome {
+    color: var(--ion-color-dark-basic);
+}
 
-  .img-welcome {
-      height: 100px;
-      width: auto;
-  }
+.welcome-select-header {
+    --ion-text-color: var(--ion-color-dark-basic);
+    --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
+}
 
-  ion-modal#choose-date-modal {
-      --width: fit-content;
-      --min-width: 250px;
-      --height: fit-content;
-      --border-radius: 6px;
-      --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-  }
-
-  button.alert-button.alert-button-confirm {
-      color: var(--ion-color-basic);
-  }
-
-  button.alert-button.alert-button-cancel {
-      color: var(--ion-color-basic);
-  }
+ion-button.uppercase {
+    text-transform: none;
+}
