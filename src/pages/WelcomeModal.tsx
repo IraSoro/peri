@@ -16,6 +16,9 @@ import {
     IonCardHeader,
     IonCardContent,
     IonCol,
+    IonTitle,
+    IonHeader,
+    IonToolbar,
 } from '@ionic/react';
 import './WelcomeModal.css';
 
@@ -102,6 +105,11 @@ const Welcome = (props: PropsWelcomeModal) => {
 
     return (
         <IonModal isOpen={props.isOpen}>
+            <IonHeader class="ion-no-border">
+                <IonToolbar color="basic">
+                    <IonTitle color="light">Welcome to Peri</IonTitle>
+                </IonToolbar>
+            </IonHeader>
             <IonContent fullscreen class="gradient">
                 <IonCard class="welcome">
                     <IonCardHeader class="welcome">

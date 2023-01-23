@@ -41,12 +41,10 @@ ion-card-header.welcome {
 ion-card.welcome {
     border-radius: 20px;
     box-shadow: none !important;
-    margin-top: 20%;
 }
 
 ion-content.gradient {
-    /* --background: linear-gradient(#4C3B9D, #C0B6F2); */
-    --background: linear-gradient(#C0B6F2, #E0DBF7);
+    --background: var(--ion-color-basic);
 }
 
 ion-item.welcome {
