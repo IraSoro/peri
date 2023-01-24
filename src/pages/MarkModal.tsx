@@ -96,6 +96,16 @@ const MarkModal = (props: PropsMarkModal) => {
         cssClass: "mark-select-header",
     };
 
+    const isConstraints = (dateString: string) => {
+        const msInDay = 24 * 60 * 60 * 1000;
+
+        const date = new Date(dateString);
+        const now = new Date();
+        const days_diff = Math.round((Number(date) - Number(now)) / msInDay);
+
+        return days_diff <= 0;
+    }
+
     return (
         <IonModal isOpen={props.isOpen} class="mark-modal">
             <IonContent color="light">
@@ -116,6 +126,7 @@ const MarkModal = (props: PropsMarkModal) => {
                                     presentation="date"
                                     id="datetime"
                                     locale="en-US"
+                                    isDateEnabled={isConstraints}
                                     onIonChange={(e) => {
                                         if (e.detail.value) {
                                             setDate(e.detail.value.toString().slice(0, 10));
