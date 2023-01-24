@@ -77,6 +77,11 @@ const MarkModal = (props: PropsMarkModal) => {
         modal.current?.dismiss(input.current?.value, 'confirm');
     }
 
+    const cancelDate = () => {
+        datetime.current?.cancel();
+        modal.current?.dismiss(input.current?.value, 'cancel');
+    }
+
     const calculationsCycleLen = (dateNow: string, dateLast: string) => {
         const msInDay = 24 * 60 * 60 * 1000;
 
@@ -86,16 +91,20 @@ const MarkModal = (props: PropsMarkModal) => {
         return Math.round(Math.abs(Number(now) - Number(last)) / msInDay);
     }
 
+    const selectOptions = {
+        cssClass: "mark-select-header",
+    };
+
     return (
         <IonModal isOpen={props.isOpen} class="mark-modal">
             <IonContent color="light">
                 <IonList class="transparent">
                     <IonItem class="transparent" id="choose-date">
                         <IonLabel color="basic">Start of last period</IonLabel>
-                        <IonIcon slot="end" color="dark" size="small" icon={calendarClear}></IonIcon>
-                        <p>{date}</p>
+                        <IonIcon slot="end" color="basic" size="small" icon={calendarClear}></IonIcon>
+                        <p style={{ color: "var(--ion-color-dark-basic)" }}>{date}</p>
                         <IonModal
-                            id="choose-date-modal"
+                            class="choose-date-modal"
                             ref={modal}
                             trigger="choose-date"
                         >
@@ -112,7 +121,8 @@ const MarkModal = (props: PropsMarkModal) => {
                                 }}
                             >
                                 <IonButtons slot="buttons">
-                                    <IonButton color="basic" onClick={confirmDate}>Confirm</IonButton>
+                                    <IonButton color="basic" onClick={cancelDate}>CANCEL</IonButton>
+                                    <IonButton color="basic" onClick={confirmDate}>OK</IonButton>
                                 </IonButtons>
                             </IonDatetime>
                         </IonModal>
@@ -120,6 +130,8 @@ const MarkModal = (props: PropsMarkModal) => {
                     <IonItem class="transparent">
                         <IonLabel color="basic">Period length</IonLabel>
                         <IonSelect
+                            class="mark"
+                            interfaceOptions={selectOptions}
                             placeholder="none"
                             onIonChange={(ev) => {
                                 setPeriod(Number(ev.detail.value.id));

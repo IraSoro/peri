@@ -9,3 +9,20 @@
     align-items: center;
     justify-content: center;
 }
+
+ion-select.mark {
+    color: var(--ion-color-dark-basic);
+}
+
+ion-modal.choose-date-modal {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+.mark-select-header {
+    --ion-text-color: var(--ion-color-dark-basic);
+    --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
+}
