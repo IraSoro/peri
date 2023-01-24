@@ -26,3 +26,14 @@ ion-modal.choose-date-modal {
     --ion-text-color: var(--ion-color-dark-basic);
     --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
 }
+
+ion-list.transparent {
+    --ion-item-background: transparent;
+}
+
+.align-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
