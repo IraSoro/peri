@@ -92,10 +92,10 @@ export const getPhase = (cycle: CycleData, cycleLen: number = 28) => {
 
 export const getInfo = (date: string, cycleLen: number = 28) => {
   let info: InfoCurrentCycle = {
-    cycleDay: "...",
-    ovulationDay: "...",
-    pregnantChance: "...",
-    periodIn: "...",
+    cycleDay: "",
+    ovulationDay: "",
+    pregnantChance: "",
+    periodIn: "no info",
     periodInTitle: "Period in",
   };
 
@@ -114,7 +114,7 @@ export const getInfo = (date: string, cycleLen: number = 28) => {
 
 export const getCurrentCycleDay = (date: string) => {
   if (date === "none") {
-    return "...";
+    return "";
   }
   const msInDay = 24 * 60 * 60 * 1000;
 
@@ -127,7 +127,7 @@ export const getCurrentCycleDay = (date: string) => {
 
 const getOvulationDay = (currentDay: string, lenCycle: number) => {
   if (currentDay === "none" || lenCycle === 0) {
-    return "...";
+    return "";
   }
   const curDay: number = Number(currentDay);
   const ovulationDay = lenCycle - 14;
@@ -144,7 +144,7 @@ const getOvulationDay = (currentDay: string, lenCycle: number) => {
 
 const getPregnantChance = (currentDay: string, lenCycle: number) => {
   if (currentDay === "none" || lenCycle === 0) {
-    return "...";
+    return "";
   }
 
   const curDay: number = Number(currentDay);
