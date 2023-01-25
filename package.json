@@ -1,7 +1,11 @@
 {
-  "name": "period-tracker-2-0",
-  "version": "0.0.1",
-  "private": true,
+  "name": "peri",
+  "version": "2.0.1",
+  "homepage": "https://irasoro.github.io/peri/",
+  "author": {
+    "name": "Irina Sorokina",
+    "url": "https://github.com/IraSoro"
+  },
   "dependencies": {
     "@capacitor/android": "4.4.0",
     "@capacitor/app": "4.1.0",
@@ -71,5 +75,5 @@
     "@ionic/lab": "3.2.15",
     "gh-pages": "^4.0.0"
   },
-  "description": "An Ionic project"
+  "description": "The Period Tracker App"
 }
