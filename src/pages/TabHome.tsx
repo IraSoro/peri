@@ -22,7 +22,7 @@ import InfoModal from './InfoModal';
 
 import uterus from '../assets/uterus.svg';
 
-import { get, clear } from '../data/Storage';
+import { get } from '../data/Storage';
 import {
   getInfo,
   InfoCurrentCycle,
@@ -51,10 +51,9 @@ const TabHome = (props: MainProps) => {
 
   useEffect(() => {
     get("welcome").then(result => {
-      // if (!result) {
-        clear();
+      if (!result) {
         setIsWelcomeModal(true);
-      // }
+      }
     });
 
     get("current-cycle").then(resultData => {
