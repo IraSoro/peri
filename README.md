@@ -7,7 +7,7 @@
   <h3 align="center">Peri</h3>
 
   <p align="center">
-    Simple Period Tracker App
+    The Period Tracker App
   </p>
   <p align="center">
     <a href="https://irasoro.github.io/peri/">View Demo</a>
