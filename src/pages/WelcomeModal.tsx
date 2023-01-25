@@ -103,6 +103,17 @@ const Welcome = (props: PropsWelcomeModal) => {
         cssClass: "welcome-select-header",
     };
 
+    const isConstraints = (dateString: string) => {
+        const msInDay = 24 * 60 * 60 * 1000;
+
+        const date = new Date(dateString);
+        const now = new Date();
+        const days_diff = Math.ceil((Number(date) - Number(now)) / msInDay);
+        const is_today = Math.ceil(Number(date) / msInDay) === Math.ceil(Number(now) / msInDay);
+
+        return days_diff <= 0 || is_today;
+    }
+
     return (
         <IonModal isOpen={props.isOpen}>
             <IonHeader class="ion-no-border">
@@ -132,6 +143,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                         presentation="date"
                                         id="datetime"
                                         locale="en-US"
+                                        isDateEnabled={isConstraints}
                                         onIonChange={(e) => {
                                             if (e.detail.value) {
                                                 setDate(e.detail.value.toString().slice(0, 10));
@@ -152,7 +164,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 <IonSelect
                                     class="welcome"
                                     interfaceOptions={selectOptions}
-                                    placeholder="none"
+                                    placeholder=""
                                     onIonChange={(ev) => {
                                         setting.lenCycle = Number(ev.detail.value.id);
                                         setSetting(setting);
@@ -170,7 +182,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                 <IonSelect
                                     class="welcome"
                                     interfaceOptions={selectOptions}
-                                    placeholder="none"
+                                    placeholder=""
                                     onIonChange={(ev) => {
                                         setting.lenPeriod = Number(ev.detail.value.id);
                                         setSetting(setting);

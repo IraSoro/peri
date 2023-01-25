@@ -101,9 +101,10 @@ const MarkModal = (props: PropsMarkModal) => {
 
         const date = new Date(dateString);
         const now = new Date();
-        const days_diff = Math.round((Number(date) - Number(now)) / msInDay);
+        const days_diff = Math.ceil((Number(date) - Number(now)) / msInDay);
+        const is_today = Math.ceil(Number(date) / msInDay) === Math.ceil(Number(now) / msInDay);
 
-        return days_diff <= 0;
+        return days_diff <= 0 || is_today;
     }
 
     return (
@@ -145,7 +146,7 @@ const MarkModal = (props: PropsMarkModal) => {
                             <IonSelect
                                 class="mark"
                                 interfaceOptions={selectOptions}
-                                placeholder="none"
+                                placeholder=""
                                 onIonChange={(ev) => {
                                     setPeriod(Number(ev.detail.value.id));
                                 }}

@@ -44,7 +44,6 @@ const TabDetails = (props: MainProps) => {
         props.setCycles(result);
       }
     });
-    console.log("details");
 
   });
 

@@ -7,7 +7,7 @@
   <h3 align="center">Peri</h3>
 
   <p align="center">
-    Simple Period Tracker App
+    The Period Tracker App
   </p>
   <p align="center">
     <a href="https://irasoro.github.io/peri/">View Demo</a>
@@ -17,7 +17,13 @@
 <!-- ABOUT THE PROJECT -->
 ### About The Project
 
-Peri is easy-to-use application that helps women keep track of periods, cycle, ovulation, and fertile days.
+Peri is period tracker application. The application has the necessary features that help you track your cycle. App show:
+- number of days before menstruation,
+-  current cycle day,
+- chance of getting pregnant,
+- the number of days before ovulation.
+
+Also keeps track of the current phase of the cycle. And displays information about this phase and the symptoms that a woman may feel in this phase.
 
 ### Built With
 * [Ionic](https://ionicframework.com/)
@@ -29,10 +35,10 @@ Peri is easy-to-use application that helps women keep track of periods, cycle, o
 
 <table>
   <tr>
-    <td><img src="./demonstration/welcome.png" alt="Welcome"></td>
-    <td><img src="./demonstration/home.png" alt="Home"></td>
-    <td><img src="./demonstration/details.png" alt="Details"></td>
-    <td><img src="./demonstration/info.png" alt="Info"></td>
+    <td><img width="300" src="./demonstration/welcome.jpg" alt="Welcome"></td>
+    <td><img width="300" src="./demonstration/home.jpg" alt="Home"></td>
+    <td><img width="300" src="./demonstration/details.jpg" alt="Details"></td>
+    <td><img width="300" src="./demonstration/info.jpg" alt="Info"></td>
   </tr>
   <tr>
     <td align="center">Welcome page</td>
@@ -41,6 +47,15 @@ Peri is easy-to-use application that helps women keep track of periods, cycle, o
     <td align="center">Phase info</td>
   </tr> 
  </table>
+
+ <!-- FUTURE FEATURES -->
+## Future features
+
+- [ ] Sync data with the Flo app
+- [ ] Multi-language Support
+- [ ] Mark the days of your period on the calendar
+
+See the [open issues](https://github.com/IraSoro/peri/issues) and [project](https://github.com/users/IraSoro/projects/4/views/1) for a full list of proposed features (and known issues).
 
  <!-- ICON -->
 ### Icon
