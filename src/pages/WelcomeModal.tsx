@@ -77,8 +77,6 @@ const periodDays: Day[] = [
 ];
 
 const Welcome = (props: PropsWelcomeModal) => {
-    const [date, setDate] = useState("");
-
     const [confirmAlert] = useIonAlert();
     const [setting, setSetting] = useState(new CycleData());
 
@@ -111,7 +109,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                     </IonCardHeader>
                     <IonCardContent>
                         <IonList>
-                            <DatePicker date={date} onChange={setDate} color={"basic"} title='Start of last period' />
+                            <DatePicker
+                                date={setting.startDate}
+                                onChange={(newDate: string) => { setting.startDate = newDate }}
+                                color={"basic"}
+                                title='Start of last period'
+                            />
                             <IonItem lines="full" class="welcome">
                                 <IonLabel>Cycle length</IonLabel>
                                 <IonSelect
