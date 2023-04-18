@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
     IonButton,
     IonContent,
@@ -6,9 +6,6 @@ import {
     IonList,
     IonLabel,
     IonModal,
-    IonDatetime,
-    IonIcon,
-    IonButtons,
     useIonAlert,
     IonSelect,
     IonSelectOption,
@@ -31,7 +28,7 @@ import {
     getPhase
 } from '../data/Calculations';
 
-import { calendarClear } from 'ionicons/icons';
+import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 
 interface PropsWelcomeModal {
     isOpen: boolean;
@@ -80,39 +77,25 @@ const periodDays: Day[] = [
 ];
 
 const Welcome = (props: PropsWelcomeModal) => {
-    const modal = useRef<HTMLIonModalElement>(null);
-    const input = useRef<HTMLIonInputElement>(null);
-    const datetime = useRef<null | HTMLIonDatetimeElement>(null);
-
     const [date, setDate] = useState("");
 
     const [confirmAlert] = useIonAlert();
     const [setting, setSetting] = useState(new CycleData());
 
-    const confirmDate = () => {
-        datetime.current?.confirm();
-        modal.current?.dismiss(input.current?.value, 'confirm');
-    }
-
-    const cancelDate = () => {
-        datetime.current?.cancel();
-        modal.current?.dismiss(input.current?.value, 'cancel');
-    }
-
     const selectOptions = {
         cssClass: "welcome-select-header",
     };
 
-    const isConstraints = (dateString: string) => {
-        const msInDay = 24 * 60 * 60 * 1000;
+    // const isConstraints = (dateString: string) => {
+    //     const msInDay = 24 * 60 * 60 * 1000;
 
-        const date = new Date(dateString);
-        const now = new Date();
-        const days_diff = Math.ceil((Number(date) - Number(now)) / msInDay);
-        const is_today = Math.ceil(Number(date) / msInDay) === Math.ceil(Number(now) / msInDay);
+    //     const date = new Date(dateString);
+    //     const now = new Date();
+    //     const days_diff = Math.ceil((Number(date) - Number(now)) / msInDay);
+    //     const is_today = Math.ceil(Number(date) / msInDay) === Math.ceil(Number(now) / msInDay);
 
-        return days_diff <= 0 || is_today;
-    }
+    //     return days_diff <= 0 || is_today;
+    // }
 
     return (
         <IonModal isOpen={props.isOpen}>
@@ -128,37 +111,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                     </IonCardHeader>
                     <IonCardContent>
                         <IonList>
-                            <IonItem lines="full" class="welcome" id="choose-date">
-                                <IonLabel class="welcome">Start of last period</IonLabel>
-                                <IonIcon slot="end" color="basic" size="small" icon={calendarClear}></IonIcon>
-                                <p style={{ color: "var(--ion-color-dark-basic)" }}>{date}</p>
-                                <IonModal
-                                    class="choose-date-modal"
-                                    ref={modal}
-                                    trigger="choose-date"
-                                >
-                                    <IonDatetime
-                                        ref={datetime}
-                                        color="basic"
-                                        presentation="date"
-                                        id="datetime"
-                                        locale="en-US"
-                                        isDateEnabled={isConstraints}
-                                        onIonChange={(e) => {
-                                            if (e.detail.value) {
-                                                setDate(e.detail.value.toString().slice(0, 10));
-                                                setting.startDate = e.detail.value.toString().slice(0, 10);
-                                                setSetting(setting);
-                                            }
-                                        }}
-                                    >
-                                        <IonButtons slot="buttons">
-                                            <IonButton class="uppercase" color="basic" onClick={cancelDate}>CANCEL</IonButton>
-                                            <IonButton class="uppercase" color="basic" onClick={confirmDate}>OK</IonButton>
-                                        </IonButtons>
-                                    </IonDatetime>
-                                </IonModal>
-                            </IonItem>
+                            <DatePicker date={date} onChange={setDate} color={"basic"} title='Start of last period' />
                             <IonItem lines="full" class="welcome">
                                 <IonLabel>Cycle length</IonLabel>
                                 <IonSelect
