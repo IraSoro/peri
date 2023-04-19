@@ -10,15 +10,15 @@ ion-card {
 .calendar-button {
     font-size: 19px;
     border-radius: 10px;
-    border: 2px rgb(var(--ion-color-basic-rgb)) solid;
+    border: 2px var(--ion-color-basic) solid;
 
     --ion-color-step-300: #ffffff;
-    --ion-text-color: rgb(var(--ion-color-basic-rgb));
+    --ion-text-color: var(--ion-color-basic);
 }
 
 .calendar-button:hover {
-    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
-    --ion-text-color: rgb(var(--ion-color-dark-basic-rgb));
+    border: 2px var(--ion-color-dark-basic) solid;
+    --ion-text-color: var(--ion-color-dark-basic);
 }
 
 @font-face {
@@ -35,7 +35,7 @@ ion-card {
     content: "\f117";
     padding-right: 10px;
     background-color: #ffffff;
-    color: rgb(var(--ion-color-basic-rgb));
+    color: var(--ion-color-basic);
     text-align: right;
 }
 
@@ -49,12 +49,12 @@ ion-button {
 
 .mark-button {
     --border-radius: 10px;
-    --color: rgb(var(--ion-color-dark-basic-rgb));
-    --background: rgb(var(--ion-color-opposite-rgb));
+    --color: var(--ion-color-dark-basic);
+    --background: var(--ion-color-opposite);
 }
 
 .mark-button:hover {
-    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    border: 2px var(--ion-color-dark-basic) solid;
     border-radius: 10px;
 }
 
@@ -62,12 +62,12 @@ ion-button {
     font-size: 10px;
 
     --border-radius: 10px;
-    --color: rgb(var(--ion-color-dark-basic-rgb));
+    --color: var(--ion-color-dark-basic);
     --background: #ffffff;
 }
 
 .info-button:hover {
-    border: 2px rgb(var(--ion-color-dark-basic-rgb)) solid;
+    border: 2px var(--ion-color-dark-basic) solid;
     border-radius: 10px;
 }
 

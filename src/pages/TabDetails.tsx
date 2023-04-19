@@ -97,16 +97,28 @@ const TabDetails = (props: MainProps) => {
     return new Date(props.cycles[idx].startDate).toLocaleDateString() + " - " + date.toLocaleDateString();
   }
 
+  const p_style = {
+    fontSize: "10px" as const,
+    color: "var(--ion-color-basic)" as const,
+    textAlign: "center" as const
+  };
+
+  const h_style = {
+    fontWeight: "bold" as const,
+    color: "var(--ion-color-dark-basic)" as const,
+    textAlign: "center" as const
+  };
+
   return (
     <IonPage>
       <IonContent color="basic" fullscreen>
         <div id="rectangle-top">
           <div id="circle">
             <IonLabel >
-              <p style={{ fontSize: "10px", color: "rgb(var(--ion-color-basic-rgb))", textAlign: "center" }}>Period length</p>
-              <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-dark-basic-rgb))", textAlign: "center" }}>{props.lenPeriod} Days</h1>
-              <p style={{ fontSize: "10px", color: "rgb(var(--ion-color-basic-rgb))", textAlign: "center" }}>Cycle length</p>
-              <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-dark-basic-rgb))", textAlign: "center" }}>{props.lenCycle} Days</h1>
+              <p style={p_style}>Period length</p>
+              <h1 style={h_style}>{props.lenPeriod} Days</h1>
+              <p style={p_style}>Cycle length</p>
+              <h1 style={h_style}>{props.lenCycle} Days</h1>
             </IonLabel>
           </div>
         </div>
