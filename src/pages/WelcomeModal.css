@@ -2,12 +2,12 @@ ion-button.continue {
     border-radius: 10px;
 
     --border-radius: 10px;
-    --color: rgb(var(--ion-color-dark-basic-rgb));
+    --color: var(--ion-color-dark-basic);
     --background: transparent;
 }
 
 ion-button.continue:hover {
-    --background: rgb(var(--ion-color-basic-rgb));
+    --background: var(--ion-color-basic);
 }
 
 ion-modal.choose-date-modal {
@@ -26,7 +26,7 @@ ion-modal.choose-date-modal {
 }
 
 ion-card-header.welcome {
-    color: rgb(var(--ion-color-dark-basic-rgb));
+    color: var(--ion-color-dark-basic);
     text-align: center;
 }
 
