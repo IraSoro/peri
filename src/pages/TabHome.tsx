@@ -68,6 +68,16 @@ const TabHome = (props: MainProps) => {
 
   }, []);
 
+  const p_style = {
+    fontSize: "10px" as const,
+    color: "var(--ion-color-light)" as const
+  };
+
+  const h_style = {
+    fontWeight: "bold" as const,
+    color: "var(--ion-color-light)" as const
+  };
+
   return (
     <IonPage>
       <IonContent color="basic" fullscreen>
@@ -128,20 +138,20 @@ const TabHome = (props: MainProps) => {
               <IonCardContent>
                 <IonItem color="basic" lines="full">
                   <IonLabel>
-                    <p style={{ fontSize: "10px", color: "rgb(var(--ion-color-light-rgb))" }}>Current cycle day</p>
-                    <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-light-rgb))" }}>{info.cycleDay}</h1>
+                    <p style={p_style}>Current cycle day</p>
+                    <h1 style={h_style}>{info.cycleDay}</h1>
                   </IonLabel>
                 </IonItem>
                 <IonItem color="basic" lines="full">
                   <IonLabel>
-                    <p style={{ fontSize: "10px", color: "rgb(var(--ion-color-light-rgb))" }}>Ovulation</p>
-                    <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-light-rgb))" }}>{info.ovulationDay}</h1>
+                    <p style={p_style}>Ovulation</p>
+                    <h1 style={h_style}>{info.ovulationDay}</h1>
                   </IonLabel>
                 </IonItem>
                 <IonItem color="basic" lines="none">
                   <IonLabel>
-                    <p style={{ fontSize: "10px", color: "rgb(var(--ion-color-light-rgb))" }}>Chance of getting pregnant</p>
-                    <h1 style={{ fontWeight: "bold", color: "rgb(var(--ion-color-light-rgb))" }}>{info.pregnantChance}</h1>
+                    <p style={p_style}>Chance of getting pregnant</p>
+                    <h1 style={h_style}>{info.pregnantChance}</h1>
                   </IonLabel>
                 </IonItem>
               </IonCardContent>
