@@ -14,6 +14,7 @@ import {
 import './MarkModal.css';
 
 import { get, set } from "../data/Storage"
+import { period_days } from '../data/SelectConst'
 import {
     CycleData,
     InfoCurrentCycle,
@@ -43,23 +44,6 @@ interface PropsMarkModal {
 
     setPhase: (newPhase: InfoPhase) => void;
 }
-
-interface Day {
-    id: number;
-    name: string;
-}
-
-const periodDays: Day[] = [
-    { id: 1, name: '1', },
-    { id: 2, name: '2', },
-    { id: 3, name: '3', },
-    { id: 4, name: '4', },
-    { id: 5, name: '5', },
-    { id: 6, name: '6', },
-    { id: 7, name: '7', },
-    { id: 8, name: '8', },
-    { id: 9, name: '9', },
-];
 
 const MarkModal = (props: PropsMarkModal) => {
     const [date, setDate] = useState("");
@@ -107,7 +91,7 @@ const MarkModal = (props: PropsMarkModal) => {
                                     setPeriod(Number(ev.detail.value.id));
                                 }}
                             >
-                                {periodDays.map((day) => (
+                                {period_days.map((day) => (
                                     <IonSelectOption key={day.id} value={day}>
                                         {day.name}
                                     </IonSelectOption>
