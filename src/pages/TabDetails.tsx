@@ -12,11 +12,86 @@ import './TabDetails.css';
 import { get } from '../data/Storage';
 import {
   CycleData,
-  getCurrentCycleDay,
-  MainProps
+  MainProps,
+  getLenCycle,
+  getLenProgressBar,
+  getLenPeriod,
+  getDates,
+  getCycleDay,
+  getTitleCycleDay
 } from '../data/Calculations';
 
+interface CurrentProgressProps {
+  dateStartCycle: string;
+  lenPeriod: number;
+};
 
+interface ProgressProps {
+  cycles?: CycleData[];
+  idx: number;
+};
+
+interface ListProps {
+  cycles?: CycleData[];
+};
+
+const CurrentCycle = (props: CurrentProgressProps) => {
+  const title: string = getTitleCycleDay(props.dateStartCycle);
+  const days: number = getCycleDay(props.dateStartCycle);
+
+  return (
+    <IonItem class="transparent-center" lines="none">
+      <IonLabel position="stacked">
+        <h2>{title}</h2>
+      </IonLabel>
+      <IonLabel position="stacked">
+        <p>current cycle</p>
+      </IonLabel>
+      <IonLabel position="stacked">
+        <IonProgressBar
+          class="current-progress"
+          value={Number(props.lenPeriod) / 100 * 3}
+          buffer={days / 100 * 3}
+        ></IonProgressBar>
+      </IonLabel>
+    </IonItem>
+  );
+}
+
+const ItemProgress = (props: ProgressProps) => {
+  const cycle_len: string = getLenCycle(props.idx, props.cycles);
+  const progressbar_len: number = getLenProgressBar(props.idx, props.cycles);
+  const period_len: number = getLenPeriod(props.idx, props.cycles);
+  const dates: string = getDates(props.idx, props.cycles);
+
+  return (
+    <IonItem class="transparent-center" lines="none">
+      <IonLabel position="stacked">
+        <h2>{cycle_len}</h2>
+      </IonLabel>
+      <IonLabel position="stacked">
+        <p>{dates}</p>
+      </IonLabel>
+      <IonLabel position="stacked">
+        <IonProgressBar value={period_len / 100 * 3} buffer={progressbar_len / 100 * 3}></IonProgressBar>
+      </IonLabel>
+    </IonItem>
+  );
+}
+
+const ListProgress = (props: ListProps) => {
+  const numbers = [0, 1, 2, 3, 4];
+  const list = numbers.map((idx) =>
+    <ItemProgress
+      cycles={props.cycles}
+      idx={idx}
+    />
+  );
+
+  return (
+    <>{list}</>
+  );
+}
 
 const TabDetails = (props: MainProps) => {
   useEffect(() => {
@@ -47,56 +122,6 @@ const TabDetails = (props: MainProps) => {
 
   });
 
-  const getCycleDay = () => {
-    if (props.dateStartCycle === "none") {
-      return 30;
-    }
-    const day: number = Number(getCurrentCycleDay(props.dateStartCycle));
-    return day;
-  }
-
-  const getTitleCycleDay = () => {
-    if (props.dateStartCycle === "none") {
-      return "Cycle days";
-    }
-    const day: string = getCurrentCycleDay(props.dateStartCycle);
-    if (day === "1")
-      return "1 Day";
-    return day + " Days";
-  }
-
-  const getLenCycle = (idx: number) => {
-    if (!props.cycles || idx >= props.cycles.length) {
-      return "Cycle length";
-    }
-    return props.cycles[idx].lenCycle + " Days";
-  }
-
-  const getLenProgressBar = (idx: number) => {
-    if (!props.cycles || idx >= props.cycles.length) {
-      return 30;
-    }
-    return props.cycles[idx].lenCycle;
-  }
-
-  const getLenPeriod = (idx: number) => {
-    if (!props.cycles || idx >= props.cycles.length) {
-      return 0;
-    }
-    return props.cycles[idx].lenPeriod;
-  }
-
-  const getDates = (idx: number) => {
-    if (!props.cycles || idx >= props.cycles.length) {
-      return "date";
-    }
-
-    let date: Date = new Date(props.cycles[idx].startDate);
-    date.setDate(date.getDate() + Number(props.cycles[idx].lenCycle));
-
-    return new Date(props.cycles[idx].startDate).toLocaleDateString() + " - " + date.toLocaleDateString();
-  }
-
   const p_style = {
     fontSize: "10px" as const,
     color: "var(--ion-color-basic)" as const,
@@ -124,77 +149,15 @@ const TabDetails = (props: MainProps) => {
         </div>
         <div id="rectangle-bottom">
           <IonList class="transparent-center">
-            <IonItem class="transparent-center" lines="none">
-              <IonLabel position="stacked">
-                <h2>{getTitleCycleDay()}</h2>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <p>current cycle</p>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <IonProgressBar class="current-progress" value={Number(props.lenPeriod) / 100 * 3} buffer={getCycleDay() / 100 * 3}></IonProgressBar>
-              </IonLabel>
-            </IonItem>
 
-            <IonItem class="transparent-center" lines="none">
-              <IonLabel position="stacked">
-                <h2>{getLenCycle(0)}</h2>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <p>{getDates(0)}</p>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <IonProgressBar value={getLenPeriod(0) / 100 * 3} buffer={getLenProgressBar(0) / 100 * 3}></IonProgressBar>
-              </IonLabel>
-            </IonItem>
+            <CurrentCycle
+              dateStartCycle={props.dateStartCycle}
+              lenPeriod={props.lenPeriod}
+            />
 
-            <IonItem class="transparent-center" lines="none">
-              <IonLabel position="stacked">
-                <h2>{getLenCycle(1)}</h2>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <p>{getDates(1)}</p>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <IonProgressBar value={getLenPeriod(1) / 100 * 3} buffer={getLenProgressBar(1) / 100 * 3}></IonProgressBar>
-              </IonLabel>
-            </IonItem>
-
-            <IonItem class="transparent-center" lines="none">
-              <IonLabel position="stacked">
-                <h2>{getLenCycle(2)}</h2>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <p>{getDates(2)}</p>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <IonProgressBar value={getLenPeriod(2) / 100 * 3} buffer={getLenProgressBar(2) / 100 * 3}></IonProgressBar>
-              </IonLabel>
-            </IonItem>
-
-            <IonItem class="transparent-center" lines="none">
-              <IonLabel position="stacked">
-                <h2>{getLenCycle(3)}</h2>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <p>{getDates(3)}</p>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <IonProgressBar value={getLenPeriod(3) / 100 * 3} buffer={getLenProgressBar(3) / 100 * 3}></IonProgressBar>
-              </IonLabel>
-            </IonItem>
-
-            <IonItem class="transparent-center" lines="none">
-              <IonLabel position="stacked">
-                <h2>{getLenCycle(4)}</h2>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <p>{getDates(4)}</p>
-              </IonLabel>
-              <IonLabel position="stacked">
-                <IonProgressBar value={getLenPeriod(4) / 100 * 3} buffer={getLenProgressBar(4) / 100 * 3}></IonProgressBar>
-              </IonLabel>
-            </IonItem>
+            <ListProgress
+              cycles={props.cycles}
+            />
 
           </IonList>
         </div>

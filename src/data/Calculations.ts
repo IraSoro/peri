@@ -191,3 +191,57 @@ const getPeriodInTitle = (date: string, lenCycle: number) => {
   }
   return "Delay";
 }
+
+//----------------------------------------
+// func for details tab
+// - for all progress bars
+export const getLenCycle = (idx: number, cycles?: CycleData[]) => {
+  if (!cycles || idx >= cycles.length) {
+    return "Cycle length";
+  }
+  return cycles[idx].lenCycle + " Days";
+}
+
+export const getLenProgressBar = (idx: number, cycles?: CycleData[]) => {
+  if (!cycles || idx >= cycles.length) {
+    return 30;
+  }
+  return cycles[idx].lenCycle;
+}
+
+export const getLenPeriod = (idx: number, cycles?: CycleData[]) => {
+  if (!cycles || idx >= cycles.length) {
+    return 0;
+  }
+  return cycles[idx].lenPeriod;
+}
+
+export const getDates = (idx: number, cycles?: CycleData[]) => {
+  if (!cycles || idx >= cycles.length) {
+    return "date";
+  }
+
+  let date: Date = new Date(cycles[idx].startDate);
+  date.setDate(date.getDate() + Number(cycles[idx].lenCycle));
+
+  return new Date(cycles[idx].startDate).toLocaleDateString() + " - " + date.toLocaleDateString();
+}
+
+// - for current current (first) progress bar
+export const getCycleDay = (start_date: string) => {
+  if (start_date === "none") {
+    return 30;
+  }
+  const day: number = Number(getCurrentCycleDay(start_date));
+  return day;
+}
+
+export const getTitleCycleDay = (start_date: string) => {
+  if (start_date === "none") {
+    return "Cycle days";
+  }
+  const day: string = getCurrentCycleDay(start_date);
+  if (day === "1")
+    return "1 Day";
+  return day + " Days";
+}
