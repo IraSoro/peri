@@ -75,6 +75,10 @@ export function useOvulationStatus(): string {
 export function usePregnancyChance(): string {
     const ovulationStatus = useOvulationStatus();
 
+    if (!ovulationStatus) {
+        return "";
+    }
+
     if (ovulationStatus === "finished") {
         return "low";
     }
@@ -105,7 +109,7 @@ export function useDaysBeforePeriod(): DaysBeforePeriod {
     }, [startDateString, cycleLength]);
 
     if (!startDateString || !cycleLength) {
-        return { title: "Period in", days: "No info" };
+        return { title: "Period in", days: "no info" };
     }
 
     const dateOfFinish = new Date(startDateString);
@@ -202,6 +206,16 @@ export function useLastLengthOfLastPeriodNumber(): number {
     }
 
     return Number(periodLength);
+}
+
+export function useLastLengthOfLastCyclesNumber(): number {
+    const lengthOfCycle = useDayOfCycleNumber();
+
+    if (!lengthOfCycle) {
+        return defaultLengthOfCycle;
+    }
+
+    return lengthOfCycle;
 }
 
 interface InfoOneCycle {

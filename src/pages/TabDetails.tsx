@@ -13,13 +13,13 @@ import {
   useMiddleLengthOfCycleString,
   useMiddleLengthOfPeriodString,
   useDaysOfCurrentCycleForProgressbar,
-  useDayOfCycleNumber,
+  useLastLengthOfLastCyclesNumber,
   useInfoForOneCycle,
 } from './CycleInformationHooks';
 
 const CurrentCycle = () => {
   const title: string = useDaysOfCurrentCycleForProgressbar();
-  const dayOfCycle: number = useDayOfCycleNumber();
+  const dayOfCycle: number = useLastLengthOfLastCyclesNumber();
   const lengthOfPeriod: number = useLastLengthOfLastPeriodNumber();
 
   return (
