@@ -3,7 +3,24 @@ import { get } from "../data/Storage";
 import { Cycle } from "../data/ClassCycle"
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
-const defaultLengthOfCycle = 30;
+const defaultLengthOfCycle = 28;
+const lutealPhaseLength = 14;
+const ovulationOnError = 3;
+
+function useMiddleCycleLength(): number {
+    const [cycleLength, setCycleLength] = useState("");
+
+    useEffect(() => {
+        get("middle-cycle-length")
+            .then(setCycleLength)
+            .catch((err) => console.error(`Can't get cycle length ${(err as Error).message}`));
+    }, [cycleLength]);
+
+    if (!cycleLength) {
+        return 0;
+    }
+    return Number(cycleLength);
+}
 
 // hooks for home tab
 export function useDayOfCycleString(): string {
@@ -60,7 +77,7 @@ export function useOvulationStatus(): string {
         return "";
     }
 
-    const ovulationDay = Number(cycleLength) - 14; // константа
+    const ovulationDay = Number(cycleLength) - lutealPhaseLength;
     const diffDay = ovulationDay - dayOfCycle;
     if (diffDay === 0) {
         return "today";
@@ -259,5 +276,86 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
     };
 }
 
+// hooks for the infoModal
 
+interface Phase {
+    title: string;
+    description: string;
+    symptoms: string[];
+}
+
+const phases: Phase[] = [
+    {
+        title: "The menstrual cycle can be divided into 4 phases.",
+        description: "When information about your cycle appears, it will be reported which phase you are in.",
+        symptoms: ["This section will indicate the symptoms characteristic of this cycle."],
+    },
+    {
+        title: "Menstrual phase",
+        description: "This cycle is accompanied by low hormone levels.",
+        symptoms: [
+            "lack of energy and strength",
+            "pain",
+            "weakness and irritability",
+            "increased appetite",
+        ]
+    },
+    {
+        title: "Follicular phase",
+        description: "The level of estrogen in this phase rises and reaches a maximum level.",
+        symptoms: [
+            "strength and vigor appear",
+            "endurance increases",
+            "new ideas and plans appear",
+            "libido increases",
+        ]
+    },
+    {
+        title: "Ovulation phase",
+        description: "Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.",
+        symptoms: [
+            "increased sexual desire",
+            "optimistic mood",
+            "mild fever",
+            "lower abdominal pain",
+            "chest discomfort and bloating",
+            "characteristic secretions",
+        ]
+    },
+    {
+        title: "Luteal phase",
+        description: "Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.",
+        symptoms: [
+            "breast tenderness",
+            "puffiness",
+            "acne and skin rashes",
+            "increased appetite",
+            "diarrhea or constipation",
+            "irritability and depressed mood",
+        ]
+    },
+];
+
+export function usePhase(): Phase {
+    const lengthOfPeriod = useLastLengthOfLastPeriodNumber();
+    const lengthOfCycle = useMiddleCycleLength();
+    const currentDay = useDayOfCycleNumber();
+
+    if (!lengthOfCycle || !currentDay || !lengthOfPeriod) {
+        return phases[0];
+    }
+
+    const ovulationDay = lengthOfCycle - lutealPhaseLength;
+
+    if (currentDay <= lengthOfPeriod) {
+        return phases[1];
+    }
+    if (currentDay <= (ovulationDay - ovulationOnError)) {
+        return phases[2];
+    }
+    if (currentDay <= ovulationDay) {
+        return phases[3];
+    }
+    return phases[4];
+}
 

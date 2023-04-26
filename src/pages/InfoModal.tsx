@@ -9,73 +9,30 @@ import {
 import './InfoModal.css';
 
 import {
-    InfoPhase
-} from '../data/Calculations';
+    usePhase
+} from './CycleInformationHooks';
 
 interface PropsInfoModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
-    info: InfoPhase;
 }
 
-interface PropsPhase {
-    phase: number;
+interface PropsSymptoms {
+    symptoms: string[];
 }
 
-const InfoSymptoms = (props: PropsPhase) => {
-    switch (props.phase) {
-        case 0: {
-            return (
-                <p>This section will indicate the symptoms characteristic of this cycle.</p>
-            );
-        }
-        case 1: {
-            return (
-                <>
-                    <p>lack of energy and strength</p>
-                    <p>pain</p>
-                    <p>weakness and irritability</p>
-                    <p>increased appetite</p>
-                </>
-            );
-        }
-        case 2: {
-            return (
-                <>
-                    <p>strength and vigor appear</p>
-                    <p>endurance increases</p>
-                    <p>new ideas and plans appear</p>
-                    <p>libido increases</p>
-                </>
-            );
-        }
-        case 3: {
-            return (
-                <>
-                    <p>increased sexual desire</p>
-                    <p>optimistic mood</p>
-                    <p>mild fever</p>
-                    <p>lower abdominal pain</p>
-                    <p>chest discomfort and bloating</p>
-                    <p>characteristic secretions</p>
-                </>);
-        }
-        default: {
-            return (
-                <>
-                    <p>breast tenderness</p>
-                    <p>puffiness</p>
-                    <p>acne and skin rashes</p>
-                    <p>increased appetite</p>
-                    <p>diarrhea or constipation</p>
-                    <p>irritability and depressed mood</p>
-                </>
-            );
-        }
-    }
-};
+const SymptomsList = (props: PropsSymptoms) => {
+    const list = props.symptoms.map((item) =>
+        <p>{item}</p>
+    );
+
+    return (
+        <>{list}</>
+    );
+}
 
 const InfoModal = (props: PropsInfoModal) => {
+    const phase = usePhase();
 
     return (
         <IonModal isOpen={props.isOpen}>
@@ -84,10 +41,10 @@ const InfoModal = (props: PropsInfoModal) => {
                 <div id="rectangle">
                     <IonCard>
                         <IonCardHeader class="info">
-                            {props.info.phaseTitle[0]}
+                            {phase.title}
                         </IonCardHeader>
                         <IonCardContent style={{ textAlign: "justify" }}>
-                            {props.info.phaseTitle[1]}
+                            {phase.description}
                         </IonCardContent>
                     </IonCard>
                 </div>
@@ -98,7 +55,7 @@ const InfoModal = (props: PropsInfoModal) => {
                             Frequent symptoms
                         </IonCardHeader>
                         <IonCardContent style={{ textAlign: "justify" }}>
-                            <InfoSymptoms phase={props.info.symptoms} />
+                            <SymptomsList symptoms={phase.symptoms} />
                         </IonCardContent>
                     </IonCard>
                 </div>
