@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -37,16 +37,11 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import { createStore } from './data/Storage';
-import { CycleData } from './data/Calculations';
+import { createStore} from './data/Storage';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [lenCycle, setLenCycle] = useState(0);
-  const [lenPeriod, setLenPeriod] = useState(0);
-  const [dateStartCycle, setDateStartCycle] = useState("none");
-  const [cycles, setCycles] = useState<CycleData[]>();
 
   useEffect(() => {
 
@@ -70,29 +65,11 @@ const App: React.FC = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/home">
-                <TabHome
-                  lenCycle={lenCycle}
-                  setLenCycle={setLenCycle}
-                  lenPeriod={lenPeriod}
-                  setLenPeriod={setLenPeriod}
-                  dateStartCycle={dateStartCycle}
-                  setDateStartCycle={setDateStartCycle}
-                  cycles={cycles}
-                  setCycles={setCycles}
-                />
+                <TabHome />
               </Route>
 
               <Route exact path="/details">
-                <TabDetails
-                  lenCycle={lenCycle}
-                  setLenCycle={setLenCycle}
-                  lenPeriod={lenPeriod}
-                  setLenPeriod={setLenPeriod}
-                  dateStartCycle={dateStartCycle}
-                  setDateStartCycle={setDateStartCycle}
-                  cycles={cycles}
-                  setCycles={setCycles}
-                />
+                <TabDetails />
               </Route>
 
               <Route exact path="/">
