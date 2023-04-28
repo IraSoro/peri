@@ -23,21 +23,34 @@ import InfoModal from './InfoModal';
 import uterus from '../assets/uterus.svg';
 
 import {
-  useDayOfCycleString,
+  useDayOfCycle,
   useOvulationStatus,
-  usePregnancyChance,
   useDaysBeforePeriod
 } from './CycleInformationHooks';
+
+function getPregnancyChance(ovulationStatus: string) {
+  if (!ovulationStatus) {
+    return "";
+  }
+
+  if (ovulationStatus === "finished") {
+    return "low";
+  }
+  if (["today", "tomorrow"].includes(ovulationStatus)) {
+    return "hight";
+  }
+  return "middle";
+}
 
 const TabHome = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isMarkModal, setIsMarkModal] = useState(false);
 
-  const dayOfCycle = useDayOfCycleString();
+  const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
-  const pregnancyChance = usePregnancyChance();
   const daysBeforePeriod = useDaysBeforePeriod();
+  const pregnancyChance = getPregnancyChance(ovulationStatus);
 
   const p_style = {
     fontSize: "10px" as const,

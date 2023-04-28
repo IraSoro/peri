@@ -8,8 +8,12 @@ import {
 } from '@ionic/react';
 import './InfoModal.css';
 
+import { phases } from "../data/PhasesConst";
+
 import {
-    usePhase
+    useLengthOfLastPeriod,
+    useAverageLengthOfCycle,
+    useDayOfCycle,
 } from './CycleInformationHooks';
 
 interface PropsInfoModal {
@@ -21,9 +25,31 @@ interface PropsSymptoms {
     symptoms: string[];
 }
 
+function getPhase(lengthOfCycle: number, lengthOfPeriod: number, currentDay: number) {
+    const lutealPhaseLength = 14;
+    const ovulationOnError = 3;
+
+    if (!lengthOfCycle || !currentDay || !lengthOfPeriod) {
+        return phases[0];
+    }
+
+    const ovulationDay = lengthOfCycle - lutealPhaseLength;
+
+    if (currentDay <= lengthOfPeriod) {
+        return phases[1];
+    }
+    if (currentDay <= (ovulationDay - ovulationOnError)) {
+        return phases[2];
+    }
+    if (currentDay <= ovulationDay) {
+        return phases[3];
+    }
+    return phases[4];
+}
+
 const SymptomsList = (props: PropsSymptoms) => {
-    const list = props.symptoms.map((item) =>
-        <p>{item}</p>
+    const list = props.symptoms.map((item, idx) =>
+        <p key={idx}>{item}</p>
     );
 
     return (
@@ -32,7 +58,10 @@ const SymptomsList = (props: PropsSymptoms) => {
 }
 
 const InfoModal = (props: PropsInfoModal) => {
-    const phase = usePhase();
+    const lengthOfPeriod = useLengthOfLastPeriod();
+    const lengthOfCycle = useAverageLengthOfCycle();
+    const currentDay = Number(useDayOfCycle());
+    const phase = getPhase(lengthOfCycle, lengthOfPeriod, currentDay);
 
     return (
         <IonModal isOpen={props.isOpen}>

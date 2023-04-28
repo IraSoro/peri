@@ -9,18 +9,39 @@ import {
 import './TabDetails.css';
 
 import {
-  useLastLengthOfLastPeriodNumber,
-  useMiddleLengthOfCycleString,
-  useMiddleLengthOfPeriodString,
-  useDaysOfCurrentCycleForProgressbar,
-  useLastLengthOfLastCyclesNumber,
+  useDayOfCycle,
+  useLengthOfLastPeriod,
+  useAverageLengthOfCycle,
+  useAverageLengthOfPeriod,
   useInfoForOneCycle,
 } from './CycleInformationHooks';
 
+function getTitle(dayOfCycle: string) {
+  if (!dayOfCycle) {
+    return "Cycle days"
+  }
+
+  if (dayOfCycle === "1") {
+    return "1 Day";
+  }
+  return `${dayOfCycle} Days`;
+}
+
+function getProgressBarBuffer(dayOfCycle: string) {
+  const defaultLengthOfCycle = 28;
+
+  if (!dayOfCycle) {
+    return defaultLengthOfCycle;
+  }
+  return Number(dayOfCycle);
+}
+
 const CurrentCycle = () => {
-  const title: string = useDaysOfCurrentCycleForProgressbar();
-  const dayOfCycle: number = useLastLengthOfLastCyclesNumber();
-  const lengthOfPeriod: number = useLastLengthOfLastPeriodNumber();
+  const dayOfCycle = useDayOfCycle();
+  const lengthOfPeriod = useLengthOfLastPeriod();
+
+  const title = getTitle(dayOfCycle);
+  const progressBarBuffer = getProgressBarBuffer(dayOfCycle);
 
   return (
     <IonItem class="transparent-center" lines="none">
@@ -34,7 +55,7 @@ const CurrentCycle = () => {
         <IonProgressBar
           class="current-progress"
           value={lengthOfPeriod / 100 * 3}
-          buffer={dayOfCycle / 100 * 3}
+          buffer={progressBarBuffer / 100 * 3}
         ></IonProgressBar>
       </IonLabel>
     </IonItem>
@@ -81,8 +102,8 @@ const ListProgress = () => {
 }
 
 const TabDetails = () => {
-  const lengthOfCycle = useMiddleLengthOfCycleString();
-  const lengthOfPeriod = useMiddleLengthOfPeriodString();
+  const lengthOfCycle = `${useAverageLengthOfCycle()} Days`;
+  const lengthOfPeriod = `${useAverageLengthOfPeriod()} Days`;
 
   const p_style = {
     fontSize: "10px" as const,
