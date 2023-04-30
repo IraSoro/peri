@@ -21,27 +21,26 @@ import './WelcomeModal.css';
 
 import { remove, set } from '../data/Storage';
 import { cycle_days, period_days } from '../data/SelectConst'
-import {
-    getInfo,
-    InfoCurrentCycle,
-    CycleData,
-    InfoPhase,
-    getPhase
-} from '../data/Calculations';
+// import {
+    // getInfo,
+    // InfoCurrentCycle,
+    // CycleData,
+    // InfoPhase,
+    // getPhase
+// } from '../data/Calculations';
+// import { Cycle } from "../data/ClassCycle";
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
+
 
 interface PropsWelcomeModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
-    setInfo: (newDay: InfoCurrentCycle) => void;
-
-    setPhase: (newDay: InfoPhase) => void;
 }
 
 const Welcome = (props: PropsWelcomeModal) => {
     const [confirmAlert] = useIonAlert();
-    const [setting, setSetting] = useState(new CycleData());
+// const [setting/*, setSetting*/] = useState(new Cycle());
 
     const selectOptions = {
         cssClass: "welcome-select-header",
@@ -66,15 +65,15 @@ const Welcome = (props: PropsWelcomeModal) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen class="gradient">
-                <IonCard class="welcome">
+                {/* <IonCard class="welcome">
                     <IonCardHeader class="welcome">
                         Please enter your details so that you can already make a forecast.
                     </IonCardHeader>
                     <IonCardContent>
                         <IonList>
                             <DatePicker
-                                date={setting.startDate}
-                                onChange={(newDate: string) => { setting.startDate = newDate }}
+                                date={setting.start_date}
+                                onChange={(newDate: string) => { setting.start_date = newDate }}
                                 color={"basic"}
                                 title='Start of last period'
                             />
@@ -85,8 +84,8 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     interfaceOptions={selectOptions}
                                     placeholder=""
                                     onIonChange={(ev) => {
-                                        setting.lenCycle = Number(ev.detail.value.id);
-                                        setSetting(setting);
+                                        setting.cycle_len = Number(ev.detail.value.id);
+                                        // setSetting(setting);
                                     }}
                                 >
                                     {cycle_days.map((day) => (
@@ -103,8 +102,8 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     interfaceOptions={selectOptions}
                                     placeholder=""
                                     onIonChange={(ev) => {
-                                        setting.lenPeriod = Number(ev.detail.value.id);
-                                        setSetting(setting);
+                                        setting.period_len = Number(ev.detail.value.id);
+                                        // setSetting(setting);
                                     }}
                                 >
                                     {period_days.map((day) => (
@@ -116,12 +115,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                             </IonItem>
                         </IonList>
                     </IonCardContent>
-                </IonCard>
+                </IonCard> */}
                 <IonCol>
                     <IonButton
                         class="continue"
                         onClick={() => {
-                            if (setting.isEmpty()) {
+                            if (false/*setting.isEmpty()*/) {
                                 confirmAlert({
                                     header: 'Continue?',
                                     cssClass: "header-color",
@@ -138,13 +137,13 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                 props.setIsOpen(false);
                                                 set("welcome", true);
 
-                                                remove("cycle-length");
-                                                remove("period-length");
-                                                remove("current-cycle");
-                                                remove("cycles");
+                                                // remove("cycle-length");
+                                                // remove("period-length");
+                                                // remove("current-cycle");
+                                                // remove("cycles");
 
-                                                props.setInfo(getInfo("none", 0));
-                                                props.setPhase(getPhase(new CycleData()));
+                                                // props.setInfo(getInfo("none", 0));
+                                                // props.setPhase(getPhase(new CycleData()));
                                             },
                                         },
                                     ],
@@ -165,15 +164,15 @@ const Welcome = (props: PropsWelcomeModal) => {
                                                 props.setIsOpen(false);
                                                 set("welcome", true);
 
-                                                let cycle: CycleData = new CycleData();
-                                                cycle.lenPeriod = setting.lenPeriod;
-                                                cycle.startDate = setting.startDate;
-                                                set("current-cycle", cycle);
-                                                set("cycle-length", setting.lenCycle);
-                                                set("period-length", setting.lenPeriod);
+                                                // let cycle: CycleData = new CycleData();
+                                                // cycle.lenPeriod = setting.lenPeriod;
+                                                // cycle.startDate = setting.startDate;
+                                                // set("current-cycle", cycle);
+                                                // set("cycle-length", setting.lenCycle);
+                                                // set("period-length", setting.lenPeriod);
 
-                                                props.setInfo(getInfo(setting.startDate, setting.lenCycle));
-                                                props.setPhase(getPhase(cycle, setting.lenCycle));
+                                                // props.setInfo(getInfo(setting.startDate, setting.lenCycle));
+                                                // props.setPhase(getPhase(cycle, setting.lenCycle));
                                             },
                                         },
                                     ],

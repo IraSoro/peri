@@ -28,6 +28,9 @@ import {
   useDaysBeforePeriod
 } from './CycleInformationHooks';
 
+import { set, remove } from '../data/Storage';
+import type { Cycle } from '../data/ClassCycle';
+
 function getPregnancyChance(ovulationStatus: string) {
   if (!ovulationStatus) {
     return "";
@@ -51,6 +54,46 @@ const TabHome = () => {
   const ovulationStatus = useOvulationStatus();
   const daysBeforePeriod = useDaysBeforePeriod();
   const pregnancyChance = getPregnancyChance(ovulationStatus);
+
+  const cycles: Cycle[] = [
+    {
+      cycleLength: 30,
+      periodLength: 5,
+      startDate: "2023-03-13"
+    },
+    {
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: "2023-02-13"
+    },
+    {
+      cycleLength: 28,
+      periodLength: 5,
+      startDate: "2023-01-16"
+    },
+    {
+      cycleLength: 30,
+      periodLength: 3,
+      startDate: "2022-12-17"
+    },
+    // {
+    //   cycle_len: 27,
+    //   period_len: 5,
+    //   start_date: "2023-11-20"
+    // },
+  ];
+  set("cycles", cycles);
+  set("last-start-date", "2023-04-07");
+  set("middle-period-length", "5");
+  set("middle-cycle-length", "29");
+  set("last-period-length", "3");
+
+  // remove("cycles");
+  // remove("last-start-date");
+  // remove("middle-period-length");
+  // remove("middle-cycle-length");
+  // remove("last-period-length");
+
 
   const p_style = {
     fontSize: "10px" as const,
