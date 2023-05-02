@@ -24,14 +24,36 @@ import uterus from '../assets/uterus.svg';
 
 import {
   useDayOfCycle,
-  useOvulationStatus,
-  useDaysBeforePeriod
+  useLastStartDate,
+  useAverageLengthOfCycle
 } from './CycleInformationHooks';
 
-import { set, remove } from '../data/Storage';
-import type { Cycle } from '../data/ClassCycle';
+const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-function getPregnancyChance(ovulationStatus: string) {
+export function useOvulationStatus(): string {
+  const cycleLength = useAverageLengthOfCycle();
+  const dayOfCycle = Number(useDayOfCycle());
+
+  if (!cycleLength || !dayOfCycle) {
+    return "";
+  }
+
+  const lutealPhaseLength = 14;
+  const ovulationDay = Number(cycleLength) - lutealPhaseLength;
+  const diffDay = ovulationDay - dayOfCycle;
+  if (diffDay === 0) {
+    return "today";
+  } else if (diffDay < 0) {
+    return "finished";
+  } else if (diffDay === 1) {
+    return "tomorrow"
+  }
+  return "in " + diffDay + " days";
+}
+
+function usePregnancyChance() {
+  const ovulationStatus = useOvulationStatus();
+
   if (!ovulationStatus) {
     return "";
   }
@@ -45,6 +67,36 @@ function getPregnancyChance(ovulationStatus: string) {
   return "middle";
 }
 
+interface DaysBeforePeriod {
+  title: string,
+  days: string
+}
+
+export function useDaysBeforePeriod(): DaysBeforePeriod {
+  const startDate = useLastStartDate();
+  const cycleLength = useAverageLengthOfCycle();
+
+  if (!startDate || !cycleLength) {
+    return { title: "Period in", days: "no info" };
+  }
+
+  const dateOfFinish = new Date(startDate);
+  dateOfFinish.setDate(dateOfFinish.getDate() + Number(cycleLength));
+  const now = new Date();
+  let dayBefore = Math.round((Number(dateOfFinish) - Number(now)) / millisecondsInDay);
+
+  if (dayBefore > 0) {
+    return { title: "Period in", days: dayBefore + " Days" };
+  }
+  if (dayBefore === 0) {
+    return { title: "Period", days: "Today" };
+  }
+  return {
+    title: "Delay",
+    days: Math.abs(dayBefore) + " Days"
+  };
+}
+
 const TabHome = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
@@ -53,47 +105,7 @@ const TabHome = () => {
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
   const daysBeforePeriod = useDaysBeforePeriod();
-  const pregnancyChance = getPregnancyChance(ovulationStatus);
-
-  const cycles: Cycle[] = [
-    {
-      cycleLength: 30,
-      periodLength: 5,
-      startDate: "2023-03-13"
-    },
-    {
-      cycleLength: 28,
-      periodLength: 3,
-      startDate: "2023-02-13"
-    },
-    {
-      cycleLength: 28,
-      periodLength: 5,
-      startDate: "2023-01-16"
-    },
-    {
-      cycleLength: 30,
-      periodLength: 3,
-      startDate: "2022-12-17"
-    },
-    // {
-    //   cycle_len: 27,
-    //   period_len: 5,
-    //   start_date: "2023-11-20"
-    // },
-  ];
-  set("cycles", cycles);
-  set("last-start-date", "2023-04-07");
-  set("middle-period-length", "5");
-  set("middle-cycle-length", "29");
-  set("last-period-length", "3");
-
-  // remove("cycles");
-  // remove("last-start-date");
-  // remove("middle-period-length");
-  // remove("middle-cycle-length");
-  // remove("last-period-length");
-
+  const pregnancyChance = usePregnancyChance();
 
   const p_style = {
     fontSize: "10px" as const,
@@ -129,6 +141,9 @@ const TabHome = () => {
               </IonCol>
               <IonCol>
                 <div>
+                  {/* Этот Label можно выделить в отдельный компонент,
+                      потому что сейчас ты получаешь сложную структуру {title, days}
+                  */}
                   <IonLabel style={{ textAlign: "center" }}>
                     <h2>{daysBeforePeriod.title}</h2>
                   </IonLabel>

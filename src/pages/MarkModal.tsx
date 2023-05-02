@@ -18,18 +18,10 @@ import { period_days } from '../data/SelectConst'
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 
-import { Cycle } from "../data/ClassCycle"
 import {
-    useLengthOfLastPeriod,
     useDayOfCycle,
-    useLastStartDate,
     useCycles,
 } from './CycleInformationHooks';
-
-interface PropsMarkModal {
-    isOpen: boolean;
-    setIsOpen: (newIsOpen: boolean) => void;
-}
 
 interface PropsButton {
     period: number;
@@ -40,36 +32,10 @@ interface PropsButton {
     setIsOpen: (newIsOpen: boolean) => void;
 }
 
-export function getNewAverageLengthOfCycle(cycles: Cycle[]) {
-    if (!cycles) {
-        return 0;
-    }
-
-    const sum = cycles.reduce((prev, current) => {
-        return prev + current.cycleLength;
-    }, 0);
-
-    return Math.round(sum / cycles.length);
-}
-
-export function getNewAverageLengthOfPeriod(cycles: Cycle[]) {
-    if (!cycles) {
-        return 0;
-    }
-
-    const sum = cycles.reduce((prev, current) => {
-        return prev + current.periodLength;
-    }, 0);
-
-    return Math.round(sum / cycles.length);
-}
-
 const Buttons = (props: PropsButton) => {
     const [confirmAlert] = useIonAlert();
 
-    const lengthLastPeriod = useLengthOfLastPeriod();
     const lengthOfCycle = Number(useDayOfCycle());
-    const lastDateStart = useLastStartDate();
     const cycles = useCycles();
 
     return (
@@ -94,23 +60,23 @@ const Buttons = (props: PropsButton) => {
                             ],
                         })
                     } else {
-                        cycles?.unshift(
+                        if (cycles.length > 0) {
+                            cycles[0].cycleLength = lengthOfCycle;
+                        }
+                        cycles.unshift(
                             {
-                                cycleLength: lengthOfCycle,
-                                periodLength: lengthLastPeriod,
-                                startDate: lastDateStart,
+                                cycleLength: 0,
+                                periodLength: props.period,
+                                startDate: props.date,
                             }
                         );
-                        const averageCycle = getNewAverageLengthOfCycle(cycles);
-                        const averagePeriod = getNewAverageLengthOfPeriod(cycles);
 
-                        set("cycles", cycles);
-                        set("middle-period-length", averagePeriod);
-                        set("middle-cycle-length", averageCycle);
-                        set("last-start-date", props.date);
-                        set("last-period-length", props.period);
-
-                        props.setIsOpen(false);
+                        Promise.all([
+                            set("cycles", cycles),
+                        ]).then(() => {
+                            console.log("All new values are set, setIsOpen(false)");
+                            props.setIsOpen(false);
+                        }).catch((err) => console.error(err));
                     }
                 }}
             >
@@ -129,6 +95,11 @@ const Buttons = (props: PropsButton) => {
         </>
     );
 };
+
+interface PropsMarkModal {
+    isOpen: boolean;
+    setIsOpen: (newIsOpen: boolean) => void;
+}
 
 const MarkModal = (props: PropsMarkModal) => {
     const [date, setDate] = useState("");

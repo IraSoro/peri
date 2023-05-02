@@ -13,10 +13,12 @@ import {
   useLengthOfLastPeriod,
   useAverageLengthOfCycle,
   useAverageLengthOfPeriod,
-  useInfoForOneCycle,
+  useCycles,
 } from './CycleInformationHooks';
 
-function getTitle(dayOfCycle: string) {
+function useTitleLastCycle() {
+  const dayOfCycle = useDayOfCycle();
+
   if (!dayOfCycle) {
     return "Cycle days"
   }
@@ -27,7 +29,8 @@ function getTitle(dayOfCycle: string) {
   return `${dayOfCycle} Days`;
 }
 
-function getProgressBarBuffer(dayOfCycle: string) {
+function useProgressBarBuffer() {
+  const dayOfCycle = useDayOfCycle();
   const defaultLengthOfCycle = 28;
 
   if (!dayOfCycle) {
@@ -36,12 +39,48 @@ function getProgressBarBuffer(dayOfCycle: string) {
   return Number(dayOfCycle);
 }
 
+interface InfoOneCycle {
+  lengthOfCycleString: string;
+  lengthOfCycleNumber: number;
+  lengthOfPeriod: number;
+  dates: string;
+}
+
+export function useInfoForOneCycle(idx: number): InfoOneCycle {
+  const cycles = useCycles();
+
+  if (!cycles || cycles.length <= idx) {
+    const defaultLengthOfCycle = 28;
+
+    return {
+      lengthOfCycleNumber: defaultLengthOfCycle,
+      lengthOfCycleString: "Cycle length",
+      lengthOfPeriod: 0,
+      dates: "date"
+    };
+  }
+  const cycleLenNumber: number = cycles[idx].cycleLength;
+  const cycleLenString: string = `${cycleLenNumber} Days`;
+  const periodLenNumber: number = cycles[idx].periodLength;
+
+  const dateStart: Date = new Date(cycles[idx].startDate);
+  const dateFinish: Date = new Date(cycles[idx].startDate);
+  dateFinish.setDate(dateFinish.getDate() + cycleLenNumber - 1);
+  const dates = `${dateStart.toLocaleDateString()} - ${dateFinish.toLocaleDateString()}`;
+
+  return {
+    lengthOfCycleNumber: cycleLenNumber,
+    lengthOfCycleString: cycleLenString,
+    lengthOfPeriod: periodLenNumber,
+    dates: dates,
+  };
+}
+
 const CurrentCycle = () => {
-  const dayOfCycle = useDayOfCycle();
   const lengthOfPeriod = useLengthOfLastPeriod();
 
-  const title = getTitle(dayOfCycle);
-  const progressBarBuffer = getProgressBarBuffer(dayOfCycle);
+  const title = useTitleLastCycle();
+  const progressBarBuffer = useProgressBarBuffer();
 
   return (
     <IonItem class="transparent-center" lines="none">
@@ -88,7 +127,7 @@ const ItemProgress = (props: IdxProps) => {
 }
 
 const ListProgress = () => {
-  const numbers = [0, 1, 2, 3, 4];
+  const numbers = [1, 2, 3, 4, 5];
   const list = numbers.map((idx) =>
     <ItemProgress
       key={idx}

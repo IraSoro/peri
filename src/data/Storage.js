@@ -1,11 +1,11 @@
 import { Storage, Drivers } from "@ionic/storage";
 
-var storage = false;
+let storage = false;
 
 export const createStore = (name = "PeriodDB") => {
 
     storage = new Storage({
-        
+
         name,
         driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
     });
@@ -15,13 +15,17 @@ export const createStore = (name = "PeriodDB") => {
 
 
 export const set = (key, val) => {
-
-    storage.set(key, val);
+    // console.log(`Set ${key}=${val}`);
+    return storage.set(key, val);
 }
 
 export const get = async key => {
-
     const val = await storage.get(key);
+
+    if (!val) {
+        throw new Error(`${key} is null`);
+    }
+    // console.log(`get ${key}=${val}`);
     return val;
 }
 
