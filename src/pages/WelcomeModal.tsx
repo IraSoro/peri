@@ -19,18 +19,11 @@ import {
 } from '@ionic/react';
 import './WelcomeModal.css';
 
-import { remove, set } from '../data/Storage';
+import { set } from '../data/Storage';
 import { cycle_days, period_days } from '../data/SelectConst'
-// import {
-    // getInfo,
-    // InfoCurrentCycle,
-    // CycleData,
-    // InfoPhase,
-    // getPhase
-// } from '../data/Calculations';
-// import { Cycle } from "../data/ClassCycle";
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
+import type { Cycle } from '../data/ClassCycle';
 
 
 interface PropsWelcomeModal {
@@ -40,22 +33,19 @@ interface PropsWelcomeModal {
 
 const Welcome = (props: PropsWelcomeModal) => {
     const [confirmAlert] = useIonAlert();
-// const [setting/*, setSetting*/] = useState(new Cycle());
+    const [cycle] = useState<Cycle[]>(
+        [
+            {
+                cycleLength: 0,
+                periodLength: 0,
+                startDate: "",
+            }
+        ]
+    );
 
     const selectOptions = {
         cssClass: "welcome-select-header",
     };
-
-    // const isConstraints = (dateString: string) => {
-    //     const msInDay = 24 * 60 * 60 * 1000;
-
-    //     const date = new Date(dateString);
-    //     const now = new Date();
-    //     const days_diff = Math.ceil((Number(date) - Number(now)) / msInDay);
-    //     const is_today = Math.ceil(Number(date) / msInDay) === Math.ceil(Number(now) / msInDay);
-
-    //     return days_diff <= 0 || is_today;
-    // }
 
     return (
         <IonModal isOpen={props.isOpen}>
@@ -65,15 +55,15 @@ const Welcome = (props: PropsWelcomeModal) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen class="gradient">
-                {/* <IonCard class="welcome">
+                <IonCard class="welcome">
                     <IonCardHeader class="welcome">
                         Please enter your details so that you can already make a forecast.
                     </IonCardHeader>
                     <IonCardContent>
                         <IonList>
                             <DatePicker
-                                date={setting.start_date}
-                                onChange={(newDate: string) => { setting.start_date = newDate }}
+                                date={cycle[0].startDate}
+                                onChange={(newDate: string) => { cycle[0].startDate = newDate }}
                                 color={"basic"}
                                 title='Start of last period'
                             />
@@ -84,8 +74,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     interfaceOptions={selectOptions}
                                     placeholder=""
                                     onIonChange={(ev) => {
-                                        setting.cycle_len = Number(ev.detail.value.id);
-                                        // setSetting(setting);
+                                        cycle[0].cycleLength = Number(ev.detail.value.id);
                                     }}
                                 >
                                     {cycle_days.map((day) => (
@@ -102,8 +91,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     interfaceOptions={selectOptions}
                                     placeholder=""
                                     onIonChange={(ev) => {
-                                        setting.period_len = Number(ev.detail.value.id);
-                                        // setSetting(setting);
+                                        cycle[0].periodLength = Number(ev.detail.value.id);
                                     }}
                                 >
                                     {period_days.map((day) => (
@@ -115,12 +103,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                             </IonItem>
                         </IonList>
                     </IonCardContent>
-                </IonCard> */}
+                </IonCard>
                 <IonCol>
                     <IonButton
                         class="continue"
                         onClick={() => {
-                            if (false/*setting.isEmpty()*/) {
+                            if (!cycle[0].cycleLength || !cycle[0].periodLength || !cycle[0].startDate) {
                                 confirmAlert({
                                     header: 'Continue?',
                                     cssClass: "header-color",
@@ -135,48 +123,13 @@ const Welcome = (props: PropsWelcomeModal) => {
                                             role: 'confirm',
                                             handler: () => {
                                                 props.setIsOpen(false);
-                                                set("welcome", true);
-
-                                                // remove("cycle-length");
-                                                // remove("period-length");
-                                                // remove("current-cycle");
-                                                // remove("cycles");
-
-                                                // props.setInfo(getInfo("none", 0));
-                                                // props.setPhase(getPhase(new CycleData()));
                                             },
                                         },
                                     ],
                                 })
                             } else {
-                                confirmAlert({
-                                    header: 'Continue?',
-                                    cssClass: "header-color",
-                                    buttons: [
-                                        {
-                                            text: 'CANCEL',
-                                            role: 'cancel',
-                                        },
-                                        {
-                                            text: 'OK',
-                                            role: 'confirm',
-                                            handler: () => {
-                                                props.setIsOpen(false);
-                                                set("welcome", true);
-
-                                                // let cycle: CycleData = new CycleData();
-                                                // cycle.lenPeriod = setting.lenPeriod;
-                                                // cycle.startDate = setting.startDate;
-                                                // set("current-cycle", cycle);
-                                                // set("cycle-length", setting.lenCycle);
-                                                // set("period-length", setting.lenPeriod);
-
-                                                // props.setInfo(getInfo(setting.startDate, setting.lenCycle));
-                                                // props.setPhase(getPhase(cycle, setting.lenCycle));
-                                            },
-                                        },
-                                    ],
-                                })
+                                set("cycles", cycle);
+                                props.setIsOpen(false);
                             }
                         }}
                     >

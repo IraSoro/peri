@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonContent,
   IonPage,
@@ -25,12 +25,15 @@ import uterus from '../assets/uterus.svg';
 import {
   useDayOfCycle,
   useLastStartDate,
-  useAverageLengthOfCycle
+  useAverageLengthOfCycle,
 } from './CycleInformationHooks';
+
+import { set, remove, get } from '../data/Storage';
+import type { Cycle } from '../data/ClassCycle';
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-export function useOvulationStatus(): string {
+function useOvulationStatus(): string {
   const cycleLength = useAverageLengthOfCycle();
   const dayOfCycle = Number(useDayOfCycle());
 
@@ -72,7 +75,7 @@ interface DaysBeforePeriod {
   days: string
 }
 
-export function useDaysBeforePeriod(): DaysBeforePeriod {
+function useDaysBeforePeriod(): DaysBeforePeriod {
   const startDate = useLastStartDate();
   const cycleLength = useAverageLengthOfCycle();
 
@@ -106,6 +109,53 @@ const TabHome = () => {
   const ovulationStatus = useOvulationStatus();
   const daysBeforePeriod = useDaysBeforePeriod();
   const pregnancyChance = usePregnancyChance();
+
+  useEffect(() => {
+    get("cycles")
+      .catch((err) => {
+        console.error(`Can't get cycles ${(err as Error).message}`);
+        setIsWelcomeModal(true);
+      });
+
+  }, []);
+
+  const cycles: Cycle[] = [
+    {
+      cycleLength: 0,
+      periodLength: 3,
+      startDate: "2023-04-12"
+    },
+    {
+      cycleLength: 30,
+      periodLength: 5,
+      startDate: "2023-03-13"
+    },
+    {
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: "2023-02-13"
+    },
+    {
+      cycleLength: 28,
+      periodLength: 5,
+      startDate: "2023-01-16"
+    },
+    {
+      cycleLength: 30,
+      periodLength: 3,
+      startDate: "2022-12-17"
+    },
+    // {
+    //   cycle_len: 27,
+    //   period_len: 5,
+    //   start_date: "2023-11-20"
+    // },
+  ];
+
+  // set("cycles", cycles);
+
+  // remove("cycles");
+
 
   const p_style = {
     fontSize: "10px" as const,

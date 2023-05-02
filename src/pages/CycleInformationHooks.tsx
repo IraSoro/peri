@@ -10,7 +10,7 @@ export function useCycles() {
     useEffect(() => {
         get("cycles")
             .then(setCycles)
-            .catch((err) => console.error(`Can't get start date ${(err as Error).message}`));
+            .catch((err) => console.error(`Can't get cycles ${(err as Error).message}`));
     }, []);
 
     return cycles;
