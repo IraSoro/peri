@@ -100,14 +100,37 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   };
 }
 
+const MarkPeriodLabel = () => {
+  const [isMarkModal, setIsMarkModal] = useState(false);
+  const daysBeforePeriod = useDaysBeforePeriod();
+
+  return (
+    <div>
+      <IonLabel style={{ textAlign: "center" }}>
+        <h2>{daysBeforePeriod.title}</h2>
+      </IonLabel>
+      <IonLabel style={{ textAlign: "center" }} color="dark-basic">
+        <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
+      </IonLabel>
+      <IonButton class="mark-button" onClick={() => {
+        setIsMarkModal(true);
+      }}
+      >
+        Mark</IonButton>
+      <MarkModal
+        isOpen={isMarkModal}
+        setIsOpen={setIsMarkModal}
+      />
+    </div>
+  );
+}
+
 const TabHome = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
-  const [isMarkModal, setIsMarkModal] = useState(false);
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
-  const daysBeforePeriod = useDaysBeforePeriod();
   const pregnancyChance = usePregnancyChance();
 
   useEffect(() => {
@@ -190,26 +213,7 @@ const TabHome = () => {
                 <IonImg src={uterus} />
               </IonCol>
               <IonCol>
-                <div>
-                  {/* Этот Label можно выделить в отдельный компонент,
-                      потому что сейчас ты получаешь сложную структуру {title, days}
-                  */}
-                  <IonLabel style={{ textAlign: "center" }}>
-                    <h2>{daysBeforePeriod.title}</h2>
-                  </IonLabel>
-                  <IonLabel style={{ textAlign: "center" }} color="dark-basic">
-                    <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
-                  </IonLabel>
-                  <IonButton class="mark-button" onClick={() => {
-                    setIsMarkModal(true);
-                  }}
-                  >
-                    Mark</IonButton>
-                  <MarkModal
-                    isOpen={isMarkModal}
-                    setIsOpen={setIsMarkModal}
-                  />
-                </div>
+                <MarkPeriodLabel />
               </IonCol>
             </IonRow>
             <IonCard color="basic">
