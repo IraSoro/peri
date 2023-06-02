@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
     IonButton,
     IonContent,
@@ -13,67 +13,101 @@ import {
 } from '@ionic/react';
 import './MarkModal.css';
 
-import { get, set } from "../data/Storage"
 import { period_days } from '../data/SelectConst'
-import {
-    CycleData,
-    InfoCurrentCycle,
-    getInfo,
-    InfoPhase,
-    getPhase
-} from '../data/Calculations';
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
+
+import {
+    useDayOfCycle,
+} from './CycleInformationHooks';
+
+import { CyclesContext } from '../pages/Context';
+
+interface PropsButton {
+    period: number;
+    setPeriod: (newPeriod: number) => void;
+    date: string;
+    setDate: (newDate: string) => void;
+
+    setIsOpen: (newIsOpen: boolean) => void;
+}
+
+const Buttons = (props: PropsButton) => {
+    const [confirmAlert] = useIonAlert();
+
+    const lengthOfCycle = Number(useDayOfCycle());
+    const { cycles, updateCycles } = useContext(CyclesContext);
+
+    return (
+        <>
+            <IonButton
+                style={{ float: "right" }}
+                color="dark-basic"
+                fill="clear"
+                onClick={() => {
+                    if (!props.date || !props.period) {
+                        confirmAlert({
+                            subHeader: "You have not entered all the data",
+                            buttons: [
+                                {
+                                    text: 'OK',
+                                    cssClass: 'alert-button-confirm',
+                                    role: 'confirm',
+                                    handler: () => {
+                                        props.setIsOpen(false);
+                                    },
+                                },
+                            ],
+                        })
+                    } else {
+                        if (cycles.length > 0) {
+                            cycles[0].cycleLength = lengthOfCycle;
+                        }
+                        cycles.unshift(
+                            {
+                                cycleLength: 0,
+                                periodLength: props.period,
+                                startDate: props.date,
+                            }
+                        );
+
+                        Promise.all([
+                            updateCycles([...cycles])
+                        ]).then(() => {
+                            console.log("All new values are set, setIsOpen(false)");
+                            props.setIsOpen(false);
+                        }).catch((err) => console.error(err));
+                    }
+                }}
+            >
+                Ok
+            </IonButton>
+            <IonButton
+                style={{ float: "right" }}
+                color="dark-basic"
+                fill="clear"
+                onClick={() => {
+                    props.setIsOpen(false);
+                    props.setDate("");
+                }}>
+                Cancel
+            </IonButton>
+        </>
+    );
+};
 
 interface PropsMarkModal {
     isOpen: boolean;
     setIsOpen: (newIsOpen: boolean) => void;
-    setInfo: (newDay: InfoCurrentCycle) => void;
-
-    lenCycle: number;
-    setLenCycle: (newIsOpen: number) => void;
-
-    lenPeriod: number;
-    setLenPeriod: (newIsOpen: number) => void;
-
-    dateStartCycle: string;
-    setDateStartCycle: (newDateStartCycle: string) => void;
-
-    cycles?: CycleData[];
-    setCycles: (newCycles: CycleData[]) => void;
-
-    setPhase: (newPhase: InfoPhase) => void;
 }
 
 const MarkModal = (props: PropsMarkModal) => {
     const [date, setDate] = useState("");
     const [period, setPeriod] = useState(0);
 
-    const [confirmAlert] = useIonAlert();
-
-    const calculationsCycleLen = (dateNow: string, dateLast: string) => {
-        const msInDay = 24 * 60 * 60 * 1000;
-
-        let now: Date = new Date(dateNow);
-        let last: Date = new Date(dateLast);
-
-        return Math.round(Math.abs(Number(now) - Number(last)) / msInDay);
-    }
-
     const selectOptions = {
         cssClass: "mark-select-header",
     };
-
-    // const isConstraints = (dateString: string) => {
-    //     const msInDay = 24 * 60 * 60 * 1000;
-
-    //     const date = new Date(dateString);
-    //     const now = new Date();
-    //     const days_diff = Math.ceil((Number(date) - Number(now)) / msInDay);
-    //     const is_today = Math.ceil(Number(date) / msInDay) === Math.ceil(Number(now) / msInDay);
-
-    //     return days_diff <= 0 || is_today;
-    // }
 
     return (
         <IonModal isOpen={props.isOpen} class="mark-modal">
@@ -98,98 +132,13 @@ const MarkModal = (props: PropsMarkModal) => {
                                 ))}
                             </IonSelect>
                         </IonItem>
-                        <IonButton
-                            style={{ float: "right" }}
-                            color="dark-basic"
-                            fill="clear"
-                            onClick={() => {
-                                if (!date || !period) {
-                                    confirmAlert({
-                                        subHeader: "You have not entered all the data",
-                                        buttons: [
-                                            {
-                                                text: 'OK',
-                                                cssClass: 'alert-button-confirm',
-                                                role: 'confirm',
-                                                handler: () => {
-                                                    props.setIsOpen(false);
-                                                },
-                                            },
-                                        ],
-                                    })
-                                } else {
-                                    props.setIsOpen(false);
-                                    get("current-cycle").then(resultCur => {
-                                        if (resultCur) {
-                                            get("cycles").then(resultArr => {
-                                                resultCur.lenCycle = calculationsCycleLen(date, resultCur.startDate);
-                                                if (resultArr) {
-                                                    resultArr.unshift(resultCur);
-                                                    set("cycles", resultArr);
-                                                    props.setCycles(resultArr);
-
-                                                    let countCycle: number = 0;
-                                                    let countPeriod: number = 0;
-                                                    for (var idx in resultArr) {
-                                                        countCycle += resultArr[idx].lenCycle;
-                                                        countPeriod += resultArr[idx].lenPeriod;
-                                                    }
-                                                    set("cycle-length", Math.trunc(countCycle / resultArr.length));
-                                                    props.setLenCycle(Math.trunc(countCycle / resultArr.length));
-                                                    set("period-length", Math.trunc(countPeriod / resultArr.length));
-                                                    props.setLenPeriod(Math.trunc(countPeriod / resultArr.length));
-                                                } else {
-                                                    let cycles: CycleData[] = [];
-                                                    cycles.push(resultCur);
-                                                    set("cycles", cycles);
-                                                    props.setCycles(cycles);
-
-                                                    set("cycle-length", resultCur.lenCycle);
-                                                    props.setLenCycle(resultCur.lenCycle);
-                                                    set("period-length", resultCur.lenPeriod);
-                                                    props.setLenPeriod(resultCur.lenPeriod);
-                                                }
-                                                let currentCycle: CycleData = new CycleData();
-                                                currentCycle.lenPeriod = period;
-                                                currentCycle.startDate = date;
-                                                set("current-cycle", currentCycle);
-                                                props.setDateStartCycle(date);
-
-                                                get("cycle-length").then(resultLenCycle => {
-                                                    props.setInfo(getInfo(date, resultLenCycle));
-
-                                                    props.setPhase(getPhase(currentCycle, resultLenCycle));
-                                                });
-                                            });
-
-                                        } else {
-                                            let currentCycle: CycleData = new CycleData();
-                                            currentCycle.lenPeriod = period;
-                                            currentCycle.startDate = date;
-
-                                            set("current-cycle", currentCycle);
-                                            props.setDateStartCycle(date);
-
-                                            props.setInfo(getInfo(date));
-                                            props.setPhase(getPhase(currentCycle));
-                                        }
-                                        setDate("");
-                                    })
-                                }
-                            }}
-                        >
-                            Ok
-                        </IonButton>
-                        <IonButton
-                            style={{ float: "right" }}
-                            color="dark-basic"
-                            fill="clear"
-                            onClick={() => {
-                                props.setIsOpen(false);
-                                setDate("");
-                            }}>
-                            Cancel
-                        </IonButton>
+                        <Buttons
+                            period={period}
+                            setPeriod={setPeriod}
+                            date={date}
+                            setDate={setDate}
+                            setIsOpen={props.setIsOpen}
+                        />
                     </IonList>
                 </IonCardContent>
             </IonContent>

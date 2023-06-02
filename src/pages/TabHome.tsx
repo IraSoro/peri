@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   IonContent,
   IonPage,
@@ -22,49 +22,122 @@ import InfoModal from './InfoModal';
 
 import uterus from '../assets/uterus.svg';
 
-import { get } from '../data/Storage';
 import {
-  getInfo,
-  InfoCurrentCycle,
-  CycleData,
-  MainProps,
-  InfoPhase,
-  phases,
-  getPhase,
-} from '../data/Calculations';
+  useDayOfCycle,
+  useLastStartDate,
+  useAverageLengthOfCycle,
+} from './CycleInformationHooks';
 
-const TabHome = (props: MainProps) => {
+import { get } from '../data/Storage';
+
+const millisecondsInDay = 24 * 60 * 60 * 1000;
+
+function useOvulationStatus(): string {
+  const cycleLength = useAverageLengthOfCycle();
+  const dayOfCycle = Number(useDayOfCycle());
+
+  if (!cycleLength || !dayOfCycle) {
+    return "";
+  }
+
+  const lutealPhaseLength = 14;
+  const ovulationDay = Number(cycleLength) - lutealPhaseLength;
+  const diffDay = ovulationDay - dayOfCycle;
+  if (diffDay === 0) {
+    return "today";
+  } else if (diffDay < 0) {
+    return "finished";
+  } else if (diffDay === 1) {
+    return "tomorrow"
+  }
+  return "in " + diffDay + " days";
+}
+
+function usePregnancyChance() {
+  const ovulationStatus = useOvulationStatus();
+
+  if (!ovulationStatus) {
+    return "";
+  }
+
+  if (ovulationStatus === "finished") {
+    return "low";
+  }
+  if (["today", "tomorrow"].includes(ovulationStatus)) {
+    return "hight";
+  }
+  return "middle";
+}
+
+interface DaysBeforePeriod {
+  title: string,
+  days: string
+}
+
+function useDaysBeforePeriod(): DaysBeforePeriod {
+  const startDate = useLastStartDate();
+  const cycleLength = useAverageLengthOfCycle();
+
+  if (!startDate || !cycleLength) {
+    return { title: "Period in", days: "no info" };
+  }
+
+  const dateOfFinish = new Date(startDate);
+  dateOfFinish.setDate(dateOfFinish.getDate() + Number(cycleLength));
+  const now = new Date();
+  let dayBefore = Math.round((Number(dateOfFinish) - Number(now)) / millisecondsInDay);
+
+  if (dayBefore > 0) {
+    return { title: "Period in", days: dayBefore + " Days" };
+  }
+  if (dayBefore === 0) {
+    return { title: "Period", days: "Today" };
+  }
+  return {
+    title: "Delay",
+    days: Math.abs(dayBefore) + " Days"
+  };
+}
+
+const MarkPeriodLabel = () => {
+  const [isMarkModal, setIsMarkModal] = useState(false);
+  const daysBeforePeriod = useDaysBeforePeriod();
+
+  return (
+    <div>
+      <IonLabel style={{ textAlign: "center" }}>
+        <h2>{daysBeforePeriod.title}</h2>
+      </IonLabel>
+      <IonLabel style={{ textAlign: "center" }} color="dark-basic">
+        <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
+      </IonLabel>
+      <IonButton class="mark-button" onClick={() => {
+        setIsMarkModal(true);
+      }}
+      >
+        Mark</IonButton>
+      <MarkModal
+        isOpen={isMarkModal}
+        setIsOpen={setIsMarkModal}
+      />
+    </div>
+  );
+}
+
+const TabHome = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
-  const [isMarkModal, setIsMarkModal] = useState(false);
 
-  const [info, setInfo] = useState<InfoCurrentCycle>(
-    {
-      cycleDay: "none",
-      ovulationDay: "none",
-      pregnantChance: "none",
-      periodIn: "none",
-      periodInTitle: "Period in",
-    });
-
-  const [phase, setPhase] = useState<InfoPhase>({ phaseTitle: phases[0], symptoms: 0 });
+  const dayOfCycle = useDayOfCycle();
+  const ovulationStatus = useOvulationStatus();
+  const pregnancyChance = usePregnancyChance();
 
   useEffect(() => {
-    get("welcome").then(result => {
-      if (!result) {
+    get("cycles")
+      .catch((err) => {
+        console.error(`Can't get cycles ${(err as Error).message}`);
         setIsWelcomeModal(true);
-      }
-    });
-
-    get("current-cycle").then(resultData => {
-      if (resultData) {
-        get("cycle-length").then(resultLen => {
-          const cycle: CycleData = resultData;
-          setInfo(getInfo(cycle.startDate, resultLen));
-          setPhase(getPhase(cycle, resultLen));
-        });
-      }
-    });
+      });
 
   }, []);
 
@@ -86,8 +159,6 @@ const TabHome = (props: MainProps) => {
             <Welcome
               isOpen={isWelcomeModal}
               setIsOpen={setIsWelcomeModal}
-              setInfo={setInfo}
-              setPhase={setPhase}
             />
             <IonRow>
               <IonCol>
@@ -103,35 +174,7 @@ const TabHome = (props: MainProps) => {
                 <IonImg src={uterus} />
               </IonCol>
               <IonCol>
-                <div>
-                  <IonLabel style={{ textAlign: "center" }}>
-                    <h2>{info.periodInTitle}</h2>
-                  </IonLabel>
-                  <IonLabel style={{ textAlign: "center" }} color="dark-basic">
-                    <h1 style={{ fontWeight: "bold" }}>{info.periodIn}</h1>
-                  </IonLabel>
-                  <IonButton class="mark-button" onClick={() => {
-                    setIsMarkModal(true);
-                  }}
-                  >
-                    Mark</IonButton>
-                  <MarkModal
-                    isOpen={isMarkModal}
-                    setIsOpen={setIsMarkModal}
-                    setInfo={setInfo}
-
-                    lenCycle={props.lenCycle}
-                    setLenCycle={props.setLenCycle}
-                    lenPeriod={props.lenPeriod}
-                    setLenPeriod={props.setLenPeriod}
-                    dateStartCycle={props.dateStartCycle}
-                    setDateStartCycle={props.setDateStartCycle}
-                    cycles={props.cycles}
-                    setCycles={props.setCycles}
-
-                    setPhase={setPhase}
-                  />
-                </div>
+                <MarkPeriodLabel />
               </IonCol>
             </IonRow>
             <IonCard color="basic">
@@ -139,19 +182,19 @@ const TabHome = (props: MainProps) => {
                 <IonItem color="basic" lines="full">
                   <IonLabel>
                     <p style={p_style}>Current cycle day</p>
-                    <h1 style={h_style}>{info.cycleDay}</h1>
+                    <h1 style={h_style}>{dayOfCycle}</h1>
                   </IonLabel>
                 </IonItem>
                 <IonItem color="basic" lines="full">
                   <IonLabel>
                     <p style={p_style}>Ovulation</p>
-                    <h1 style={h_style}>{info.ovulationDay}</h1>
+                    <h1 style={h_style}>{ovulationStatus}</h1>
                   </IonLabel>
                 </IonItem>
                 <IonItem color="basic" lines="none">
                   <IonLabel>
                     <p style={p_style}>Chance of getting pregnant</p>
-                    <h1 style={h_style}>{info.pregnantChance}</h1>
+                    <h1 style={h_style}>{pregnancyChance}</h1>
                   </IonLabel>
                 </IonItem>
               </IonCardContent>
@@ -160,7 +203,6 @@ const TabHome = (props: MainProps) => {
             <InfoModal
               isOpen={isInfoModal}
               setIsOpen={setIsInfoModal}
-              info={phase}
             />
           </IonCardContent>
         </IonCard>
