@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
     IonButton,
     IonContent,
@@ -13,15 +13,15 @@ import {
 } from '@ionic/react';
 import './MarkModal.css';
 
-import { set } from "../data/Storage"
 import { period_days } from '../data/SelectConst'
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 
 import {
     useDayOfCycle,
-    useCycles,
 } from './CycleInformationHooks';
+
+import { CyclesContext } from '../pages/Context';
 
 interface PropsButton {
     period: number;
@@ -36,7 +36,7 @@ const Buttons = (props: PropsButton) => {
     const [confirmAlert] = useIonAlert();
 
     const lengthOfCycle = Number(useDayOfCycle());
-    const cycles = useCycles();
+    const { cycles, updateCycles } = useContext(CyclesContext);
 
     return (
         <>
@@ -72,7 +72,7 @@ const Buttons = (props: PropsButton) => {
                         );
 
                         Promise.all([
-                            set("cycles", cycles),
+                            updateCycles([...cycles])
                         ]).then(() => {
                             console.log("All new values are set, setIsOpen(false)");
                             props.setIsOpen(false);

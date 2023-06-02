@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
     IonButton,
     IonContent,
@@ -19,11 +19,12 @@ import {
 } from '@ionic/react';
 import './WelcomeModal.css';
 
-import { set } from '../data/Storage';
 import { cycle_days, period_days } from '../data/SelectConst'
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 import type { Cycle } from '../data/ClassCycle';
+
+import { CyclesContext } from '../pages/Context';
 
 
 interface PropsWelcomeModal {
@@ -42,6 +43,8 @@ const Welcome = (props: PropsWelcomeModal) => {
             }
         ]
     );
+
+    const updateCycles = useContext(CyclesContext).updateCycles;
 
     const selectOptions = {
         cssClass: "welcome-select-header",
@@ -128,7 +131,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                                     ],
                                 })
                             } else {
-                                set("cycles", cycle);
+                                updateCycles(cycle);
                                 props.setIsOpen(false);
                             }
                         }}

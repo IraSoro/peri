@@ -1,23 +1,10 @@
-import { useState, useEffect } from 'react';
-import { get } from "../data/Storage";
-import type { Cycle } from '../data/ClassCycle';
+import { useContext } from 'react';
+import { CyclesContext } from '../pages/Context';
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-export function useCycles() {
-    const [cycles, setCycles] = useState<Cycle[]>([]);
-
-    useEffect(() => {
-        get("cycles")
-            .then(setCycles)
-            .catch((err) => console.error(`Can't get cycles ${(err as Error).message}`));
-    }, []);
-
-    return cycles;
-}
-
 export function useLastStartDate(): string {
-    const cycles = useCycles();
+    const cycles = useContext(CyclesContext).cycles;
 
     if (cycles.length === 0) {
         return "";
@@ -42,7 +29,7 @@ export function useDayOfCycle(): string {
 }
 
 export function useAverageLengthOfCycle(): number {
-    const cycles = useCycles();
+    const cycles = useContext(CyclesContext).cycles;
 
     if (cycles.length <= 1) {
         return 0;
@@ -59,7 +46,7 @@ export function useAverageLengthOfCycle(): number {
 }
 
 export function useAverageLengthOfPeriod(): number {
-    const cycles = useCycles();
+    const cycles = useContext(CyclesContext).cycles;
 
     if (cycles.length <= 1) {
         return 0;
@@ -76,7 +63,7 @@ export function useAverageLengthOfPeriod(): number {
 }
 
 export function useLengthOfLastPeriod(): number {
-    const cycles = useCycles();
+    const cycles = useContext(CyclesContext).cycles;
 
     if (cycles.length === 0) {
         return 0;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -37,11 +37,20 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import { createStore } from './data/Storage';
+import { createStore, set, get } from './data/Storage';
+
+import type { Cycle } from './data/ClassCycle';
+import { CyclesContext } from './pages/Context';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  const [cycles, setCycles] = useState<Cycle[]>([]);
+
+  function updateCycles(newCycles: Cycle[]) {
+    setCycles(newCycles);
+    set("cycles", newCycles);
+  }
 
   useEffect(() => {
 
@@ -50,51 +59,57 @@ const App: React.FC = () => {
     }
     setupStore();
 
+    get("cycles")
+      .then(setCycles)
+      .catch((err) => console.error(`Can't get cycles ${(err as Error).message}`));
+
   }, []);
 
   return (
-    <IonApp>
-      <IonReactRouter>
-        <IonHeader class="ion-no-border">
-          <IonToolbar color="basic">
-            <IonTitle color="light">Hello!</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+    <CyclesContext.Provider value={{ cycles, updateCycles }}>
+      <IonApp>
+        <IonReactRouter>
+          <IonHeader class="ion-no-border">
+            <IonToolbar color="basic">
+              <IonTitle color="light">Hello!</IonTitle>
+            </IonToolbar>
+          </IonHeader>
 
-        <IonContent>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route exact path="/home">
-                <TabHome />
-              </Route>
+          <IonContent>
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route exact path="/home">
+                  <TabHome />
+                </Route>
 
-              <Route exact path="/details">
-                <TabDetails />
-              </Route>
+                <Route exact path="/details">
+                  <TabDetails />
+                </Route>
 
-              <Route exact path="/">
-                <Redirect to="/home" />
-              </Route>
+                <Route exact path="/">
+                  <Redirect to="/home" />
+                </Route>
 
-              <Route exact path="/peri/">
-                <Redirect to="/home" />
-              </Route>
+                <Route exact path="/peri/">
+                  <Redirect to="/home" />
+                </Route>
 
-            </IonRouterOutlet>
+              </IonRouterOutlet>
 
-            <IonTabBar slot="top" color="basic">
-              <IonTabButton tab="home" href="/home">
-                <IonLabel>Home</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="details" href="/details">
-                <IonLabel>Details</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonContent>
+              <IonTabBar slot="top" color="basic">
+                <IonTabButton tab="home" href="/home">
+                  <IonLabel>Home</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="details" href="/details">
+                  <IonLabel>Details</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonContent>
 
-      </IonReactRouter>
-    </IonApp>
+        </IonReactRouter>
+      </IonApp>
+    </CyclesContext.Provider>
   )
 };
 

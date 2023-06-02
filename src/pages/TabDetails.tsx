@@ -13,8 +13,9 @@ import {
   useLengthOfLastPeriod,
   useAverageLengthOfCycle,
   useAverageLengthOfPeriod,
-  useCycles,
 } from './CycleInformationHooks';
+import { useContext } from 'react';
+import { CyclesContext } from '../pages/Context';
 
 function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();
@@ -47,7 +48,7 @@ interface InfoOneCycle {
 }
 
 export function useInfoForOneCycle(idx: number): InfoOneCycle {
-  const cycles = useCycles();
+  const cycles = useContext(CyclesContext).cycles;
 
   if (!cycles || cycles.length <= idx) {
     const defaultLengthOfCycle = 28;
