@@ -31,8 +31,12 @@ export function useDayOfCycle(): string {
 export function useAverageLengthOfCycle(): number {
     const cycles = useContext(CyclesContext).cycles;
 
-    if (cycles.length <= 1) {
+    if (cycles.length === 0) {
         return 0;
+    }
+
+    if (cycles.length === 1) {
+        return cycles[0].cycleLength;
     }
 
     const sum = cycles.reduce((prev, current, idx) => {
@@ -48,8 +52,12 @@ export function useAverageLengthOfCycle(): number {
 export function useAverageLengthOfPeriod(): number {
     const cycles = useContext(CyclesContext).cycles;
 
-    if (cycles.length <= 1) {
+    if (cycles.length === 0) {
         return 0;
+    }
+
+    if (cycles.length === 1) {
+        return cycles[0].periodLength;
     }
 
     const sum = cycles.reduce((prev, current, idx) => {
