@@ -28,8 +28,7 @@ import {
   useAverageLengthOfCycle,
 } from './CycleInformationHooks';
 
-import { set, remove, get } from '../data/Storage';
-import type { Cycle } from '../data/ClassCycle';
+import { get } from '../data/Storage';
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -141,44 +140,6 @@ const TabHome = () => {
       });
 
   }, []);
-
-  const cycles: Cycle[] = [
-    {
-      cycleLength: 0,
-      periodLength: 3,
-      startDate: "2023-04-12"
-    },
-    {
-      cycleLength: 30,
-      periodLength: 5,
-      startDate: "2023-03-13"
-    },
-    {
-      cycleLength: 28,
-      periodLength: 3,
-      startDate: "2023-02-13"
-    },
-    {
-      cycleLength: 28,
-      periodLength: 5,
-      startDate: "2023-01-16"
-    },
-    {
-      cycleLength: 30,
-      periodLength: 3,
-      startDate: "2022-12-17"
-    },
-    // {
-    //   cycle_len: 27,
-    //   period_len: 5,
-    //   start_date: "2023-11-20"
-    // },
-  ];
-
-  // set("cycles", cycles);
-
-  // remove("cycles");
-
 
   const p_style = {
     fontSize: "10px" as const,
