@@ -17,10 +17,6 @@ import { period_days } from '../data/SelectConst'
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 
-import {
-    useDayOfCycle,
-} from './CycleInformationHooks';
-
 import { CyclesContext } from '../pages/Context';
 
 interface PropsButton {
@@ -35,7 +31,6 @@ interface PropsButton {
 const Buttons = (props: PropsButton) => {
     const [confirmAlert] = useIonAlert();
 
-    const lengthOfCycle = Number(useDayOfCycle());
     const { cycles, updateCycles } = useContext(CyclesContext);
 
     return (
@@ -61,7 +56,14 @@ const Buttons = (props: PropsButton) => {
                         })
                     } else {
                         if (cycles.length > 0) {
-                            cycles[0].cycleLength = lengthOfCycle;
+                            const millisecondsInDay = 24 * 60 * 60 * 1000;
+
+                            const startDate = new Date(cycles[0].startDate);
+                            const finishDate = new Date(props.date);
+
+                            const diff = new Date(finishDate.getTime() - startDate.getTime());
+
+                            cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
                         }
                         cycles.unshift(
                             {
