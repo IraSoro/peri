@@ -62,16 +62,24 @@ const Buttons = (props: PropsButton) => {
                             const finishDate = new Date(props.date);
 
                             const diff = new Date(finishDate.getTime() - startDate.getTime());
-
                             cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
+
+                            cycles.unshift(
+                                {
+                                    cycleLength: 0,
+                                    periodLength: props.period,
+                                    startDate: props.date,
+                                }
+                            );
+                        } else {
+                            cycles.unshift(
+                                {
+                                    cycleLength: 28,
+                                    periodLength: props.period,
+                                    startDate: props.date,
+                                }
+                            );
                         }
-                        cycles.unshift(
-                            {
-                                cycleLength: 0,
-                                periodLength: props.period,
-                                startDate: props.date,
-                            }
-                        );
 
                         Promise.all([
                             updateCycles([...cycles])
