@@ -48,6 +48,9 @@ const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
 
   function updateCycles(newCycles: Cycle[]) {
+    if (newCycles.length > 7) {
+      newCycles.splice(7);
+    }
     setCycles(newCycles);
     set("cycles", newCycles);
   }
