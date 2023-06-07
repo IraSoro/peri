@@ -4,22 +4,19 @@ import {
   IonPage,
   IonCard,
   IonCardContent,
-  IonModal,
   IonItem,
   IonImg,
   IonLabel,
   IonRow,
   IonCol,
   IonButton,
-  IonIcon,
-  IonButtons,
-  IonDatetime,
 } from '@ionic/react';
 import './TabHome.css';
 
 import Welcome from './WelcomeModal';
 import MarkModal from './MarkModal';
 import InfoModal from './InfoModal';
+import CalendarModal from './CalendarModal';
 
 import uterus from '../assets/uterus.svg';
 
@@ -30,9 +27,6 @@ import {
 } from './CycleInformationHooks';
 
 import { get } from '../data/Storage';
-import { calendarClear } from 'ionicons/icons';
-
-import { format } from 'date-fns'
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -133,8 +127,6 @@ const TabHome = () => {
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isCalendarModal, setIsCalendarModal] = useState(false);
 
-  const nowDate = new Date();
-
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
   const pregnancyChance = usePregnancyChance();
@@ -169,33 +161,10 @@ const TabHome = () => {
             />
             <IonRow>
               <IonCol>
-                <IonButton
-                  class="calendar-button"
-                  fill="outline"
-                  onClick={() => setIsCalendarModal(true)}
-                >
-                  {format(nowDate, 'eee, d MMM yyyy')}
-                  <IonIcon slot="end" icon={calendarClear}></IonIcon>
-                </IonButton>
-                <IonModal
-                  id="calendar-modal"
+                <CalendarModal
                   isOpen={isCalendarModal}
-                >
-                  <IonDatetime
-                    color="basic"
-                    presentation="date"
-                    locale="en-GB"
-                  >
-                    <IonButtons slot="buttons">
-                      <IonButton
-                        color="basic"
-                        onClick={() => {
-                          setIsCalendarModal(false);
-                        }}
-                      >Ok</IonButton>
-                    </IonButtons>
-                  </IonDatetime>
-                </IonModal>
+                  setIsOpen={setIsCalendarModal}
+                />
               </IonCol>
             </IonRow>
             <IonRow>
