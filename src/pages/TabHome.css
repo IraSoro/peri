@@ -7,38 +7,6 @@ ion-card {
     box-shadow: none !important;
 }
 
-.calendar-button {
-    font-size: 19px;
-    border-radius: 10px;
-    border: 2px var(--ion-color-basic) solid;
-
-    --ion-color-step-300: #ffffff;
-    --ion-text-color: var(--ion-color-basic);
-}
-
-.calendar-button:hover {
-    border: 2px var(--ion-color-dark-basic) solid;
-    --ion-text-color: var(--ion-color-dark-basic);
-}
-
-@font-face {
-    font-family: "Ionicons";
-    src: url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.eot?v=2.0.1");
-    src: url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.woff?v=2.0.1") format("woff"), url("https://code.ionicframework.com/ionicons/2.0.1/fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
-    font-weight: normal;
-    font-style: normal;
-}
-
-.calendar-button::after {
-    /* content: "📅"; */
-    font-family: "Ionicons";
-    content: "\f117";
-    padding-right: 10px;
-    background-color: #ffffff;
-    color: var(--ion-color-basic);
-    text-align: right;
-}
-
 ion-datetime {
     color: var(--ion-color-dark) !important;
 }
@@ -71,6 +39,15 @@ ion-button {
     border-radius: 10px;
 }
 
+.calendar-button {
+    --border-radius: 10px;
+}
+
+.calendar-button:hover {
+    border-radius: 10px;
+    color: var(--ion-color-dark-basic);
+}
+
 ion-col {
     display: flex;
     align-items: center;
@@ -87,4 +64,12 @@ ion-col {
 
 .transparent {
     --ion-item-background: transparent;
+}
+
+ion-modal#calendar-modal {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }

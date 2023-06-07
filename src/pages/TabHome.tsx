@@ -4,8 +4,6 @@ import {
   IonPage,
   IonCard,
   IonCardContent,
-  IonDatetime,
-  IonDatetimeButton,
   IonModal,
   IonItem,
   IonImg,
@@ -13,6 +11,9 @@ import {
   IonRow,
   IonCol,
   IonButton,
+  IonIcon,
+  IonButtons,
+  IonDatetime,
 } from '@ionic/react';
 import './TabHome.css';
 
@@ -29,6 +30,9 @@ import {
 } from './CycleInformationHooks';
 
 import { get } from '../data/Storage';
+import { calendarClear } from 'ionicons/icons';
+
+import { format } from 'date-fns'
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -127,6 +131,9 @@ const MarkPeriodLabel = () => {
 const TabHome = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [isCalendarModal, setIsCalendarModal] = useState(false);
+
+  const nowDate = new Date();
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
@@ -162,13 +169,35 @@ const TabHome = () => {
             />
             <IonRow>
               <IonCol>
-                <IonDatetimeButton class="calendar-button" color="basic" datetime="datetime">
-                </IonDatetimeButton>
+                <IonButton
+                  class="calendar-button"
+                  fill="outline"
+                  onClick={() => setIsCalendarModal(true)}
+                >
+                  {format(nowDate, 'eee, d MMM yyyy')}
+                  <IonIcon slot="end" icon={calendarClear}></IonIcon>
+                </IonButton>
+                <IonModal
+                  id="calendar-modal"
+                  isOpen={isCalendarModal}
+                >
+                  <IonDatetime
+                    color="basic"
+                    presentation="date"
+                    locale="en-GB"
+                  >
+                    <IonButtons slot="buttons">
+                      <IonButton
+                        color="basic"
+                        onClick={() => {
+                          setIsCalendarModal(false);
+                        }}
+                      >Ok</IonButton>
+                    </IonButtons>
+                  </IonDatetime>
+                </IonModal>
               </IonCol>
             </IonRow>
-            <IonModal keepContentsMounted={true}>
-              <IonDatetime color="basic" presentation="date" id="datetime" locale="en-US"></IonDatetime>
-            </IonModal>
             <IonRow>
               <IonCol>
                 <IonImg src={uterus} />

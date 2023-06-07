@@ -1,6 +1,6 @@
 {
   "name": "peri",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": {
     "name": "Irina Sorokina",
     "url": "https://github.com/IraSoro"
@@ -25,6 +25,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "date-fns": "^2.30.0",
     "ionicons": "^6.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
