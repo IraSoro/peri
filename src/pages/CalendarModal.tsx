@@ -42,9 +42,9 @@ const CalendarModal = (props: PropsCalendarModal) => {
             }
         };
 
-        const nextCycleStart: Date = new Date();
+        const nextCycleStart: Date = new Date(cycles[0].startDate);
         nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
-        const nextCycleFinish: Date = new Date();
+        const nextCycleFinish: Date = new Date(cycles[0].startDate);
         nextCycleFinish.setDate(nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod);
         if (date > nowDate && date >= nextCycleStart && date < nextCycleFinish) {
             return true
@@ -71,13 +71,18 @@ const CalendarModal = (props: PropsCalendarModal) => {
                     color="basic"
                     presentation="date"
                     locale="en-GB"
-                    // disabled={true}
+                    size="cover"
+                    firstDayOfWeek={1}
                     isDateEnabled={(dateString: string) => {
                         const date = new Date(dateString);
                         return (format(date, 'yyyy-MM-dd') <= format(nowDate, 'yyyy-MM-dd')) ? true : false;
                     }}
 
                     highlightedDates={(isoString) => {
+                        if (cycles.length === 0) {
+                            return undefined;
+                        }
+
                         const date = new Date(isoString);
 
                         if (isPeriodDay(date)) {
