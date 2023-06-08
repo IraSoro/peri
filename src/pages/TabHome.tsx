@@ -4,9 +4,6 @@ import {
   IonPage,
   IonCard,
   IonCardContent,
-  IonDatetime,
-  IonDatetimeButton,
-  IonModal,
   IonItem,
   IonImg,
   IonLabel,
@@ -19,6 +16,7 @@ import './TabHome.css';
 import Welcome from './WelcomeModal';
 import MarkModal from './MarkModal';
 import InfoModal from './InfoModal';
+import CalendarModal from './CalendarModal';
 
 import uterus from '../assets/uterus.svg';
 
@@ -127,6 +125,7 @@ const MarkPeriodLabel = () => {
 const TabHome = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [isCalendarModal, setIsCalendarModal] = useState(false);
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
@@ -162,13 +161,12 @@ const TabHome = () => {
             />
             <IonRow>
               <IonCol>
-                <IonDatetimeButton class="calendar-button" color="basic" datetime="datetime">
-                </IonDatetimeButton>
+                <CalendarModal
+                  isOpen={isCalendarModal}
+                  setIsOpen={setIsCalendarModal}
+                />
               </IonCol>
             </IonRow>
-            <IonModal keepContentsMounted={true}>
-              <IonDatetime color="basic" presentation="date" id="datetime" locale="en-US"></IonDatetime>
-            </IonModal>
             <IonRow>
               <IonCol>
                 <IonImg src={uterus} />
