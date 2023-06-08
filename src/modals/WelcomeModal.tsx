@@ -24,7 +24,7 @@ import { cycle_days, period_days } from '../data/SelectConst'
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 import type { Cycle } from '../data/ClassCycle';
 
-import { CyclesContext } from '../pages/Context';
+import { CyclesContext } from '../state/Context';
 
 
 interface PropsWelcomeModal {

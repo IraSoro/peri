@@ -17,7 +17,7 @@ import { period_days } from '../data/SelectConst'
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 
-import { CyclesContext } from '../pages/Context';
+import { CyclesContext } from '../state/Context';
 
 interface PropsButton {
     period: number;

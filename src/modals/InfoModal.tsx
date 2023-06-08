@@ -14,7 +14,7 @@ import {
     useLengthOfLastPeriod,
     useAverageLengthOfCycle,
     useDayOfCycle,
-} from './CycleInformationHooks';
+} from '../state/CycleInformationHooks';
 
 function usePhase() {
     const lutealPhaseLength = 14;

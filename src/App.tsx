@@ -40,7 +40,7 @@ import './theme/variables.css';
 import { createStore, set, get } from './data/Storage';
 
 import type { Cycle } from './data/ClassCycle';
-import { CyclesContext } from './pages/Context';
+import { CyclesContext } from './state/Context';
 
 setupIonicReact();
 

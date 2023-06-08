@@ -11,12 +11,12 @@ import './CalendarModal.css';
 import { calendarClear } from 'ionicons/icons';
 
 import { format } from 'date-fns'
-import { CyclesContext } from '../pages/Context';
+import { CyclesContext } from '../state/Context';
 
 import {
     useAverageLengthOfCycle,
     useAverageLengthOfPeriod,
-} from './CycleInformationHooks';
+} from '../state/CycleInformationHooks';
 
 interface PropsCalendarModal {
     isOpen: boolean;
