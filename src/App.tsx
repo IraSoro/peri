@@ -40,7 +40,16 @@ import './theme/variables.css';
 import { createStore, set, get } from './data/Storage';
 
 import type { Cycle } from './data/ClassCycle';
-import { CyclesContext } from './pages/Context';
+import { CyclesContext } from './state/Context';
+
+// import {
+//   testEmptyArray,
+//   testSingleItem,
+//   testHalfOfArray,
+//   testFullArray,
+//   testDelaySingleItem,
+//   testDelayOfFullArray
+// } from './tests/Tests'
 
 setupIonicReact();
 
@@ -62,6 +71,14 @@ const App: React.FC = () => {
       createStore("PeriodDB");
     }
     setupStore();
+
+    // tests:
+    // testEmptyArray();
+    // testSingleItem();
+    // testHalfOfArray();
+    // testFullArray();
+    // testDelaySingleItem();
+    // testDelayOfFullArray();
 
     get("cycles")
       .then(setCycles)

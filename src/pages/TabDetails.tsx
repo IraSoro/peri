@@ -13,9 +13,9 @@ import {
   useLengthOfLastPeriod,
   useAverageLengthOfCycle,
   useAverageLengthOfPeriod,
-} from './CycleInformationHooks';
+} from '../state/CycleInformationHooks';
 import { useContext } from 'react';
-import { CyclesContext } from '../pages/Context';
+import { CyclesContext } from '../state/Context';
 
 function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();

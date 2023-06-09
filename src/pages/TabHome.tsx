@@ -13,10 +13,10 @@ import {
 } from '@ionic/react';
 import './TabHome.css';
 
-import Welcome from './WelcomeModal';
-import MarkModal from './MarkModal';
-import InfoModal from './InfoModal';
-import CalendarModal from './CalendarModal';
+import Welcome from '../modals/WelcomeModal';
+import MarkModal from '../modals/MarkModal';
+import InfoModal from '../modals/InfoModal';
+import CalendarModal from '../modals/CalendarModal';
 
 import uterus from '../assets/uterus.svg';
 
@@ -24,7 +24,7 @@ import {
   useDayOfCycle,
   useLastStartDate,
   useAverageLengthOfCycle,
-} from './CycleInformationHooks';
+} from '../state/CycleInformationHooks';
 
 import { get } from '../data/Storage';
 

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CyclesContext } from '../pages/Context';
+import { CyclesContext } from './Context';
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
