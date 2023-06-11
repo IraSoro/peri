@@ -9,7 +9,6 @@ import {
   IonLabel,
   IonRow,
   IonCol,
-  IonButton,
 } from '@ionic/react';
 import './TabHome.css';
 
@@ -97,40 +96,13 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   };
 }
 
-const MarkPeriodLabel = () => {
-  const [isMarkModal, setIsMarkModal] = useState(false);
-  const daysBeforePeriod = useDaysBeforePeriod();
-
-  return (
-    <div>
-      <IonLabel style={{ textAlign: "center" }}>
-        <h2>{daysBeforePeriod.title}</h2>
-      </IonLabel>
-      <IonLabel style={{ textAlign: "center" }} color="dark-basic">
-        <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
-      </IonLabel>
-      <IonButton
-        class="mark-button"
-        color="dark-basic"
-        onClick={() => {
-          setIsMarkModal(true);
-        }}
-      >
-        Mark</IonButton>
-      <MarkModal
-        isOpen={isMarkModal}
-        setIsOpen={setIsMarkModal}
-      />
-    </div>
-  );
-}
-
 const TabHome = () => {
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
   const pregnancyChance = usePregnancyChance();
+  const daysBeforePeriod = useDaysBeforePeriod();
 
   useEffect(() => {
     get("cycles")
@@ -170,7 +142,15 @@ const TabHome = () => {
                 <IonImg src={uterus} />
               </IonCol>
               <IonCol>
-                <MarkPeriodLabel />
+                <div>
+                  <IonLabel style={{ textAlign: "center" }}>
+                    <h2>{daysBeforePeriod.title}</h2>
+                  </IonLabel>
+                  <IonLabel style={{ textAlign: "center" }} color="dark-basic">
+                    <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
+                  </IonLabel>
+                  <MarkModal />
+                </div>
               </IonCol>
             </IonRow>
             <IonCard color="basic">

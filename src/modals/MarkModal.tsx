@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import {
     IonButton,
     IonContent,
@@ -10,6 +10,7 @@ import {
     IonSelect,
     IonSelectOption,
     IonCardContent,
+    useIonViewDidEnter,
 } from '@ionic/react';
 import './MarkModal.css';
 
@@ -19,13 +20,15 @@ import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 
 import { CyclesContext } from '../state/Context';
 
+import { App } from '@capacitor/app';
+
 interface PropsButton {
     period: number;
     setPeriod: (newPeriod: number) => void;
     date: string;
     setDate: (newDate: string) => void;
 
-    setIsOpen: (newIsOpen: boolean) => void;
+    closeModal: () => void;
 }
 
 const Buttons = (props: PropsButton) => {
@@ -49,7 +52,7 @@ const Buttons = (props: PropsButton) => {
                                     cssClass: 'alert-button-confirm',
                                     role: 'confirm',
                                     handler: () => {
-                                        props.setIsOpen(false);
+                                        props.closeModal();
                                     },
                                 },
                             ],
@@ -85,7 +88,7 @@ const Buttons = (props: PropsButton) => {
                             updateCycles([...cycles])
                         ]).then(() => {
                             console.log("All new values are set, setIsOpen(false)");
-                            props.setIsOpen(false);
+                            props.closeModal();
                         }).catch((err) => console.error(err));
                     }
                 }}
@@ -97,7 +100,7 @@ const Buttons = (props: PropsButton) => {
                 color="dark-basic"
                 fill="clear"
                 onClick={() => {
-                    props.setIsOpen(false);
+                    props.closeModal();
                     props.setDate("");
                 }}>
                 Cancel
@@ -106,53 +109,78 @@ const Buttons = (props: PropsButton) => {
     );
 };
 
-interface PropsMarkModal {
-    isOpen: boolean;
-    setIsOpen: (newIsOpen: boolean) => void;
-}
-
-const MarkModal = (props: PropsMarkModal) => {
+const MarkModal = () => {
     const [date, setDate] = useState("");
     const [period, setPeriod] = useState(0);
+
+    const modalRef = useRef<HTMLIonModalElement>(null);
+    const closeModal = () => {
+        modalRef.current?.dismiss();
+        setDate("");
+    };
+
+    useIonViewDidEnter(() => {
+        const backButtonHandler = () => {
+            modalRef.current?.dismiss();
+        };
+
+        App.addListener('backButton', backButtonHandler);
+
+        return () => {
+            App.removeAllListeners();
+        };
+    });
 
     const selectOptions = {
         cssClass: "mark-select-header",
     };
 
     return (
-        <IonModal isOpen={props.isOpen} class="mark-modal">
-            <IonContent color="light">
-                <IonCardContent class="align-center">
-                    <IonList class="transparent">
-                        <DatePicker date={date} onChange={setDate} color={"basic"} title={"Start of last period"} />
-                        <IonItem lines="full" class="transparent">
-                            <IonLabel color="basic">Period length</IonLabel>
-                            <IonSelect
-                                class="mark"
-                                interfaceOptions={selectOptions}
-                                placeholder=""
-                                onIonChange={(ev) => {
-                                    setPeriod(Number(ev.detail.value.id));
-                                }}
-                            >
-                                {period_days.map((day) => (
-                                    <IonSelectOption key={day.id} value={day}>
-                                        {day.name}
-                                    </IonSelectOption>
-                                ))}
-                            </IonSelect>
-                        </IonItem>
-                        <Buttons
-                            period={period}
-                            setPeriod={setPeriod}
-                            date={date}
-                            setDate={setDate}
-                            setIsOpen={props.setIsOpen}
-                        />
-                    </IonList>
-                </IonCardContent>
-            </IonContent>
-        </IonModal >
+        <>
+            <IonButton
+                class="mark-button"
+                id="open-mark-modal"
+            >
+                Mark</IonButton>
+            <IonModal
+                trigger="open-mark-modal"
+                class="mark-modal"
+                backdropDismiss={false}
+                ref={modalRef}
+            >
+                <IonContent color="light">
+                    <IonCardContent class="align-center">
+                        <IonList class="transparent">
+                            <DatePicker date={date} onChange={setDate} color={"basic"} title={"Start of last period"} />
+                            <IonItem lines="full" class="transparent">
+                                <IonLabel color="basic">Period length</IonLabel>
+                                <IonSelect
+                                    class="mark"
+                                    interfaceOptions={selectOptions}
+                                    placeholder=""
+                                    onIonChange={(ev) => {
+                                        setPeriod(Number(ev.detail.value.id));
+                                    }}
+                                >
+                                    {period_days.map((day) => (
+                                        <IonSelectOption key={day.id} value={day}>
+                                            {day.name}
+                                        </IonSelectOption>
+                                    ))}
+                                </IonSelect>
+                            </IonItem>
+                            <Buttons
+                                period={period}
+                                setPeriod={setPeriod}
+                                date={date}
+                                setDate={setDate}
+                                closeModal={closeModal}
+                            />
+                        </IonList>
+                    </IonCardContent>
+                </IonContent>
+            </IonModal>
+        </>
     );
 }
 
