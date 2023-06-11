@@ -1,10 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import {
     IonButton,
     IonModal,
     IonButtons,
     IonDatetime,
     IonIcon,
+    useIonViewDidEnter,
 } from '@ionic/react';
 import './CalendarModal.css';
 
@@ -13,17 +14,31 @@ import { calendarClear } from 'ionicons/icons';
 import { format } from 'date-fns'
 import { CyclesContext } from '../state/Context';
 
+import { App } from '@capacitor/app';
+
 import {
     useAverageLengthOfCycle,
     useAverageLengthOfPeriod,
 } from '../state/CycleInformationHooks';
 
-interface PropsCalendarModal {
-    isOpen: boolean;
-    setIsOpen: (newIsOpen: boolean) => void;
-}
+const CalendarModal = () => {
 
-const CalendarModal = (props: PropsCalendarModal) => {
+    const modalRef = useRef<HTMLIonModalElement>(null);
+    const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+
+    useIonViewDidEnter(() => {
+        const backButtonHandler = () => {
+            datetimeRef.current?.confirm();
+            modalRef.current?.dismiss(datetimeRef.current?.value, 'confirm');
+        };
+
+        App.addListener('backButton', backButtonHandler);
+
+        return () => {
+            App.removeAllListeners();
+        };
+    });
+
     const nowDate = new Date();
 
     const cycles = useContext(CyclesContext).cycles;
@@ -58,14 +73,16 @@ const CalendarModal = (props: PropsCalendarModal) => {
             <IonButton
                 class="calendar-button"
                 fill="outline"
-                onClick={() => props.setIsOpen(true)}
+                id="open-calendar-modal"
             >
                 {format(nowDate, 'eee, d MMM yyyy')}
                 <IonIcon slot="end" icon={calendarClear}></IonIcon>
             </IonButton>
             <IonModal
                 id="calendar-modal"
-                isOpen={props.isOpen}
+                backdropDismiss={true}
+                trigger="open-calendar-modal"
+                ref={modalRef}
             >
                 <IonDatetime
                     color="basic"
@@ -99,7 +116,8 @@ const CalendarModal = (props: PropsCalendarModal) => {
                         <IonButton
                             color="basic"
                             onClick={() => {
-                                props.setIsOpen(false);
+                                datetimeRef.current?.confirm();
+                                modalRef.current?.dismiss(datetimeRef.current?.value, 'confirm');
                             }}
                         >Ok</IonButton>
                     </IonButtons>
