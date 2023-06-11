@@ -42,6 +42,8 @@ import { createStore, set, get } from './data/Storage';
 import type { Cycle } from './data/ClassCycle';
 import { CyclesContext } from './state/Context';
 
+import { App } from '@capacitor/app';
+
 // import {
 //   testEmptyArray,
 //   testSingleItem,
@@ -53,7 +55,7 @@ import { CyclesContext } from './state/Context';
 
 setupIonicReact();
 
-const App: React.FC = () => {
+const PeriApp: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
 
   function updateCycles(newCycles: Cycle[]) {
@@ -85,6 +87,10 @@ const App: React.FC = () => {
       .catch((err) => console.error(`Can't get cycles ${(err as Error).message}`));
 
   }, []);
+
+  document.addEventListener('ionBackButton', () => {
+    App.exitApp();
+  });
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
@@ -134,5 +140,5 @@ const App: React.FC = () => {
   )
 };
 
-export default App;
+export default PeriApp;
 
