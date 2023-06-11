@@ -24,12 +24,10 @@ import {
 const CalendarModal = () => {
 
     const modalRef = useRef<HTMLIonModalElement>(null);
-    const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
 
     useIonViewDidEnter(() => {
         const backButtonHandler = () => {
-            datetimeRef.current?.confirm();
-            modalRef.current?.dismiss(datetimeRef.current?.value, 'confirm');
+            modalRef.current?.dismiss();
         };
 
         App.addListener('backButton', backButtonHandler);
@@ -116,8 +114,7 @@ const CalendarModal = () => {
                         <IonButton
                             color="basic"
                             onClick={() => {
-                                datetimeRef.current?.confirm();
-                                modalRef.current?.dismiss(datetimeRef.current?.value, 'confirm');
+                                modalRef.current?.dismiss();
                             }}
                         >Ok</IonButton>
                     </IonButtons>

@@ -126,9 +126,7 @@ const MarkPeriodLabel = () => {
 }
 
 const TabHome = () => {
-  const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
-  const [isCalendarModal, setIsCalendarModal] = useState(false);
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
@@ -164,10 +162,7 @@ const TabHome = () => {
             />
             <IonRow>
               <IonCol>
-                <CalendarModal
-                  isOpen={isCalendarModal}
-                  setIsOpen={setIsCalendarModal}
-                />
+                <CalendarModal />
               </IonCol>
             </IonRow>
             <IonRow>
@@ -200,11 +195,7 @@ const TabHome = () => {
                 </IonItem>
               </IonCardContent>
             </IonCard>
-            <IonButton onClick={() => setIsInfoModal(true)} class="info-button">learn more about the current state</IonButton>
-            <InfoModal
-              isOpen={isInfoModal}
-              setIsOpen={setIsInfoModal}
-            />
+            <InfoModal />
           </IonCardContent>
         </IonCard>
       </IonContent>

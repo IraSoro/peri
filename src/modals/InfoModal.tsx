@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
     IonContent,
     IonModal,
@@ -5,8 +6,11 @@ import {
     IonCard,
     IonCardHeader,
     IonCardContent,
+    useIonViewDidEnter,
 } from '@ionic/react';
 import './InfoModal.css';
+
+import { App } from '@capacitor/app';
 
 import { phases } from "../data/PhasesConst";
 
@@ -15,6 +19,7 @@ import {
     useAverageLengthOfCycle,
     useDayOfCycle,
 } from '../state/CycleInformationHooks';
+import { useHistory } from 'react-router';
 
 function usePhase() {
     const lutealPhaseLength = 14;
@@ -56,48 +61,70 @@ const SymptomsList = (props: PropsSymptoms) => {
     );
 }
 
-interface PropsInfoModal {
-    isOpen: boolean;
-    setIsOpen: (newIsOpen: boolean) => void;
-}
-
-const InfoModal = (props: PropsInfoModal) => {
+const InfoModal = () => {
     const phase = usePhase();
 
+    const history = useHistory();
+    const modalRef = useRef<HTMLIonModalElement>(null);
+
+    useIonViewDidEnter(() => {
+        const backButtonHandler = () => {
+            modalRef.current?.dismiss();
+            history.push('/home');
+        };
+
+        App.addListener('backButton', backButtonHandler);
+
+        return () => {
+            App.removeAllListeners();
+        };
+    });
+
     return (
-        <IonModal isOpen={props.isOpen}>
-            <div id="small-rectangle"></div>
-            <IonContent className="ion-padding" color="basic">
-                <div id="rectangle">
-                    <IonCard>
-                        <IonCardHeader class="info">
-                            {phase.title}
-                        </IonCardHeader>
-                        <IonCardContent style={{ textAlign: "justify" }}>
-                            {phase.description}
-                        </IonCardContent>
-                    </IonCard>
-                </div>
+        <>
+            <IonButton
+                id="open-info-modal"
+                class="info-button">
+                learn more about the current state
+            </IonButton>
+            <IonModal
+                backdropDismiss={false}
+                trigger="open-info-modal"
+                ref={modalRef}
+            >
                 <div id="small-rectangle"></div>
-                <div id="rectangle">
-                    <IonCard>
-                        <IonCardHeader class="info">
-                            Frequent symptoms
-                        </IonCardHeader>
-                        <IonCardContent style={{ textAlign: "justify" }}>
-                            <SymptomsList symptoms={phase.symptoms} />
-                        </IonCardContent>
-                    </IonCard>
-                </div>
-                <div id="small-rectangle"></div>
-                <IonButton
-                    class="ok-modal"
-                    color="dark-basic"
-                    onClick={() => props.setIsOpen(false)}>
-                    Ok
-                </IonButton>
-            </IonContent>
-        </IonModal>
+                <IonContent className="ion-padding" color="basic">
+                    <div id="rectangle">
+                        <IonCard>
+                            <IonCardHeader class="info">
+                                {phase.title}
+                            </IonCardHeader>
+                            <IonCardContent style={{ textAlign: "justify" }}>
+                                {phase.description}
+                            </IonCardContent>
+                        </IonCard>
+                    </div>
+                    <div id="small-rectangle"></div>
+                    <div id="rectangle">
+                        <IonCard>
+                            <IonCardHeader class="info">
+                                Frequent symptoms
+                            </IonCardHeader>
+                            <IonCardContent style={{ textAlign: "justify" }}>
+                                <SymptomsList symptoms={phase.symptoms} />
+                            </IonCardContent>
+                        </IonCard>
+                    </div>
+                    <div id="small-rectangle"></div>
+                    <IonButton
+                        class="ok-modal"
+                        onClick={() => modalRef.current?.dismiss()}
+                    >
+                        Ok
+                    </IonButton>
+                </IonContent>
+            </IonModal>
+        </>
     );
 };
 
