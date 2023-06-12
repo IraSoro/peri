@@ -51,7 +51,10 @@ const Welcome = (props: PropsWelcomeModal) => {
     };
 
     return (
-        <IonModal isOpen={props.isOpen}>
+        <IonModal
+            isOpen={props.isOpen}
+            backdropDismiss={false}
+        >
             <IonHeader class="ion-no-border">
                 <IonToolbar color="basic">
                     <IonTitle color="light">Welcome to Peri</IonTitle>
