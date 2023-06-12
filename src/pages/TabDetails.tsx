@@ -13,6 +13,7 @@ import {
   useLengthOfLastPeriod,
   useAverageLengthOfCycle,
   useAverageLengthOfPeriod,
+  useLastStartDate,
 } from '../state/CycleInformationHooks';
 import { useContext } from 'react';
 import { CyclesContext } from '../state/Context';
@@ -78,18 +79,18 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
 }
 
 const CurrentCycle = () => {
-  const lengthOfPeriod = useLengthOfLastPeriod();
-
   const title = useTitleLastCycle();
+  const startDate = new Date(useLastStartDate()).toLocaleDateString();
+  const lengthOfPeriod = useLengthOfLastPeriod();
   const progressBarBuffer = useProgressBarBuffer();
 
   return (
     <IonItem class="transparent-center" lines="none">
       <IonLabel position="stacked">
-        <h2>{title}</h2>
+        <h2>Current cycle: {title}</h2>
       </IonLabel>
       <IonLabel position="stacked">
-        <p>current cycle</p>
+        <p>Started {startDate}</p>
       </IonLabel>
       <IonLabel position="stacked">
         <IonProgressBar
