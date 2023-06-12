@@ -52,6 +52,5 @@ ion-button.ok-modal {
 }
 
 ion-button.ok-modal:hover {
-    border: 2px var(--ion-color-dark-basic) solid;
     border-radius: 20px;
 }

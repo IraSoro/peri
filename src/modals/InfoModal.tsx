@@ -92,6 +92,7 @@ const InfoModal = (props: PropsInfoModal) => {
                 <div id="small-rectangle"></div>
                 <IonButton
                     class="ok-modal"
+                    color="dark-basic"
                     onClick={() => props.setIsOpen(false)}>
                     Ok
                 </IonButton>

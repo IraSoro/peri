@@ -22,7 +22,6 @@ ion-button {
 }
 
 .mark-button:hover {
-    border: 2px var(--ion-color-dark-basic) solid;
     border-radius: 10px;
 }
 
