@@ -50,7 +50,3 @@ ion-button.ok-modal {
 
     transform: translateX(-40%);
 }
-
-ion-button.ok-modal:hover {
-    border-radius: 20px;
-}

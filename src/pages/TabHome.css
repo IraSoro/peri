@@ -21,10 +21,6 @@ ion-button {
     --background: var(--ion-color-opposite);
 }
 
-.mark-button:hover {
-    border-radius: 10px;
-}
-
 .info-button {
     font-size: 10px;
 
