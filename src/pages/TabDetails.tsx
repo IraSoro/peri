@@ -22,7 +22,7 @@ function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();
 
   if (!dayOfCycle) {
-    return "Cycle days"
+    return ""
   }
 
   if (dayOfCycle === "1") {
@@ -80,17 +80,21 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
 
 const CurrentCycle = () => {
   const title = useTitleLastCycle();
-  const startDate = new Date(useLastStartDate()).toLocaleDateString();
+  const startDate = useLastStartDate();
   const lengthOfPeriod = useLengthOfLastPeriod();
   const progressBarBuffer = useProgressBarBuffer();
 
   return (
     <IonItem class="transparent-center" lines="none">
       <IonLabel position="stacked">
-        <h2>Current cycle: {title}</h2>
+        {title ? <h2>Current cycle: {title}</h2> : <h2>Current cycle</h2>}
       </IonLabel>
       <IonLabel position="stacked">
-        <p>Started {startDate}</p>
+        {startDate ? (
+          <p>Started {new Date(startDate).toLocaleDateString()}</p>
+        ) : (
+          <p>Started date</p>
+        )}
       </IonLabel>
       <IonLabel position="stacked">
         <IonProgressBar
