@@ -42,8 +42,6 @@ import { createStore, set, get } from './data/Storage';
 import type { Cycle } from './data/ClassCycle';
 import { CyclesContext } from './state/Context';
 
-import { App } from '@capacitor/app';
-
 // import {
 //   testEmptyArray,
 //   testSingleItem,
@@ -87,10 +85,6 @@ const PeriApp: React.FC = () => {
       .catch((err) => console.error(`Can't get cycles ${(err as Error).message}`));
 
   }, []);
-
-  document.addEventListener('ionBackButton', () => {
-    App.exitApp();
-  });
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>

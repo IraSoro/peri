@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
     IonContent,
     IonModal,
@@ -6,7 +6,6 @@ import {
     IonCard,
     IonCardHeader,
     IonCardContent,
-    useIonViewDidEnter,
 } from '@ionic/react';
 import './InfoModal.css';
 
@@ -19,7 +18,9 @@ import {
     useAverageLengthOfCycle,
     useDayOfCycle,
 } from '../state/CycleInformationHooks';
+
 import { useHistory } from 'react-router';
+import { Capacitor } from '@capacitor/core';
 
 function usePhase() {
     const lutealPhaseLength = 14;
@@ -62,35 +63,41 @@ const SymptomsList = (props: PropsSymptoms) => {
 }
 
 const InfoModal = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
     const phase = usePhase();
-
     const history = useHistory();
-    const modalRef = useRef<HTMLIonModalElement>(null);
 
-    useIonViewDidEnter(() => {
+    useEffect(() => {
         const backButtonHandler = () => {
-            modalRef.current?.dismiss();
-            history.push('/home');
+            if (isOpen) {
+                setIsOpen(false);
+                history.push('/home');
+            } else {
+                if (Capacitor.isPluginAvailable('App') && App.exitApp) {
+                    App.exitApp();
+                }
+            }
         };
 
-        App.addListener('backButton', backButtonHandler);
+        document.addEventListener('ionBackButton', backButtonHandler);
 
         return () => {
-            App.removeAllListeners();
+            document.removeEventListener('ionBackButton', backButtonHandler);
         };
-    });
+    }, [isOpen, history]);
 
     return (
         <>
             <IonButton
-                id="open-info-modal"
+                onClick={() => setIsOpen(true)}
                 class="info-button">
                 learn more about the current state
             </IonButton>
             <IonModal
+                id="info-modal"
                 backdropDismiss={false}
-                trigger="open-info-modal"
-                ref={modalRef}
+                isOpen={isOpen}
             >
                 <div id="small-rectangle"></div>
                 <IonContent className="ion-padding" color="basic">
@@ -118,7 +125,7 @@ const InfoModal = () => {
                     <div id="small-rectangle"></div>
                     <IonButton
                         class="ok-modal"
-                        onClick={() => modalRef.current?.dismiss()}
+                        onClick={() => setIsOpen(false)}
                     >
                         Ok
                     </IonButton>
