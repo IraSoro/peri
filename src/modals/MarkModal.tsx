@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import {
     IonButton,
     IonContent,
@@ -10,7 +10,6 @@ import {
     IonSelect,
     IonSelectOption,
     IonCardContent,
-    useIonViewDidEnter,
 } from '@ionic/react';
 import './MarkModal.css';
 
@@ -19,8 +18,6 @@ import { period_days } from '../data/SelectConst'
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 
 import { CyclesContext } from '../state/Context';
-
-import { App } from '@capacitor/app';
 
 interface PropsButton {
     period: number;
@@ -109,27 +106,19 @@ const Buttons = (props: PropsButton) => {
     );
 };
 
-const MarkModal = () => {
+interface PropsMarkModal {
+    isOpen: boolean;
+    setIsOpen: (newIsOpen: boolean) => void;
+}
+
+const MarkModal = (props: PropsMarkModal) => {
     const [date, setDate] = useState("");
     const [period, setPeriod] = useState(0);
 
-    const modalRef = useRef<HTMLIonModalElement>(null);
     const closeModal = () => {
-        modalRef.current?.dismiss();
+        props.setIsOpen(false);
         setDate("");
     };
-
-    useIonViewDidEnter(() => {
-        const backButtonHandler = () => {
-            modalRef.current?.dismiss();
-        };
-
-        App.addListener('backButton', backButtonHandler);
-
-        return () => {
-            App.removeAllListeners();
-        };
-    });
 
     const selectOptions = {
         cssClass: "mark-select-header",
@@ -139,14 +128,13 @@ const MarkModal = () => {
         <>
             <IonButton
                 class="mark-button"
-                id="open-mark-modal"
+                onClick={() => props.setIsOpen(true)}
             >
                 Mark</IonButton>
             <IonModal
-                trigger="open-mark-modal"
                 class="mark-modal"
                 backdropDismiss={false}
-                ref={modalRef}
+                isOpen={props.isOpen}
             >
                 <IonContent color="light">
                     <IonCardContent class="align-center">

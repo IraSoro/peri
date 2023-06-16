@@ -27,6 +27,10 @@ import {
 
 import { get } from '../data/Storage';
 
+import { useHistory } from 'react-router';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
 function useOvulationStatus(): string {
@@ -98,11 +102,16 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
 
 const TabHome = () => {
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [isInfoModal, setIsInfoModal] = useState(false);
+  const [isCalendarModal, setIsCalendarModal] = useState(false);
+  const [isMarkModal, setIsMarkModal] = useState(false);
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
   const pregnancyChance = usePregnancyChance();
   const daysBeforePeriod = useDaysBeforePeriod();
+
+  const history = useHistory();
 
   useEffect(() => {
     get("cycles")
@@ -111,7 +120,29 @@ const TabHome = () => {
         setIsWelcomeModal(true);
       });
 
-  }, []);
+    const backButtonHandler = () => {
+      if (isCalendarModal) {
+        setIsCalendarModal(false);
+        history.push('/home');
+      } else if (isInfoModal) {
+        setIsInfoModal(false);
+        history.push('/home');
+      } else if (isMarkModal) {
+        setIsMarkModal(false);
+        history.push('/home');
+      } else {
+        if (Capacitor.isPluginAvailable('App') && App.exitApp) {
+          App.exitApp();
+        }
+      }
+    };
+
+    document.addEventListener('ionBackButton', backButtonHandler);
+
+    return () => {
+      document.removeEventListener('ionBackButton', backButtonHandler);
+    };
+  }, [history, isInfoModal, isCalendarModal, isMarkModal]);
 
   const p_style = {
     fontSize: "10px" as const,
@@ -134,7 +165,7 @@ const TabHome = () => {
             />
             <IonRow>
               <IonCol>
-                <CalendarModal />
+                <CalendarModal isOpen={isCalendarModal} setIsOpen={setIsCalendarModal} />
               </IonCol>
             </IonRow>
             <IonRow>
@@ -149,7 +180,7 @@ const TabHome = () => {
                   <IonLabel style={{ textAlign: "center" }} color="dark-basic">
                     <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
                   </IonLabel>
-                  <MarkModal />
+                  <MarkModal isOpen={isMarkModal} setIsOpen={setIsMarkModal} />
                 </div>
               </IonCol>
             </IonRow>
@@ -175,7 +206,7 @@ const TabHome = () => {
                 </IonItem>
               </IonCardContent>
             </IonCard>
-            <InfoModal />
+            <InfoModal isOpen={isInfoModal} setIsOpen={setIsInfoModal} />
           </IonCardContent>
         </IonCard>
       </IonContent>

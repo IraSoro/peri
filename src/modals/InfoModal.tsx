@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
     IonContent,
     IonModal,
@@ -9,8 +8,6 @@ import {
 } from '@ionic/react';
 import './InfoModal.css';
 
-import { App } from '@capacitor/app';
-
 import { phases } from "../data/PhasesConst";
 
 import {
@@ -18,9 +15,6 @@ import {
     useAverageLengthOfCycle,
     useDayOfCycle,
 } from '../state/CycleInformationHooks';
-
-import { useHistory } from 'react-router';
-import { Capacitor } from '@capacitor/core';
 
 function usePhase() {
     const lutealPhaseLength = 14;
@@ -62,42 +56,25 @@ const SymptomsList = (props: PropsSymptoms) => {
     );
 }
 
-const InfoModal = () => {
-    const [isOpen, setIsOpen] = useState(false);
+interface PropsInfoModal {
+    isOpen: boolean;
+    setIsOpen: (newIsOpen: boolean) => void;
+}
 
+const InfoModal = (props: PropsInfoModal) => {
     const phase = usePhase();
-    const history = useHistory();
-
-    useEffect(() => {
-        const backButtonHandler = () => {
-            if (isOpen) {
-                setIsOpen(false);
-                history.push('/home');
-            } else {
-                if (Capacitor.isPluginAvailable('App') && App.exitApp) {
-                    App.exitApp();
-                }
-            }
-        };
-
-        document.addEventListener('ionBackButton', backButtonHandler);
-
-        return () => {
-            document.removeEventListener('ionBackButton', backButtonHandler);
-        };
-    }, [isOpen, history]);
 
     return (
         <>
             <IonButton
-                onClick={() => setIsOpen(true)}
+                onClick={() => props.setIsOpen(true)}
                 class="info-button">
                 learn more about the current state
             </IonButton>
             <IonModal
                 id="info-modal"
                 backdropDismiss={false}
-                isOpen={isOpen}
+                isOpen={props.isOpen}
             >
                 <div id="small-rectangle"></div>
                 <IonContent className="ion-padding" color="basic">
@@ -125,7 +102,7 @@ const InfoModal = () => {
                     <div id="small-rectangle"></div>
                     <IonButton
                         class="ok-modal"
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => props.setIsOpen(false)}
                     >
                         Ok
                     </IonButton>
