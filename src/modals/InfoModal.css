@@ -43,10 +43,7 @@ ion-button.ok-modal {
     width: 30%;
     height: 10%;
 
-    --background: var(--ion-color-opposite);
     --border-radius: 20px;
-    --box-shadow: none;
-    --color: var(--ion-color-dark-basic);
 
     transform: translateX(-40%);
 }

@@ -17,8 +17,6 @@ ion-button {
 
 .mark-button {
     --border-radius: 10px;
-    --color: var(--ion-color-dark-basic);
-    --background: var(--ion-color-opposite);
 }
 
 .info-button {
