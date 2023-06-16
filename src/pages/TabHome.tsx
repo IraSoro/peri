@@ -119,7 +119,9 @@ const TabHome = () => {
         console.error(`Can't get cycles ${(err as Error).message}`);
         setIsWelcomeModal(true);
       });
+  }, []);
 
+  useEffect(() => {
     const backButtonHandler = () => {
       if (isCalendarModal) {
         setIsCalendarModal(false);
