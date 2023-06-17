@@ -109,9 +109,12 @@ const MarkPeriodLabel = () => {
       <IonLabel style={{ textAlign: "center" }} color="dark-basic">
         <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
       </IonLabel>
-      <IonButton class="mark-button" onClick={() => {
-        setIsMarkModal(true);
-      }}
+      <IonButton
+        class="mark-button"
+        color="dark-basic"
+        onClick={() => {
+          setIsMarkModal(true);
+        }}
       >
         Mark</IonButton>
       <MarkModal

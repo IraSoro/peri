@@ -17,13 +17,6 @@ ion-button {
 
 .mark-button {
     --border-radius: 10px;
-    --color: var(--ion-color-dark-basic);
-    --background: var(--ion-color-opposite);
-}
-
-.mark-button:hover {
-    border: 2px var(--ion-color-dark-basic) solid;
-    border-radius: 10px;
 }
 
 .info-button {
