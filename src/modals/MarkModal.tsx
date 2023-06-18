@@ -128,6 +128,7 @@ const MarkModal = (props: PropsMarkModal) => {
         <>
             <IonButton
                 class="mark-button"
+                color="dark-basic"
                 onClick={() => props.setIsOpen(true)}
             >
                 Mark</IonButton>
