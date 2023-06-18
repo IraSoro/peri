@@ -67,8 +67,8 @@ const InfoModal = (props: PropsInfoModal) => {
     return (
         <>
             <IonButton
-                onClick={() => props.setIsOpen(true)}
-                class="info-button">
+                class="info-button"
+                onClick={() => props.setIsOpen(true)}>
                 learn more about the current state
             </IonButton>
             <IonModal

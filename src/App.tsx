@@ -53,7 +53,7 @@ import { CyclesContext } from './state/Context';
 
 setupIonicReact();
 
-const PeriApp: React.FC = () => {
+const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
 
   function updateCycles(newCycles: Cycle[]) {
@@ -134,5 +134,5 @@ const PeriApp: React.FC = () => {
   )
 };
 
-export default PeriApp;
+export default App;
 

@@ -9,27 +9,24 @@ import {
   IonLabel,
   IonRow,
   IonCol,
+  useIonRouter,
 } from '@ionic/react';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+
 import './TabHome.css';
-
-import Welcome from '../modals/WelcomeModal';
-import MarkModal from '../modals/MarkModal';
-import InfoModal from '../modals/InfoModal';
-import CalendarModal from '../modals/CalendarModal';
-
 import uterus from '../assets/uterus.svg';
-
 import {
   useDayOfCycle,
   useLastStartDate,
   useAverageLengthOfCycle,
 } from '../state/CycleInformationHooks';
-
 import { get } from '../data/Storage';
 
-import { useHistory } from 'react-router';
-import { App } from '@capacitor/app';
-import { Capacitor } from '@capacitor/core';
+import Welcome from '../modals/WelcomeModal';
+import MarkModal from '../modals/MarkModal';
+import InfoModal from '../modals/InfoModal';
+import CalendarModal from '../modals/CalendarModal';
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -101,17 +98,17 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
 }
 
 const TabHome = () => {
-  const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isInfoModal, setIsInfoModal] = useState(false);
+  const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isCalendarModal, setIsCalendarModal] = useState(false);
   const [isMarkModal, setIsMarkModal] = useState(false);
+
+  const router = useIonRouter();
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
   const pregnancyChance = usePregnancyChance();
   const daysBeforePeriod = useDaysBeforePeriod();
-
-  const history = useHistory();
 
   useEffect(() => {
     get("cycles")
@@ -123,20 +120,17 @@ const TabHome = () => {
 
   useEffect(() => {
     const backButtonHandler = () => {
-      if (isCalendarModal) {
+      if (isCalendarModal || isMarkModal || isInfoModal) {
         setIsCalendarModal(false);
-        history.push('/home');
-      } else if (isInfoModal) {
-        setIsInfoModal(false);
-        history.push('/home');
-      } else if (isMarkModal) {
         setIsMarkModal(false);
-        history.push('/home');
-      } else {
-        if (Capacitor.isPluginAvailable('App') && App.exitApp) {
-          App.exitApp();
-        }
+        setIsInfoModal(false);
+        router.push("/home");
+        return;
       }
+      if (!Capacitor.isPluginAvailable("App")) {
+        return;
+      }
+      App.exitApp?.();
     };
 
     document.addEventListener('ionBackButton', backButtonHandler);
@@ -144,7 +138,7 @@ const TabHome = () => {
     return () => {
       document.removeEventListener('ionBackButton', backButtonHandler);
     };
-  }, [history, isInfoModal, isCalendarModal, isMarkModal]);
+  }, [router, isInfoModal, isCalendarModal, isMarkModal]);
 
   const p_style = {
     fontSize: "10px" as const,
@@ -167,7 +161,10 @@ const TabHome = () => {
             />
             <IonRow>
               <IonCol>
-                <CalendarModal isOpen={isCalendarModal} setIsOpen={setIsCalendarModal} />
+                <CalendarModal
+                  isOpen={isCalendarModal}
+                  setIsOpen={setIsCalendarModal}
+                />
               </IonCol>
             </IonRow>
             <IonRow>
@@ -208,7 +205,10 @@ const TabHome = () => {
                 </IonItem>
               </IonCardContent>
             </IonCard>
-            <InfoModal isOpen={isInfoModal} setIsOpen={setIsInfoModal} />
+            <InfoModal
+              isOpen={isInfoModal}
+              setIsOpen={setIsInfoModal}
+            />
           </IonCardContent>
         </IonCard>
       </IonContent>
