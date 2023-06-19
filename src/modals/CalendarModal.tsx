@@ -66,6 +66,7 @@ const CalendarModal = (props: PropsCalendarModal) => {
             <IonModal
                 id="calendar-modal"
                 isOpen={props.isOpen}
+                backdropDismiss={false}
             >
                 <IonDatetime
                     color="basic"

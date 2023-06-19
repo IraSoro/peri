@@ -65,39 +65,51 @@ const InfoModal = (props: PropsInfoModal) => {
     const phase = usePhase();
 
     return (
-        <IonModal isOpen={props.isOpen}>
-            <div id="small-rectangle"></div>
-            <IonContent className="ion-padding" color="basic">
-                <div id="rectangle">
-                    <IonCard>
-                        <IonCardHeader class="info">
-                            {phase.title}
-                        </IonCardHeader>
-                        <IonCardContent style={{ textAlign: "justify" }}>
-                            {phase.description}
-                        </IonCardContent>
-                    </IonCard>
-                </div>
+        <>
+            <IonButton
+                class="info-button"
+                onClick={() => props.setIsOpen(true)}>
+                learn more about the current state
+            </IonButton>
+            <IonModal
+                id="info-modal"
+                backdropDismiss={false}
+                isOpen={props.isOpen}
+            >
                 <div id="small-rectangle"></div>
-                <div id="rectangle">
-                    <IonCard>
-                        <IonCardHeader class="info">
-                            Frequent symptoms
-                        </IonCardHeader>
-                        <IonCardContent style={{ textAlign: "justify" }}>
-                            <SymptomsList symptoms={phase.symptoms} />
-                        </IonCardContent>
-                    </IonCard>
-                </div>
-                <div id="small-rectangle"></div>
-                <IonButton
-                    class="ok-modal"
-                    color="dark-basic"
-                    onClick={() => props.setIsOpen(false)}>
-                    Ok
-                </IonButton>
-            </IonContent>
-        </IonModal>
+                <IonContent className="ion-padding" color="basic">
+                    <div id="rectangle">
+                        <IonCard>
+                            <IonCardHeader class="info">
+                                {phase.title}
+                            </IonCardHeader>
+                            <IonCardContent style={{ textAlign: "justify" }}>
+                                {phase.description}
+                            </IonCardContent>
+                        </IonCard>
+                    </div>
+                    <div id="small-rectangle"></div>
+                    <div id="rectangle">
+                        <IonCard>
+                            <IonCardHeader class="info">
+                                Frequent symptoms
+                            </IonCardHeader>
+                            <IonCardContent style={{ textAlign: "justify" }}>
+                                <SymptomsList symptoms={phase.symptoms} />
+                            </IonCardContent>
+                        </IonCard>
+                    </div>
+                    <div id="small-rectangle"></div>
+                    <IonButton
+                        class="ok-modal"
+                        color="dark-basic"
+                        onClick={() => props.setIsOpen(false)}
+                    >
+                        Ok
+                    </IonButton>
+                </IonContent>
+            </IonModal>
+        </>
     );
 };
 

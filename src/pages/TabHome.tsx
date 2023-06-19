@@ -9,24 +9,24 @@ import {
   IonLabel,
   IonRow,
   IonCol,
-  IonButton,
+  useIonRouter,
 } from '@ionic/react';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+
 import './TabHome.css';
-
-import Welcome from '../modals/WelcomeModal';
-import MarkModal from '../modals/MarkModal';
-import InfoModal from '../modals/InfoModal';
-import CalendarModal from '../modals/CalendarModal';
-
 import uterus from '../assets/uterus.svg';
-
 import {
   useDayOfCycle,
   useLastStartDate,
   useAverageLengthOfCycle,
 } from '../state/CycleInformationHooks';
-
 import { get } from '../data/Storage';
+
+import Welcome from '../modals/WelcomeModal';
+import MarkModal from '../modals/MarkModal';
+import InfoModal from '../modals/InfoModal';
+import CalendarModal from '../modals/CalendarModal';
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -97,42 +97,18 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   };
 }
 
-const MarkPeriodLabel = () => {
-  const [isMarkModal, setIsMarkModal] = useState(false);
-  const daysBeforePeriod = useDaysBeforePeriod();
-
-  return (
-    <div>
-      <IonLabel style={{ textAlign: "center" }}>
-        <h2>{daysBeforePeriod.title}</h2>
-      </IonLabel>
-      <IonLabel style={{ textAlign: "center" }} color="dark-basic">
-        <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
-      </IonLabel>
-      <IonButton
-        class="mark-button"
-        color="dark-basic"
-        onClick={() => {
-          setIsMarkModal(true);
-        }}
-      >
-        Mark</IonButton>
-      <MarkModal
-        isOpen={isMarkModal}
-        setIsOpen={setIsMarkModal}
-      />
-    </div>
-  );
-}
-
 const TabHome = () => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isCalendarModal, setIsCalendarModal] = useState(false);
+  const [isMarkModal, setIsMarkModal] = useState(false);
+
+  const router = useIonRouter();
 
   const dayOfCycle = useDayOfCycle();
   const ovulationStatus = useOvulationStatus();
   const pregnancyChance = usePregnancyChance();
+  const daysBeforePeriod = useDaysBeforePeriod();
 
   useEffect(() => {
     get("cycles")
@@ -140,8 +116,29 @@ const TabHome = () => {
         console.error(`Can't get cycles ${(err as Error).message}`);
         setIsWelcomeModal(true);
       });
-
   }, []);
+
+  useEffect(() => {
+    const backButtonHandler = () => {
+      if (isCalendarModal || isMarkModal || isInfoModal) {
+        setIsCalendarModal(false);
+        setIsMarkModal(false);
+        setIsInfoModal(false);
+        router.push("/home");
+        return;
+      }
+      if (!Capacitor.isPluginAvailable("App")) {
+        return;
+      }
+      App.exitApp?.();
+    };
+
+    document.addEventListener('ionBackButton', backButtonHandler);
+
+    return () => {
+      document.removeEventListener('ionBackButton', backButtonHandler);
+    };
+  }, [router, isInfoModal, isCalendarModal, isMarkModal]);
 
   const p_style = {
     fontSize: "10px" as const,
@@ -175,7 +172,15 @@ const TabHome = () => {
                 <IonImg src={uterus} />
               </IonCol>
               <IonCol>
-                <MarkPeriodLabel />
+                <div>
+                  <IonLabel style={{ textAlign: "center" }}>
+                    <h2>{daysBeforePeriod.title}</h2>
+                  </IonLabel>
+                  <IonLabel style={{ textAlign: "center" }} color="dark-basic">
+                    <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
+                  </IonLabel>
+                  <MarkModal isOpen={isMarkModal} setIsOpen={setIsMarkModal} />
+                </div>
               </IonCol>
             </IonRow>
             <IonCard color="basic">
@@ -200,7 +205,6 @@ const TabHome = () => {
                 </IonItem>
               </IonCardContent>
             </IonCard>
-            <IonButton onClick={() => setIsInfoModal(true)} class="info-button">learn more about the current state</IonButton>
             <InfoModal
               isOpen={isInfoModal}
               setIsOpen={setIsInfoModal}
