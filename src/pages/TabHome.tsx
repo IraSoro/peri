@@ -21,7 +21,8 @@ import {
   useLastStartDate,
   useAverageLengthOfCycle,
 } from '../state/CycleInformationHooks';
-import { get } from '../data/Storage';
+
+import { storage } from '../data/Storage'; 
 
 import Welcome from '../modals/WelcomeModal';
 import MarkModal from '../modals/MarkModal';
@@ -111,7 +112,7 @@ const TabHome = () => {
   const daysBeforePeriod = useDaysBeforePeriod();
 
   useEffect(() => {
-    get("cycles")
+    storage.get.cycles()
       .catch((err) => {
         console.error(`Can't get cycles ${(err as Error).message}`);
         setIsWelcomeModal(true);

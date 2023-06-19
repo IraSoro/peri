@@ -37,50 +37,28 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import { createStore, set, get } from './data/Storage';
+import { storage } from './data/Storage';
 
 import type { Cycle } from './data/ClassCycle';
 import { CyclesContext } from './state/Context';
-
-// import {
-//   testEmptyArray,
-//   testSingleItem,
-//   testHalfOfArray,
-//   testFullArray,
-//   testDelaySingleItem,
-//   testDelayOfFullArray
-// } from './tests/Tests'
 
 setupIonicReact();
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
 
-  function updateCycles(newCycles: Cycle[]) {
+  async function updateCycles(newCycles: Cycle[]) {
     const maxOfCycles = 7;
     if (newCycles.length > maxOfCycles) {
       newCycles.splice(maxOfCycles);
     }
     setCycles(newCycles);
-    set("cycles", newCycles);
+    await storage.set.cycles(newCycles);
   }
 
   useEffect(() => {
 
-    const setupStore = () => {
-      createStore("PeriodDB");
-    }
-    setupStore();
-
-    // tests:
-    // testEmptyArray();
-    // testSingleItem();
-    // testHalfOfArray();
-    // testFullArray();
-    // testDelaySingleItem();
-    // testDelayOfFullArray();
-
-    get("cycles")
+    storage.get.cycles()
       .then(setCycles)
       .catch((err) => console.error(`Can't get cycles ${(err as Error).message}`));
 
