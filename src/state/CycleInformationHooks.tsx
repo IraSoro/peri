@@ -1,8 +1,6 @@
 import { useContext } from 'react';
 import { CyclesContext } from './Context';
 
-const millisecondsInDay = 24 * 60 * 60 * 1000;
-
 export function useLastStartDate(): string {
     const cycles = useContext(CyclesContext).cycles;
 
@@ -23,9 +21,9 @@ export function useDayOfCycle(): string {
     const start = new Date(startDate);
     const currentDate = new Date();
 
-    const diff = new Date(currentDate.getTime() - start.getTime());
+    const diff = currentDate.getDay() - start.getDay() + 1;
 
-    return Math.ceil(diff.getTime() / millisecondsInDay).toString();
+    return diff.toString();
 }
 
 export function useAverageLengthOfCycle(): number {
