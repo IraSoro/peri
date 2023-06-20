@@ -21,11 +21,13 @@ export function useDayOfCycle(): string {
     }
 
     const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
     const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
 
-    const diff = new Date(currentDate.getTime() - start.getTime());
+    const diff = Math.ceil((currentDate.getTime() - start.getTime()) / millisecondsInDay) + 1;
 
-    return Math.ceil(diff.getTime() / millisecondsInDay).toString();
+    return diff.toString();
 }
 
 export function useAverageLengthOfCycle(): number {
