@@ -1,23 +1,17 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef } from 'react';
 import {
     IonButton,
-    IonContent,
-    IonItem,
-    IonList,
-    IonLabel,
     IonModal,
+    IonDatetime,
+    IonButtons,
     useIonAlert,
-    IonSelect,
-    IonSelectOption,
-    IonCardContent,
 } from '@ionic/react';
 import './MarkModal.css';
 
-import { period_days } from '../data/SelectConst'
-
-import { DatePicker } from '@IraSoro/ionic-datetime-picker'
-
 import { CyclesContext } from '../state/Context';
+import {
+    useAverageLengthOfPeriod
+} from '../state/CycleInformationHooks';
 
 interface PropsButton {
     period: number;
@@ -112,17 +106,46 @@ interface PropsMarkModal {
 }
 
 const MarkModal = (props: PropsMarkModal) => {
-    const [date, setDate] = useState("");
-    const [period, setPeriod] = useState(0);
+    const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+    const cycles = useContext(CyclesContext).cycles;
+    const lengthOfPeriod = useAverageLengthOfPeriod();
 
-    const closeModal = () => {
-        props.setIsOpen(false);
-        setDate("");
-    };
+    const nowDate = new Date();
+    nowDate.setHours(0, 0, 0, 0);
 
-    const selectOptions = {
-        cssClass: "mark-select-header",
-    };
+    const nextCycleFinish: Date = new Date();
+    nextCycleFinish.setDate(nowDate.getDate() + lengthOfPeriod);
+    nextCycleFinish.setHours(0, 0, 0, 0);
+
+    const tNowDate = nowDate.getTime();
+    const tNextCycleFinish = nextCycleFinish.getTime();
+
+    function isLastPeriodDay(date: Date) {
+        date.setHours(0, 0, 0, 0);
+
+        for (let i = 0; i < cycles.length; ++i) {
+            const cycleStart: Date = new Date(cycles[i].startDate);
+            const cycleFinish: Date = new Date(cycles[i].startDate);
+            cycleFinish.setDate(cycleFinish.getDate() + cycles[i].periodLength);
+
+            if (date >= cycleStart && date < cycleFinish) {
+                return true;
+            }
+        };
+
+        return false;
+    }
+
+    function isNextPeriodDay(date: Date) {
+        date.setHours(0, 0, 0, 0);
+        const tDate = date.getTime();
+
+        if (tDate >= tNowDate && tDate < tNextCycleFinish) {
+            return true;
+        }
+
+        return false;
+    }
 
     return (
         <>
@@ -137,38 +160,63 @@ const MarkModal = (props: PropsMarkModal) => {
                 backdropDismiss={false}
                 isOpen={props.isOpen}
             >
-                <IonContent color="light">
-                    <IonCardContent class="align-center">
-                        <IonList class="transparent">
-                            <DatePicker date={date} onChange={setDate} color={"basic"} title={"Start of last period"} />
-                            <IonItem lines="full" class="transparent">
-                                <IonLabel color="basic">Period length</IonLabel>
-                                <IonSelect
-                                    class="mark"
-                                    interfaceOptions={selectOptions}
-                                    placeholder=""
-                                    onIonChange={(ev) => {
-                                        setPeriod(Number(ev.detail.value.id));
-                                    }}
-                                >
-                                    {period_days.map((day) => (
-                                        <IonSelectOption key={day.id} value={day}>
-                                            {day.name}
-                                        </IonSelectOption>
-                                    ))}
-                                </IonSelect>
-                            </IonItem>
-                            <Buttons
-                                period={period}
-                                setPeriod={setPeriod}
-                                date={date}
-                                setDate={setDate}
-                                closeModal={closeModal}
-                            />
-                        </IonList>
-                    </IonCardContent>
-                </IonContent>
-            </IonModal>
+                <IonDatetime
+                    ref={datetimeRef}
+                    color="dark-basic"
+                    presentation="date"
+                    locale="en-GB"
+                    size="cover"
+                    preferWheel={false}
+                    multiple={true}
+                    firstDayOfWeek={1}
+                    showDefaultButtons={true}
+                    value=""
+                    onIonChange={(ev) => {
+                        console.log("ev = ", ev.detail.value);
+                    }}
+                    onIonFocus={() => { }}
+
+
+                    highlightedDates={(isoString) => {
+                        if (cycles.length === 0) {
+                            return undefined;
+                        }
+
+                        const date = new Date(isoString);
+
+                        if (isLastPeriodDay(date)) {
+                            return {
+                                textColor: 'var(--ion-color-light)',
+                                backgroundColor: 'var(--ion-color-dark-basic)',
+                            };
+                        } else if (isNextPeriodDay(date)) {
+                            return {
+                                textColor: 'var(--ion-color-dark)',
+                                backgroundColor: 'var(--ion-color-basic)',
+                            };
+                        }
+
+                        return undefined;
+                    }}
+                >
+                    <IonButtons slot="buttons">
+                        <IonButton
+                            color="basic"
+                            onClick={() => {
+                                datetimeRef.current?.cancel();
+                                props.setIsOpen(false);
+                            }}
+                        >Cancel</IonButton>
+                        <IonButton
+                            color="basic"
+                            onClick={() => {
+                                datetimeRef.current?.confirm();
+                                props.setIsOpen(false);
+                            }}
+                        >OK</IonButton>
+                    </IonButtons>
+                </IonDatetime>
+            </IonModal >
         </>
     );
 }
