@@ -147,6 +147,20 @@ const MarkModal = (props: PropsMarkModal) => {
         return false;
     }
 
+    const isEnabled = (dateString: string) => {
+        if (cycles.length === 0) {
+            return true;
+        }
+        const date = new Date(dateString);
+        date.setHours(0, 0, 0, 0);
+
+        const lastCycleFinish: Date = new Date(cycles[0].startDate);
+        lastCycleFinish.setDate(lastCycleFinish.getDate() + cycles[0].periodLength);
+        lastCycleFinish.setHours(0, 0, 0, 0);
+
+        return date.getTime() > lastCycleFinish.getTime();
+    };
+
     return (
         <>
             <IonButton
@@ -170,6 +184,7 @@ const MarkModal = (props: PropsMarkModal) => {
                     multiple={true}
                     firstDayOfWeek={1}
                     showDefaultButtons={true}
+                    isDateEnabled={isEnabled}
                     value=""
                     onIonChange={(ev) => {
                         console.log("ev = ", ev.detail.value);
