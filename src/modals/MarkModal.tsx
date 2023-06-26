@@ -13,6 +13,8 @@ import {
     useAverageLengthOfPeriod
 } from '../state/CycleInformationHooks';
 
+import { format } from 'date-fns'
+
 interface PropsButton {
     period: number;
     setPeriod: (newPeriod: number) => void;
@@ -117,9 +119,6 @@ const MarkModal = (props: PropsMarkModal) => {
     nextCycleFinish.setDate(nowDate.getDate() + lengthOfPeriod);
     nextCycleFinish.setHours(0, 0, 0, 0);
 
-    const tNowDate = nowDate.getTime();
-    const tNextCycleFinish = nextCycleFinish.getTime();
-
     function isLastPeriodDay(date: Date) {
         date.setHours(0, 0, 0, 0);
 
@@ -136,15 +135,16 @@ const MarkModal = (props: PropsMarkModal) => {
         return false;
     }
 
-    function isNextPeriodDay(date: Date) {
-        date.setHours(0, 0, 0, 0);
-        const tDate = date.getTime();
+    function nextPeriodDays() {
+        let periodDates = [format(nowDate, 'yyyy-MM-dd')];
 
-        if (tDate >= tNowDate && tDate < tNextCycleFinish) {
-            return true;
+        for (let i = 1; i < lengthOfPeriod; ++i) {
+            const nextPeriodDay: Date = new Date();
+            nextPeriodDay.setHours(0, 0, 0, 0);
+            nextPeriodDay.setDate(nextPeriodDay.getDate() + i);
+            periodDates.push(format(nextPeriodDay, 'yyyy-MM-dd'));
         }
-
-        return false;
+        return periodDates;
     }
 
     const isEnabled = (dateString: string) => {
@@ -185,12 +185,20 @@ const MarkModal = (props: PropsMarkModal) => {
                     firstDayOfWeek={1}
                     showDefaultButtons={true}
                     isDateEnabled={isEnabled}
-                    value=""
-                    onIonChange={(ev) => {
-                        console.log("ev = ", ev.detail.value);
-                    }}
-                    onIonFocus={() => { }}
+                    showDefaultTitle={true}
+                    value={nextPeriodDays()}
 
+                    titleSelectedDatesFormatter={((selectedDates: string[]) => {
+                        if (selectedDates.length === 0) {
+                            return "select date range";
+                        }
+
+                        selectedDates.sort();
+                        const startPeriod = new Date(selectedDates[0]);
+                        const finishPeriod = new Date(selectedDates[selectedDates.length - 1]);
+
+                        return `${format(startPeriod, "d MMM")} - ${format(finishPeriod, "d MMM")}`;
+                    })}
 
                     highlightedDates={(isoString) => {
                         if (cycles.length === 0) {
@@ -203,11 +211,6 @@ const MarkModal = (props: PropsMarkModal) => {
                             return {
                                 textColor: 'var(--ion-color-light)',
                                 backgroundColor: 'var(--ion-color-dark-basic)',
-                            };
-                        } else if (isNextPeriodDay(date)) {
-                            return {
-                                textColor: 'var(--ion-color-dark)',
-                                backgroundColor: 'var(--ion-color-basic)',
                             };
                         }
 
@@ -228,7 +231,7 @@ const MarkModal = (props: PropsMarkModal) => {
                                 datetimeRef.current?.confirm();
                                 props.setIsOpen(false);
                             }}
-                        >OK</IonButton>
+                        >Save</IonButton>
                     </IonButtons>
                 </IonDatetime>
             </IonModal >
