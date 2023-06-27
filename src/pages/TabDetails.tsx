@@ -186,9 +186,9 @@ const TabDetails = () => {
             </IonLabel>
           </div>
         </div>
-        <div id="rectangle-bottom">
+        <div>
         <IonButton
-            color="light"
+            color="dark-basic"
             onClick={() => {
               importConfig()
                 .then((config) => {
@@ -218,7 +218,7 @@ const TabDetails = () => {
             Import
           </IonButton>
           <IonButton
-            color="light"
+            color="dark-basic"
             disabled={averageLengthOfCycle === 0}
             onClick={() => {
               storage.get.cycles()
@@ -236,6 +236,8 @@ const TabDetails = () => {
             <IonIcon slot="start" icon={cloudUploadOutline} />
             Export
           </IonButton>
+        </div>
+        <div id="rectangle-bottom">
           <IonList class="transparent-center">
             <CurrentCycle />
             <ListProgress />
