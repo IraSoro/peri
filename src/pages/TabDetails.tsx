@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
   IonContent,
   IonPage,
@@ -5,7 +6,11 @@ import {
   IonProgressBar,
   IonItem,
   IonList,
+  IonButton,
+  IonIcon,
+  useIonAlert,
 } from '@ionic/react';
+import { cloudDownloadOutline, cloudUploadOutline } from "ionicons/icons";
 import './TabDetails.css';
 
 import {
@@ -15,8 +20,9 @@ import {
   useAverageLengthOfPeriod,
   useLastStartDate,
 } from '../state/CycleInformationHooks';
-import { useContext } from 'react';
 import { CyclesContext } from '../state/Context';
+import { exportConfig, importConfig } from '../data/Config';
+import { storage } from '../data/Storage';
 
 function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();
@@ -147,8 +153,13 @@ const ListProgress = () => {
 }
 
 const TabDetails = () => {
-  const lengthOfCycle = `${useAverageLengthOfCycle()} Days`;
+  const [confirmAlert] = useIonAlert();
+
+  const averageLengthOfCycle = useAverageLengthOfCycle();
+  const lengthOfCycle = `${averageLengthOfCycle} Days`;
   const lengthOfPeriod = `${useAverageLengthOfPeriod()} Days`;
+
+  const updateCycles = useContext(CyclesContext).updateCycles;
 
   const p_style = {
     fontSize: "10px" as const,
@@ -176,6 +187,55 @@ const TabDetails = () => {
           </div>
         </div>
         <div id="rectangle-bottom">
+        <IonButton
+            color="light"
+            onClick={() => {
+              importConfig()
+                .then((config) => {
+                    storage.set.cycles(config.cycles)
+                      .then(() => {
+                          updateCycles(config.cycles);
+
+                          confirmAlert({
+                              header: "Configuration has been imported",
+                              cssClass: "header-color",
+                              buttons: [{
+                                  text: "OK",
+                                  role: "confirm",
+                              }],
+                          });
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                    });
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            }}
+          >
+            <IonIcon slot="start" icon={cloudDownloadOutline} />
+            Import
+          </IonButton>
+          <IonButton
+            color="light"
+            disabled={averageLengthOfCycle === 0}
+            onClick={() => {
+              storage.get.cycles()
+                .then((cycles) => {
+                    exportConfig({ cycles })
+                      .catch((err) => {
+                          console.error(err);
+                      });
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            }}
+          >
+            <IonIcon slot="start" icon={cloudUploadOutline} />
+            Export
+          </IonButton>
           <IonList class="transparent-center">
             <CurrentCycle />
             <ListProgress />

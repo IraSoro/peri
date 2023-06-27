@@ -16,13 +16,17 @@ import {
     IonTitle,
     IonHeader,
     IonToolbar,
+    IonIcon,
 } from '@ionic/react';
+import { cloudDownloadOutline } from 'ionicons/icons';
 import './WelcomeModal.css';
 
 import { cycle_days, period_days } from '../data/SelectConst'
 
 import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 import type { Cycle } from '../data/ClassCycle';
+import { importConfig } from '../data/Config';
+import { storage } from '../data/Storage';
 
 import { CyclesContext } from '../state/Context';
 
@@ -109,6 +113,43 @@ const Welcome = (props: PropsWelcomeModal) => {
                             </IonItem>
                         </IonList>
                     </IonCardContent>
+                    <IonCol>
+                        or
+                    </IonCol>
+                    <IonCol>
+                        <IonButton
+                            color="dark-basic"
+                            onClick={() => {
+                                importConfig()
+                                    .then((config) => {
+                                        storage.set.cycles(config.cycles)
+                                            .then(() => {
+                                                updateCycles(config.cycles);
+                                                    confirmAlert({
+                                                        header: "Configuration has been imported",
+                                                        cssClass: "header-color",
+                                                        buttons: [{
+                                                            text: "OK",
+                                                            role: "confirm",
+                                                            handler: () => {
+                                                                props.setIsOpen(false);
+                                                            },
+                                                        }],
+                                                    });
+                                            })
+                                            .catch((err) => {
+                                                console.error(err);
+                                            });
+                                    })
+                                    .catch((err) => {
+                                        console.error(err);
+                                    });
+                            }}
+                        >
+                            <IonIcon slot="start" icon={cloudDownloadOutline} />
+                            Import
+                        </IonButton>
+                    </IonCol>
                 </IonCard>
                 <IonCol>
                     <IonButton
