@@ -68,20 +68,20 @@ function exportConfigWeb(config: Config): Promise<void> {
         const url = URL.createObjectURL(new Blob([JSON.stringify(config, null, 2)], {
             type: "application/json",
         }));
-    
+
         const anchorElement: HTMLAnchorElement = document.createElement("a");
         anchorElement.download = configFilename;
         anchorElement.href = url;
-    
+
         anchorElement.addEventListener("click", () => {
             resolve();
         });
-    
+
         document.body.append(anchorElement);
         anchorElement.click();
         document.body.removeChild(anchorElement);
         URL.revokeObjectURL(url);
-    })
+    });
 }
 
 export function exportConfig(ctx: Context): Promise<void> {
