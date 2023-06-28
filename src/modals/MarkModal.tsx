@@ -5,14 +5,13 @@ import {
     IonDatetime,
     IonButtons,
 } from '@ionic/react';
+import { format } from 'date-fns'
 import './MarkModal.css';
 
 import { CyclesContext } from '../state/Context';
 import {
     useAverageLengthOfPeriod
 } from '../state/CycleInformationHooks';
-
-import { format } from 'date-fns'
 
 interface PropsMarkModal {
     isOpen: boolean;
@@ -35,38 +34,29 @@ const MarkModal = (props: PropsMarkModal) => {
     function isLastPeriodDay(date: Date) {
         date.setHours(0, 0, 0, 0);
 
-        for (let i = 0; i < cycles.length; ++i) {
-            const cycleStart: Date = new Date(cycles[i].startDate);
-            const cycleFinish: Date = new Date(cycles[i].startDate);
-            cycleFinish.setDate(cycleFinish.getDate() + cycles[i].periodLength);
-
-            if (date >= cycleStart && date < cycleFinish) {
-                return true;
-            }
-        };
-
-        return false;
+        return cycles.some((cycle) => {
+            const startOfCycle = new Date(cycle.startDate);
+            const endOfCycle = new Date(cycle.startDate);
+            endOfCycle.setDate(endOfCycle.getDate() + cycle.periodLength);
+            return date >= startOfCycle && date < endOfCycle;
+        });
     }
 
     function nextPeriodDays(): string[] {
-        let periodDates = [format(nowDate, 'yyyy-MM-dd')];
-        let lengthOfNextPeriod = lengthOfPeriod;
-        if (lengthOfNextPeriod === 0) {
-            const averageLengthOfPeriod = 5;
-            lengthOfNextPeriod = averageLengthOfPeriod;
-        }
+        const periodDates: string[] = [];
 
-        for (let i = 1; i < lengthOfNextPeriod; ++i) {
-            const nextPeriodDay: Date = new Date();
-            nextPeriodDay.setHours(0, 0, 0, 0);
-            nextPeriodDay.setDate(nextPeriodDay.getDate() + i);
-            periodDates.push(format(nextPeriodDay, 'yyyy-MM-dd'));
+        for (let day = 0; day < (lengthOfPeriod || 5); day++) {
+            const periodDay = new Date(nowDate);
+            periodDay.setHours(0, 0, 0, 0);
+            periodDay.setDate(periodDay.getDate() + day);
+
+            periodDates.push(format(periodDay, "yyyy-MM-dd"));
         }
 
         return periodDates;
     }
 
-    const isEnabled = (dateString: string) => {
+    const isActiveDates = (dateString: string) => {
         if (cycles.length === 0) {
             return true;
         }
@@ -90,7 +80,6 @@ const MarkModal = (props: PropsMarkModal) => {
                 Mark</IonButton>
             <IonModal
                 class="mark-modal"
-                backdropDismiss={false}
                 isOpen={props.isOpen}
             >
                 <IonDatetime
@@ -99,12 +88,11 @@ const MarkModal = (props: PropsMarkModal) => {
                     presentation="date"
                     locale="en-GB"
                     size="cover"
-                    preferWheel={false}
-                    multiple={true}
+                    multiple
                     firstDayOfWeek={1}
-                    showDefaultButtons={true}
-                    isDateEnabled={isEnabled}
-                    showDefaultTitle={true}
+                    showDefaultButtons
+                    isDateEnabled={isActiveDates}
+                    showDefaultTitle
                     value={nextPeriodDays()}
 
                     titleSelectedDatesFormatter={((selectedDates: string[]) => {
@@ -114,7 +102,7 @@ const MarkModal = (props: PropsMarkModal) => {
 
                         selectedDates.sort();
                         const startPeriod = new Date(selectedDates[0]);
-                        const finishPeriod = new Date(selectedDates[selectedDates.length - 1]);
+                        const finishPeriod = new Date(selectedDates.at(-1) ?? 0);
                         markPeriodDays = selectedDates;
 
                         return `${format(startPeriod, "d MMM")} - ${format(finishPeriod, "d MMM")}`;
