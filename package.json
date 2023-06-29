@@ -17,7 +17,6 @@
     "@ionic/react": "^6.7.5",
     "@ionic/react-router": "^6.7.5",
     "@ionic/storage": "^4.0.0",
-    "@IraSoro/ionic-datetime-picker": "^0.1.1",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
