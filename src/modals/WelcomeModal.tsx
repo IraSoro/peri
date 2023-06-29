@@ -1,29 +1,20 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef } from 'react';
 import {
     IonButton,
     IonContent,
-    IonItem,
-    IonList,
     IonLabel,
     IonModal,
     useIonAlert,
-    IonSelect,
-    IonSelectOption,
-    IonCard,
-    IonCardHeader,
-    IonCardContent,
     IonCol,
     IonTitle,
     IonHeader,
     IonToolbar,
     IonIcon,
+    IonDatetime,
 } from '@ionic/react';
 import { cloudDownloadOutline } from 'ionicons/icons';
 import './WelcomeModal.css';
 
-import { cycle_days, period_days } from '../data/SelectConst'
-
-import { DatePicker } from '@IraSoro/ionic-datetime-picker'
 import type { Cycle } from '../data/ClassCycle';
 import { importConfig } from '../data/Config';
 import { storage } from '../data/Storage';
@@ -37,22 +28,18 @@ interface PropsWelcomeModal {
 }
 
 const Welcome = (props: PropsWelcomeModal) => {
+    const refDatetime = useRef<null | HTMLIonDatetimeElement>(null);
     const [confirmAlert] = useIonAlert();
-    const [cycle] = useState<Cycle[]>(
+    const cycle: Cycle[] =
         [
             {
-                cycleLength: 0,
+                cycleLength: 28,
                 periodLength: 0,
                 startDate: "",
             }
-        ]
-    );
+        ];
 
     const updateCycles = useContext(CyclesContext).updateCycles;
-
-    const selectOptions = {
-        cssClass: "welcome-select-header",
-    };
 
     return (
         <IonModal
@@ -64,98 +51,35 @@ const Welcome = (props: PropsWelcomeModal) => {
                     <IonTitle color="light">Welcome to Peri</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen class="gradient">
-                <IonCard class="welcome">
-                    <IonCardHeader class="welcome">
-                        Please enter your details so that you can already make a forecast.
-                    </IonCardHeader>
-                    <IonCardContent>
-                        <IonList>
-                            <DatePicker
-                                date={cycle[0].startDate}
-                                onChange={(newDate: string) => { cycle[0].startDate = newDate }}
-                                color={"basic"}
-                                title='Start of last period'
-                            />
-                            <IonItem lines="full" class="welcome">
-                                <IonLabel>Cycle length</IonLabel>
-                                <IonSelect
-                                    class="welcome"
-                                    interfaceOptions={selectOptions}
-                                    placeholder=""
-                                    onIonChange={(ev) => {
-                                        cycle[0].cycleLength = Number(ev.detail.value.id);
-                                    }}
-                                >
-                                    {cycle_days.map((day) => (
-                                        <IonSelectOption key={day.id} value={day}>
-                                            {day.name}
-                                        </IonSelectOption>
-                                    ))}
-                                </IonSelect>
-                            </IonItem>
-                            <IonItem lines="none" class="welcome">
-                                <IonLabel>Period length</IonLabel>
-                                <IonSelect
-                                    class="welcome"
-                                    interfaceOptions={selectOptions}
-                                    placeholder=""
-                                    onIonChange={(ev) => {
-                                        cycle[0].periodLength = Number(ev.detail.value.id);
-                                    }}
-                                >
-                                    {period_days.map((day) => (
-                                        <IonSelectOption key={day.id} value={day}>
-                                            {day.name}
-                                        </IonSelectOption>
-                                    ))}
-                                </IonSelect>
-                            </IonItem>
-                        </IonList>
-                    </IonCardContent>
-                    <IonCol>
-                        or
-                    </IonCol>
-                    <IonCol>
-                        <IonButton
-                            color="dark-basic"
-                            onClick={() => {
-                                importConfig()
-                                    .then((config) => {
-                                        storage.set.cycles(config.cycles)
-                                            .then(() => {
-                                                updateCycles(config.cycles);
-                                                    confirmAlert({
-                                                        header: "Configuration has been imported",
-                                                        cssClass: "header-color",
-                                                        buttons: [{
-                                                            text: "OK",
-                                                            role: "confirm",
-                                                            handler: () => {
-                                                                props.setIsOpen(false);
-                                                            },
-                                                        }],
-                                                    });
-                                            })
-                                            .catch((err) => {
-                                                console.error(err);
-                                            });
-                                    })
-                                    .catch((err) => {
-                                        console.error(err);
-                                    });
-                            }}
-                        >
-                            <IonIcon slot="start" icon={cloudDownloadOutline} />
-                            Import
-                        </IonButton>
-                    </IonCol>
-                </IonCard>
+            <IonContent fullscreen color="basic">
+                <IonCol>
+                    <IonLabel class="welcome" color="dark-basic">
+                        Please mark the days of your last period.
+                    </IonLabel>
+                </IonCol>
+                <IonDatetime
+                    class="welcome"
+                    ref={refDatetime}
+                    color="basic"
+                    presentation="date"
+                    locale="en-GB"
+                    size="cover"
+                    multiple
+                    firstDayOfWeek={1}
+                />
                 <IonCol>
                     <IonButton
-                        class="continue"
+                        class="welcome"
+                        color="dark-basic"
                         onClick={() => {
-                            if (!cycle[0].cycleLength || !cycle[0].periodLength || !cycle[0].startDate) {
+                            if (refDatetime.current?.value) {
+                                const days = [refDatetime.current.value].flat().sort();
+                                cycle[0].periodLength = days.length;
+                                cycle[0].startDate = days[0];
+
+                                updateCycles(cycle);
+                                props.setIsOpen(false);
+                            } else {
                                 confirmAlert({
                                     header: 'Continue?',
                                     cssClass: "header-color",
@@ -174,13 +98,48 @@ const Welcome = (props: PropsWelcomeModal) => {
                                         },
                                     ],
                                 })
-                            } else {
-                                updateCycles(cycle);
-                                props.setIsOpen(false);
                             }
                         }}
                     >
-                        Continue
+                        continue
+                    </IonButton>
+                </IonCol>
+                <IonCol>
+                    <IonLabel color="dark-basic">or</IonLabel>
+                </IonCol>
+                <IonCol>
+                    <IonButton
+                        class="welcome"
+                        color="dark-basic"
+                        onClick={() => {
+                            importConfig()
+                                .then((config) => {
+                                    storage.set.cycles(config.cycles)
+                                        .then(() => {
+                                            updateCycles(config.cycles);
+                                            confirmAlert({
+                                                header: "Configuration has been imported",
+                                                cssClass: "header-color",
+                                                buttons: [{
+                                                    text: "OK",
+                                                    role: "confirm",
+                                                    handler: () => {
+                                                        props.setIsOpen(false);
+                                                    },
+                                                }],
+                                            });
+                                        })
+                                        .catch((err) => {
+                                            console.error(err);
+                                        });
+                                })
+                                .catch((err) => {
+                                    console.error(err);
+                                });
+                        }}
+                    >
+                        <IonIcon slot="start" icon={cloudDownloadOutline} />
+                        Import data
                     </IonButton>
                 </IonCol>
             </IonContent>

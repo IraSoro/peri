@@ -1,59 +1,11 @@
-ion-button.continue {
-    border-radius: 10px;
-
-    --border-radius: 10px;
-    --color: var(--ion-color-dark-basic);
-    --background: transparent;
-}
-
-ion-button.continue:hover {
-    --background: var(--ion-color-basic);
-}
-
-ion-modal.choose-date-modal {
-    --width: fit-content;
-    --min-width: 250px;
-    --height: fit-content;
-    --border-radius: 6px;
-    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-}
-
-.header-color {
-    --ion-text-color: var(--ion-color-dark-basic);
-    --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
-
-    --ion-color-step-550: var(--ion-color-dark-basic);
-}
-
-ion-card-header.welcome {
-    color: var(--ion-color-dark-basic);
+ion-label.welcome {
     text-align: center;
 }
 
-ion-card.welcome {
+ion-datetime.welcome {
     border-radius: 20px;
-    box-shadow: none !important;
 }
 
-ion-content.gradient {
-    --background: var(--ion-color-basic);
-}
-
-ion-item.welcome {
-    font-size: 14px;
-    color: var(--ion-color-basic);
-    margin: 0;
-}
-
-ion-select.welcome {
-    color: var(--ion-color-dark-basic);
-}
-
-.welcome-select-header {
-    --ion-text-color: var(--ion-color-dark-basic);
-    --ion-text-color-rgb: rgb(var(--ion-color-dark-basic-rgb));
-}
-
-ion-button.uppercase {
-    text-transform: none;
+ion-button.welcome {
+    --border-radius: 10px;
 }
