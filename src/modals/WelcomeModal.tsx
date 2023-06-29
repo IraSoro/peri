@@ -66,17 +66,14 @@ const Welcome = (props: PropsWelcomeModal) => {
                     size="cover"
                     multiple
                     firstDayOfWeek={1}
-                >
-                </IonDatetime>
-
+                />
                 <IonCol>
                     <IonButton
                         class="welcome"
                         color="dark-basic"
                         onClick={() => {
                             if (refDatetime.current?.value) {
-                                const days = [refDatetime.current.value].flat();
-                                days.sort();
+                                const days = [refDatetime.current.value].flat().sort();
                                 cycle[0].periodLength = days.length;
                                 cycle[0].startDate = days[0];
 
@@ -107,7 +104,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                         continue
                     </IonButton>
                 </IonCol>
-                <IonCol >
+                <IonCol>
                     <IonLabel color="dark-basic">or</IonLabel>
                 </IonCol>
                 <IonCol>
