@@ -18,7 +18,7 @@ export async function importConfig(): Promise<Config> {
 
         const fileReader = new FileReader();
 
-        fileReader.addEventListener("load", async () => {
+        fileReader.addEventListener("load", () => {
             const config: Config | null = JSON.parse(fileReader.result as string);
             if (!config) {
                 reject("User imported empty config");
@@ -64,6 +64,8 @@ async function exportConfigAndroid(config: Config): Promise<void> {
 }
 
 function exportConfigWeb(config: Config): Promise<void> {
+    // NOTE: This function is made of promises for the sole purpose of keeping
+    //       the API consistent with the Android version
     return new Promise((resolve) => {
         const url = URL.createObjectURL(new Blob([JSON.stringify(config, null, 2)], {
             type: "application/json",
@@ -73,14 +75,12 @@ function exportConfigWeb(config: Config): Promise<void> {
         anchorElement.download = configFilename;
         anchorElement.href = url;
 
-        anchorElement.addEventListener("click", () => {
-            resolve();
-        });
-
         document.body.append(anchorElement);
         anchorElement.click();
         document.body.removeChild(anchorElement);
         URL.revokeObjectURL(url);
+
+        resolve();
     });
 }
 
