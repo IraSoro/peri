@@ -83,7 +83,9 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
 
   const dateOfFinish = new Date(startDate);
   dateOfFinish.setDate(dateOfFinish.getDate() + Number(cycleLength));
+  dateOfFinish.setHours(0, 0, 0, 0);
   const now = new Date();
+  now.setHours(0, 0, 0, 0);
   let dayBefore = Math.round((Number(dateOfFinish) - Number(now)) / millisecondsInDay);
 
   if (dayBefore > 0) {

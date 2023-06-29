@@ -1,110 +1,17 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef } from 'react';
 import {
     IonButton,
-    IonContent,
-    IonItem,
-    IonList,
-    IonLabel,
     IonModal,
-    useIonAlert,
-    IonSelect,
-    IonSelectOption,
-    IonCardContent,
+    IonDatetime,
+    IonButtons,
 } from '@ionic/react';
+import { format } from 'date-fns'
 import './MarkModal.css';
 
-import { period_days } from '../data/SelectConst'
-
-import { DatePicker } from '@IraSoro/ionic-datetime-picker'
-
 import { CyclesContext } from '../state/Context';
-
-interface PropsButton {
-    period: number;
-    setPeriod: (newPeriod: number) => void;
-    date: string;
-    setDate: (newDate: string) => void;
-
-    closeModal: () => void;
-}
-
-const Buttons = (props: PropsButton) => {
-    const [confirmAlert] = useIonAlert();
-
-    const { cycles, updateCycles } = useContext(CyclesContext);
-
-    return (
-        <>
-            <IonButton
-                style={{ float: "right" }}
-                color="dark-basic"
-                fill="clear"
-                onClick={() => {
-                    if (!props.date || !props.period) {
-                        confirmAlert({
-                            subHeader: "You have not entered all the data",
-                            buttons: [
-                                {
-                                    text: 'OK',
-                                    cssClass: 'alert-button-confirm',
-                                    role: 'confirm',
-                                    handler: () => {
-                                        props.closeModal();
-                                    },
-                                },
-                            ],
-                        })
-                    } else {
-                        if (cycles.length > 0) {
-                            const millisecondsInDay = 24 * 60 * 60 * 1000;
-
-                            const startDate = new Date(cycles[0].startDate);
-                            const finishDate = new Date(props.date);
-
-                            const diff = new Date(finishDate.getTime() - startDate.getTime());
-                            cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
-
-                            cycles.unshift(
-                                {
-                                    cycleLength: 0,
-                                    periodLength: props.period,
-                                    startDate: props.date,
-                                }
-                            );
-                        } else {
-                            cycles.unshift(
-                                {
-                                    cycleLength: 28,
-                                    periodLength: props.period,
-                                    startDate: props.date,
-                                }
-                            );
-                        }
-
-                        Promise.all([
-                            updateCycles([...cycles])
-                        ]).then(() => {
-                            console.log("All new values are set, setIsOpen(false)");
-                            props.closeModal();
-                        }).catch((err) => console.error(err));
-                    }
-                }}
-            >
-                Ok
-            </IonButton>
-            <IonButton
-                style={{ float: "right" }}
-                color="dark-basic"
-                fill="clear"
-                onClick={() => {
-                    props.closeModal();
-                    props.setDate("");
-                }}>
-                Cancel
-            </IonButton>
-        </>
-    );
-};
+import {
+    useAverageLengthOfPeriod
+} from '../state/CycleInformationHooks';
 
 interface PropsMarkModal {
     isOpen: boolean;
@@ -112,16 +19,55 @@ interface PropsMarkModal {
 }
 
 const MarkModal = (props: PropsMarkModal) => {
-    const [date, setDate] = useState("");
-    const [period, setPeriod] = useState(0);
+    const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+    const { cycles, updateCycles } = useContext(CyclesContext);
+    const lengthOfPeriod = useAverageLengthOfPeriod();
+    let markPeriodDays: string[] = [];
 
-    const closeModal = () => {
-        props.setIsOpen(false);
-        setDate("");
-    };
+    const nowDate = new Date();
+    nowDate.setHours(0, 0, 0, 0);
 
-    const selectOptions = {
-        cssClass: "mark-select-header",
+    const nextCycleFinish: Date = new Date();
+    nextCycleFinish.setDate(nowDate.getDate() + lengthOfPeriod);
+    nextCycleFinish.setHours(0, 0, 0, 0);
+
+    function isLastPeriodDay(date: Date) {
+        date.setHours(0, 0, 0, 0);
+
+        return cycles.some((cycle) => {
+            const startOfCycle = new Date(cycle.startDate);
+            const endOfCycle = new Date(cycle.startDate);
+            endOfCycle.setDate(endOfCycle.getDate() + cycle.periodLength);
+            return date >= startOfCycle && date < endOfCycle;
+        });
+    }
+
+    function nextPeriodDays(): string[] {
+        const periodDates: string[] = [];
+
+        for (let day = 0; day < (lengthOfPeriod || 5); day++) {
+            const periodDay = new Date(nowDate);
+            periodDay.setHours(0, 0, 0, 0);
+            periodDay.setDate(periodDay.getDate() + day);
+
+            periodDates.push(format(periodDay, "yyyy-MM-dd"));
+        }
+
+        return periodDates;
+    }
+
+    const isActiveDates = (dateString: string) => {
+        if (cycles.length === 0) {
+            return true;
+        }
+        const date = new Date(dateString);
+        date.setHours(0, 0, 0, 0);
+
+        const lastCycleFinish: Date = new Date(cycles[0].startDate);
+        lastCycleFinish.setDate(lastCycleFinish.getDate() + cycles[0].periodLength);
+        lastCycleFinish.setHours(0, 0, 0, 0);
+
+        return date.getTime() > lastCycleFinish.getTime();
     };
 
     return (
@@ -134,41 +80,100 @@ const MarkModal = (props: PropsMarkModal) => {
                 Mark</IonButton>
             <IonModal
                 class="mark-modal"
-                backdropDismiss={false}
                 isOpen={props.isOpen}
             >
-                <IonContent color="light">
-                    <IonCardContent class="align-center">
-                        <IonList class="transparent">
-                            <DatePicker date={date} onChange={setDate} color={"basic"} title={"Start of last period"} />
-                            <IonItem lines="full" class="transparent">
-                                <IonLabel color="basic">Period length</IonLabel>
-                                <IonSelect
-                                    class="mark"
-                                    interfaceOptions={selectOptions}
-                                    placeholder=""
-                                    onIonChange={(ev) => {
-                                        setPeriod(Number(ev.detail.value.id));
-                                    }}
-                                >
-                                    {period_days.map((day) => (
-                                        <IonSelectOption key={day.id} value={day}>
-                                            {day.name}
-                                        </IonSelectOption>
-                                    ))}
-                                </IonSelect>
-                            </IonItem>
-                            <Buttons
-                                period={period}
-                                setPeriod={setPeriod}
-                                date={date}
-                                setDate={setDate}
-                                closeModal={closeModal}
-                            />
-                        </IonList>
-                    </IonCardContent>
-                </IonContent>
-            </IonModal>
+                <IonDatetime
+                    ref={datetimeRef}
+                    color="dark-basic"
+                    presentation="date"
+                    locale="en-GB"
+                    size="cover"
+                    multiple
+                    firstDayOfWeek={1}
+                    showDefaultButtons
+                    isDateEnabled={isActiveDates}
+                    showDefaultTitle
+                    value={nextPeriodDays()}
+
+                    titleSelectedDatesFormatter={((selectedDates: string[]) => {
+                        if (selectedDates.length === 0) {
+                            return "select date range";
+                        }
+
+                        selectedDates.sort();
+                        const startPeriod = new Date(selectedDates[0]);
+                        const finishPeriod = new Date(selectedDates.at(-1) ?? 0);
+                        markPeriodDays = selectedDates;
+
+                        return `${format(startPeriod, "d MMM")} - ${format(finishPeriod, "d MMM")}`;
+                    })}
+
+                    highlightedDates={(isoString) => {
+                        if (cycles.length === 0) {
+                            return undefined;
+                        }
+
+                        const date = new Date(isoString);
+
+                        if (isLastPeriodDay(date)) {
+                            return {
+                                textColor: 'var(--ion-color-light)',
+                                backgroundColor: 'var(--ion-color-dark-basic)',
+                            };
+                        }
+
+                        return undefined;
+                    }}
+                >
+                    <IonButtons slot="buttons">
+                        <IonButton
+                            color="basic"
+                            onClick={() => {
+                                datetimeRef.current?.cancel();
+                                props.setIsOpen(false);
+                            }}
+                        >Cancel</IonButton>
+                        <IonButton
+                            color="basic"
+                            onClick={() => {
+                                if (cycles.length > 0) {
+                                    const millisecondsInDay = 24 * 60 * 60 * 1000;
+
+                                    const startDate = new Date(cycles[0].startDate);
+                                    const finishDate = new Date(markPeriodDays[0]);
+
+                                    const diff = new Date(finishDate.getTime() - startDate.getTime());
+                                    cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
+
+                                    cycles.unshift(
+                                        {
+                                            cycleLength: 0,
+                                            periodLength: markPeriodDays.length,
+                                            startDate: markPeriodDays[0],
+                                        }
+                                    );
+                                } else {
+                                    cycles.unshift(
+                                        {
+                                            cycleLength: 28,
+                                            periodLength: markPeriodDays.length,
+                                            startDate: markPeriodDays[0],
+                                        }
+                                    );
+                                }
+
+                                Promise.all([
+                                    updateCycles([...cycles])
+                                ]).then(() => {
+                                    console.log("All new values are set, setIsOpen(false)");
+                                    datetimeRef.current?.confirm();
+                                    props.setIsOpen(false);
+                                }).catch((err) => console.error(err));
+                            }}
+                        >Save</IonButton>
+                    </IonButtons>
+                </IonDatetime>
+            </IonModal >
         </>
     );
 }
