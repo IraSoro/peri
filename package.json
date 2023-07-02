@@ -51,8 +51,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)' --silent",
-    "test:all": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)' --silent --watchAll=false",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)\" --silent",
+    "test:all": "react-scripts test --transformIgnorePatterns \"node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)\" --silent --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
