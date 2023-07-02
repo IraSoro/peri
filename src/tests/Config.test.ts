@@ -2,8 +2,8 @@ import * as mockedIonicCore from "@ionic/core";
 import * as mockedCapacitorFilesystem from "@capacitor/filesystem";
 import * as mockedCapacitorShare from "@capacitor/share";
 
-import type { Context } from "./Storage";
-import { exportConfig, importConfig } from "./Config";
+import type { Context } from "../data/Storage";
+import { exportConfig, importConfig } from "../data/Config";
 
 test("importConfig", async () => {
   // @ts-expect-error This is just a mocked `HTMLInputElement` and we don't need

@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
-import Welcome from "./WelcomeModal";
+import CalendarModal from "../modals/CalendarModal";
 
 test("renders without crashing", () => {
   const { baseElement } = render(
-    <Welcome
+    <CalendarModal
       isOpen
       setIsOpen={() => {}}
     />

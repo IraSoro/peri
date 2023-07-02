@@ -1,7 +1,7 @@
 // import * as mockedIonicStorage from "@ionic/storage";
 import { Storage } from "@ionic/storage";
 
-import { storage } from "./Storage";
+import { storage } from "../data/Storage";
 
 test("setCycles", async () => {
   const storageSetSpy = jest
