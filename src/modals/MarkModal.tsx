@@ -81,6 +81,7 @@ const MarkModal = (props: PropsMarkModal) => {
             <IonModal
                 class="mark-modal"
                 isOpen={props.isOpen}
+                backdropDismiss={false}
             >
                 <IonDatetime
                     ref={datetimeRef}
