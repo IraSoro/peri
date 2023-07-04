@@ -44,6 +44,8 @@ function useOvulationStatus(): string {
   const diffDay = ovulationDay - dayOfCycle;
   if (diffDay === 0) {
     return "today";
+  } else if (diffDay < 0 && diffDay >= -2) {
+    return "possible";
   } else if (diffDay < 0) {
     return "finished";
   } else if (diffDay === 1) {
@@ -53,19 +55,21 @@ function useOvulationStatus(): string {
 }
 
 function usePregnancyChance() {
-  const ovulationStatus = useOvulationStatus();
+  const cycleLength = useAverageLengthOfCycle();
+  const dayOfCycle = Number(useDayOfCycle());
 
-  if (!ovulationStatus) {
+  if (!cycleLength || !dayOfCycle) {
     return "";
   }
 
-  if (ovulationStatus === "finished") {
-    return "low";
+  const lutealPhaseLength = 14;
+  const ovulationDay = Number(cycleLength) - lutealPhaseLength;
+  const diffDay = ovulationDay - dayOfCycle;
+
+  if (diffDay <= 4 && diffDay >= -2) {
+    return "high";
   }
-  if (["today", "tomorrow"].includes(ovulationStatus)) {
-    return "hight";
-  }
-  return "middle";
+  return "low";
 }
 
 interface DaysBeforePeriod {
