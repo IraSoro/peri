@@ -22,7 +22,7 @@ import {
   useAverageLengthOfCycle,
 } from '../state/CycleInformationHooks';
 
-import { storage } from '../data/Storage'; 
+import { storage } from '../data/Storage';
 
 import Welcome from '../modals/WelcomeModal';
 import MarkModal from '../modals/MarkModal';
@@ -92,11 +92,17 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   now.setHours(0, 0, 0, 0);
   let dayBefore = Math.round((Number(dateOfFinish) - Number(now)) / millisecondsInDay);
 
-  if (dayBefore > 0) {
+  if (dayBefore > 1) {
     return { title: "Period in", days: dayBefore + " Days" };
+  }
+  if (dayBefore === 1) {
+    return { title: "Period in", days: "1 Day" };
   }
   if (dayBefore === 0) {
     return { title: "Period", days: "Today" };
+  }
+  if (dayBefore === -1) {
+    return { title: "Delay", days: "1 Day" };
   }
   return {
     title: "Delay",
