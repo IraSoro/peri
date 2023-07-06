@@ -22,7 +22,10 @@ Peri is period tracker application. The application has the necessary features t
 - number of days before menstruation,
 - current cycle day,
 - chance of getting pregnant,
-- the number of days before ovulation.
+- the number of days before ovulation,
+- possible next cycle date,
+- history of previous cycles,
+- the average value of the length of the cycle and the average value of the length of menstruation.
 
 Also keeps track of the current phase of the cycle. And displays information about this phase and the symptoms that a woman may feel in this phase.
 
@@ -37,9 +40,9 @@ Also keeps track of the current phase of the cycle. And displays information abo
 
 <table>
   <tr>
-    <td><img width="300" src="./demonstration/welcome.png" alt="Welcome"></td>
-    <td><img width="300" src="./demonstration/home.png" alt="Home"></td>
-    <td><img width="300" src="./demonstration/details.png" alt="Details"></td>
+    <td><img width="300" src="./demonstration/welcome.jpg" alt="Welcome"></td>
+    <td><img width="300" src="./demonstration/home.jpg" alt="Home"></td>
+    <td><img width="300" src="./demonstration/details.jpg" alt="Details"></td>
   </tr>
   <tr>
     <td align="center">Welcome page</td>
@@ -47,8 +50,8 @@ Also keeps track of the current phase of the cycle. And displays information abo
     <td align="center">Details</td>
   </tr>
     <tr>
-    <td><img width="300" src="./demonstration/info.png" alt="Info"></td>
-    <td><img width="300" src="./demonstration/calendar.png" alt="Calendar"></td>
+    <td><img width="300" src="./demonstration/info.jpg" alt="Info"></td>
+    <td><img width="300" src="./demonstration/calendar.jpg" alt="Calendar"></td>
   </tr>
   <tr>
     <td align="center">Phase info</td>

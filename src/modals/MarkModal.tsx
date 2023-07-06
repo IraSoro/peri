@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import {
     IonButton,
     IonModal,
@@ -20,6 +20,8 @@ interface PropsMarkModal {
 
 const MarkModal = (props: PropsMarkModal) => {
     const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+    const [disableSave, setDisableSave] = useState(true);
+
     const { cycles, updateCycles } = useContext(CyclesContext);
     const lengthOfPeriod = useAverageLengthOfPeriod();
     let markPeriodDays: string[] = [];
@@ -36,14 +38,24 @@ const MarkModal = (props: PropsMarkModal) => {
 
         return cycles.some((cycle) => {
             const startOfCycle = new Date(cycle.startDate);
+            startOfCycle.setHours(0, 0, 0, 0);
             const endOfCycle = new Date(cycle.startDate);
+            endOfCycle.setHours(0, 0, 0, 0);
             endOfCycle.setDate(endOfCycle.getDate() + cycle.periodLength);
             return date >= startOfCycle && date < endOfCycle;
         });
     }
 
-    function nextPeriodDays(): string[] {
+    function nextPeriodDays() {
         const periodDates: string[] = [];
+        if (cycles.length !== 0) {
+            const endOfCurrentCycle = new Date(cycles[0].startDate);
+            endOfCurrentCycle.setDate(endOfCurrentCycle.getDate() + cycles[0].periodLength);
+            endOfCurrentCycle.setHours(0, 0, 0, 0);
+            if (endOfCurrentCycle >= nowDate) {
+                return undefined;
+            }
+        }
 
         for (let day = 0; day < (lengthOfPeriod || 5); day++) {
             const periodDay = new Date(nowDate);
@@ -98,9 +110,11 @@ const MarkModal = (props: PropsMarkModal) => {
 
                     titleSelectedDatesFormatter={((selectedDates: string[]) => {
                         if (selectedDates.length === 0) {
+                            setDisableSave(true);
                             return "select date range";
                         }
 
+                        setDisableSave(false);
                         selectedDates.sort();
                         const startPeriod = new Date(selectedDates[0]);
                         const finishPeriod = new Date(selectedDates.at(-1) ?? 0);
@@ -136,6 +150,7 @@ const MarkModal = (props: PropsMarkModal) => {
                         >Cancel</IonButton>
                         <IonButton
                             color="basic"
+                            disabled={disableSave}
                             onClick={() => {
                                 if (cycles.length > 0) {
                                     const millisecondsInDay = 24 * 60 * 60 * 1000;
