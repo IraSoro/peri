@@ -36,14 +36,24 @@ const MarkModal = (props: PropsMarkModal) => {
 
         return cycles.some((cycle) => {
             const startOfCycle = new Date(cycle.startDate);
+            startOfCycle.setHours(0, 0, 0, 0);
             const endOfCycle = new Date(cycle.startDate);
+            endOfCycle.setHours(0, 0, 0, 0);
             endOfCycle.setDate(endOfCycle.getDate() + cycle.periodLength);
             return date >= startOfCycle && date < endOfCycle;
         });
     }
 
-    function nextPeriodDays(): string[] {
+    function nextPeriodDays() {
         const periodDates: string[] = [];
+        if (cycles.length !== 0) {
+            const endOfCurrentCycle = new Date(cycles[0].startDate);
+            endOfCurrentCycle.setDate(endOfCurrentCycle.getDate() + cycles[0].periodLength);
+            endOfCurrentCycle.setHours(0, 0, 0, 0);
+            if (endOfCurrentCycle >= nowDate) {
+                return undefined;
+            }
+        }
 
         for (let day = 0; day < (lengthOfPeriod || 5); day++) {
             const periodDay = new Date(nowDate);
