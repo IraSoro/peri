@@ -147,39 +147,43 @@ const MarkModal = (props: PropsMarkModal) => {
                         <IonButton
                             color="basic"
                             onClick={() => {
-                                if (cycles.length > 0) {
-                                    const millisecondsInDay = 24 * 60 * 60 * 1000;
+                                if (markPeriodDays.length > 0) {
+                                    if (cycles.length > 0) {
+                                        const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-                                    const startDate = new Date(cycles[0].startDate);
-                                    const finishDate = new Date(markPeriodDays[0]);
+                                        const startDate = new Date(cycles[0].startDate);
+                                        const finishDate = new Date(markPeriodDays[0]);
 
-                                    const diff = new Date(finishDate.getTime() - startDate.getTime());
-                                    cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
+                                        const diff = new Date(finishDate.getTime() - startDate.getTime());
+                                        cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
 
-                                    cycles.unshift(
-                                        {
-                                            cycleLength: 0,
-                                            periodLength: markPeriodDays.length,
-                                            startDate: markPeriodDays[0],
-                                        }
-                                    );
-                                } else {
-                                    cycles.unshift(
-                                        {
-                                            cycleLength: 28,
-                                            periodLength: markPeriodDays.length,
-                                            startDate: markPeriodDays[0],
-                                        }
-                                    );
+                                        cycles.unshift(
+                                            {
+                                                cycleLength: 0,
+                                                periodLength: markPeriodDays.length,
+                                                startDate: markPeriodDays[0],
+                                            }
+                                        );
+                                    } else {
+                                        cycles.unshift(
+                                            {
+                                                cycleLength: 28,
+                                                periodLength: markPeriodDays.length,
+                                                startDate: markPeriodDays[0],
+                                            }
+                                        );
+                                    }
+
+                                    Promise.all([
+                                        updateCycles([...cycles])
+                                    ]).then(() => {
+                                        console.log("All new values are set, setIsOpen(false)");
+                                        datetimeRef.current?.confirm();
+                                        props.setIsOpen(false);
+                                    }).catch((err) => console.error(err));
                                 }
-
-                                Promise.all([
-                                    updateCycles([...cycles])
-                                ]).then(() => {
-                                    console.log("All new values are set, setIsOpen(false)");
-                                    datetimeRef.current?.confirm();
-                                    props.setIsOpen(false);
-                                }).catch((err) => console.error(err));
+                                datetimeRef.current?.confirm();
+                                props.setIsOpen(false);
                             }}
                         >Save</IonButton>
                     </IonButtons>
