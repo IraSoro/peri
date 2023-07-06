@@ -2,6 +2,6 @@ ion-modal#calendar-modal {
     --width: fit-content;
     --min-width: 250px;
     --height: fit-content;
-    --border-radius: 6px;
+    --border-radius: 20px;
     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
