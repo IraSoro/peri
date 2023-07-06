@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import {
     IonButton,
     IonModal,
@@ -20,6 +20,8 @@ interface PropsMarkModal {
 
 const MarkModal = (props: PropsMarkModal) => {
     const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+    const [disableSave, setDisableSave] = useState(true);
+
     const { cycles, updateCycles } = useContext(CyclesContext);
     const lengthOfPeriod = useAverageLengthOfPeriod();
     let markPeriodDays: string[] = [];
@@ -108,9 +110,11 @@ const MarkModal = (props: PropsMarkModal) => {
 
                     titleSelectedDatesFormatter={((selectedDates: string[]) => {
                         if (selectedDates.length === 0) {
+                            setDisableSave(true);
                             return "select date range";
                         }
 
+                        setDisableSave(false);
                         selectedDates.sort();
                         const startPeriod = new Date(selectedDates[0]);
                         const finishPeriod = new Date(selectedDates.at(-1) ?? 0);
@@ -146,44 +150,41 @@ const MarkModal = (props: PropsMarkModal) => {
                         >Cancel</IonButton>
                         <IonButton
                             color="basic"
+                            disabled={disableSave}
                             onClick={() => {
-                                if (markPeriodDays.length > 0) {
-                                    if (cycles.length > 0) {
-                                        const millisecondsInDay = 24 * 60 * 60 * 1000;
+                                if (cycles.length > 0) {
+                                    const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-                                        const startDate = new Date(cycles[0].startDate);
-                                        const finishDate = new Date(markPeriodDays[0]);
+                                    const startDate = new Date(cycles[0].startDate);
+                                    const finishDate = new Date(markPeriodDays[0]);
 
-                                        const diff = new Date(finishDate.getTime() - startDate.getTime());
-                                        cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
+                                    const diff = new Date(finishDate.getTime() - startDate.getTime());
+                                    cycles[0].cycleLength = Math.ceil(diff.getTime() / millisecondsInDay);
 
-                                        cycles.unshift(
-                                            {
-                                                cycleLength: 0,
-                                                periodLength: markPeriodDays.length,
-                                                startDate: markPeriodDays[0],
-                                            }
-                                        );
-                                    } else {
-                                        cycles.unshift(
-                                            {
-                                                cycleLength: 28,
-                                                periodLength: markPeriodDays.length,
-                                                startDate: markPeriodDays[0],
-                                            }
-                                        );
-                                    }
-
-                                    Promise.all([
-                                        updateCycles([...cycles])
-                                    ]).then(() => {
-                                        console.log("All new values are set, setIsOpen(false)");
-                                        datetimeRef.current?.confirm();
-                                        props.setIsOpen(false);
-                                    }).catch((err) => console.error(err));
+                                    cycles.unshift(
+                                        {
+                                            cycleLength: 0,
+                                            periodLength: markPeriodDays.length,
+                                            startDate: markPeriodDays[0],
+                                        }
+                                    );
+                                } else {
+                                    cycles.unshift(
+                                        {
+                                            cycleLength: 28,
+                                            periodLength: markPeriodDays.length,
+                                            startDate: markPeriodDays[0],
+                                        }
+                                    );
                                 }
-                                datetimeRef.current?.confirm();
-                                props.setIsOpen(false);
+
+                                Promise.all([
+                                    updateCycles([...cycles])
+                                ]).then(() => {
+                                    console.log("All new values are set, setIsOpen(false)");
+                                    datetimeRef.current?.confirm();
+                                    props.setIsOpen(false);
+                                }).catch((err) => console.error(err));
                             }}
                         >Save</IonButton>
                     </IonButtons>
