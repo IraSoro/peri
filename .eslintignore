@@ -1,0 +1,8 @@
+.vscode/
+android/
+build/
+demonstration/
+info/
+node_modules/
+public/
+resources/
