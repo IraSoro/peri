@@ -68,7 +68,7 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
     };
   }
   const cycleLenNumber: number = cycles[idx].cycleLength;
-  const cycleLenString: string = `${cycleLenNumber} Days`;
+  const cycleLenString = `${cycleLenNumber} Days`;
   const periodLenNumber: number = cycles[idx].periodLength;
 
   const dateStart: Date = new Date(cycles[idx].startDate);
@@ -213,7 +213,7 @@ const TabDetails = () => {
                             role: "confirm",
                           },
                         ],
-                      });
+                      }).catch((err) => console.error(err));
                     })
                     .catch((err) => {
                       console.error(err);

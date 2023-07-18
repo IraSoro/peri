@@ -101,7 +101,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                       },
                     },
                   ],
-                });
+                }).catch((err) => console.error(err));
               }
             }}
           >
@@ -134,7 +134,7 @@ const Welcome = (props: PropsWelcomeModal) => {
                             },
                           },
                         ],
-                      });
+                      }).catch((err) => console.error(err));
                     })
                     .catch((err) => {
                       console.error(err);

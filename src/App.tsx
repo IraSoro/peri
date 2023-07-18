@@ -47,13 +47,13 @@ setupIonicReact();
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
 
-  async function updateCycles(newCycles: Cycle[]) {
+  function updateCycles(newCycles: Cycle[]) {
     const maxOfCycles = 7;
     if (newCycles.length > maxOfCycles) {
       newCycles.splice(maxOfCycles);
     }
     setCycles(newCycles);
-    await storage.set.cycles(newCycles);
+    storage.set.cycles(newCycles).catch((err) => console.error(err));
   }
 
   useEffect(() => {

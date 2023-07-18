@@ -5,7 +5,12 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
 const container = document.getElementById("root");
-const root = createRoot(container!);
+
+if (!container) {
+  throw new Error("Can't find element in the document with id `root`");
+}
+
+const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <App />

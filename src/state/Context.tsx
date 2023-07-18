@@ -8,7 +8,7 @@ interface CyclesContextI {
 
 const cyclesInit: CyclesContextI = {
   cycles: [],
-  updateCycles: (newCycles) => {},
+  updateCycles: (_newCycles) => {},
 };
 
 export const CyclesContext = React.createContext<CyclesContextI>(cyclesInit);

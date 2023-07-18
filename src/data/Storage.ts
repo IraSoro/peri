@@ -18,7 +18,7 @@ storageImpl
   );
 
 function setCycles(cycles: Cycle[]): Promise<void> {
-  return storageImpl.set("cycles", cycles);
+  return storageImpl.set("cycles", cycles) as Promise<void>;
 }
 
 async function getCycles(safe: boolean): Promise<Cycle[]> {
@@ -40,18 +40,18 @@ export const storage = {
 
 // NOTE: Predefined templates for test purpose
 //       for use just uncomment one of the following lines:
-// emptyArrayOfCycles().catch((err) => console.error(err));
-// arrayOfCyclesWithSingleCycle().catch((err) => console.error(err));
-// arrayOfCyclesWithSingleCycleWithDelay().catch((err) => console.error(err));
-// halfFilledArrayOfCycles().catch((err) => console.error(err));
-// fullyFilledArrayOfCycles().catch((err) => console.error(err));
-// fullyFilledArrayOfCyclesWithDelay().catch((err) => console.error(err));
+// _emptyArrayOfCycles().catch((err) => console.error(err));
+// _arrayOfCyclesWithSingleCycle().catch((err) => console.error(err));
+// _arrayOfCyclesWithSingleCycleWithDelay().catch((err) => console.error(err));
+// _halfFilledArrayOfCycles().catch((err) => console.error(err));
+// _fullyFilledArrayOfCycles().catch((err) => console.error(err));
+// _fullyFilledArrayOfCyclesWithDelay().catch((err) => console.error(err));
 
-function emptyArrayOfCycles(): Promise<void> {
-  return storageImpl.remove("cycles");
+function _emptyArrayOfCycles(): Promise<void> {
+  return storageImpl.remove("cycles") as Promise<void>;
 }
 
-function arrayOfCyclesWithSingleCycle(): Promise<void> {
+function _arrayOfCyclesWithSingleCycle(): Promise<void> {
   return storage.set.cycles([
     {
       cycleLength: 28,
@@ -61,7 +61,7 @@ function arrayOfCyclesWithSingleCycle(): Promise<void> {
   ] satisfies Cycle[]);
 }
 
-function arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
+function _arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
   return storage.set.cycles([
     {
       cycleLength: 28,
@@ -71,7 +71,7 @@ function arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
   ] satisfies Cycle[]);
 }
 
-function halfFilledArrayOfCycles(): Promise<void> {
+function _halfFilledArrayOfCycles(): Promise<void> {
   return storage.set.cycles([
     {
       cycleLength: 0,
@@ -96,7 +96,7 @@ function halfFilledArrayOfCycles(): Promise<void> {
   ] satisfies Cycle[]);
 }
 
-function fullyFilledArrayOfCycles(): Promise<void> {
+function _fullyFilledArrayOfCycles(): Promise<void> {
   return storage.set.cycles([
     {
       cycleLength: 0,
@@ -136,7 +136,7 @@ function fullyFilledArrayOfCycles(): Promise<void> {
   ] satisfies Cycle[]);
 }
 
-function fullyFilledArrayOfCyclesWithDelay(): Promise<void> {
+function _fullyFilledArrayOfCyclesWithDelay(): Promise<void> {
   return storage.set.cycles([
     {
       cycleLength: 0,

@@ -19,7 +19,9 @@ export async function importConfig(): Promise<Config> {
     const fileReader = new FileReader();
 
     fileReader.addEventListener("load", () => {
-      const config: Config | null = JSON.parse(fileReader.result as string);
+      const config: Config | null = JSON.parse(
+        fileReader.result as string,
+      ) as Config | null;
       if (!config) {
         reject("User imported empty config");
       } else {

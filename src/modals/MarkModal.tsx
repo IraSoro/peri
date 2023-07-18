@@ -141,7 +141,9 @@ const MarkModal = (props: PropsMarkModal) => {
             <IonButton
               color="basic"
               onClick={() => {
-                datetimeRef.current?.cancel();
+                datetimeRef.current
+                  ?.cancel()
+                  .catch((err) => console.error(err));
                 props.setIsOpen(false);
               }}
             >
@@ -180,7 +182,9 @@ const MarkModal = (props: PropsMarkModal) => {
                 Promise.all([updateCycles([...cycles])])
                   .then(() => {
                     console.log("All new values are set, setIsOpen(false)");
-                    datetimeRef.current?.confirm();
+                    datetimeRef.current
+                      ?.confirm()
+                      .catch((err) => console.error(err));
                     props.setIsOpen(false);
                   })
                   .catch((err) => console.error(err));

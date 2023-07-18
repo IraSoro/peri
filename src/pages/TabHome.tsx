@@ -51,7 +51,7 @@ function useOvulationStatus(): string {
   } else if (diffDay === 1) {
     return "tomorrow";
   }
-  return "in " + diffDay + " days";
+  return `in ${diffDay} days`;
 }
 
 function usePregnancyChance() {
@@ -90,12 +90,12 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   dateOfFinish.setHours(0, 0, 0, 0);
   const now = new Date();
   now.setHours(0, 0, 0, 0);
-  let dayBefore = Math.round(
+  const dayBefore = Math.round(
     (Number(dateOfFinish) - Number(now)) / millisecondsInDay,
   );
 
   if (dayBefore > 1) {
-    return { title: "Period in", days: dayBefore + " Days" };
+    return { title: "Period in", days: `${dayBefore} Days` };
   }
   if (dayBefore === 1) {
     return { title: "Period in", days: "1 Day" };
@@ -108,7 +108,7 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   }
   return {
     title: "Delay",
-    days: Math.abs(dayBefore) + " Days",
+    days: `${Math.abs(dayBefore)} Days`,
   };
 }
 
@@ -144,7 +144,7 @@ const TabHome = () => {
       if (!Capacitor.isPluginAvailable("App")) {
         return;
       }
-      App.exitApp?.();
+      App.exitApp?.().catch((err) => console.error(err));
     };
 
     document.addEventListener("ionBackButton", backButtonHandler);
