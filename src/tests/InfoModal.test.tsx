@@ -6,7 +6,7 @@ test("renders without crashing", () => {
     <InfoModal
       isOpen
       setIsOpen={() => {}}
-    />
+    />,
   );
   expect(baseElement).toBeDefined();
 });

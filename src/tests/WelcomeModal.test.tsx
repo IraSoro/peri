@@ -6,7 +6,7 @@ test("renders without crashing", () => {
     <Welcome
       isOpen
       setIsOpen={() => {}}
-    />
+    />,
   );
   expect(baseElement).toBeDefined();
 });

@@ -1,66 +1,66 @@
 #rectangle-top {
-    width: 100%;
-    height: 30%;
-    background: var(--ion-color-basic);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: 30%;
+  background: var(--ion-color-basic);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #rectangle-bottom {
-    width: 100%;
-    height: 65%;
-    background: #ffffff;
-    /* border-radius: 20px; */
+  width: 100%;
+  height: 65%;
+  background: #ffffff;
+  /* border-radius: 20px; */
 }
 
 #circle {
-    width: 180px;
-    height: 180px;
-    background: #ffffff;
-    border-color: #d7d7d7;
-    border-style: solid;
-    border-width: 10px 10px 10px 10px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 180px;
+  height: 180px;
+  background: #ffffff;
+  border-color: #d7d7d7;
+  border-style: solid;
+  border-width: 10px 10px 10px 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ion-progress-bar {
-    height: 60%;
-    border-radius: 20px;
+  height: 60%;
+  border-radius: 20px;
 }
 
 ion-progress-bar::part(progress) {
-    border-radius: 20px;
-    background: var(--ion-color-dark-basic);
+  border-radius: 20px;
+  background: var(--ion-color-dark-basic);
 }
 
 ion-progress-bar::part(track) {
-    border-radius: 20px;
-    background: var(--ion-color-basic);
+  border-radius: 20px;
+  background: var(--ion-color-basic);
 }
 
 .current-progress::part(track) {
-    border-radius: 20px;
-    background: #d7d7d7;
+  border-radius: 20px;
+  background: #d7d7d7;
 }
 
 ion-progress-bar::part(stream) {
-    border-radius: 20px;
-    background: #ffffff;
+  border-radius: 20px;
+  background: #ffffff;
 }
 
 ion-item {
-    --min-height: 60px;
+  --min-height: 60px;
 }
 
 .transparent-center {
-    --ion-item-background: transparent;
+  --ion-item-background: transparent;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }

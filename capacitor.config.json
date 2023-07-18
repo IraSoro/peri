@@ -1,6 +1,6 @@
 {
-	"appId": "period.tracker.test",
-	"appName": "Test peri",
-	"webDir": "build",
-	"bundledWebRuntime": false
+  "appId": "period.tracker.test",
+  "appName": "Test peri",
+  "webDir": "build",
+  "bundledWebRuntime": false
 }

@@ -1,86 +1,85 @@
-import { useContext } from 'react';
-import { CyclesContext } from './Context';
+import { useContext } from "react";
+import { CyclesContext } from "./Context";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
 export function useLastStartDate(): string {
-    const cycles = useContext(CyclesContext).cycles;
+  const cycles = useContext(CyclesContext).cycles;
 
-    if (cycles.length === 0) {
-        return "";
-    }
+  if (cycles.length === 0) {
+    return "";
+  }
 
-    return cycles[0].startDate;
+  return cycles[0].startDate;
 }
 
 export function useDayOfCycle(): string {
-    const startDate = useLastStartDate();
+  const startDate = useLastStartDate();
 
-    if (!startDate) {
-        return "";
-    }
+  if (!startDate) {
+    return "";
+  }
 
-    const start = new Date(startDate);
-    start.setHours(0, 0, 0, 0);
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+  const start = new Date(startDate);
+  start.setHours(0, 0, 0, 0);
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
 
-    const diff = Math.ceil((currentDate.getTime() - start.getTime()) / millisecondsInDay) + 1;
+  const diff =
+    Math.ceil((currentDate.getTime() - start.getTime()) / millisecondsInDay) +
+    1;
 
-    return diff.toString();
+  return diff.toString();
 }
 
 export function useAverageLengthOfCycle(): number {
-    const cycles = useContext(CyclesContext).cycles;
+  const cycles = useContext(CyclesContext).cycles;
 
-    if (cycles.length === 0) {
-        return 0;
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  if (cycles.length === 1) {
+    return cycles[0].cycleLength;
+  }
+
+  const sum = cycles.reduce((prev, current, idx) => {
+    if (idx > 0) {
+      return prev + current.cycleLength;
     }
+    return 0;
+  }, 0);
 
-    if (cycles.length === 1) {
-        return cycles[0].cycleLength;
-    }
-
-    const sum = cycles.reduce((prev, current, idx) => {
-        if (idx > 0) {
-            return prev + current.cycleLength;
-        }
-        return 0;
-    }, 0);
-
-    return Math.round(sum / (cycles.length - 1));
+  return Math.round(sum / (cycles.length - 1));
 }
 
 export function useAverageLengthOfPeriod(): number {
-    const cycles = useContext(CyclesContext).cycles;
+  const cycles = useContext(CyclesContext).cycles;
 
-    if (cycles.length === 0) {
-        return 0;
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  if (cycles.length === 1) {
+    return cycles[0].periodLength;
+  }
+
+  const sum = cycles.reduce((prev, current, idx) => {
+    if (idx > 0) {
+      return prev + current.periodLength;
     }
+    return 0;
+  }, 0);
 
-    if (cycles.length === 1) {
-        return cycles[0].periodLength;
-    }
-
-    const sum = cycles.reduce((prev, current, idx) => {
-        if (idx > 0) {
-            return prev + current.periodLength;
-        }
-        return 0;
-    }, 0);
-
-    return Math.round(sum / (cycles.length - 1));
+  return Math.round(sum / (cycles.length - 1));
 }
 
 export function useLengthOfLastPeriod(): number {
-    const cycles = useContext(CyclesContext).cycles;
+  const cycles = useContext(CyclesContext).cycles;
 
-    if (cycles.length === 0) {
-        return 0;
-    }
+  if (cycles.length === 0) {
+    return 0;
+  }
 
-    return Number(cycles[0].periodLength);
+  return Number(cycles[0].periodLength);
 }
-
-
-

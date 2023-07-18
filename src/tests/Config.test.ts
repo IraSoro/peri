@@ -48,7 +48,7 @@ test("importConfig", async () => {
           fileReaderOnLoadCallback = callback as EventListener;
         }
         console.log("FileReader addEventListener");
-      }
+      },
     );
   jest.spyOn(FileReader.prototype, "readAsText").mockImplementationOnce(() => {
     fileReaderOnLoadCallback?.({} as Event);
