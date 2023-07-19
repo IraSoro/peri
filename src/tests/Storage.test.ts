@@ -28,7 +28,7 @@ describe("getCycles", () => {
       .mockResolvedValueOnce(undefined);
 
     await expect(storage.get.cycles()).rejects.toThrow(
-      "Can't find `cycles` in storage"
+      "Can't find `cycles` in storage",
     );
     expect(storageGetSpy).toHaveBeenCalledWith("cycles");
   });

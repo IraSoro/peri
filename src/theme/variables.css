@@ -4,16 +4,16 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 @font-face {
-  font-family: 'DMSans-Medium';
-  src: url('../fonts/DMSans-Medium.ttf');
+  font-family: "DMSans-Medium";
+  src: url("../fonts/DMSans-Medium.ttf");
 }
 
 :root {
   /** fonts **/
-  --ion-font-family: 'DMSans-Medium';
+  --ion-font-family: "DMSans-Medium";
 
   /** primary **/
-  --ion-color-primary: #C0B6F2;
+  --ion-color-primary: #c0b6f2;
   --ion-color-primary-rgb: 192, 182, 242;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
@@ -85,21 +85,21 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #ffffff;
 
   /** my **/
-  --ion-color-basic: #C0B6F2;
+  --ion-color-basic: #c0b6f2;
   --ion-color-basic-rgb: 192, 182, 242;
   --ion-color-basic-contrast: #000000;
   --ion-color-basic-contrast-rgb: 0, 0, 0;
   --ion-color-basic-shade: #a9a0d5;
   --ion-color-basic-tint: #c6bdf3;
 
-  --ion-color-opposite: #FFFDB7;
+  --ion-color-opposite: #fffdb7;
   --ion-color-opposite-rgb: 255, 253, 183;
   --ion-color-opposite-contrast: #000000;
   --ion-color-opposite-contrast-rgb: 0, 0, 0;
   --ion-color-opposite-shade: #e0dfa1;
   --ion-color-opposite-tint: #fffdbe;
 
-  --ion-color-dark-basic: #4C3B9D;
+  --ion-color-dark-basic: #4c3b9d;
   --ion-color-dark-basic-rgb: 76, 59, 157;
   --ion-color-dark-basic-contrast: #ffffff;
   --ion-color-dark-basic-contrast-rgb: 255, 255, 255;

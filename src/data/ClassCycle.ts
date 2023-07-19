@@ -1,8 +1,7 @@
 interface Cycle {
-    cycleLength: number;
-    periodLength: number;
-    startDate: string;
+  cycleLength: number;
+  periodLength: number;
+  startDate: string;
 }
 
 export type { Cycle };
-

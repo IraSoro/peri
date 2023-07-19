@@ -6,7 +6,7 @@ test("renders without crashing", () => {
     <CalendarModal
       isOpen
       setIsOpen={() => {}}
-    />
+    />,
   );
   expect(baseElement).toBeDefined();
 });

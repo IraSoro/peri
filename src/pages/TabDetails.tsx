@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 import {
   IonContent,
   IonPage,
@@ -9,9 +9,9 @@ import {
   IonButton,
   IonIcon,
   useIonAlert,
-} from '@ionic/react';
+} from "@ionic/react";
 import { cloudDownloadOutline, cloudUploadOutline } from "ionicons/icons";
-import './TabDetails.css';
+import "./TabDetails.css";
 
 import {
   useDayOfCycle,
@@ -19,16 +19,16 @@ import {
   useAverageLengthOfCycle,
   useAverageLengthOfPeriod,
   useLastStartDate,
-} from '../state/CycleInformationHooks';
-import { CyclesContext } from '../state/Context';
-import { exportConfig, importConfig } from '../data/Config';
-import { storage } from '../data/Storage';
+} from "../state/CycleInformationHooks";
+import { CyclesContext } from "../state/Context";
+import { exportConfig, importConfig } from "../data/Config";
+import { storage } from "../data/Storage";
 
 function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();
 
   if (!dayOfCycle) {
-    return ""
+    return "";
   }
 
   if (dayOfCycle === "1") {
@@ -64,11 +64,11 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
       lengthOfCycleNumber: defaultLengthOfCycle,
       lengthOfCycleString: "Cycle length",
       lengthOfPeriod: 0,
-      dates: "date"
+      dates: "date",
     };
   }
   const cycleLenNumber: number = cycles[idx].cycleLength;
-  const cycleLenString: string = `${cycleLenNumber} Days`;
+  const cycleLenString = `${cycleLenNumber} Days`;
   const periodLenNumber: number = cycles[idx].periodLength;
 
   const dateStart: Date = new Date(cycles[idx].startDate);
@@ -91,7 +91,10 @@ const CurrentCycle = () => {
   const progressBarBuffer = useProgressBarBuffer();
 
   return (
-    <IonItem class="transparent-center" lines="none">
+    <IonItem
+      class="transparent-center"
+      lines="none"
+    >
       <IonLabel position="stacked">
         {title ? <h2>Current cycle: {title}</h2> : <h2>Current cycle</h2>}
       </IonLabel>
@@ -105,23 +108,26 @@ const CurrentCycle = () => {
       <IonLabel position="stacked">
         <IonProgressBar
           class="current-progress"
-          value={lengthOfPeriod / 100 * 3}
-          buffer={progressBarBuffer / 100 * 3}
+          value={(lengthOfPeriod / 100) * 3}
+          buffer={(progressBarBuffer / 100) * 3}
         ></IonProgressBar>
       </IonLabel>
     </IonItem>
   );
-}
+};
 
 interface IdxProps {
   idx: number;
-};
+}
 
 const ItemProgress = (props: IdxProps) => {
   const info = useInfoForOneCycle(props.idx);
 
   return (
-    <IonItem class="transparent-center" lines="none">
+    <IonItem
+      class="transparent-center"
+      lines="none"
+    >
       <IonLabel position="stacked">
         <h2>{info.lengthOfCycleString}</h2>
       </IonLabel>
@@ -130,27 +136,25 @@ const ItemProgress = (props: IdxProps) => {
       </IonLabel>
       <IonLabel position="stacked">
         <IonProgressBar
-          value={info.lengthOfPeriod / 100 * 3}
-          buffer={info.lengthOfCycleNumber / 100 * 3}
+          value={(info.lengthOfPeriod / 100) * 3}
+          buffer={(info.lengthOfCycleNumber / 100) * 3}
         ></IonProgressBar>
       </IonLabel>
     </IonItem>
   );
-}
+};
 
 const ListProgress = () => {
   const numbers = [1, 2, 3, 4, 5];
-  const list = numbers.map((idx) =>
+  const list = numbers.map((idx) => (
     <ItemProgress
       key={idx}
       idx={idx}
     />
-  );
+  ));
 
-  return (
-    <>{list}</>
-  );
-}
+  return <>{list}</>;
+};
 
 const TabDetails = () => {
   const [confirmAlert] = useIonAlert();
@@ -164,21 +168,24 @@ const TabDetails = () => {
   const p_style = {
     fontSize: "10px" as const,
     color: "var(--ion-color-basic)" as const,
-    textAlign: "center" as const
+    textAlign: "center" as const,
   };
 
   const h_style = {
     fontWeight: "bold" as const,
     color: "var(--ion-color-dark-basic)" as const,
-    textAlign: "center" as const
+    textAlign: "center" as const,
   };
 
   return (
     <IonPage>
-      <IonContent color="basic" fullscreen>
+      <IonContent
+        color="basic"
+        fullscreen
+      >
         <div id="rectangle-top">
           <div id="circle">
-            <IonLabel >
+            <IonLabel>
               <p style={p_style}>Period length</p>
               <h1 style={h_style}>{lengthOfPeriod}</h1>
               <p style={p_style}>Cycle length</p>
@@ -187,53 +194,62 @@ const TabDetails = () => {
           </div>
         </div>
         <div>
-        <IonButton
+          <IonButton
             color="dark-basic"
             onClick={() => {
               importConfig()
                 .then((config) => {
-                    storage.set.cycles(config.cycles)
-                      .then(() => {
-                          updateCycles(config.cycles);
+                  storage.set
+                    .cycles(config.cycles)
+                    .then(() => {
+                      updateCycles(config.cycles);
 
-                          confirmAlert({
-                              header: "Configuration has been imported",
-                              cssClass: "header-color",
-                              buttons: [{
-                                  text: "OK",
-                                  role: "confirm",
-                              }],
-                          });
-                      })
-                      .catch((err) => {
-                        console.error(err);
+                      confirmAlert({
+                        header: "Configuration has been imported",
+                        cssClass: "header-color",
+                        buttons: [
+                          {
+                            text: "OK",
+                            role: "confirm",
+                          },
+                        ],
+                      }).catch((err) => console.error(err));
+                    })
+                    .catch((err) => {
+                      console.error(err);
                     });
                 })
                 .catch((err) => {
-                    console.error(err);
+                  console.error(err);
                 });
             }}
           >
-            <IonIcon slot="start" icon={cloudDownloadOutline} />
+            <IonIcon
+              slot="start"
+              icon={cloudDownloadOutline}
+            />
             Import
           </IonButton>
           <IonButton
             color="dark-basic"
             disabled={averageLengthOfCycle === 0}
             onClick={() => {
-              storage.get.cycles()
+              storage.get
+                .cycles()
                 .then((cycles) => {
-                    exportConfig({ cycles })
-                      .catch((err) => {
-                          console.error(err);
-                      });
+                  exportConfig({ cycles }).catch((err) => {
+                    console.error(err);
+                  });
                 })
                 .catch((err) => {
-                    console.error(err);
+                  console.error(err);
                 });
             }}
           >
-            <IonIcon slot="start" icon={cloudUploadOutline} />
+            <IonIcon
+              slot="start"
+              icon={cloudUploadOutline}
+            />
             Export
           </IonButton>
         </div>
@@ -244,7 +260,7 @@ const TabDetails = () => {
           </IonList>
         </div>
       </IonContent>
-    </IonPage >
+    </IonPage>
   );
 };
 

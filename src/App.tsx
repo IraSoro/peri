@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
   IonLabel,
@@ -12,56 +12,57 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-} from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import TabHome from './pages/TabHome';
-import TabDetails from './pages/TabDetails';
-import './App.css';
+} from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
+import TabHome from "./pages/TabHome";
+import TabDetails from "./pages/TabDetails";
+import "./App.css";
 
 /* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import "@ionic/react/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import "@ionic/react/css/normalize.css";
+import "@ionic/react/css/structure.css";
+import "@ionic/react/css/typography.css";
 
 /* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+import "@ionic/react/css/padding.css";
+import "@ionic/react/css/float-elements.css";
+import "@ionic/react/css/text-alignment.css";
+import "@ionic/react/css/text-transformation.css";
+import "@ionic/react/css/flex-utils.css";
+import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import './theme/variables.css';
+import "./theme/variables.css";
 
-import { storage } from './data/Storage';
+import { storage } from "./data/Storage";
 
-import type { Cycle } from './data/ClassCycle';
-import { CyclesContext } from './state/Context';
+import type { Cycle } from "./data/ClassCycle";
+import { CyclesContext } from "./state/Context";
 
 setupIonicReact();
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
 
-  async function updateCycles(newCycles: Cycle[]) {
+  function updateCycles(newCycles: Cycle[]) {
     const maxOfCycles = 7;
     if (newCycles.length > maxOfCycles) {
       newCycles.splice(maxOfCycles);
     }
     setCycles(newCycles);
-    await storage.set.cycles(newCycles);
+    storage.set.cycles(newCycles).catch((err) => console.error(err));
   }
 
   useEffect(() => {
-
-    storage.get.cycles()
+    storage.get
+      .cycles()
       .then(setCycles)
-      .catch((err) => console.error(`Can't get cycles ${(err as Error).message}`));
-
+      .catch((err) =>
+        console.error(`Can't get cycles ${(err as Error).message}`),
+      );
   }, []);
 
   return (
@@ -77,40 +78,58 @@ const App: React.FC = () => {
           <IonContent>
             <IonTabs>
               <IonRouterOutlet>
-                <Route exact path="/home">
+                <Route
+                  exact
+                  path="/home"
+                >
                   <TabHome />
                 </Route>
 
-                <Route exact path="/details">
+                <Route
+                  exact
+                  path="/details"
+                >
                   <TabDetails />
                 </Route>
 
-                <Route exact path="/">
+                <Route
+                  exact
+                  path="/"
+                >
                   <Redirect to="/home" />
                 </Route>
 
-                <Route exact path="/peri/">
+                <Route
+                  exact
+                  path="/peri/"
+                >
                   <Redirect to="/home" />
                 </Route>
-
               </IonRouterOutlet>
 
-              <IonTabBar slot="top" color="basic">
-                <IonTabButton tab="home" href="/home">
+              <IonTabBar
+                slot="top"
+                color="basic"
+              >
+                <IonTabButton
+                  tab="home"
+                  href="/home"
+                >
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="details" href="/details">
+                <IonTabButton
+                  tab="details"
+                  href="/details"
+                >
                   <IonLabel>Details</IonLabel>
                 </IonTabButton>
               </IonTabBar>
             </IonTabs>
           </IonContent>
-
         </IonReactRouter>
       </IonApp>
     </CyclesContext.Provider>
-  )
+  );
 };
 
 export default App;
-
