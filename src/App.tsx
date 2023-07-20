@@ -16,6 +16,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import TabHome from "./pages/TabHome";
 import TabDetails from "./pages/TabDetails";
+import MultiLanguage from "./modals/MultiLanguageModal";
 import "./App.css";
 
 /* Core CSS required for Ionic components to work properly */
@@ -72,6 +73,7 @@ const App: React.FC = () => {
           <IonHeader class="ion-no-border">
             <IonToolbar color="basic">
               <IonTitle color="light">Hello!</IonTitle>
+              <MultiLanguage />
             </IonToolbar>
           </IonHeader>
 
