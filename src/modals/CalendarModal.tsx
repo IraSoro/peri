@@ -77,7 +77,7 @@ const CalendarModal = (props: PropsCalendarModal) => {
         <IonDatetime
           color="basic"
           presentation="date"
-          locale={t("local")}
+          locale={t("locale")}
           size="cover"
           firstDayOfWeek={1}
           isDateEnabled={(dateString: string) => {

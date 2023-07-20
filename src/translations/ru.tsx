@@ -1,6 +1,6 @@
 const ru = {
   language: "ru",
-  local: "ru",
+  locale: "ru",
   chooseLanguage: "Выберите язык",
   homeTab: {
     title: "Главная",
@@ -50,6 +50,15 @@ const ru = {
     select: "отметьте диапазон месячных",
     cancel: "отмена",
     save: "сохранить",
+  },
+  welcomeModal: {
+    welcome: "Добро пожаловать в Peri",
+    pleaseMark: "Пожалуйста, отметьте дни последней менструации.",
+    continue: "Продолжить",
+    forecast: "Прогноз не будет сгенерирован.",
+    cancel: "отмена",
+    or: "или",
+    importData: "импортировать данные",
   },
   infoModal: {
     title: "узнать больше о текущем состоянии",

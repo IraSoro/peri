@@ -44,7 +44,7 @@ export const storage = {
 // _arrayOfCyclesWithSingleCycle().catch((err) => console.error(err));
 // _arrayOfCyclesWithSingleCycleWithDelay().catch((err) => console.error(err));
 // _halfFilledArrayOfCycles().catch((err) => console.error(err));
-// _fullyFilledArrayOfCycles().catch((err) => console.error(err));
+_fullyFilledArrayOfCycles().catch((err) => console.error(err));
 // _fullyFilledArrayOfCyclesWithDelay().catch((err) => console.error(err));
 
 function _emptyArrayOfCycles(): Promise<void> {

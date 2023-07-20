@@ -1,6 +1,6 @@
 const en = {
   language: "en",
-  local: "en-GB",
+  locale: "en-GB",
   chooseLanguage: "Choose language",
   homeTab: {
     title: "Home",
@@ -51,6 +51,15 @@ const en = {
     select: "select date range",
     cancel: "cancel",
     save: "save",
+  },
+  welcomeModal: {
+    welcome: "Welcome to Peri",
+    pleaseMark: "Please mark the days of your last period.",
+    continue: "Continue",
+    forecast: "Forecast will not be generated.",
+    cancel: "cancel",
+    or: "or",
+    importData: "import data",
   },
   infoModal: {
     title: "learn more about the current state",

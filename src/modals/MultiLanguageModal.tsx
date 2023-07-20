@@ -25,9 +25,9 @@ const MultiLanguage = () => {
     i18n.changeLanguage(lng).catch((err) => console.error(err));
   };
 
-  if (t("local") === "en-GB") {
+  if (t("locale") === "en-GB") {
     setDefaultOptions({ locale: enGB });
-  } else if (t("local") === "ru") {
+  } else if (t("locale") === "ru") {
     setDefaultOptions({ locale: ru });
   }
 

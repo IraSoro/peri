@@ -18,6 +18,7 @@ import "./WelcomeModal.css";
 import type { Cycle } from "../data/ClassCycle";
 import { importConfig } from "../data/Config";
 import { storage } from "../data/Storage";
+import { useTranslation } from "react-i18next";
 
 import { CyclesContext } from "../state/Context";
 
@@ -39,6 +40,8 @@ const Welcome = (props: PropsWelcomeModal) => {
 
   const updateCycles = useContext(CyclesContext).updateCycles;
 
+  const { t } = useTranslation();
+
   return (
     <IonModal
       isOpen={props.isOpen}
@@ -46,7 +49,7 @@ const Welcome = (props: PropsWelcomeModal) => {
     >
       <IonHeader class="ion-no-border">
         <IonToolbar color="basic">
-          <IonTitle color="light">Welcome to Peri</IonTitle>
+          <IonTitle color="light">{t("welcomeModal.welcome")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent
@@ -58,7 +61,7 @@ const Welcome = (props: PropsWelcomeModal) => {
             class="welcome"
             color="dark-basic"
           >
-            Please mark the days of your last period.
+            {t("welcomeModal.pleaseMark")}
           </IonLabel>
         </IonCol>
         <IonDatetime
@@ -66,7 +69,7 @@ const Welcome = (props: PropsWelcomeModal) => {
           ref={refDatetime}
           color="basic"
           presentation="date"
-          locale="en-GB"
+          locale={t("locale")}
           size="cover"
           multiple
           firstDayOfWeek={1}
@@ -85,12 +88,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                 props.setIsOpen(false);
               } else {
                 confirmAlert({
-                  header: "Continue?",
+                  header: `${t("welcomeModal.continue")}?`,
                   cssClass: "header-color",
-                  message: "Forecast will not be generated.",
+                  message: t("welcomeModal.forecast"),
                   buttons: [
                     {
-                      text: "CANCEL",
+                      text: t("welcomeModal.cancel"),
                       role: "cancel",
                     },
                     {
@@ -105,11 +108,11 @@ const Welcome = (props: PropsWelcomeModal) => {
               }
             }}
           >
-            continue
+            {t("welcomeModal.continue")}
           </IonButton>
         </IonCol>
         <IonCol>
-          <IonLabel color="dark-basic">or</IonLabel>
+          <IonLabel color="dark-basic">{t("welcomeModal.or")}</IonLabel>
         </IonCol>
         <IonCol>
           <IonButton
@@ -149,7 +152,7 @@ const Welcome = (props: PropsWelcomeModal) => {
               slot="start"
               icon={cloudDownloadOutline}
             />
-            Import data
+            {t("welcomeModal.importData")}
           </IonButton>
         </IonCol>
       </IonContent>
