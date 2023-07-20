@@ -13,6 +13,8 @@ import {
 } from "@ionic/react";
 import { globeOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
+import { enGB, ru } from "date-fns/locale";
+import setDefaultOptions from "date-fns/setDefaultOptions";
 import "./MultiLanguageModal.css";
 
 const MultiLanguage = () => {
@@ -22,6 +24,12 @@ const MultiLanguage = () => {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng).catch((err) => console.error(err));
   };
+
+  if (t("local") === "en-GB") {
+    setDefaultOptions({ locale: enGB });
+  } else if (t("local") === "ru") {
+    setDefaultOptions({ locale: ru });
+  }
 
   return (
     <>
@@ -42,9 +50,6 @@ const MultiLanguage = () => {
       >
         <IonCard color="light">
           <IonCardContent class="align-center">
-            <IonLabel color="basic">
-              <h1>{t("language")}</h1>
-            </IonLabel>
             <IonList>
               <IonRadioGroup value={i18n.language}>
                 <IonItem>

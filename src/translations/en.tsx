@@ -1,6 +1,60 @@
 const en = {
-  hello: "Hello",
-  language: "Choose language",
+  language: "en",
+  local: "en-GB",
+  chooseLanguage: "Choose language",
+  homeTab: {
+    title: "Home",
+    mark: "mark",
+    mainInfo: {
+      periodIn: "Period in",
+      noInfo: "no info",
+      day: "Day",
+      days: "Days",
+      daysLess5: "Days",
+      period: "Period",
+      today: "today",
+      delay: "Delay",
+    },
+    pregnancyChance: {
+      title: "Chance of getting pregnant",
+      high: "high",
+      low: "low",
+    },
+    ovulation: {
+      title: "Ovulation",
+      today: "today",
+      possible: "possible",
+      finished: "finished",
+      tomorrow: "tomorrow",
+      in: "in",
+      days: "days",
+      daysLess5: "days",
+    },
+    curCycleDay: "Current cycle day",
+  },
+  detailsTab: {
+    title: "Details",
+    periodLen: "Period length",
+    cycleLen: "Cycle length",
+    day: "Day",
+    days: "Days",
+    daysLess5: "Days",
+    currentCycle: "Current cycle",
+    started: "Started",
+    startedDate: "Started date",
+    date: "date",
+    import: "import",
+    export: "export",
+  },
+  markModal: {
+    mark: "mark",
+    select: "select date range",
+    cancel: "cancel",
+    save: "save",
+  },
+  infoModal: {
+    title: "learn more about the current state",
+  },
 };
 
 export default en;

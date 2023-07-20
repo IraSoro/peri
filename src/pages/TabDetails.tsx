@@ -20,21 +20,25 @@ import {
   useAverageLengthOfPeriod,
   useLastStartDate,
 } from "../state/CycleInformationHooks";
+import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
 import { exportConfig, importConfig } from "../data/Config";
 import { storage } from "../data/Storage";
 
 function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();
+  const { t } = useTranslation();
 
   if (!dayOfCycle) {
     return "";
   }
 
   if (dayOfCycle === "1") {
-    return "1 Day";
+    return `1 ${t("detailsTab.day")}`;
+  } else if (Number(dayOfCycle) < 5) {
+    return `${dayOfCycle} ${t("detailsTab.daysLess5")}`;
   }
-  return `${dayOfCycle} Days`;
+  return `${dayOfCycle} ${t("detailsTab.days")}`;
 }
 
 function useProgressBarBuffer() {
@@ -56,15 +60,16 @@ interface InfoOneCycle {
 
 export function useInfoForOneCycle(idx: number): InfoOneCycle {
   const cycles = useContext(CyclesContext).cycles;
+  const { t } = useTranslation();
 
   if (!cycles || cycles.length <= idx) {
     const defaultLengthOfCycle = 28;
 
     return {
       lengthOfCycleNumber: defaultLengthOfCycle,
-      lengthOfCycleString: "Cycle length",
+      lengthOfCycleString: t("detailsTab.cycleLen"),
       lengthOfPeriod: 0,
-      dates: "date",
+      dates: t("detailsTab.date"),
     };
   }
   const cycleLenNumber: number = cycles[idx].cycleLength;
@@ -90,19 +95,27 @@ const CurrentCycle = () => {
   const lengthOfPeriod = useLengthOfLastPeriod();
   const progressBarBuffer = useProgressBarBuffer();
 
+  const { t } = useTranslation();
+
   return (
     <IonItem
       class="transparent-center"
       lines="none"
     >
       <IonLabel position="stacked">
-        {title ? <h2>Current cycle: {title}</h2> : <h2>Current cycle</h2>}
+        {title ? (
+          <h2>{`${t("detailsTab.currentCycle")}: ${title}`}</h2>
+        ) : (
+          <h2>{t("detailsTab.currentCycle")}</h2>
+        )}
       </IonLabel>
       <IonLabel position="stacked">
         {startDate ? (
-          <p>Started {new Date(startDate).toLocaleDateString()}</p>
+          <p>{`${t("detailsTab.startedDate")} ${new Date(
+            startDate,
+          ).toLocaleDateString()}`}</p>
         ) : (
-          <p>Started date</p>
+          <p>{t("detailsTab.startedDate")}</p>
         )}
       </IonLabel>
       <IonLabel position="stacked">
@@ -157,11 +170,26 @@ const ListProgress = () => {
 };
 
 const TabDetails = () => {
+  const { t } = useTranslation();
+
   const [confirmAlert] = useIonAlert();
 
   const averageLengthOfCycle = useAverageLengthOfCycle();
-  const lengthOfCycle = `${averageLengthOfCycle} Days`;
-  const lengthOfPeriod = `${useAverageLengthOfPeriod()} Days`;
+  const averageLengthOfPeriod = useAverageLengthOfPeriod();
+  let lengthOfCycle: string;
+  let lengthOfPeriod: string;
+
+  if (averageLengthOfCycle < 5) {
+    lengthOfCycle = `${averageLengthOfCycle} ${t("detailsTab.daysLess5")}`;
+  } else {
+    lengthOfCycle = `${averageLengthOfCycle} ${t("detailsTab.days")}`;
+  }
+
+  if (averageLengthOfPeriod < 5) {
+    lengthOfPeriod = `${averageLengthOfPeriod} ${t("detailsTab.daysLess5")}`;
+  } else {
+    lengthOfPeriod = `${averageLengthOfPeriod} ${t("detailsTab.days")}`;
+  }
 
   const updateCycles = useContext(CyclesContext).updateCycles;
 
@@ -186,9 +214,9 @@ const TabDetails = () => {
         <div id="rectangle-top">
           <div id="circle">
             <IonLabel>
-              <p style={p_style}>Period length</p>
+              <p style={p_style}>{t("detailsTab.periodLen")}</p>
               <h1 style={h_style}>{lengthOfPeriod}</h1>
-              <p style={p_style}>Cycle length</p>
+              <p style={p_style}>{t("detailsTab.cycleLen")}</p>
               <h1 style={h_style}>{lengthOfCycle}</h1>
             </IonLabel>
           </div>
@@ -228,7 +256,7 @@ const TabDetails = () => {
               slot="start"
               icon={cloudDownloadOutline}
             />
-            Import
+            {t("detailsTab.import")}
           </IonButton>
           <IonButton
             color="dark-basic"
@@ -250,7 +278,7 @@ const TabDetails = () => {
               slot="start"
               icon={cloudUploadOutline}
             />
-            Export
+            {t("detailsTab.export")}
           </IonButton>
         </div>
         <div id="rectangle-bottom">

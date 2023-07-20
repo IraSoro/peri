@@ -6,6 +6,7 @@ import {
   IonCardHeader,
   IonCardContent,
 } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 import "./InfoModal.css";
 
 import { phases } from "../data/PhasesConst";
@@ -59,6 +60,7 @@ interface PropsInfoModal {
 
 const InfoModal = (props: PropsInfoModal) => {
   const phase = usePhase();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -66,7 +68,7 @@ const InfoModal = (props: PropsInfoModal) => {
         class="info-button"
         onClick={() => props.setIsOpen(true)}
       >
-        learn more about the current state
+        {t("infoModal.title")}
       </IonButton>
       <IonModal
         id="info-modal"

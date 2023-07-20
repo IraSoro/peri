@@ -13,6 +13,7 @@ import {
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
+import { useTranslation } from "react-i18next";
 
 import "./TabHome.css";
 import uterus from "../assets/uterus.svg";
@@ -34,6 +35,7 @@ const millisecondsInDay = 24 * 60 * 60 * 1000;
 function useOvulationStatus(): string {
   const cycleLength = useAverageLengthOfCycle();
   const dayOfCycle = Number(useDayOfCycle());
+  const { t } = useTranslation();
 
   if (!cycleLength || !dayOfCycle) {
     return "";
@@ -43,20 +45,27 @@ function useOvulationStatus(): string {
   const ovulationDay = Number(cycleLength) - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
   if (diffDay === 0) {
-    return "today";
+    return t("homeTab.ovulation.today");
   } else if (diffDay < 0 && diffDay >= -2) {
-    return "possible";
+    return t("homeTab.ovulation.possible");
   } else if (diffDay < 0) {
-    return "finished";
+    return t("homeTab.ovulation.finished");
   } else if (diffDay === 1) {
-    return "tomorrow";
+    return t("homeTab.ovulation.tomorrow");
+  } else if (diffDay < 5) {
+    return `${t("homeTab.ovulation.in")} ${diffDay} ${t(
+      "homeTab.ovulation.daysLess5",
+    )}`;
   }
-  return `in ${diffDay} days`;
+  return `${t("homeTab.ovulation.in")} ${diffDay} ${t(
+    "homeTab.ovulation.days",
+  )}`;
 }
 
 function usePregnancyChance() {
   const cycleLength = useAverageLengthOfCycle();
   const dayOfCycle = Number(useDayOfCycle());
+  const { t } = useTranslation();
 
   if (!cycleLength || !dayOfCycle) {
     return "";
@@ -67,9 +76,9 @@ function usePregnancyChance() {
   const diffDay = ovulationDay - dayOfCycle;
 
   if (diffDay <= 4 && diffDay >= -2) {
-    return "high";
+    return t("homeTab.pregnancyChance.high");
   }
-  return "low";
+  return t("homeTab.pregnancyChance.low");
 }
 
 interface DaysBeforePeriod {
@@ -80,9 +89,13 @@ interface DaysBeforePeriod {
 function useDaysBeforePeriod(): DaysBeforePeriod {
   const startDate = useLastStartDate();
   const cycleLength = useAverageLengthOfCycle();
+  const { t } = useTranslation();
 
   if (!startDate || !cycleLength) {
-    return { title: "Period in", days: "no info" };
+    return {
+      title: t("homeTab.mainInfo.periodIn"),
+      days: t("homeTab.mainInfo.noInfo"),
+    };
   }
 
   const dateOfFinish = new Date(startDate);
@@ -95,20 +108,44 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   );
 
   if (dayBefore > 1) {
-    return { title: "Period in", days: `${dayBefore} Days` };
+    if (dayBefore < 5) {
+      return {
+        title: t("homeTab.mainInfo.periodIn"),
+        days: `${dayBefore} ${t("homeTab.mainInfo.daysLess5")}`,
+      };
+    }
+    return {
+      title: t("homeTab.mainInfo.periodIn"),
+      days: `${dayBefore} ${t("homeTab.mainInfo.days")}`,
+    };
   }
   if (dayBefore === 1) {
-    return { title: "Period in", days: "1 Day" };
+    return {
+      title: t("homeTab.mainInfo.periodIn"),
+      days: `1 ${t("homeTab.mainInfo.days")}`,
+    };
   }
   if (dayBefore === 0) {
-    return { title: "Period", days: "Today" };
+    return {
+      title: t("homeTab.mainInfo.period"),
+      days: t("homeTab.mainInfo.today"),
+    };
   }
   if (dayBefore === -1) {
-    return { title: "Delay", days: "1 Day" };
+    return {
+      title: t("homeTab.mainInfo.delay"),
+      days: `1 ${t("homeTab.mainInfo.day")}`,
+    };
+  }
+  if (dayBefore > -5) {
+    return {
+      title: t("homeTab.mainInfo.delay"),
+      days: `${dayBefore} ${t("homeTab.mainInfo.daysLess5")}`,
+    };
   }
   return {
-    title: "Delay",
-    days: `${Math.abs(dayBefore)} Days`,
+    title: t("homeTab.mainInfo.delay"),
+    days: `${Math.abs(dayBefore)} ${t("homeTab.mainInfo.days")}`,
   };
 }
 
@@ -124,6 +161,8 @@ const TabHome = () => {
   const ovulationStatus = useOvulationStatus();
   const pregnancyChance = usePregnancyChance();
   const daysBeforePeriod = useDaysBeforePeriod();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     storage.get.cycles().catch((err) => {
@@ -218,7 +257,7 @@ const TabHome = () => {
                   lines="full"
                 >
                   <IonLabel>
-                    <p style={p_style}>Current cycle day</p>
+                    <p style={p_style}>{t("homeTab.curCycleDay")}</p>
                     <h1 style={h_style}>{dayOfCycle}</h1>
                   </IonLabel>
                 </IonItem>
@@ -227,7 +266,7 @@ const TabHome = () => {
                   lines="full"
                 >
                   <IonLabel>
-                    <p style={p_style}>Ovulation</p>
+                    <p style={p_style}>{t("homeTab.ovulation.title")}</p>
                     <h1 style={h_style}>{ovulationStatus}</h1>
                   </IonLabel>
                 </IonItem>
@@ -236,7 +275,7 @@ const TabHome = () => {
                   lines="none"
                 >
                   <IonLabel>
-                    <p style={p_style}>Chance of getting pregnant</p>
+                    <p style={p_style}>{t("homeTab.pregnancyChance.title")}</p>
                     <h1 style={h_style}>{pregnancyChance}</h1>
                   </IonLabel>
                 </IonItem>

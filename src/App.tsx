@@ -10,10 +10,10 @@ import {
   setupIonicReact,
   IonHeader,
   IonToolbar,
-  IonTitle,
   IonContent,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { useTranslation } from "react-i18next";
 import TabHome from "./pages/TabHome";
 import TabDetails from "./pages/TabDetails";
 import MultiLanguage from "./modals/MultiLanguageModal";
@@ -47,6 +47,7 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
+  const { t } = useTranslation();
 
   function updateCycles(newCycles: Cycle[]) {
     const maxOfCycles = 7;
@@ -72,7 +73,6 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonHeader class="ion-no-border">
             <IonToolbar color="basic">
-              <IonTitle color="light">Hello!</IonTitle>
               <MultiLanguage />
             </IonToolbar>
           </IonHeader>
@@ -117,13 +117,13 @@ const App: React.FC = () => {
                   tab="home"
                   href="/home"
                 >
-                  <IonLabel>Home</IonLabel>
+                  <IonLabel>{t("homeTab.title")}</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   tab="details"
                   href="/details"
                 >
-                  <IonLabel>Details</IonLabel>
+                  <IonLabel>{t("detailsTab.title")}</IonLabel>
                 </IonTabButton>
               </IonTabBar>
             </IonTabs>

@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { IonButton, IonModal, IonDatetime, IonButtons } from "@ionic/react";
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 import "./MarkModal.css";
 
 import { CyclesContext } from "../state/Context";
@@ -12,6 +13,7 @@ interface PropsMarkModal {
 }
 
 const MarkModal = (props: PropsMarkModal) => {
+  const { t } = useTranslation();
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
   const [disableSave, setDisableSave] = useState(true);
 
@@ -84,7 +86,7 @@ const MarkModal = (props: PropsMarkModal) => {
         color="dark-basic"
         onClick={() => props.setIsOpen(true)}
       >
-        Mark
+        {t("markModal.mark")}
       </IonButton>
       <IonModal
         class="mark-modal"
@@ -95,7 +97,7 @@ const MarkModal = (props: PropsMarkModal) => {
           ref={datetimeRef}
           color="dark-basic"
           presentation="date"
-          locale="en-GB"
+          locale={t("local")}
           size="cover"
           multiple
           firstDayOfWeek={1}
@@ -106,7 +108,7 @@ const MarkModal = (props: PropsMarkModal) => {
           titleSelectedDatesFormatter={(selectedDates: string[]) => {
             if (selectedDates.length === 0) {
               setDisableSave(true);
-              return "select date range";
+              return t("markModal.select");
             }
 
             setDisableSave(false);
@@ -137,6 +139,7 @@ const MarkModal = (props: PropsMarkModal) => {
             return undefined;
           }}
         >
+          <span slot="title">{t("markModal.select")}</span>
           <IonButtons slot="buttons">
             <IonButton
               color="basic"
@@ -147,7 +150,7 @@ const MarkModal = (props: PropsMarkModal) => {
                 props.setIsOpen(false);
               }}
             >
-              Cancel
+              {t("markModal.cancel")}
             </IonButton>
             <IonButton
               color="basic"
@@ -190,7 +193,7 @@ const MarkModal = (props: PropsMarkModal) => {
                   .catch((err) => console.error(err));
               }}
             >
-              Save
+              {t("markModal.save")}
             </IonButton>
           </IonButtons>
         </IonDatetime>
