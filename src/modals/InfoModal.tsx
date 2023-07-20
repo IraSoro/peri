@@ -9,8 +9,6 @@ import {
 import { useTranslation } from "react-i18next";
 import "./InfoModal.css";
 
-import { phases } from "../data/PhasesConst";
-
 import {
   useLengthOfLastPeriod,
   useAverageLengthOfCycle,
@@ -26,29 +24,37 @@ function usePhase() {
   const currentDay = Number(useDayOfCycle());
 
   if (!lengthOfCycle || !currentDay || !lengthOfPeriod) {
-    return phases[0];
+    return "non";
   }
 
   const ovulationDay = lengthOfCycle - lutealPhaseLength;
 
   if (currentDay <= lengthOfPeriod) {
-    return phases[1];
+    return "menstrual";
   }
   if (currentDay <= ovulationDay - ovulationOnError) {
-    return phases[2];
+    return "follicular";
   }
   if (currentDay <= ovulationDay) {
-    return phases[3];
+    return "ovulation";
   }
-  return phases[4];
+  return "luteal";
 }
 
 interface PropsSymptoms {
-  symptoms: string[];
+  countSymptoms: string;
+  phase: string;
 }
 
 const SymptomsList = (props: PropsSymptoms) => {
-  const list = props.symptoms.map((item, idx) => <p key={idx}>{item}</p>);
+  const { t } = useTranslation();
+  const list = [];
+
+  for (let i = 0; i < Number(props.countSymptoms); ++i) {
+    list.push(
+      <p key={i}>{t(`infoModal.phases.${props.phase}.symptoms.${i}`)}</p>,
+    );
+  }
 
   return <>{list}</>;
 };
@@ -82,18 +88,25 @@ const InfoModal = (props: PropsInfoModal) => {
         >
           <div id="rectangle">
             <IonCard>
-              <IonCardHeader class="info">{phase.title}</IonCardHeader>
+              <IonCardHeader class="info">
+                {t(`infoModal.phases.${phase}.title`)}
+              </IonCardHeader>
               <IonCardContent style={{ textAlign: "justify" }}>
-                {phase.description}
+                {t(`infoModal.phases.${phase}.description`)}
               </IonCardContent>
             </IonCard>
           </div>
           <div id="small-rectangle"></div>
           <div id="rectangle">
             <IonCard>
-              <IonCardHeader class="info">Frequent symptoms</IonCardHeader>
+              <IonCardHeader class="info">
+                {t("infoModal.frequentSymptoms")}
+              </IonCardHeader>
               <IonCardContent style={{ textAlign: "justify" }}>
-                <SymptomsList symptoms={phase.symptoms} />
+                <SymptomsList
+                  countSymptoms={t(`infoModal.phases.${phase}.countSymptoms`)}
+                  phase={phase}
+                />
               </IonCardContent>
             </IonCard>
           </div>
