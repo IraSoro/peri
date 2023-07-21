@@ -34,11 +34,9 @@ function useTitleLastCycle() {
   }
 
   if (dayOfCycle === "1") {
-    return `1 ${t("detailsTab.day")}`;
-  } else if (Number(dayOfCycle) < 5) {
-    return `${dayOfCycle} ${t("detailsTab.daysLess5")}`;
+    return `1 ${t("detailsTab.currentDay")}`;
   }
-  return `${dayOfCycle} ${t("detailsTab.days")}`;
+  return `${dayOfCycle} ${t("detailsTab.currentDays")}`;
 }
 
 function useProgressBarBuffer() {
@@ -73,7 +71,17 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
     };
   }
   const cycleLenNumber: number = cycles[idx].cycleLength;
-  const cycleLenString = `${cycleLenNumber} ${t("detailsTab.days")}`;
+  let cycleLenString: string;
+  if (
+    cycleLenNumber > 20 &&
+    cycleLenNumber % 10 > 0 &&
+    cycleLenNumber % 10 < 5
+  ) {
+    cycleLenString = `${cycleLenNumber} ${t("detailsTab.daysLess5")}`;
+  } else {
+    cycleLenString = `${cycleLenNumber} ${t("detailsTab.days")}`;
+  }
+
   const periodLenNumber: number = cycles[idx].periodLength;
 
   const dateStart: Date = new Date(cycles[idx].startDate);
@@ -179,13 +187,17 @@ const TabDetails = () => {
   let lengthOfCycle: string;
   let lengthOfPeriod: string;
 
-  if (averageLengthOfCycle < 5) {
+  if (
+    averageLengthOfCycle >= 20 &&
+    averageLengthOfCycle % 10 < 5 &&
+    averageLengthOfCycle % 10 > 0
+  ) {
     lengthOfCycle = `${averageLengthOfCycle} ${t("detailsTab.daysLess5")}`;
   } else {
     lengthOfCycle = `${averageLengthOfCycle} ${t("detailsTab.days")}`;
   }
 
-  if (averageLengthOfPeriod < 5) {
+  if (averageLengthOfPeriod < 5 && averageLengthOfPeriod > 0) {
     lengthOfPeriod = `${averageLengthOfPeriod} ${t("detailsTab.daysLess5")}`;
   } else {
     lengthOfPeriod = `${averageLengthOfPeriod} ${t("detailsTab.days")}`;

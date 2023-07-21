@@ -19,6 +19,7 @@ import type { Cycle } from "../data/ClassCycle";
 import { importConfig } from "../data/Config";
 import { storage } from "../data/Storage";
 import { useTranslation } from "react-i18next";
+import MultiLanguage from "../modals/MultiLanguageModal";
 
 import { CyclesContext } from "../state/Context";
 
@@ -49,13 +50,14 @@ const Welcome = (props: PropsWelcomeModal) => {
     >
       <IonHeader class="ion-no-border">
         <IonToolbar color="basic">
-          <IonTitle color="light">{t("welcomeModal.welcome")}</IonTitle>
+          <MultiLanguage />
         </IonToolbar>
       </IonHeader>
       <IonContent
         fullscreen
         color="basic"
       >
+        <IonTitle color="light">{t("welcomeModal.welcome")}</IonTitle>
         <IonCol>
           <IonLabel
             class="welcome"

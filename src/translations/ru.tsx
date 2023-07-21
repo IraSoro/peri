@@ -44,6 +44,8 @@ const ru = {
     date: "дата",
     import: "импорт",
     export: "экспорт",
+    currentDay: "День",
+    currentDays: "День",
   },
   markModal: {
     mark: "отметить",

@@ -45,6 +45,8 @@ const en = {
     date: "date",
     import: "import",
     export: "export",
+    currentDay: "Day",
+    currentDays: "Days",
   },
   markModal: {
     mark: "mark",

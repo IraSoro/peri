@@ -17,7 +17,7 @@ import {
 
 function usePhase() {
   const lutealPhaseLength = 14;
-  const ovulationOnError = 3;
+  const ovulationOnError = 2;
 
   const lengthOfPeriod = useLengthOfLastPeriod();
   const lengthOfCycle = useAverageLengthOfCycle();
@@ -35,7 +35,7 @@ function usePhase() {
   if (currentDay <= ovulationDay - ovulationOnError) {
     return "follicular";
   }
-  if (currentDay <= ovulationDay) {
+  if (currentDay <= ovulationDay + ovulationOnError) {
     return "ovulation";
   }
   return "luteal";

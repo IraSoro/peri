@@ -108,7 +108,10 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   );
 
   if (dayBefore > 1) {
-    if (dayBefore < 5) {
+    if (
+      dayBefore < 5 ||
+      (dayBefore > 20 && dayBefore % 10 > 0 && dayBefore % 10 < 5)
+    ) {
       return {
         title: t("homeTab.mainInfo.periodIn"),
         days: `${dayBefore} ${t("homeTab.mainInfo.daysLess5")}`,
