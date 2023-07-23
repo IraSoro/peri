@@ -123,7 +123,7 @@ const Welcome = (props: PropsWelcomeModal) => {
             onClick={() => {
               importConfig()
                 .then((config) => {
-                  storage.set
+                  storage.setCycles
                     .cycles(config.cycles)
                     .then(() => {
                       updateCycles(config.cycles);

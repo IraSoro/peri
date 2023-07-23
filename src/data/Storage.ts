@@ -29,12 +29,30 @@ async function getCycles(safe: boolean): Promise<Cycle[]> {
   return value;
 }
 
+function setLanguage(language: string): Promise<void> {
+  return storageImpl.set("language", language) as Promise<void>;
+}
+
+async function getLanguage(safe: boolean): Promise<string> {
+  const value = (await storageImpl.get("language")) as string;
+  if (safe && !value) {
+    throw new Error("Can't find `language` in storage");
+  }
+  return value;
+}
+
 export const storage = {
-  set: {
+  setCycles: {
     cycles: setCycles,
   },
-  get: {
+  getCycles: {
     cycles: () => getCycles(true),
+  },
+  setLanguage: {
+    language: setLanguage,
+  },
+  getLanguage: {
+    language: () => getLanguage(true),
   },
 };
 
@@ -44,7 +62,7 @@ export const storage = {
 // _arrayOfCyclesWithSingleCycle().catch((err) => console.error(err));
 // _arrayOfCyclesWithSingleCycleWithDelay().catch((err) => console.error(err));
 // _halfFilledArrayOfCycles().catch((err) => console.error(err));
-// _fullyFilledArrayOfCycles().catch((err) => console.error(err));
+_fullyFilledArrayOfCycles().catch((err) => console.error(err));
 // _fullyFilledArrayOfCyclesWithDelay().catch((err) => console.error(err));
 
 function _emptyArrayOfCycles(): Promise<void> {
@@ -52,7 +70,7 @@ function _emptyArrayOfCycles(): Promise<void> {
 }
 
 function _arrayOfCyclesWithSingleCycle(): Promise<void> {
-  return storage.set.cycles([
+  return storage.setCycles.cycles([
     {
       cycleLength: 28,
       periodLength: 6,
@@ -62,7 +80,7 @@ function _arrayOfCyclesWithSingleCycle(): Promise<void> {
 }
 
 function _arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
-  return storage.set.cycles([
+  return storage.setCycles.cycles([
     {
       cycleLength: 28,
       periodLength: 6,
@@ -72,7 +90,7 @@ function _arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
 }
 
 function _halfFilledArrayOfCycles(): Promise<void> {
-  return storage.set.cycles([
+  return storage.setCycles.cycles([
     {
       cycleLength: 0,
       periodLength: 6,
@@ -97,7 +115,7 @@ function _halfFilledArrayOfCycles(): Promise<void> {
 }
 
 function _fullyFilledArrayOfCycles(): Promise<void> {
-  return storage.set.cycles([
+  return storage.setCycles.cycles([
     {
       cycleLength: 0,
       periodLength: 6,
@@ -137,7 +155,7 @@ function _fullyFilledArrayOfCycles(): Promise<void> {
 }
 
 function _fullyFilledArrayOfCyclesWithDelay(): Promise<void> {
-  return storage.set.cycles([
+  return storage.setCycles.cycles([
     {
       cycleLength: 0,
       periodLength: 6,

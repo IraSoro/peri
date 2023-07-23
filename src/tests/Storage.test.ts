@@ -16,7 +16,7 @@ test("setCycles", async () => {
     },
   ];
 
-  await storage.set.cycles(cycles);
+  await storage.setCycles.cycles(cycles);
 
   expect(storageSetSpy).toHaveBeenCalledWith("cycles", cycles);
 });
@@ -27,7 +27,7 @@ describe("getCycles", () => {
       .spyOn(Storage.prototype, "get")
       .mockResolvedValueOnce(undefined);
 
-    await expect(storage.get.cycles()).rejects.toThrow(
+    await expect(storage.getCycles.cycles()).rejects.toThrow(
       "Can't find `cycles` in storage",
     );
     expect(storageGetSpy).toHaveBeenCalledWith("cycles");
@@ -46,7 +46,7 @@ describe("getCycles", () => {
       .spyOn(Storage.prototype, "get")
       .mockResolvedValueOnce(cycles);
 
-    await expect(storage.get.cycles()).resolves.toBe(cycles);
+    await expect(storage.getCycles.cycles()).resolves.toBe(cycles);
     expect(storageGetSpy).toHaveBeenCalledWith("cycles");
   });
 });

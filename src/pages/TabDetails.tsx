@@ -239,7 +239,7 @@ const TabDetails = () => {
             onClick={() => {
               importConfig()
                 .then((config) => {
-                  storage.set
+                  storage.setCycles
                     .cycles(config.cycles)
                     .then(() => {
                       updateCycles(config.cycles);
@@ -274,7 +274,7 @@ const TabDetails = () => {
             color="dark-basic"
             disabled={averageLengthOfCycle === 0}
             onClick={() => {
-              storage.get
+              storage.getCycles
                 .cycles()
                 .then((cycles) => {
                   exportConfig({ cycles }).catch((err) => {

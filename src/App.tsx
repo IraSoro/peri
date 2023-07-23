@@ -47,7 +47,10 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng).catch((err) => console.error(err));
+  };
 
   function updateCycles(newCycles: Cycle[]) {
     const maxOfCycles = 7;
@@ -55,13 +58,22 @@ const App: React.FC = () => {
       newCycles.splice(maxOfCycles);
     }
     setCycles(newCycles);
-    storage.set.cycles(newCycles).catch((err) => console.error(err));
+    storage.setCycles.cycles(newCycles).catch((err) => console.error(err));
   }
 
   useEffect(() => {
-    storage.get
+    storage.getCycles
       .cycles()
       .then(setCycles)
+      .catch((err) =>
+        console.error(`Can't get cycles ${(err as Error).message}`),
+      );
+
+    storage.getLanguage
+      .language()
+      .then((res) => {
+        changeLanguage(res);
+      })
       .catch((err) =>
         console.error(`Can't get cycles ${(err as Error).message}`),
       );

@@ -15,6 +15,7 @@ import { globeOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { enGB, ru } from "date-fns/locale";
 import setDefaultOptions from "date-fns/setDefaultOptions";
+import { storage } from "../data/Storage";
 import "./MultiLanguageModal.css";
 
 const MultiLanguage = () => {
@@ -23,6 +24,9 @@ const MultiLanguage = () => {
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng).catch((err) => console.error(err));
+    storage.setLanguage
+      .language(lng.toString())
+      .catch((err) => console.error(err));
   };
 
   if (t("locale") === "en-GB") {

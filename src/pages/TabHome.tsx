@@ -168,7 +168,7 @@ const TabHome = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    storage.get.cycles().catch((err) => {
+    storage.getCycles.cycles().catch((err) => {
       console.error(`Can't get cycles ${(err as Error).message}`);
       setIsWelcomeModal(true);
     });
