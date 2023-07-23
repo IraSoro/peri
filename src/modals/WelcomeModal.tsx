@@ -26,6 +26,9 @@ import { CyclesContext } from "../state/Context";
 interface PropsWelcomeModal {
   isOpen: boolean;
   setIsOpen: (newIsOpen: boolean) => void;
+
+  isLanguageModal: boolean;
+  setIsLanguageModal: (newIsOpen: boolean) => void;
 }
 
 const Welcome = (props: PropsWelcomeModal) => {
@@ -50,7 +53,10 @@ const Welcome = (props: PropsWelcomeModal) => {
     >
       <IonHeader class="ion-no-border">
         <IonToolbar color="basic">
-          <MultiLanguage />
+          <MultiLanguage
+            isOpen={props.isLanguageModal}
+            setIsOpen={props.setIsLanguageModal}
+          />
         </IonToolbar>
       </IonHeader>
       <IonContent

@@ -152,7 +152,12 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   };
 }
 
-const TabHome = () => {
+interface HomeProps {
+  isLanguageModal: boolean;
+  setIsLanguageModal: (newIsOpen: boolean) => void;
+}
+
+const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isCalendarModal, setIsCalendarModal] = useState(false);
@@ -176,10 +181,16 @@ const TabHome = () => {
 
   useEffect(() => {
     const backButtonHandler = () => {
-      if (isCalendarModal || isMarkModal || isInfoModal) {
+      if (
+        isCalendarModal ||
+        isMarkModal ||
+        isInfoModal ||
+        props.isLanguageModal
+      ) {
         setIsCalendarModal(false);
         setIsMarkModal(false);
         setIsInfoModal(false);
+        props.setIsLanguageModal(false);
         router.push("/home");
         return;
       }
@@ -194,7 +205,7 @@ const TabHome = () => {
     return () => {
       document.removeEventListener("ionBackButton", backButtonHandler);
     };
-  }, [router, isInfoModal, isCalendarModal, isMarkModal]);
+  }, [router, isInfoModal, isCalendarModal, isMarkModal, props]);
 
   const p_style = {
     fontSize: "10px" as const,
@@ -220,6 +231,8 @@ const TabHome = () => {
             <Welcome
               isOpen={isWelcomeModal}
               setIsOpen={setIsWelcomeModal}
+              isLanguageModal={props.isLanguageModal}
+              setIsLanguageModal={props.setIsLanguageModal}
             />
             <IonRow>
               <IonCol>

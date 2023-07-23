@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   IonLabel,
   IonButton,
@@ -18,9 +17,12 @@ import setDefaultOptions from "date-fns/setDefaultOptions";
 import { storage } from "../data/Storage";
 import "./MultiLanguageModal.css";
 
-const MultiLanguage = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface PropsLanguageModal {
+  isOpen: boolean;
+  setIsOpen: (newIsOpen: boolean) => void;
+}
 
+const MultiLanguage = (props: PropsLanguageModal) => {
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng).catch((err) => console.error(err));
@@ -40,7 +42,7 @@ const MultiLanguage = () => {
       <IonButton
         slot="end"
         fill="clear"
-        onClick={() => setIsOpen(true)}
+        onClick={() => props.setIsOpen(true)}
       >
         <IonIcon
           color="light"
@@ -48,7 +50,7 @@ const MultiLanguage = () => {
         />
       </IonButton>
       <IonModal
-        isOpen={isOpen}
+        isOpen={props.isOpen}
         id="settings-modal"
         backdropDismiss={false}
       >
@@ -84,7 +86,7 @@ const MultiLanguage = () => {
             <IonButton
               color="basic"
               onClick={() => {
-                setIsOpen(false);
+                props.setIsOpen(false);
               }}
             >
               Ok

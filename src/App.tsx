@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -47,10 +47,16 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
+  const [isLanguageModal, setIsLanguageModal] = useState(false);
+
   const { t, i18n } = useTranslation();
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng).catch((err) => console.error(err));
-  };
+
+  const changeLanguage = useCallback(
+    (lng: string) => {
+      i18n.changeLanguage(lng).catch((err) => console.error(err));
+    },
+    [i18n],
+  );
 
   function updateCycles(newCycles: Cycle[]) {
     const maxOfCycles = 7;
@@ -77,7 +83,7 @@ const App: React.FC = () => {
       .catch((err) =>
         console.error(`Can't get cycles ${(err as Error).message}`),
       );
-  }, []);
+  }, [changeLanguage]);
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
@@ -85,7 +91,10 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonHeader class="ion-no-border">
             <IonToolbar color="basic">
-              <MultiLanguage />
+              <MultiLanguage
+                isOpen={isLanguageModal}
+                setIsOpen={setIsLanguageModal}
+              />
             </IonToolbar>
           </IonHeader>
 
@@ -96,7 +105,10 @@ const App: React.FC = () => {
                   exact
                   path="/home"
                 >
-                  <TabHome />
+                  <TabHome
+                    isLanguageModal={isLanguageModal}
+                    setIsLanguageModal={setIsLanguageModal}
+                  />
                 </Route>
 
                 <Route
