@@ -26,9 +26,7 @@ const MultiLanguage = (props: PropsLanguageModal) => {
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng).catch((err) => console.error(err));
-    storage.setLanguage
-      .language(lng.toString())
-      .catch((err) => console.error(err));
+    storage.set.language(lng.toString()).catch((err) => console.error(err));
   };
 
   if (t("locale") === "en-GB") {

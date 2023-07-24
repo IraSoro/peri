@@ -42,16 +42,12 @@ async function getLanguage(safe: boolean): Promise<string> {
 }
 
 export const storage = {
-  setCycles: {
+  set: {
     cycles: setCycles,
-  },
-  getCycles: {
-    cycles: () => getCycles(true),
-  },
-  setLanguage: {
     language: setLanguage,
   },
-  getLanguage: {
+  get: {
+    cycles: () => getCycles(true),
     language: () => getLanguage(true),
   },
 };
@@ -70,7 +66,7 @@ function _emptyArrayOfCycles(): Promise<void> {
 }
 
 function _arrayOfCyclesWithSingleCycle(): Promise<void> {
-  return storage.setCycles.cycles([
+  return storage.set.cycles([
     {
       cycleLength: 28,
       periodLength: 6,
@@ -80,7 +76,7 @@ function _arrayOfCyclesWithSingleCycle(): Promise<void> {
 }
 
 function _arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
-  return storage.setCycles.cycles([
+  return storage.set.cycles([
     {
       cycleLength: 28,
       periodLength: 6,
@@ -90,7 +86,7 @@ function _arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
 }
 
 function _halfFilledArrayOfCycles(): Promise<void> {
-  return storage.setCycles.cycles([
+  return storage.set.cycles([
     {
       cycleLength: 0,
       periodLength: 6,
@@ -115,7 +111,7 @@ function _halfFilledArrayOfCycles(): Promise<void> {
 }
 
 function _fullyFilledArrayOfCycles(): Promise<void> {
-  return storage.setCycles.cycles([
+  return storage.set.cycles([
     {
       cycleLength: 0,
       periodLength: 6,
@@ -155,7 +151,7 @@ function _fullyFilledArrayOfCycles(): Promise<void> {
 }
 
 function _fullyFilledArrayOfCyclesWithDelay(): Promise<void> {
-  return storage.setCycles.cycles([
+  return storage.set.cycles([
     {
       cycleLength: 0,
       periodLength: 6,

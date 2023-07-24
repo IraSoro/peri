@@ -64,18 +64,18 @@ const App: React.FC = () => {
       newCycles.splice(maxOfCycles);
     }
     setCycles(newCycles);
-    storage.setCycles.cycles(newCycles).catch((err) => console.error(err));
+    storage.set.cycles(newCycles).catch((err) => console.error(err));
   }
 
   useEffect(() => {
-    storage.getCycles
+    storage.get
       .cycles()
       .then(setCycles)
       .catch((err) =>
         console.error(`Can't get cycles ${(err as Error).message}`),
       );
 
-    storage.getLanguage
+    storage.get
       .language()
       .then((res) => {
         changeLanguage(res);

@@ -173,7 +173,7 @@ const TabHome = (props: HomeProps) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    storage.getCycles.cycles().catch((err) => {
+    storage.get.cycles().catch((err) => {
       console.error(`Can't get cycles ${(err as Error).message}`);
       setIsWelcomeModal(true);
     });
