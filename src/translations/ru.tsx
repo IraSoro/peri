@@ -46,68 +46,49 @@ const ru = {
   // Info Modal
   "learn more about the current state": "узнать больше о текущем состоянии",
   "Frequent symptoms": "Частые симптомы",
-  phases: {
-    non: {
-      title: "Менструальный цикл можно разделить на 4 фазы.",
-      description:
-        "Когда появится информация о вашем цикле, будет сообщено, в какой фазе вы находитесь.",
-      countSymptoms: "1",
-      symptoms: {
-        0: "В этом разделе будут указаны симптомы, характерные для этого цикла.",
-      },
-    },
-    menstrual: {
-      title: "Менструация",
-      description: "Этот цикл сопровождается низким уровнем гормонов.",
-      countSymptoms: "4",
-      symptoms: {
-        0: "недостаток энергии и сил",
-        1: "боль",
-        2: "слабость и раздражительность",
-        3: "повышенный аппетит",
-      },
-    },
-    follicular: {
-      title: "Фолликулярная фаза",
-      description:
-        "Уровень эстрогена в эту фазу растет и достигает максимального уровня.",
-      countSymptoms: "4",
-      symptoms: {
-        0: "появляются силы и бодрость",
-        1: "увеличивается выносливость",
-        2: "появляются новые идеи и планы",
-        3: "повышается либидо",
-      },
-    },
-    ovulation: {
-      title: "Овуляция",
-      description:
-        "Как только уровень эстрогена достигает пика, он вызывает выброс двух важных гормонов овуляции — фолликулостимулирующего гормона и лютеинизирующего гормона.",
-      countSymptoms: "6",
-      symptoms: {
-        0: "усиление полового влечения",
-        1: "оптимистичное настроение",
-        2: "незначительное повышение температуры",
-        3: "боль в низу живота",
-        4: "дискомфорт в груди и вздутием живота",
-        5: "характерные выделения",
-      },
-    },
-    luteal: {
-      title: "Лютеиновая фаза",
-      description:
-        "Уровни гормонов эстрогена и прогестерона сначала повышаются, а прямо перед менструацией резко падают. Прогестерон в лютеиновую фазу достигает своего пика.",
-      countSymptoms: "6",
-      symptoms: {
-        0: "чувствительность груди",
-        1: "отечность",
-        2: "акне и высыпания на коже",
-        3: "повышенный аппетит",
-        4: "диарея или запоры",
-        5: "раздражительность и подавленное настроение",
-      },
-    },
-  },
+  // Phases info
+  "The menstrual cycle can be divided into 4 phases.":
+    "Менструальный цикл можно разделить на 4 фазы.",
+  "When information about your cycle appears, it will be reported which phase you are in.":
+    "Когда появится информация о вашем цикле, будет сообщено, в какой фазе вы находитесь.",
+  "This section will indicate the symptoms characteristic of this cycle.":
+    "В этом разделе будут указаны симптомы, характерные для этого цикла.",
+
+  "Menstrual phase": "Менструация",
+  "This cycle is accompanied by low hormone levels.":
+    "Этот цикл сопровождается низким уровнем гормонов.",
+  "lack of energy and strength": "недостаток энергии и сил",
+  pain: "боль",
+  "weakness and irritability": "слабость и раздражительность",
+  "increased appetite": "повышенный аппетит",
+
+  "Follicular phase": "Фолликулярная фаза",
+  "The level of estrogen in this phase rises and reaches a maximum level.":
+    "Уровень эстрогена в эту фазу растет и достигает максимального уровня.",
+  "strength and vigor appear": "появляются силы и бодрость",
+  "endurance increases": "увеличивается выносливость",
+  "new ideas and plans appear": "появляются новые идеи и планы",
+  "libido increases": "повышается либидо",
+
+  "Ovulation phase": "Овуляция",
+  "Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.":
+    "Как только уровень эстрогена достигает пика, он вызывает выброс двух важных гормонов овуляции — фолликулостимулирующего гормона и лютеинизирующего гормона.",
+  "increased sexual desire": "усиление полового влечения",
+  "optimistic mood": "оптимистичное настроение",
+  "mild fever": "незначительное повышение температуры",
+  "lower abdominal pain": "боль в низу живота",
+  "chest discomfort and bloating": "дискомфорт в груди и вздутием живота",
+  "characteristic secretions": "характерные выделения",
+
+  "Luteal phase": "Лютеиновая фаза",
+  "Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.":
+    "Уровни гормонов эстрогена и прогестерона сначала повышаются, а прямо перед менструацией резко падают. Прогестерон в лютеиновую фазу достигает своего пика.",
+  "breast tenderness": "чувствительность груди",
+  puffiness: "отечность",
+  "acne and skin rashes": "акне и высыпания на коже",
+  "diarrhea or constipation": "диарея или запоры",
+  "irritability and depressed mood":
+    "раздражительность и подавленное настроение",
 };
 
 export default ru;

@@ -9,6 +9,8 @@ import {
 import { useTranslation } from "react-i18next";
 import "./InfoModal.css";
 
+import { Phases } from "../data/PhasesConst";
+
 import {
   useLengthOfLastPeriod,
   useAverageLengthOfCycle,
@@ -17,42 +19,36 @@ import {
 
 function usePhase() {
   const lutealPhaseLength = 14;
-  const ovulationOnError = 2;
+  const ovulationOnError = 3;
 
   const lengthOfPeriod = useLengthOfLastPeriod();
   const lengthOfCycle = useAverageLengthOfCycle();
   const currentDay = Number(useDayOfCycle());
 
   if (!lengthOfCycle || !currentDay || !lengthOfPeriod) {
-    return "non";
+    return Phases(0);
   }
 
   const ovulationDay = lengthOfCycle - lutealPhaseLength;
 
   if (currentDay <= lengthOfPeriod) {
-    return "menstrual";
+    return Phases(1);
   }
   if (currentDay <= ovulationDay - ovulationOnError) {
-    return "follicular";
+    return Phases(2);
   }
-  if (currentDay <= ovulationDay + ovulationOnError) {
-    return "ovulation";
+  if (currentDay <= ovulationDay) {
+    return Phases(3);
   }
-  return "luteal";
+  return Phases(4);
 }
 
 interface PropsSymptoms {
-  countSymptoms: string;
-  phase: string;
+  symptoms: string[];
 }
 
 const SymptomsList = (props: PropsSymptoms) => {
-  const { t } = useTranslation();
-  const list = [];
-
-  for (let i = 0; i < Number(props.countSymptoms); ++i) {
-    list.push(<p key={i}>{t(`phases.${props.phase}.symptoms.${i}`)}</p>);
-  }
+  const list = props.symptoms.map((item, idx) => <p key={idx}>{item}</p>);
 
   return <>{list}</>;
 };
@@ -86,11 +82,9 @@ const InfoModal = (props: PropsInfoModal) => {
         >
           <div id="rectangle">
             <IonCard>
-              <IonCardHeader class="info">
-                {t(`phases.${phase}.title`)}
-              </IonCardHeader>
+              <IonCardHeader class="info">{phase.title}</IonCardHeader>
               <IonCardContent style={{ textAlign: "justify" }}>
-                {t(`phases.${phase}.description`)}
+                {phase.description}
               </IonCardContent>
             </IonCard>
           </div>
@@ -101,10 +95,7 @@ const InfoModal = (props: PropsInfoModal) => {
                 {t("Frequent symptoms")}
               </IonCardHeader>
               <IonCardContent style={{ textAlign: "justify" }}>
-                <SymptomsList
-                  countSymptoms={t(`phases.${phase}.countSymptoms`)}
-                  phase={phase}
-                />
+                <SymptomsList symptoms={phase.symptoms} />
               </IonCardContent>
             </IonCard>
           </div>
