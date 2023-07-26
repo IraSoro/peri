@@ -51,9 +51,7 @@ const SymptomsList = (props: PropsSymptoms) => {
   const list = [];
 
   for (let i = 0; i < Number(props.countSymptoms); ++i) {
-    list.push(
-      <p key={i}>{t(`infoModal.phases.${props.phase}.symptoms.${i}`)}</p>,
-    );
+    list.push(<p key={i}>{t(`phases.${props.phase}.symptoms.${i}`)}</p>);
   }
 
   return <>{list}</>;
@@ -74,7 +72,7 @@ const InfoModal = (props: PropsInfoModal) => {
         class="info-button"
         onClick={() => props.setIsOpen(true)}
       >
-        {t("infoModal.title")}
+        {t("learn more about the current state")}
       </IonButton>
       <IonModal
         id="info-modal"
@@ -89,10 +87,10 @@ const InfoModal = (props: PropsInfoModal) => {
           <div id="rectangle">
             <IonCard>
               <IonCardHeader class="info">
-                {t(`infoModal.phases.${phase}.title`)}
+                {t(`phases.${phase}.title`)}
               </IonCardHeader>
               <IonCardContent style={{ textAlign: "justify" }}>
-                {t(`infoModal.phases.${phase}.description`)}
+                {t(`phases.${phase}.description`)}
               </IonCardContent>
             </IonCard>
           </div>
@@ -100,11 +98,11 @@ const InfoModal = (props: PropsInfoModal) => {
           <div id="rectangle">
             <IonCard>
               <IonCardHeader class="info">
-                {t("infoModal.frequentSymptoms")}
+                {t("Frequent symptoms")}
               </IonCardHeader>
               <IonCardContent style={{ textAlign: "justify" }}>
                 <SymptomsList
-                  countSymptoms={t(`infoModal.phases.${phase}.countSymptoms`)}
+                  countSymptoms={t(`phases.${phase}.countSymptoms`)}
                   phase={phase}
                 />
               </IonCardContent>

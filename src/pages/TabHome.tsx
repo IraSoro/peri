@@ -45,21 +45,17 @@ function useOvulationStatus(): string {
   const ovulationDay = Number(cycleLength) - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
   if (diffDay === 0) {
-    return t("homeTab.ovulation.today");
+    return t("today");
   } else if (diffDay < 0 && diffDay >= -2) {
-    return t("homeTab.ovulation.possible");
+    return t("possible");
   } else if (diffDay < 0) {
-    return t("homeTab.ovulation.finished");
+    return t("finished");
   } else if (diffDay === 1) {
-    return t("homeTab.ovulation.tomorrow");
+    return t("tomorrow");
   } else if (diffDay < 5) {
-    return `${t("homeTab.ovulation.in")} ${diffDay} ${t(
-      "homeTab.ovulation.daysLess5",
-    )}`;
+    return `${t("in")} ${diffDay} ${t("Days less 5")}`;
   }
-  return `${t("homeTab.ovulation.in")} ${diffDay} ${t(
-    "homeTab.ovulation.days",
-  )}`;
+  return `${t("in")} ${diffDay} ${t("Days")}`;
 }
 
 function usePregnancyChance() {
@@ -76,9 +72,9 @@ function usePregnancyChance() {
   const diffDay = ovulationDay - dayOfCycle;
 
   if (diffDay <= 4 && diffDay >= -2) {
-    return t("homeTab.pregnancyChance.high");
+    return t("high");
   }
-  return t("homeTab.pregnancyChance.low");
+  return t("low");
 }
 
 interface DaysBeforePeriod {
@@ -93,8 +89,8 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
 
   if (!startDate || !cycleLength) {
     return {
-      title: t("homeTab.mainInfo.periodIn"),
-      days: t("homeTab.mainInfo.noInfo"),
+      title: t("Period in"),
+      days: t("no info"),
     };
   }
 
@@ -113,42 +109,42 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
       (dayBefore > 20 && dayBefore % 10 > 0 && dayBefore % 10 < 5)
     ) {
       return {
-        title: t("homeTab.mainInfo.periodIn"),
-        days: `${dayBefore} ${t("homeTab.mainInfo.daysLess5")}`,
+        title: t("Period in"),
+        days: `${dayBefore} ${t("Days less 5")}`,
       };
     }
     return {
-      title: t("homeTab.mainInfo.periodIn"),
-      days: `${dayBefore} ${t("homeTab.mainInfo.days")}`,
+      title: t("Period in"),
+      days: `${dayBefore} ${t("Days")}`,
     };
   }
   if (dayBefore === 1) {
     return {
-      title: t("homeTab.mainInfo.periodIn"),
-      days: `1 ${t("homeTab.mainInfo.days")}`,
+      title: t("Period in"),
+      days: `1 ${t("Days")}`,
     };
   }
   if (dayBefore === 0) {
     return {
-      title: t("homeTab.mainInfo.period"),
-      days: t("homeTab.mainInfo.today"),
+      title: t("Period"),
+      days: t("today"),
     };
   }
   if (dayBefore === -1) {
     return {
-      title: t("homeTab.mainInfo.delay"),
-      days: `1 ${t("homeTab.mainInfo.day")}`,
+      title: t("Delay"),
+      days: `1 ${t("Day")}`,
     };
   }
   if (dayBefore > -5) {
     return {
-      title: t("homeTab.mainInfo.delay"),
-      days: `${dayBefore} ${t("homeTab.mainInfo.daysLess5")}`,
+      title: t("Delay"),
+      days: `${dayBefore} ${t("Days less 5")}`,
     };
   }
   return {
-    title: t("homeTab.mainInfo.delay"),
-    days: `${Math.abs(dayBefore)} ${t("homeTab.mainInfo.days")}`,
+    title: t("Delay"),
+    days: `${Math.abs(dayBefore)} ${t("Days")}`,
   };
 }
 
@@ -273,7 +269,7 @@ const TabHome = (props: HomeProps) => {
                   lines="full"
                 >
                   <IonLabel>
-                    <p style={p_style}>{t("homeTab.curCycleDay")}</p>
+                    <p style={p_style}>{t("Current cycle day")}</p>
                     <h1 style={h_style}>{dayOfCycle}</h1>
                   </IonLabel>
                 </IonItem>
@@ -282,7 +278,7 @@ const TabHome = (props: HomeProps) => {
                   lines="full"
                 >
                   <IonLabel>
-                    <p style={p_style}>{t("homeTab.ovulation.title")}</p>
+                    <p style={p_style}>{t("Ovulation")}</p>
                     <h1 style={h_style}>{ovulationStatus}</h1>
                   </IonLabel>
                 </IonItem>
@@ -291,7 +287,7 @@ const TabHome = (props: HomeProps) => {
                   lines="none"
                 >
                   <IonLabel>
-                    <p style={p_style}>{t("homeTab.pregnancyChance.title")}</p>
+                    <p style={p_style}>{t("Chance of getting pregnant")}</p>
                     <h1 style={h_style}>{pregnancyChance}</h1>
                   </IonLabel>
                 </IonItem>

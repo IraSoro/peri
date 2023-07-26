@@ -33,10 +33,7 @@ function useTitleLastCycle() {
     return "";
   }
 
-  if (dayOfCycle === "1") {
-    return `1 ${t("detailsTab.currentDay")}`;
-  }
-  return `${dayOfCycle} ${t("detailsTab.currentDays")}`;
+  return `${dayOfCycle} ${t("Day")}`;
 }
 
 function useProgressBarBuffer() {
@@ -65,9 +62,9 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
 
     return {
       lengthOfCycleNumber: defaultLengthOfCycle,
-      lengthOfCycleString: t("detailsTab.cycleLen"),
+      lengthOfCycleString: t("Cycle length"),
       lengthOfPeriod: 0,
-      dates: t("detailsTab.date"),
+      dates: t("date"),
     };
   }
   const cycleLenNumber: number = cycles[idx].cycleLength;
@@ -77,9 +74,9 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
     cycleLenNumber % 10 > 0 &&
     cycleLenNumber % 10 < 5
   ) {
-    cycleLenString = `${cycleLenNumber} ${t("detailsTab.daysLess5")}`;
+    cycleLenString = `${cycleLenNumber} ${t("Days less 5")}`;
   } else {
-    cycleLenString = `${cycleLenNumber} ${t("detailsTab.days")}`;
+    cycleLenString = `${cycleLenNumber} ${t("Days")}`;
   }
 
   const periodLenNumber: number = cycles[idx].periodLength;
@@ -112,18 +109,18 @@ const CurrentCycle = () => {
     >
       <IonLabel position="stacked">
         {title ? (
-          <h2>{`${t("detailsTab.currentCycle")}: ${title}`}</h2>
+          <h2>{`${t("Current cycle")}: ${title}`}</h2>
         ) : (
-          <h2>{t("detailsTab.currentCycle")}</h2>
+          <h2>{t("Current cycle")}</h2>
         )}
       </IonLabel>
       <IonLabel position="stacked">
         {startDate ? (
-          <p>{`${t("detailsTab.startedDate")} ${new Date(
+          <p>{`${t("Started date")} ${new Date(
             startDate,
           ).toLocaleDateString()}`}</p>
         ) : (
-          <p>{t("detailsTab.startedDate")}</p>
+          <p>{t("Started date")}</p>
         )}
       </IonLabel>
       <IonLabel position="stacked">
@@ -192,15 +189,15 @@ const TabDetails = () => {
     averageLengthOfCycle % 10 < 5 &&
     averageLengthOfCycle % 10 > 0
   ) {
-    lengthOfCycle = `${averageLengthOfCycle} ${t("detailsTab.daysLess5")}`;
+    lengthOfCycle = `${averageLengthOfCycle} ${t("Days less 5")}`;
   } else {
-    lengthOfCycle = `${averageLengthOfCycle} ${t("detailsTab.days")}`;
+    lengthOfCycle = `${averageLengthOfCycle} ${t("Days")}`;
   }
 
   if (averageLengthOfPeriod < 5 && averageLengthOfPeriod > 0) {
-    lengthOfPeriod = `${averageLengthOfPeriod} ${t("detailsTab.daysLess5")}`;
+    lengthOfPeriod = `${averageLengthOfPeriod} ${t("Days less 5")}`;
   } else {
-    lengthOfPeriod = `${averageLengthOfPeriod} ${t("detailsTab.days")}`;
+    lengthOfPeriod = `${averageLengthOfPeriod} ${t("Days")}`;
   }
 
   const updateCycles = useContext(CyclesContext).updateCycles;
@@ -226,9 +223,9 @@ const TabDetails = () => {
         <div id="rectangle-top">
           <div id="circle">
             <IonLabel>
-              <p style={p_style}>{t("detailsTab.periodLen")}</p>
+              <p style={p_style}>{t("Period length")}</p>
               <h1 style={h_style}>{lengthOfPeriod}</h1>
-              <p style={p_style}>{t("detailsTab.cycleLen")}</p>
+              <p style={p_style}>{t("Cycle length")}</p>
               <h1 style={h_style}>{lengthOfCycle}</h1>
             </IonLabel>
           </div>
@@ -268,7 +265,7 @@ const TabDetails = () => {
               slot="start"
               icon={cloudDownloadOutline}
             />
-            {t("detailsTab.import")}
+            {t("import")}
           </IonButton>
           <IonButton
             color="dark-basic"
@@ -290,7 +287,7 @@ const TabDetails = () => {
               slot="start"
               icon={cloudUploadOutline}
             />
-            {t("detailsTab.export")}
+            {t("export")}
           </IonButton>
         </div>
         <div id="rectangle-bottom">

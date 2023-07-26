@@ -86,7 +86,7 @@ const MarkModal = (props: PropsMarkModal) => {
         color="dark-basic"
         onClick={() => props.setIsOpen(true)}
       >
-        {t("markModal.mark")}
+        {t("mark")}
       </IonButton>
       <IonModal
         class="mark-modal"
@@ -108,7 +108,7 @@ const MarkModal = (props: PropsMarkModal) => {
           titleSelectedDatesFormatter={(selectedDates: string[]) => {
             if (selectedDates.length === 0) {
               setDisableSave(true);
-              return t("markModal.select");
+              return t("select date range");
             }
 
             setDisableSave(false);
@@ -139,7 +139,7 @@ const MarkModal = (props: PropsMarkModal) => {
             return undefined;
           }}
         >
-          <span slot="title">{t("markModal.select")}</span>
+          <span slot="title">{t("select date range")}</span>
           <IonButtons slot="buttons">
             <IonButton
               color="basic"
@@ -150,7 +150,7 @@ const MarkModal = (props: PropsMarkModal) => {
                 props.setIsOpen(false);
               }}
             >
-              {t("markModal.cancel")}
+              {t("cancel")}
             </IonButton>
             <IonButton
               color="basic"
@@ -193,7 +193,7 @@ const MarkModal = (props: PropsMarkModal) => {
                   .catch((err) => console.error(err));
               }}
             >
-              {t("markModal.save")}
+              {t("save")}
             </IonButton>
           </IonButtons>
         </IonDatetime>

@@ -141,13 +141,13 @@ const App: React.FC = () => {
                   tab="home"
                   href="/home"
                 >
-                  <IonLabel>{t("homeTab.title")}</IonLabel>
+                  <IonLabel>{t("Home")}</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   tab="details"
                   href="/details"
                 >
-                  <IonLabel>{t("detailsTab.title")}</IonLabel>
+                  <IonLabel>{t("Details")}</IonLabel>
                 </IonTabButton>
               </IonTabBar>
             </IonTabs>

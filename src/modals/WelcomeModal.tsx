@@ -63,13 +63,13 @@ const Welcome = (props: PropsWelcomeModal) => {
         fullscreen
         color="basic"
       >
-        <IonTitle color="light">{t("welcomeModal.welcome")}</IonTitle>
+        <IonTitle color="light">{t("Welcome to Peri")}</IonTitle>
         <IonCol>
           <IonLabel
             class="welcome"
             color="dark-basic"
           >
-            {t("welcomeModal.pleaseMark")}
+            {t("Please mark the days of your last period")}
           </IonLabel>
         </IonCol>
         <IonDatetime
@@ -96,12 +96,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                 props.setIsOpen(false);
               } else {
                 confirmAlert({
-                  header: `${t("welcomeModal.continue")}?`,
+                  header: `${t("Continue")}?`,
                   cssClass: "header-color",
-                  message: t("welcomeModal.forecast"),
+                  message: t("Forecast will not be generated."),
                   buttons: [
                     {
-                      text: t("welcomeModal.cancel"),
+                      text: t("cancel"),
                       role: "cancel",
                     },
                     {
@@ -116,11 +116,11 @@ const Welcome = (props: PropsWelcomeModal) => {
               }
             }}
           >
-            {t("welcomeModal.continue")}
+            {t("Continue")}
           </IonButton>
         </IonCol>
         <IonCol>
-          <IonLabel color="dark-basic">{t("welcomeModal.or")}</IonLabel>
+          <IonLabel color="dark-basic">{t("or")}</IonLabel>
         </IonCol>
         <IonCol>
           <IonButton
@@ -160,7 +160,7 @@ const Welcome = (props: PropsWelcomeModal) => {
               slot="start"
               icon={cloudDownloadOutline}
             />
-            {t("welcomeModal.importData")}
+            {t("import data")}
           </IonButton>
         </IonCol>
       </IonContent>
