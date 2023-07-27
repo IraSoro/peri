@@ -1,4 +1,5 @@
 import i18n from "i18next";
+import { Cycle } from "../data/ClassCycle";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -206,4 +207,42 @@ export function getPhase(
     return phases.ovulation;
   }
   return phases.luteal;
+}
+
+export function getAverageLengthOfCycle(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  if (cycles.length === 1) {
+    return cycles[0].cycleLength;
+  }
+
+  const sum = cycles.reduce((prev, current, idx) => {
+    if (idx > 0) {
+      return prev + current.cycleLength;
+    }
+    return 0;
+  }, 0);
+
+  return Math.round(sum / (cycles.length - 1));
+}
+
+export function getAverageLengthOfPeriod(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  if (cycles.length === 1) {
+    return cycles[0].periodLength;
+  }
+
+  const sum = cycles.reduce((prev, current, idx) => {
+    if (idx > 0) {
+      return prev + current.periodLength;
+    }
+    return 0;
+  }, 0);
+
+  return Math.round(sum / (cycles.length - 1));
 }
