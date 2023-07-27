@@ -29,12 +29,26 @@ async function getCycles(safe: boolean): Promise<Cycle[]> {
   return value;
 }
 
+function setLanguage(language: string): Promise<void> {
+  return storageImpl.set("language", language) as Promise<void>;
+}
+
+async function getLanguage(safe: boolean): Promise<string> {
+  const value = (await storageImpl.get("language")) as string;
+  if (safe && !value) {
+    throw new Error("Can't find `language` in storage");
+  }
+  return value;
+}
+
 export const storage = {
   set: {
     cycles: setCycles,
+    language: setLanguage,
   },
   get: {
     cycles: () => getCycles(true),
+    language: () => getLanguage(true),
   },
 };
 

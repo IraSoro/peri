@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -10,12 +10,13 @@ import {
   setupIonicReact,
   IonHeader,
   IonToolbar,
-  IonTitle,
   IonContent,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { useTranslation } from "react-i18next";
 import TabHome from "./pages/TabHome";
 import TabDetails from "./pages/TabDetails";
+import MultiLanguage from "./modals/MultiLanguageModal";
 import "./App.css";
 
 /* Core CSS required for Ionic components to work properly */
@@ -46,6 +47,16 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
+  const [isLanguageModal, setIsLanguageModal] = useState(false);
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = useCallback(
+    (lng: string) => {
+      i18n.changeLanguage(lng).catch((err) => console.error(err));
+    },
+    [i18n],
+  );
 
   function updateCycles(newCycles: Cycle[]) {
     const maxOfCycles = 7;
@@ -63,7 +74,16 @@ const App: React.FC = () => {
       .catch((err) =>
         console.error(`Can't get cycles ${(err as Error).message}`),
       );
-  }, []);
+
+    storage.get
+      .language()
+      .then((res) => {
+        changeLanguage(res);
+      })
+      .catch((err) =>
+        console.error(`Can't get cycles ${(err as Error).message}`),
+      );
+  }, [changeLanguage]);
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
@@ -71,7 +91,10 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonHeader class="ion-no-border">
             <IonToolbar color="basic">
-              <IonTitle color="light">Hello!</IonTitle>
+              <MultiLanguage
+                isOpen={isLanguageModal}
+                setIsOpen={setIsLanguageModal}
+              />
             </IonToolbar>
           </IonHeader>
 
@@ -82,7 +105,10 @@ const App: React.FC = () => {
                   exact
                   path="/home"
                 >
-                  <TabHome />
+                  <TabHome
+                    isLanguageModal={isLanguageModal}
+                    setIsLanguageModal={setIsLanguageModal}
+                  />
                 </Route>
 
                 <Route
@@ -115,13 +141,13 @@ const App: React.FC = () => {
                   tab="home"
                   href="/home"
                 >
-                  <IonLabel>Home</IonLabel>
+                  <IonLabel>{t("Home")}</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   tab="details"
                   href="/details"
                 >
-                  <IonLabel>Details</IonLabel>
+                  <IonLabel>{t("Details")}</IonLabel>
                 </IonTabButton>
               </IonTabBar>
             </IonTabs>

@@ -11,6 +11,7 @@ import "./CalendarModal.css";
 import { calendarClear } from "ionicons/icons";
 
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
 
 import {
@@ -24,6 +25,7 @@ interface PropsCalendarModal {
 }
 
 const CalendarModal = (props: PropsCalendarModal) => {
+  const { t } = useTranslation();
   const nowDate = new Date();
 
   const cycles = useContext(CyclesContext).cycles;
@@ -75,7 +77,7 @@ const CalendarModal = (props: PropsCalendarModal) => {
         <IonDatetime
           color="basic"
           presentation="date"
-          locale="en-GB"
+          locale={t("locale")}
           size="cover"
           firstDayOfWeek={1}
           isDateEnabled={(dateString: string) => {

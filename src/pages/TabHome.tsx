@@ -13,6 +13,7 @@ import {
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
+import { useTranslation } from "react-i18next";
 
 import "./TabHome.css";
 import uterus from "../assets/uterus.svg";
@@ -34,6 +35,7 @@ const millisecondsInDay = 24 * 60 * 60 * 1000;
 function useOvulationStatus(): string {
   const cycleLength = useAverageLengthOfCycle();
   const dayOfCycle = Number(useDayOfCycle());
+  const { t } = useTranslation();
 
   if (!cycleLength || !dayOfCycle) {
     return "";
@@ -43,20 +45,23 @@ function useOvulationStatus(): string {
   const ovulationDay = Number(cycleLength) - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
   if (diffDay === 0) {
-    return "today";
+    return t("today");
   } else if (diffDay < 0 && diffDay >= -2) {
-    return "possible";
+    return t("possible");
   } else if (diffDay < 0) {
-    return "finished";
+    return t("finished");
   } else if (diffDay === 1) {
-    return "tomorrow";
+    return t("tomorrow");
+  } else if (diffDay < 5) {
+    return `${t("in")} ${diffDay} ${t("Days less 5")}`;
   }
-  return `in ${diffDay} days`;
+  return `${t("in")} ${diffDay} ${t("Days")}`;
 }
 
 function usePregnancyChance() {
   const cycleLength = useAverageLengthOfCycle();
   const dayOfCycle = Number(useDayOfCycle());
+  const { t } = useTranslation();
 
   if (!cycleLength || !dayOfCycle) {
     return "";
@@ -67,9 +72,9 @@ function usePregnancyChance() {
   const diffDay = ovulationDay - dayOfCycle;
 
   if (diffDay <= 4 && diffDay >= -2) {
-    return "high";
+    return t("high");
   }
-  return "low";
+  return t("low");
 }
 
 interface DaysBeforePeriod {
@@ -80,9 +85,13 @@ interface DaysBeforePeriod {
 function useDaysBeforePeriod(): DaysBeforePeriod {
   const startDate = useLastStartDate();
   const cycleLength = useAverageLengthOfCycle();
+  const { t } = useTranslation();
 
   if (!startDate || !cycleLength) {
-    return { title: "Period in", days: "no info" };
+    return {
+      title: t("Period in"),
+      days: t("no info"),
+    };
   }
 
   const dateOfFinish = new Date(startDate);
@@ -95,24 +104,56 @@ function useDaysBeforePeriod(): DaysBeforePeriod {
   );
 
   if (dayBefore > 1) {
-    return { title: "Period in", days: `${dayBefore} Days` };
+    if (
+      dayBefore < 5 ||
+      (dayBefore > 20 && dayBefore % 10 > 0 && dayBefore % 10 < 5)
+    ) {
+      return {
+        title: t("Period in"),
+        days: `${dayBefore} ${t("Days less 5")}`,
+      };
+    }
+    return {
+      title: t("Period in"),
+      days: `${dayBefore} ${t("Days")}`,
+    };
   }
   if (dayBefore === 1) {
-    return { title: "Period in", days: "1 Day" };
+    return {
+      title: t("Period in"),
+      days: `1 ${t("Days")}`,
+    };
   }
   if (dayBefore === 0) {
-    return { title: "Period", days: "Today" };
+    return {
+      title: t("Period"),
+      days: t("today"),
+    };
   }
   if (dayBefore === -1) {
-    return { title: "Delay", days: "1 Day" };
+    return {
+      title: t("Delay"),
+      days: `1 ${t("Day")}`,
+    };
+  }
+  if (dayBefore > -5) {
+    return {
+      title: t("Delay"),
+      days: `${dayBefore} ${t("Days less 5")}`,
+    };
   }
   return {
-    title: "Delay",
-    days: `${Math.abs(dayBefore)} Days`,
+    title: t("Delay"),
+    days: `${Math.abs(dayBefore)} ${t("Days")}`,
   };
 }
 
-const TabHome = () => {
+interface HomeProps {
+  isLanguageModal: boolean;
+  setIsLanguageModal: (newIsOpen: boolean) => void;
+}
+
+const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isCalendarModal, setIsCalendarModal] = useState(false);
@@ -125,6 +166,8 @@ const TabHome = () => {
   const pregnancyChance = usePregnancyChance();
   const daysBeforePeriod = useDaysBeforePeriod();
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     storage.get.cycles().catch((err) => {
       console.error(`Can't get cycles ${(err as Error).message}`);
@@ -134,10 +177,16 @@ const TabHome = () => {
 
   useEffect(() => {
     const backButtonHandler = () => {
-      if (isCalendarModal || isMarkModal || isInfoModal) {
+      if (
+        isCalendarModal ||
+        isMarkModal ||
+        isInfoModal ||
+        props.isLanguageModal
+      ) {
         setIsCalendarModal(false);
         setIsMarkModal(false);
         setIsInfoModal(false);
+        props.setIsLanguageModal(false);
         router.push("/home");
         return;
       }
@@ -152,7 +201,7 @@ const TabHome = () => {
     return () => {
       document.removeEventListener("ionBackButton", backButtonHandler);
     };
-  }, [router, isInfoModal, isCalendarModal, isMarkModal]);
+  }, [router, isInfoModal, isCalendarModal, isMarkModal, props]);
 
   const p_style = {
     fontSize: "10px" as const,
@@ -178,6 +227,8 @@ const TabHome = () => {
             <Welcome
               isOpen={isWelcomeModal}
               setIsOpen={setIsWelcomeModal}
+              isLanguageModal={props.isLanguageModal}
+              setIsLanguageModal={props.setIsLanguageModal}
             />
             <IonRow>
               <IonCol>
@@ -218,7 +269,7 @@ const TabHome = () => {
                   lines="full"
                 >
                   <IonLabel>
-                    <p style={p_style}>Current cycle day</p>
+                    <p style={p_style}>{t("Current cycle day")}</p>
                     <h1 style={h_style}>{dayOfCycle}</h1>
                   </IonLabel>
                 </IonItem>
@@ -227,7 +278,7 @@ const TabHome = () => {
                   lines="full"
                 >
                   <IonLabel>
-                    <p style={p_style}>Ovulation</p>
+                    <p style={p_style}>{t("Ovulation")}</p>
                     <h1 style={h_style}>{ovulationStatus}</h1>
                   </IonLabel>
                 </IonItem>
@@ -236,7 +287,7 @@ const TabHome = () => {
                   lines="none"
                 >
                   <IonLabel>
-                    <p style={p_style}>Chance of getting pregnant</p>
+                    <p style={p_style}>{t("Chance of getting pregnant")}</p>
                     <h1 style={h_style}>{pregnancyChance}</h1>
                   </IonLabel>
                 </IonItem>

@@ -18,12 +18,17 @@ import "./WelcomeModal.css";
 import type { Cycle } from "../data/ClassCycle";
 import { importConfig } from "../data/Config";
 import { storage } from "../data/Storage";
+import { useTranslation } from "react-i18next";
+import MultiLanguage from "../modals/MultiLanguageModal";
 
 import { CyclesContext } from "../state/Context";
 
 interface PropsWelcomeModal {
   isOpen: boolean;
   setIsOpen: (newIsOpen: boolean) => void;
+
+  isLanguageModal: boolean;
+  setIsLanguageModal: (newIsOpen: boolean) => void;
 }
 
 const Welcome = (props: PropsWelcomeModal) => {
@@ -39,6 +44,8 @@ const Welcome = (props: PropsWelcomeModal) => {
 
   const updateCycles = useContext(CyclesContext).updateCycles;
 
+  const { t } = useTranslation();
+
   return (
     <IonModal
       isOpen={props.isOpen}
@@ -46,19 +53,23 @@ const Welcome = (props: PropsWelcomeModal) => {
     >
       <IonHeader class="ion-no-border">
         <IonToolbar color="basic">
-          <IonTitle color="light">Welcome to Peri</IonTitle>
+          <MultiLanguage
+            isOpen={props.isLanguageModal}
+            setIsOpen={props.setIsLanguageModal}
+          />
         </IonToolbar>
       </IonHeader>
       <IonContent
         fullscreen
         color="basic"
       >
+        <IonTitle color="light">{t("Welcome to Peri")}</IonTitle>
         <IonCol>
           <IonLabel
             class="welcome"
             color="dark-basic"
           >
-            Please mark the days of your last period.
+            {t("Please mark the days of your last period")}
           </IonLabel>
         </IonCol>
         <IonDatetime
@@ -66,7 +77,7 @@ const Welcome = (props: PropsWelcomeModal) => {
           ref={refDatetime}
           color="basic"
           presentation="date"
-          locale="en-GB"
+          locale={t("locale")}
           size="cover"
           multiple
           firstDayOfWeek={1}
@@ -85,12 +96,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                 props.setIsOpen(false);
               } else {
                 confirmAlert({
-                  header: "Continue?",
+                  header: `${t("Continue")}?`,
                   cssClass: "header-color",
-                  message: "Forecast will not be generated.",
+                  message: t("Forecast will not be generated."),
                   buttons: [
                     {
-                      text: "CANCEL",
+                      text: t("cancel"),
                       role: "cancel",
                     },
                     {
@@ -105,11 +116,11 @@ const Welcome = (props: PropsWelcomeModal) => {
               }
             }}
           >
-            continue
+            {t("Continue")}
           </IonButton>
         </IonCol>
         <IonCol>
-          <IonLabel color="dark-basic">or</IonLabel>
+          <IonLabel color="dark-basic">{t("or")}</IonLabel>
         </IonCol>
         <IonCol>
           <IonButton
@@ -149,7 +160,7 @@ const Welcome = (props: PropsWelcomeModal) => {
               slot="start"
               icon={cloudDownloadOutline}
             />
-            Import data
+            {t("import data")}
           </IonButton>
         </IonCol>
       </IonContent>

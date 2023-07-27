@@ -6,6 +6,8 @@ test("renders without crashing", () => {
     <Welcome
       isOpen
       setIsOpen={() => {}}
+      isLanguageModal
+      setIsLanguageModal={() => {}}
     />,
   );
   expect(baseElement).toBeDefined();

@@ -50,3 +50,39 @@ describe("getCycles", () => {
     expect(storageGetSpy).toHaveBeenCalledWith("cycles");
   });
 });
+
+test("setLanguage", async () => {
+  const storageSetSpy = jest
+    .spyOn(Storage.prototype, "set")
+    .mockResolvedValueOnce({});
+
+  const language = "en";
+
+  await storage.set.language(language);
+
+  expect(storageSetSpy).toHaveBeenCalledWith("language", language);
+});
+
+describe("getLanguage", () => {
+  test("There are no language in storage", async () => {
+    const storageGetSpy = jest
+      .spyOn(Storage.prototype, "get")
+      .mockResolvedValueOnce(undefined);
+
+    await expect(storage.get.language()).rejects.toThrow(
+      "Can't find `language` in storage",
+    );
+    expect(storageGetSpy).toHaveBeenCalledWith("language");
+  });
+
+  test("Storage has language", async () => {
+    const language = "en";
+
+    const storageGetSpy = jest
+      .spyOn(Storage.prototype, "get")
+      .mockResolvedValueOnce(language);
+
+    await expect(storage.get.language()).resolves.toBe(language);
+    expect(storageGetSpy).toHaveBeenCalledWith("language");
+  });
+});
