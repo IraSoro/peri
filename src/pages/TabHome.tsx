@@ -34,7 +34,6 @@ import {
   getOvulationStatus,
   getPregnancyChance,
   getDaysBeforePeriod,
-  getDayOfCycle,
 } from "../state/CalculationLogics";
 
 const p_style = {
@@ -69,10 +68,8 @@ function DaysBeforePeriod() {
 }
 
 const DayOfCycle = () => {
-  const startDate = useLastStartDate();
+  const dayOfCycle = useDayOfCycle();
   const { t } = useTranslation();
-
-  const dayOfCycle = getDayOfCycle(startDate);
 
   return (
     <>
