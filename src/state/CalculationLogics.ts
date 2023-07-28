@@ -75,7 +75,7 @@ export function getDaysBeforePeriod(cycleLength: number, startDate: string) {
   if (dayBefore === 1) {
     return {
       title: i18n.t("Period in"),
-      days: `1 ${i18n.t("Days")}`,
+      days: `1 ${i18n.t("Day")}`,
     };
   }
   if (dayBefore === 0) {
