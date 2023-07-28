@@ -9,7 +9,7 @@ export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
   }
 
   const lutealPhaseLength = 14;
-  const ovulationDay = Number(cycleLength) - lutealPhaseLength;
+  const ovulationDay = cycleLength - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
   if (diffDay === 0) {
     return i18n.t("today");
