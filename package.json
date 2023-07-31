@@ -32,6 +32,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "i18next": "^23.2.11",
+    "i18next-intervalplural-postprocessor": "^3.0.0",
     "ionicons": "^7.1.2",
     "prettier": "^3.0.0",
     "react": "^18.2.0",

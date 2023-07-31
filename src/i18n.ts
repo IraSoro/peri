@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import intervalPlural from "i18next-intervalplural-postprocessor";
 
 import en from "./translations/en";
 import ru from "./translations/ru";
@@ -15,6 +16,7 @@ const resources = {
 
 i18n
   .use(initReactI18next)
+  .use(intervalPlural)
   .init({
     resources,
     lng: "en",
