@@ -174,8 +174,8 @@ describe("getDaysBeforePeriod", () => {
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
     expect(getDaysBeforePeriod(0, "")).toEqual({
-      title: "Period in",
-      days: "no info",
+      title: i18n.t("Period in"),
+      days: i18n.t("no info"),
     });
   });
 
@@ -187,8 +187,11 @@ describe("getDaysBeforePeriod", () => {
     date.setHours(0, 0, 0, 0);
     date.setDate(date.getDate() - 18);
     expect(getDaysBeforePeriod(28, date.toString())).toEqual({
-      title: "Period in",
-      days: "10 Days",
+      title: i18n.t("Period in"),
+      days: `10 ${i18n.t("Days_interval", {
+        postProcess: "interval",
+        count: 10,
+      })}`,
     });
   });
 
@@ -200,8 +203,11 @@ describe("getDaysBeforePeriod", () => {
     date.setHours(0, 0, 0, 0);
     date.setDate(date.getDate() - 27);
     expect(getDaysBeforePeriod(28, date.toString())).toEqual({
-      title: "Period in",
-      days: "1 Day",
+      title: i18n.t("Period in"),
+      days: `1 ${i18n.t("Days_interval", {
+        postProcess: "interval",
+        count: 1,
+      })}`,
     });
   });
 
@@ -213,8 +219,8 @@ describe("getDaysBeforePeriod", () => {
     date.setHours(0, 0, 0, 0);
     date.setDate(date.getDate() - 28);
     expect(getDaysBeforePeriod(28, date.toString())).toEqual({
-      title: "Period",
-      days: "today",
+      title: i18n.t("Period"),
+      days: i18n.t("today"),
     });
   });
 
@@ -226,8 +232,11 @@ describe("getDaysBeforePeriod", () => {
     date.setHours(0, 0, 0, 0);
     date.setDate(date.getDate() - 29);
     expect(getDaysBeforePeriod(28, date.toString())).toEqual({
-      title: "Delay",
-      days: "1 Day",
+      title: i18n.t("Delay"),
+      days: `1 ${i18n.t("Days_interval", {
+        postProcess: "interval",
+        count: 1,
+      })}`,
     });
   });
 
@@ -239,8 +248,11 @@ describe("getDaysBeforePeriod", () => {
     date.setHours(0, 0, 0, 0);
     date.setDate(date.getDate() - 38);
     expect(getDaysBeforePeriod(28, date.toString())).toEqual({
-      title: "Delay",
-      days: "10 Days",
+      title: i18n.t("Delay"),
+      days: `10 ${i18n.t("Days_interval", {
+        postProcess: "interval",
+        count: 10,
+      })}`,
     });
   });
 });
