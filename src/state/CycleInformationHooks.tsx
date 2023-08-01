@@ -1,11 +1,6 @@
 import { useContext } from "react";
 import { CyclesContext } from "./Context";
-import {
-  getDayOfCycle,
-  // getAverageLengthOfCycle,
-  // getAverageLengthOfPeriod,
-  getAverageLength,
-} from "./CalculationLogics";
+import { getDayOfCycle, getAverageLength } from "./CalculationLogics";
 
 export function useLastStartDate(): string {
   const cycles = useContext(CyclesContext).cycles;

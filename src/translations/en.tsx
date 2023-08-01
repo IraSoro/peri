@@ -8,8 +8,6 @@ const en = {
   Period: "Period",
   today: "today",
   Delay: "Delay",
-  Days_one: "Day",
-  Days_other: "Days",
   Days_interval: "(0,2-inf){Days};(1){Day};",
   "Current cycle day": "Current cycle day",
   Ovulation: "Ovulation",

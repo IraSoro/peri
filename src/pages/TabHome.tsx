@@ -36,12 +36,12 @@ import {
   getDaysBeforePeriod,
 } from "../state/CalculationLogics";
 
-const p_style = {
+const pStyle = {
   fontSize: "10px" as const,
   color: "var(--ion-color-light)" as const,
 };
 
-const h_style = {
+const hStyle = {
   fontWeight: "bold" as const,
   color: "var(--ion-color-light)" as const,
 };
@@ -73,8 +73,8 @@ const DayOfCycle = () => {
 
   return (
     <>
-      <p style={p_style}>{t("Current cycle day")}</p>
-      <h1 style={h_style}>{dayOfCycle}</h1>
+      <p style={pStyle}>{t("Current cycle day")}</p>
+      <h1 style={hStyle}>{dayOfCycle}</h1>
     </>
   );
 };
@@ -89,8 +89,8 @@ const OvulationStatus = () => {
 
   return (
     <>
-      <p style={p_style}>{t("Ovulation")}</p>
-      <h1 style={h_style}>{ovulationStatus}</h1>
+      <p style={pStyle}>{t("Ovulation")}</p>
+      <h1 style={hStyle}>{ovulationStatus}</h1>
     </>
   );
 };
@@ -105,8 +105,8 @@ const PregnancyChance = () => {
 
   return (
     <>
-      <p style={p_style}>{t("Chance of getting pregnant")}</p>
-      <h1 style={h_style}>{pregnancyChance}</h1>
+      <p style={pStyle}>{t("Chance of getting pregnant")}</p>
+      <h1 style={hStyle}>{pregnancyChance}</h1>
     </>
   );
 };

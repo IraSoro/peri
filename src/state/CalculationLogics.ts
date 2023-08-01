@@ -11,18 +11,22 @@ export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
   const lutealPhaseLength = 14;
   const ovulationDay = cycleLength - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
+  if (diffDay < -2) {
+    return i18n.t("finished");
+  }
+  if (diffDay < 0) {
+    return i18n.t("possible");
+  }
   if (diffDay === 0) {
     return i18n.t("today");
-  } else if (diffDay < 0 && diffDay >= -2) {
-    return i18n.t("possible");
-  } else if (diffDay < 0) {
-    return i18n.t("finished");
-  } else if (diffDay === 1) {
-    return i18n.t("tomorrow");
-  } else if (diffDay < 5) {
-    return `${i18n.t("in")} ${diffDay} ${i18n.t("Days less 5")}`;
   }
-  return `${i18n.t("in")} ${diffDay} ${i18n.t("Days")}`;
+  if (diffDay === 1) {
+    return i18n.t("tomorrow");
+  }
+  return `${i18n.t("in")} ${diffDay} ${i18n.t("Days_interval", {
+    postProcess: "interval",
+    count: diffDay,
+  })}`;
 }
 
 export function getPregnancyChance(cycleLength: number, dayOfCycle: number) {
@@ -34,7 +38,7 @@ export function getPregnancyChance(cycleLength: number, dayOfCycle: number) {
   const ovulationDay = cycleLength - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
 
-  if (diffDay <= 4 && diffDay >= -2) {
+  if (diffDay >= -2 && diffDay <= 4) {
     return i18n.t("high");
   }
   return i18n.t("low");

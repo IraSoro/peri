@@ -10,35 +10,40 @@ import {
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
-  test("cycleLength is 0 and dayOfCycle is 0", () => {
+  test("cycles array is empty", () => {
     expect(getOvulationStatus(0, 0)).toEqual("");
   });
 
-  test("returns `in 9 Days` if ovulation in 9 Days", () => {
+  test("a few days before ovulation", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getOvulationStatus(28, 5)).toEqual("in 9 Days");
+    expect(getOvulationStatus(28, 5)).toEqual(
+      `${i18n.t("in")} 9 ${i18n.t("Days_interval", {
+        postProcess: "interval",
+        count: 9,
+      })}`,
+    );
   });
 
-  test("returns `tomorrow` if ovulation is tomorrow", () => {
+  test("ovulation is tomorrow", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
     expect(getOvulationStatus(28, 13)).toEqual("tomorrow");
   });
 
-  test("returns `today` if ovulation is today", () => {
+  test("ovulation is today", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
     expect(getOvulationStatus(28, 14)).toEqual("today");
   });
 
-  test("returns `possible` if ovulation is possible", () => {
+  test("if ovulation is possible", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
     expect(getOvulationStatus(28, 15)).toEqual("possible");
   });
 
-  test("returns `finished` if ovulation is finished", () => {
+  test("ovulation is finished", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
     expect(getOvulationStatus(28, 18)).toEqual("finished");
@@ -46,17 +51,17 @@ describe("getOvulationStatus", () => {
 });
 
 describe("getPregnancyChance", () => {
-  test("cycleLength is 0 and dayOfCycle is 0", () => {
+  test("cycles array is empty", () => {
     expect(getPregnancyChance(0, 0)).toEqual("");
   });
 
-  test("returns `high` if pregnancy is high", () => {
+  test("pregnancy chance is high", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPregnancyChance(28, 14)).toEqual("high");
   });
 
-  test("returns `low` if pregnancy is low", () => {
+  test("pregnancy chance is low", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPregnancyChance(28, 20)).toEqual("low");
@@ -64,11 +69,11 @@ describe("getPregnancyChance", () => {
 });
 
 describe("getDayOfCycle", () => {
-  test("startDate is non", () => {
+  test("no info about start cycle date", () => {
     expect(getDayOfCycle("")).toEqual("");
   });
 
-  test("returns 14 if current day is 14", () => {
+  test("middle of the cycle", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -80,11 +85,11 @@ describe("getDayOfCycle", () => {
 });
 
 describe("getAverageLengthOfCycle", () => {
-  test("cycle length is 0", () => {
+  test("cycles array is empty", () => {
     expect(getAverageLength([], "cycleLength")).toEqual(0);
   });
 
-  test("returns 28 if cycle length is 1", () => {
+  test("only one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -98,7 +103,7 @@ describe("getAverageLengthOfCycle", () => {
     expect(getAverageLength(cycles, "cycleLength")).toEqual(28);
   });
 
-  test("returns 28 cycle length over 1", () => {
+  test("more than one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -124,11 +129,11 @@ describe("getAverageLengthOfCycle", () => {
 });
 
 describe("getAverageLengthOfPeriod", () => {
-  test("cycle length is 0", () => {
+  test("cycles array is empty", () => {
     expect(getAverageLength([], "periodLength")).toEqual(0);
   });
 
-  test("returns 5 if cycle length is 1", () => {
+  test("only one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -142,7 +147,7 @@ describe("getAverageLengthOfPeriod", () => {
     expect(getAverageLength(cycles, "periodLength")).toEqual(5);
   });
 
-  test("returns 5 cycle length over 1", () => {
+  test("more than one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -168,7 +173,7 @@ describe("getAverageLengthOfPeriod", () => {
 });
 
 describe("getDaysBeforePeriod", () => {
-  test("cycleLength is 0 and startDate is non", () => {
+  test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -178,7 +183,7 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("returns `Period in 10 Day` if period in 10 Day", () => {
+  test("period in the few days", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -194,7 +199,7 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("returns `Period in 1 Day` if period in 1 Day", () => {
+  test("period in 1 Day", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -210,7 +215,7 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("returns `today` if period is today", () => {
+  test("period is today", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -223,7 +228,7 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("returns `Delay 1 Day` if delay 1 day", () => {
+  test("delay 1 day", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -239,7 +244,7 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("returns `Delay 10 Days` if delay 10 days", () => {
+  test("delay a few days", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -315,7 +320,7 @@ const phases = {
 };
 
 describe("getPhase", () => {
-  test("lengthOfCycle is 0 and lengthOfPeriod is 0 and currentDay is 0", () => {
+  test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPhase(0, 0, 0)).toEqual(phases.non);
