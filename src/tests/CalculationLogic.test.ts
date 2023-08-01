@@ -4,8 +4,7 @@ import {
   getOvulationStatus,
   getPregnancyChance,
   getDayOfCycle,
-  getAverageLengthOfCycle,
-  getAverageLengthOfPeriod,
+  getAverageLength,
   getDaysBeforePeriod,
   getPhase,
 } from "../state/CalculationLogics";
@@ -82,7 +81,7 @@ describe("getDayOfCycle", () => {
 
 describe("getAverageLengthOfCycle", () => {
   test("cycle length is 0", () => {
-    expect(getAverageLengthOfCycle([])).toEqual(0);
+    expect(getAverageLength([], "cycleLength")).toEqual(0);
   });
 
   test("returns 28 if cycle length is 1", () => {
@@ -96,7 +95,7 @@ describe("getAverageLengthOfCycle", () => {
         startDate: "2023-06-30",
       },
     ];
-    expect(getAverageLengthOfCycle(cycles)).toEqual(28);
+    expect(getAverageLength(cycles, "cycleLength")).toEqual(28);
   });
 
   test("returns 28 cycle length over 1", () => {
@@ -120,13 +119,13 @@ describe("getAverageLengthOfCycle", () => {
         startDate: "2023-05-07",
       },
     ];
-    expect(getAverageLengthOfCycle(cycles)).toEqual(28);
+    expect(getAverageLength(cycles, "cycleLength")).toEqual(28);
   });
 });
 
 describe("getAverageLengthOfPeriod", () => {
   test("cycle length is 0", () => {
-    expect(getAverageLengthOfPeriod([])).toEqual(0);
+    expect(getAverageLength([], "periodLength")).toEqual(0);
   });
 
   test("returns 5 if cycle length is 1", () => {
@@ -140,7 +139,7 @@ describe("getAverageLengthOfPeriod", () => {
         startDate: "2023-06-30",
       },
     ];
-    expect(getAverageLengthOfPeriod(cycles)).toEqual(5);
+    expect(getAverageLength(cycles, "periodLength")).toEqual(5);
   });
 
   test("returns 5 cycle length over 1", () => {
@@ -164,7 +163,7 @@ describe("getAverageLengthOfPeriod", () => {
         startDate: "2023-05-07",
       },
     ];
-    expect(getAverageLengthOfPeriod(cycles)).toEqual(5);
+    expect(getAverageLength(cycles, "periodLength")).toEqual(5);
   });
 });
 
