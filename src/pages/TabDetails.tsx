@@ -17,15 +17,13 @@ import {
   useDayOfCycle,
   useLengthOfLastPeriod,
   useAverageLengthOfCycle,
-  // useAverageLengthOfPeriod,
+  useAverageLengthOfPeriod,
   useLastStartDate,
 } from "../state/CycleInformationHooks";
 import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
 import { exportConfig, importConfig } from "../data/Config";
 import { storage } from "../data/Storage";
-
-import { getAverageLength } from "../state/CalculationLogics";
 
 function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();
@@ -178,10 +176,10 @@ const TabDetails = () => {
 
   const [confirmAlert] = useIonAlert();
 
-  const { cycles, updateCycles } = useContext(CyclesContext);
+  const updateCycles = useContext(CyclesContext).updateCycles;
 
   const averageLengthOfCycle = useAverageLengthOfCycle();
-  const averageLengthOfPeriod = getAverageLength(cycles, "periodLength");
+  const averageLengthOfPeriod = useAverageLengthOfPeriod();
 
   const lengthOfCycle = `${averageLengthOfCycle} ${t("Days_interval", {
     postProcess: "interval",

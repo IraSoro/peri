@@ -4,7 +4,8 @@ import {
   getOvulationStatus,
   getPregnancyChance,
   getDayOfCycle,
-  getAverageLength,
+  getAverageLengthOfCycle,
+  getAverageLengthOfPeriod,
   getDaysBeforePeriod,
   getPhase,
 } from "../state/CalculationLogics";
@@ -86,7 +87,7 @@ describe("getDayOfCycle", () => {
 
 describe("getAverageLengthOfCycle", () => {
   test("cycles array is empty", () => {
-    expect(getAverageLength([], "cycleLength")).toEqual(0);
+    expect(getAverageLengthOfCycle([])).toEqual(0);
   });
 
   test("only one item in the cycles array", () => {
@@ -100,7 +101,7 @@ describe("getAverageLengthOfCycle", () => {
         startDate: "2023-06-30",
       },
     ];
-    expect(getAverageLength(cycles, "cycleLength")).toEqual(28);
+    expect(getAverageLengthOfCycle(cycles)).toEqual(28);
   });
 
   test("more than one item in the cycles array", () => {
@@ -124,13 +125,13 @@ describe("getAverageLengthOfCycle", () => {
         startDate: "2023-05-07",
       },
     ];
-    expect(getAverageLength(cycles, "cycleLength")).toEqual(28);
+    expect(getAverageLengthOfCycle(cycles)).toEqual(28);
   });
 });
 
 describe("getAverageLengthOfPeriod", () => {
   test("cycles array is empty", () => {
-    expect(getAverageLength([], "periodLength")).toEqual(0);
+    expect(getAverageLengthOfPeriod([])).toEqual(0);
   });
 
   test("only one item in the cycles array", () => {
@@ -144,7 +145,7 @@ describe("getAverageLengthOfPeriod", () => {
         startDate: "2023-06-30",
       },
     ];
-    expect(getAverageLength(cycles, "periodLength")).toEqual(5);
+    expect(getAverageLengthOfPeriod(cycles)).toEqual(5);
   });
 
   test("more than one item in the cycles array", () => {
@@ -168,7 +169,7 @@ describe("getAverageLengthOfPeriod", () => {
         startDate: "2023-05-07",
       },
     ];
-    expect(getAverageLength(cycles, "periodLength")).toEqual(5);
+    expect(getAverageLengthOfPeriod(cycles)).toEqual(5);
   });
 });
 

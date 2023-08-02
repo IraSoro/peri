@@ -192,29 +192,37 @@ export function getPhase(
   return phases.luteal;
 }
 
-export function getAverageLength(
-  cycles: Cycle[],
-  arg: "cycleLength" | "periodLength",
-) {
+export function getAverageLengthOfCycle(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return 0;
   }
 
   if (cycles.length === 1) {
-    if (arg === "cycleLength") {
-      return cycles[0].cycleLength;
-    } else if (arg === "periodLength") {
-      return cycles[0].periodLength;
-    }
+    return cycles[0].cycleLength;
   }
 
   const sum = cycles.reduce((prev, current, idx) => {
     if (idx > 0) {
-      if (arg === "cycleLength") {
-        return prev + current.cycleLength;
-      } else if (arg === "periodLength") {
-        return prev + current.periodLength;
-      }
+      return prev + current.cycleLength;
+    }
+    return 0;
+  }, 0);
+
+  return Math.round(sum / (cycles.length - 1));
+}
+
+export function getAverageLengthOfPeriod(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  if (cycles.length === 1) {
+    return cycles[0].periodLength;
+  }
+
+  const sum = cycles.reduce((prev, current, idx) => {
+    if (idx > 0) {
+      return prev + current.periodLength;
     }
     return 0;
   }, 0);
