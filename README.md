@@ -63,7 +63,7 @@ Also keeps track of the current phase of the cycle. And displays information abo
 ### Future features
 
 - [ ] Sync data with other apps
-- [ ] Multi-language Support
+- [x] Multi-language Support
 - [x] Mark the days of your period on the calendar
 
 See the [open issues](https://github.com/IraSoro/peri/issues) and [project](https://github.com/users/IraSoro/projects/4/views/1) for a full list of proposed features (and known issues).
