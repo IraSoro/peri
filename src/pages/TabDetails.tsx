@@ -33,7 +33,10 @@ function useTitleLastCycle() {
     return "";
   }
 
-  return `${dayOfCycle} ${t("Day")}`;
+  return `${dayOfCycle} ${t("Days_interval", {
+    postProcess: "interval",
+    count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
+  })}`;
 }
 
 function useProgressBarBuffer() {
@@ -67,17 +70,11 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
       dates: t("date"),
     };
   }
-  const cycleLenNumber: number = cycles[idx].cycleLength;
-  let cycleLenString: string;
-  if (
-    cycleLenNumber > 20 &&
-    cycleLenNumber % 10 > 0 &&
-    cycleLenNumber % 10 < 5
-  ) {
-    cycleLenString = `${cycleLenNumber} ${t("Days less 5")}`;
-  } else {
-    cycleLenString = `${cycleLenNumber} ${t("Days")}`;
-  }
+  const cycleLenNumber = cycles[idx].cycleLength;
+  const cycleLenString = `${cycleLenNumber} ${t("Days_interval", {
+    postProcess: "interval",
+    count: cycleLenNumber,
+  })}`;
 
   const periodLenNumber: number = cycles[idx].periodLength;
 
@@ -179,28 +176,20 @@ const TabDetails = () => {
 
   const [confirmAlert] = useIonAlert();
 
+  const updateCycles = useContext(CyclesContext).updateCycles;
+
   const averageLengthOfCycle = useAverageLengthOfCycle();
   const averageLengthOfPeriod = useAverageLengthOfPeriod();
-  let lengthOfCycle: string;
-  let lengthOfPeriod: string;
 
-  if (
-    averageLengthOfCycle >= 20 &&
-    averageLengthOfCycle % 10 < 5 &&
-    averageLengthOfCycle % 10 > 0
-  ) {
-    lengthOfCycle = `${averageLengthOfCycle} ${t("Days less 5")}`;
-  } else {
-    lengthOfCycle = `${averageLengthOfCycle} ${t("Days")}`;
-  }
+  const lengthOfCycle = `${averageLengthOfCycle} ${t("Days_interval", {
+    postProcess: "interval",
+    count: averageLengthOfCycle,
+  })}`;
 
-  if (averageLengthOfPeriod < 5 && averageLengthOfPeriod > 0) {
-    lengthOfPeriod = `${averageLengthOfPeriod} ${t("Days less 5")}`;
-  } else {
-    lengthOfPeriod = `${averageLengthOfPeriod} ${t("Days")}`;
-  }
-
-  const updateCycles = useContext(CyclesContext).updateCycles;
+  const lengthOfPeriod = `${averageLengthOfPeriod} ${t("Days_interval", {
+    postProcess: "interval",
+    count: averageLengthOfPeriod,
+  })}`;
 
   const p_style = {
     fontSize: "10px" as const,

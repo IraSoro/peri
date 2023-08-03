@@ -8,9 +8,7 @@ const en = {
   Period: "Period",
   today: "today",
   Delay: "Delay",
-  Day: "Day",
-  Days: "Days",
-  "Days less 5": "Days", // for russian language
+  Days_interval: "(0,2-inf){Days};(1){Day};",
   "Current cycle day": "Current cycle day",
   Ovulation: "Ovulation",
   possible: "possible",
