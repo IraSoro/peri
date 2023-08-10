@@ -43,23 +43,21 @@ Also keeps track of the current phase of the cycle. And displays information abo
     <td><img width="300" src="./demonstration/welcome.jpg" alt="Welcome"></td>
     <td><img width="300" src="./demonstration/home.jpg" alt="Home"></td>
     <td><img width="300" src="./demonstration/details.jpg" alt="Details"></td>
-    <td><img width="300" src="./demonstration/info.jpg" alt="Info"></td>
   </tr>
   <tr>
     <td align="center">Welcome page</td>
     <td align="center">Home</td>
     <td align="center">Details</td>
-    <td align="center">Phase info</td>
   </tr>
     <tr>
+    <td><img width="300" src="./demonstration/info.jpg" alt="Info"></td>
     <td><img width="300" src="./demonstration/calendar.jpg" alt="Info"></td>
     <td><img width="300" src="./demonstration/mark.jpg" alt="Calendar"></td>
-    <td><img width="300" src="./demonstration/language.jpg" alt="Info"></td>
   </tr>
   <tr>
+    <td align="center">Phase info</td>
     <td align="center">Calendar</td>
-    <td align="center">Mark period</td>
-    <td align="center">Language selection</td>
+    <td align="center">Mark</td>
   </tr>
  </table>
 
