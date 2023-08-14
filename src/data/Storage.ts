@@ -54,133 +54,147 @@ export const storage = {
 
 // NOTE: Predefined templates for test purpose
 //       for use just uncomment one of the following lines:
-// _emptyArrayOfCycles().catch((err) => console.error(err));
-// _arrayOfCyclesWithSingleCycle().catch((err) => console.error(err));
-// _arrayOfCyclesWithSingleCycleWithDelay().catch((err) => console.error(err));
-// _halfFilledArrayOfCycles().catch((err) => console.error(err));
-// _fullyFilledArrayOfCycles().catch((err) => console.error(err));
-// _fullyFilledArrayOfCyclesWithDelay().catch((err) => console.error(err));
+
+// _todayPeriod(6).catch((err) => console.error(err));
+// _todayOvulation(6).catch((err) => console.error(err));
+// _tomorrowOvulation(6).catch((err) => console.error(err));
+// _menstrualPhase(6).catch((err) => console.error(err));
+// _follicularPhase(6).catch((err) => console.error(err));
+// _lutealPhase(6).catch((err) => console.error(err));
+// _delayOfCycle(6).catch((err) => console.error(err));
 
 function _emptyArrayOfCycles(): Promise<void> {
   return storageImpl.remove("cycles") as Promise<void>;
 }
 
-function _arrayOfCyclesWithSingleCycle(): Promise<void> {
-  return storage.set.cycles([
-    {
+function _todayPeriod(countOfCycles: number): Promise<void> {
+  const date: Date = new Date();
+  date.setHours(0, 0, 0, 0);
+
+  const cycles: Cycle[] = [];
+
+  for (let i = 0; i < countOfCycles; ++i) {
+    date.setDate(date.getDate() - 28);
+    cycles.push({
       cycleLength: 28,
       periodLength: 6,
-      startDate: "2023-06-30",
-    },
-  ] satisfies Cycle[]);
+      startDate: date.toString(),
+    });
+  }
+
+  return storage.set.cycles(cycles satisfies Cycle[]);
 }
 
-function _arrayOfCyclesWithSingleCycleWithDelay(): Promise<void> {
-  return storage.set.cycles([
-    {
+function _todayOvulation(countOfCycles: number): Promise<void> {
+  const date: Date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 15);
+
+  const cycles: Cycle[] = [];
+
+  for (let i = 0; i < countOfCycles; ++i) {
+    date.setDate(date.getDate() - 28);
+    cycles.push({
       cycleLength: 28,
       periodLength: 6,
-      startDate: "2023-06-03",
-    },
-  ] satisfies Cycle[]);
+      startDate: date.toString(),
+    });
+  }
+
+  return storage.set.cycles(cycles satisfies Cycle[]);
 }
 
-function _halfFilledArrayOfCycles(): Promise<void> {
-  return storage.set.cycles([
-    {
-      cycleLength: 0,
-      periodLength: 6,
-      startDate: "2023-06-30",
-    },
-    {
+function _tomorrowOvulation(countOfCycles: number): Promise<void> {
+  const date: Date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 16);
+
+  const cycles: Cycle[] = [];
+
+  for (let i = 0; i < countOfCycles; ++i) {
+    date.setDate(date.getDate() - 28);
+    cycles.push({
       cycleLength: 28,
       periodLength: 6,
-      startDate: "2023-06-03",
-    },
-    {
-      cycleLength: 26,
-      periodLength: 5,
-      startDate: "2023-05-07",
-    },
-    {
-      cycleLength: 25,
-      periodLength: 6,
-      startDate: "2023-04-13",
-    },
-  ] satisfies Cycle[]);
+      startDate: date.toString(),
+    });
+  }
+
+  return storage.set.cycles(cycles satisfies Cycle[]);
 }
 
-function _fullyFilledArrayOfCycles(): Promise<void> {
-  return storage.set.cycles([
-    {
-      cycleLength: 0,
-      periodLength: 6,
-      startDate: "2023-06-30",
-    },
-    {
+function _menstrualPhase(countOfCycles: number): Promise<void> {
+  const date: Date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 25);
+
+  const cycles: Cycle[] = [];
+
+  for (let i = 0; i < countOfCycles; ++i) {
+    date.setDate(date.getDate() - 28);
+    cycles.push({
       cycleLength: 28,
       periodLength: 6,
-      startDate: "2023-06-03",
-    },
-    {
-      cycleLength: 26,
-      periodLength: 5,
-      startDate: "2023-05-07",
-    },
-    {
-      cycleLength: 25,
-      periodLength: 6,
-      startDate: "2023-04-13",
-    },
-    {
-      cycleLength: 28,
-      periodLength: 5,
-      startDate: "2023-03-13",
-    },
-    {
-      cycleLength: 28,
-      periodLength: 5,
-      startDate: "2023-02-16",
-    },
-    {
-      cycleLength: 30,
-      periodLength: 6,
-      startDate: "2022-01-17",
-    },
-  ] satisfies Cycle[]);
+      startDate: date.toString(),
+    });
+  }
+
+  return storage.set.cycles(cycles satisfies Cycle[]);
 }
 
-function _fullyFilledArrayOfCyclesWithDelay(): Promise<void> {
-  return storage.set.cycles([
-    {
-      cycleLength: 0,
-      periodLength: 6,
-      startDate: "2023-06-03",
-    },
-    {
-      cycleLength: 26,
-      periodLength: 5,
-      startDate: "2023-05-07",
-    },
-    {
-      cycleLength: 25,
-      periodLength: 6,
-      startDate: "2023-04-13",
-    },
-    {
+function _follicularPhase(countOfCycles: number): Promise<void> {
+  const date: Date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 20);
+
+  const cycles: Cycle[] = [];
+
+  for (let i = 0; i < countOfCycles; ++i) {
+    date.setDate(date.getDate() - 28);
+    cycles.push({
       cycleLength: 28,
-      periodLength: 5,
-      startDate: "2023-03-13",
-    },
-    {
-      cycleLength: 28,
-      periodLength: 5,
-      startDate: "2023-02-16",
-    },
-    {
-      cycleLength: 30,
       periodLength: 6,
-      startDate: "2022-01-17",
-    },
-  ] as Cycle[]);
+      startDate: date.toString(),
+    });
+  }
+
+  return storage.set.cycles(cycles satisfies Cycle[]);
+}
+
+function _lutealPhase(countOfCycles: number): Promise<void> {
+  const date: Date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 10);
+
+  const cycles: Cycle[] = [];
+
+  for (let i = 0; i < countOfCycles; ++i) {
+    date.setDate(date.getDate() - 28);
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 6,
+      startDate: date.toString(),
+    });
+  }
+
+  return storage.set.cycles(cycles satisfies Cycle[]);
+}
+
+function _delayOfCycle(countOfCycles: number): Promise<void> {
+  const date: Date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() - 5);
+
+  const cycles: Cycle[] = [];
+
+  for (let i = 0; i < countOfCycles; ++i) {
+    date.setDate(date.getDate() - 28);
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 6,
+      startDate: date.toString(),
+    });
+  }
+
+  return storage.set.cycles(cycles satisfies Cycle[]);
 }
