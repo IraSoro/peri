@@ -6,11 +6,7 @@ import {
   IonProgressBar,
   IonItem,
   IonList,
-  IonButton,
-  IonIcon,
-  useIonAlert,
 } from "@ionic/react";
-import { cloudDownloadOutline, cloudUploadOutline } from "ionicons/icons";
 import "./TabDetails.css";
 
 import {
@@ -22,8 +18,6 @@ import {
 } from "../state/CycleInformationHooks";
 import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
-import { exportConfig, importConfig } from "../data/Config";
-import { storage } from "../data/Storage";
 
 function useTitleLastCycle() {
   const dayOfCycle = useDayOfCycle();

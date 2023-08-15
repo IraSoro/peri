@@ -7,17 +7,11 @@ import {
   useIonAlert,
   IonCol,
   IonTitle,
-  IonHeader,
-  IonToolbar,
-  IonIcon,
   IonDatetime,
 } from "@ionic/react";
-import { cloudDownloadOutline } from "ionicons/icons";
 import "./WelcomeModal.css";
 
 import type { Cycle } from "../data/ClassCycle";
-import { importConfig } from "../data/Config";
-import { storage } from "../data/Storage";
 import { useTranslation } from "react-i18next";
 
 import { CyclesContext } from "../state/Context";
