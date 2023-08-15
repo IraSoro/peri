@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 import intervalPlural from "i18next-intervalplural-postprocessor";
 
 import ru from "./translations/ru";
+import { storage } from "./data/Storage";
 
 const resources = {
   ru: {
@@ -20,6 +21,9 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+  })
+  .then(() => {
+    storage.set.language("en").catch((err) => console.error(err));
   })
   .catch((err) => console.error(err));
 
