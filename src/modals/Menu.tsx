@@ -81,7 +81,7 @@ const Importer = () => {
     await storage.set.cycles(config.cycles);
     updateCycles(config.cycles);
     await confirmAlert({
-      header: "Configuration has been imported",
+      header: t("Configuration has been imported"),
       cssClass: "header-color",
       buttons: [
         {
