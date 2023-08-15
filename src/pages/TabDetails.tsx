@@ -174,10 +174,6 @@ const ListProgress = () => {
 const TabDetails = () => {
   const { t } = useTranslation();
 
-  const [confirmAlert] = useIonAlert();
-
-  const updateCycles = useContext(CyclesContext).updateCycles;
-
   const averageLengthOfCycle = useAverageLengthOfCycle();
   const averageLengthOfPeriod = useAverageLengthOfPeriod();
 
@@ -218,66 +214,6 @@ const TabDetails = () => {
               <h1 style={h_style}>{lengthOfCycle}</h1>
             </IonLabel>
           </div>
-        </div>
-        <div>
-          <IonButton
-            color="dark-basic"
-            onClick={() => {
-              importConfig()
-                .then((config) => {
-                  storage.set
-                    .cycles(config.cycles)
-                    .then(() => {
-                      updateCycles(config.cycles);
-
-                      confirmAlert({
-                        header: "Configuration has been imported",
-                        cssClass: "header-color",
-                        buttons: [
-                          {
-                            text: "OK",
-                            role: "confirm",
-                          },
-                        ],
-                      }).catch((err) => console.error(err));
-                    })
-                    .catch((err) => {
-                      console.error(err);
-                    });
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-            }}
-          >
-            <IonIcon
-              slot="start"
-              icon={cloudDownloadOutline}
-            />
-            {t("import")}
-          </IonButton>
-          <IonButton
-            color="dark-basic"
-            disabled={averageLengthOfCycle === 0}
-            onClick={() => {
-              storage.get
-                .cycles()
-                .then((cycles) => {
-                  exportConfig({ cycles }).catch((err) => {
-                    console.error(err);
-                  });
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-            }}
-          >
-            <IonIcon
-              slot="start"
-              icon={cloudUploadOutline}
-            />
-            {t("export")}
-          </IonButton>
         </div>
         <div id="rectangle-bottom">
           <IonList class="transparent-center">
