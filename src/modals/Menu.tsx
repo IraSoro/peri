@@ -113,7 +113,8 @@ const Exporter = () => {
 
   const onExportClick = async () => {
     const cycles = await storage.get.cycles();
-    await exportConfig({ cycles });
+    const language = await storage.get.language();
+    await exportConfig({ cycles, language });
   };
 
   return (
