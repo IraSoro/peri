@@ -55,6 +55,7 @@ export const storage = {
 // NOTE: Predefined templates for test purpose
 //       for use just uncomment one of the following lines:
 
+// _emptyArrayOfCycles().catch((err) => console.error(err));
 // _todayPeriod(6).catch((err) => console.error(err));
 // _todayOvulation(6).catch((err) => console.error(err));
 // _tomorrowOvulation(6).catch((err) => console.error(err));
@@ -82,7 +83,7 @@ function _todayPeriod(countOfCycles: number): Promise<void> {
     });
   }
 
-  return storage.set.cycles(cycles satisfies Cycle[]);
+  return storage.set.cycles(cycles);
 }
 
 function _todayOvulation(countOfCycles: number): Promise<void> {
@@ -101,7 +102,7 @@ function _todayOvulation(countOfCycles: number): Promise<void> {
     });
   }
 
-  return storage.set.cycles(cycles satisfies Cycle[]);
+  return storage.set.cycles(cycles);
 }
 
 function _tomorrowOvulation(countOfCycles: number): Promise<void> {
@@ -120,7 +121,7 @@ function _tomorrowOvulation(countOfCycles: number): Promise<void> {
     });
   }
 
-  return storage.set.cycles(cycles satisfies Cycle[]);
+  return storage.set.cycles(cycles);
 }
 
 function _menstrualPhase(countOfCycles: number): Promise<void> {
@@ -139,7 +140,7 @@ function _menstrualPhase(countOfCycles: number): Promise<void> {
     });
   }
 
-  return storage.set.cycles(cycles satisfies Cycle[]);
+  return storage.set.cycles(cycles);
 }
 
 function _follicularPhase(countOfCycles: number): Promise<void> {
@@ -158,7 +159,7 @@ function _follicularPhase(countOfCycles: number): Promise<void> {
     });
   }
 
-  return storage.set.cycles(cycles satisfies Cycle[]);
+  return storage.set.cycles(cycles);
 }
 
 function _lutealPhase(countOfCycles: number): Promise<void> {
@@ -177,7 +178,7 @@ function _lutealPhase(countOfCycles: number): Promise<void> {
     });
   }
 
-  return storage.set.cycles(cycles satisfies Cycle[]);
+  return storage.set.cycles(cycles);
 }
 
 function _delayOfCycle(countOfCycles: number): Promise<void> {
@@ -196,5 +197,5 @@ function _delayOfCycle(countOfCycles: number): Promise<void> {
     });
   }
 
-  return storage.set.cycles(cycles satisfies Cycle[]);
+  return storage.set.cycles(cycles);
 }
