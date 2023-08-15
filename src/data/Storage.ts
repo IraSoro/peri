@@ -3,7 +3,7 @@ import type { Cycle } from "./ClassCycle";
 
 export interface Context {
   cycles: Cycle[];
-  // TODO: Add language
+  language: string;
 }
 
 const storageImpl = new Storage({
