@@ -2,10 +2,14 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import intervalPlural from "i18next-intervalplural-postprocessor";
 
+import en from "./translations/en";
 import ru from "./translations/ru";
 import { storage } from "./data/Storage";
 
 const resources = {
+  en: {
+    translation: en,
+  },
   ru: {
     translation: ru,
   },
