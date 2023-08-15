@@ -146,7 +146,7 @@ const CyclesEditor = () => {
         slot="start"
         icon={createOutline}
       />
-      <IonLabel>{t("Edit Cycles")}</IonLabel>
+      <IonLabel>{t("Edit cycles")}</IonLabel>
     </IonItem>
   );
 };
