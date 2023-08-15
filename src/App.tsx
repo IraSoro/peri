@@ -11,12 +11,15 @@ import {
   IonHeader,
   IonToolbar,
   IonContent,
+  IonMenuButton,
+  IonIcon,
+  IonButtons,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { menuOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import TabHome from "./pages/TabHome";
 import TabDetails from "./pages/TabDetails";
-import MultiLanguage from "./modals/MultiLanguageModal";
 import "./App.css";
 
 /* Core CSS required for Ionic components to work properly */
@@ -42,6 +45,7 @@ import { storage } from "./data/Storage";
 
 import type { Cycle } from "./data/ClassCycle";
 import { CyclesContext } from "./state/Context";
+import { Menu } from "./modals/Menu";
 
 setupIonicReact();
 
@@ -88,17 +92,19 @@ const App: React.FC = () => {
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
       <IonApp>
+        <Menu contentId="main-content" />
         <IonReactRouter>
           <IonHeader class="ion-no-border">
             <IonToolbar color="basic">
-              <MultiLanguage
-                isOpen={isLanguageModal}
-                setIsOpen={setIsLanguageModal}
-              />
+              <IonButtons slot="end">
+                <IonMenuButton>
+                  <IonIcon icon={menuOutline} />
+                </IonMenuButton>
+              </IonButtons>
             </IonToolbar>
           </IonHeader>
 
-          <IonContent>
+          <IonContent id="main-content">
             <IonTabs>
               <IonRouterOutlet>
                 <Route
