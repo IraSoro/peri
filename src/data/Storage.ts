@@ -51,6 +51,10 @@ export const storage = {
     cycles: () => getCycles(true),
     language: () => getLanguage(true),
   },
+  getUnsafe: {
+    cycles: () => getCycles(false),
+    language: () => getLanguage(false),
+  },
 };
 
 // NOTE: Predefined templates for test purpose
