@@ -51,6 +51,15 @@ describe("getCycles", () => {
   });
 });
 
+test("getCyclesUnsafe", async () => {
+  const storageGetSpy = jest
+    .spyOn(Storage.prototype, "get")
+    .mockResolvedValueOnce(undefined);
+
+  await expect(storage.getUnsafe.cycles()).resolves.toBe(undefined);
+  expect(storageGetSpy).toHaveBeenCalledWith("cycles");
+});
+
 test("setLanguage", async () => {
   const storageSetSpy = jest
     .spyOn(Storage.prototype, "set")
@@ -85,4 +94,13 @@ describe("getLanguage", () => {
     await expect(storage.get.language()).resolves.toBe(language);
     expect(storageGetSpy).toHaveBeenCalledWith("language");
   });
+});
+
+test("getLanguageUnsafe", async () => {
+  const storageGetSpy = jest
+    .spyOn(Storage.prototype, "get")
+    .mockResolvedValueOnce(undefined);
+
+  await expect(storage.getUnsafe.language()).resolves.toBe(undefined);
+  expect(storageGetSpy).toHaveBeenCalledWith("language");
 });

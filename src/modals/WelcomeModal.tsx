@@ -7,19 +7,12 @@ import {
   useIonAlert,
   IonCol,
   IonTitle,
-  IonHeader,
-  IonToolbar,
-  IonIcon,
   IonDatetime,
 } from "@ionic/react";
-import { cloudDownloadOutline } from "ionicons/icons";
 import "./WelcomeModal.css";
 
 import type { Cycle } from "../data/ClassCycle";
-import { importConfig } from "../data/Config";
-import { storage } from "../data/Storage";
 import { useTranslation } from "react-i18next";
-import MultiLanguage from "../modals/MultiLanguageModal";
 
 import { CyclesContext } from "../state/Context";
 
@@ -51,14 +44,6 @@ const Welcome = (props: PropsWelcomeModal) => {
       isOpen={props.isOpen}
       backdropDismiss={false}
     >
-      <IonHeader class="ion-no-border">
-        <IonToolbar color="basic">
-          <MultiLanguage
-            isOpen={props.isLanguageModal}
-            setIsOpen={props.setIsLanguageModal}
-          />
-        </IonToolbar>
-      </IonHeader>
       <IonContent
         fullscreen
         color="basic"
@@ -117,50 +102,6 @@ const Welcome = (props: PropsWelcomeModal) => {
             }}
           >
             {t("Continue")}
-          </IonButton>
-        </IonCol>
-        <IonCol>
-          <IonLabel color="dark-basic">{t("or")}</IonLabel>
-        </IonCol>
-        <IonCol>
-          <IonButton
-            class="welcome"
-            color="dark-basic"
-            onClick={() => {
-              importConfig()
-                .then((config) => {
-                  storage.set
-                    .cycles(config.cycles)
-                    .then(() => {
-                      updateCycles(config.cycles);
-                      confirmAlert({
-                        header: "Configuration has been imported",
-                        cssClass: "header-color",
-                        buttons: [
-                          {
-                            text: "OK",
-                            role: "confirm",
-                            handler: () => {
-                              props.setIsOpen(false);
-                            },
-                          },
-                        ],
-                      }).catch((err) => console.error(err));
-                    })
-                    .catch((err) => {
-                      console.error(err);
-                    });
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-            }}
-          >
-            <IonIcon
-              slot="start"
-              icon={cloudDownloadOutline}
-            />
-            {t("import data")}
           </IonButton>
         </IonCol>
       </IonContent>

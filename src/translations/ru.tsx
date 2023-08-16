@@ -1,5 +1,4 @@
 const ru = {
-  language: "ru",
   locale: "ru",
   // Home Tab
   Home: "Главная",
@@ -27,8 +26,6 @@ const ru = {
   started: "Начался",
   "Started date": "Дата начала",
   date: "дата",
-  import: "импорт",
-  export: "экспорт",
   // Mark Modal
   mark: "отметить",
   "select date range": "отметьте диапазон месячных",
@@ -41,7 +38,6 @@ const ru = {
   Continue: "Продолжить",
   "Forecast will not be generated.": "Прогноз не будет сгенерирован.",
   or: "или",
-  "import data": "импортировать данные",
   // Info Modal
   "learn more about the current state": "узнать больше о текущем состоянии",
   "Frequent symptoms": "Частые симптомы",
@@ -88,6 +84,13 @@ const ru = {
   "diarrhea or constipation": "диарея или запоры",
   "irritability and depressed mood":
     "раздражительность и подавленное настроение",
+  Preferences: "Настройки",
+  Language: "Язык",
+  Edit: "Редактирование",
+  "Import config": "Импортировать данные",
+  "Export config": "Экспортировать данные",
+  "Edit cycles": "Редактировать циклы",
+  "Configuration has been imported": "Данные были успешно импортированы",
 };
 
 export default ru;

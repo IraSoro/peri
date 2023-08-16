@@ -3,6 +3,7 @@ import type { Cycle } from "./ClassCycle";
 
 export interface Context {
   cycles: Cycle[];
+  language: string;
 }
 
 const storageImpl = new Storage({
@@ -49,6 +50,10 @@ export const storage = {
   get: {
     cycles: () => getCycles(true),
     language: () => getLanguage(true),
+  },
+  getUnsafe: {
+    cycles: () => getCycles(false),
+    language: () => getLanguage(false),
   },
 };
 

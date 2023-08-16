@@ -97,7 +97,7 @@ const MarkModal = (props: PropsMarkModal) => {
           ref={datetimeRef}
           color="dark-basic"
           presentation="date"
-          locale={t("local")}
+          locale={t("locale")}
           size="cover"
           multiple
           firstDayOfWeek={1}

@@ -101,6 +101,7 @@ describe("exportConfig", () => {
           startDate: "2023-05-31",
         },
       ],
+      language: "en",
     } satisfies Context);
 
     expect(mockedCapacitorFilesystem.Filesystem.writeFile).toHaveBeenCalled();
@@ -135,6 +136,7 @@ describe("exportConfig", () => {
           startDate: "2023-05-31",
         },
       ],
+      language: "en",
     } satisfies Context);
 
     expect(URL.createObjectURL).toHaveBeenCalled();
