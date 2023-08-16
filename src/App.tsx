@@ -98,7 +98,10 @@ const App: React.FC = () => {
             <IonToolbar color="basic">
               <IonButtons slot="end">
                 <IonMenuButton>
-                  <IonIcon icon={menuOutline} />
+                  <IonIcon
+                    color="light"
+                    icon={menuOutline}
+                  />
                 </IonMenuButton>
               </IonButtons>
             </IonToolbar>
