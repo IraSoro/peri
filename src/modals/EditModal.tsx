@@ -1,5 +1,11 @@
 import { useContext, useRef } from "react";
-import { IonButton, IonModal, IonDatetime, IonButtons } from "@ionic/react";
+import {
+  IonButton,
+  IonModal,
+  IonDatetime,
+  IonButtons,
+  IonContent,
+} from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import "./EditModal.css";
@@ -34,7 +40,7 @@ const EditModal = (props: PropsEditModal) => {
     return date.getTime() < lastCycleFinish.getTime();
   };
 
-  function periodDays() {
+  function getPeriodDays() {
     const value: string[] = [];
 
     for (const cycle of cycles) {
@@ -47,48 +53,63 @@ const EditModal = (props: PropsEditModal) => {
     }
     return value;
   }
+  let periodDays = getPeriodDays();
 
   return (
     <IonModal
-      class="edit-modal"
       isOpen={props.isOpen}
       backdropDismiss={false}
     >
-      <IonDatetime
-        ref={datetimeRef}
+      <IonContent
+        className="ion-padding"
         color="basic"
-        presentation="date"
-        locale={t("locale")}
-        size="cover"
-        multiple
-        firstDayOfWeek={1}
-        showDefaultButtons
-        isDateEnabled={isActiveDates}
-        value={periodDays()}
       >
-        <IonButtons slot="buttons">
-          <IonButton
-            color="basic"
-            onClick={() => {
-              datetimeRef.current?.cancel().catch((err) => console.error(err));
-              props.setIsOpen(false);
-              console.log("Cancel");
-            }}
-          >
-            {t("cancel")}
-          </IonButton>
-          <IonButton
-            color="basic"
-            onClick={() => {
-              datetimeRef.current?.confirm().catch((err) => console.error(err));
-              props.setIsOpen(false);
-              console.log("Save editing");
-            }}
-          >
-            {t("save")}
-          </IonButton>
-        </IonButtons>
-      </IonDatetime>
+        <IonDatetime
+          class="edit-modal"
+          ref={datetimeRef}
+          color="white-basic"
+          presentation="date"
+          locale={t("locale")}
+          size="cover"
+          multiple
+          firstDayOfWeek={1}
+          showDefaultButtons
+          isDateEnabled={isActiveDates}
+          value={periodDays}
+          titleSelectedDatesFormatter={(selectedDates: string[]) => {
+            console.log("len = ", selectedDates.length);
+            periodDays = selectedDates;
+            return "Editing";
+          }}
+        >
+          <span slot="title"></span>
+          <IonButtons slot="buttons">
+            <IonButton
+              color="basic"
+              onClick={() => {
+                datetimeRef.current
+                  ?.cancel()
+                  .catch((err) => console.error(err));
+                props.setIsOpen(false);
+                console.log("Cancel");
+              }}
+            >
+              {t("cancel")}
+            </IonButton>
+            <IonButton
+              color="basic"
+              onClick={() => {
+                // datetimeRef.current?.confirm().catch((err) => console.error(err));
+                // props.setIsOpen(false);
+                // console.log("Save editing");
+                console.log("var = ", periodDays);
+              }}
+            >
+              {t("save")}
+            </IonButton>
+          </IonButtons>
+        </IonDatetime>
+      </IonContent>
     </IonModal>
   );
 };
