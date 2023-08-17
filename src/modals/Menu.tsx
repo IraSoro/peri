@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   IonIcon,
   IonItem,
@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
 import { exportConfig, importConfig } from "../data/Config";
 import { CyclesContext } from "../state/Context";
+import EditModal from "./EditModal";
 
 const LanguageSwitcher = () => {
   const { t, i18n } = useTranslation();
@@ -135,20 +136,27 @@ const Exporter = () => {
 
 const CyclesEditor = () => {
   const { t } = useTranslation();
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   return (
-    <IonItem
-      button
-      onClick={() => {
-        console.log("Click on CyclesEditor");
-      }}
-    >
-      <IonIcon
-        slot="start"
-        icon={createOutline}
+    <>
+      <EditModal
+        isOpen={isOpenEdit}
+        setIsOpen={setIsOpenEdit}
       />
-      <IonLabel>{t("Edit cycles")}</IonLabel>
-    </IonItem>
+      <IonItem
+        button
+        onClick={() => {
+          setIsOpenEdit(true);
+        }}
+      >
+        <IonIcon
+          slot="start"
+          icon={createOutline}
+        />
+        <IonLabel>{t("Edit cycles")}</IonLabel>
+      </IonItem>
+    </>
   );
 };
 
