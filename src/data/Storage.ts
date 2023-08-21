@@ -66,7 +66,7 @@ export const storage = {
 // _tomorrowOvulation(6).catch((err) => console.error(err));
 // _menstrualPhase(6).catch((err) => console.error(err));
 // _follicularPhase(6).catch((err) => console.error(err));
-// _lutealPhase(6).catch((err) => console.error(err));
+_lutealPhase(6).catch((err) => console.error(err));
 // _delayOfCycle(6).catch((err) => console.error(err));
 
 function _emptyArrayOfCycles(): Promise<void> {

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   IonIcon,
   IonItem,
@@ -134,20 +134,24 @@ const Exporter = () => {
   );
 };
 
-const CyclesEditor = () => {
+interface EditProps {
+  isEditModal: boolean;
+  setIsEditModal: (newIsOpen: boolean) => void;
+}
+
+const CyclesEditor = (props: EditProps) => {
   const { t } = useTranslation();
-  const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   return (
     <>
       <EditModal
-        isOpen={isOpenEdit}
-        setIsOpen={setIsOpenEdit}
+        isOpen={props.isEditModal}
+        setIsOpen={props.setIsEditModal}
       />
       <IonItem
         button
         onClick={() => {
-          setIsOpenEdit(true);
+          props.setIsEditModal(true);
         }}
       >
         <IonIcon
@@ -162,6 +166,8 @@ const CyclesEditor = () => {
 
 interface MenuProps {
   contentId: string;
+  isEditModal: boolean;
+  setIsEditModal: (newIsOpen: boolean) => void;
 }
 
 export const Menu = (props: MenuProps) => {
@@ -182,7 +188,10 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <Importer />
         <Exporter />
-        <CyclesEditor />
+        <CyclesEditor
+          isEditModal={props.isEditModal}
+          setIsEditModal={props.setIsEditModal}
+        />
       </IonList>
     </IonMenu>
   );
