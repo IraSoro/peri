@@ -4,7 +4,7 @@ ion-datetime.edit-modal {
 }
 
 .edit-buttons {
-  width: 90px;
-  --border-radius: 10px;
+  width: 110px;
   float: right;
+  --border-radius: 10px;
 }
