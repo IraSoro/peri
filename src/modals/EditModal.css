@@ -2,3 +2,9 @@ ion-datetime.edit-modal {
   border-radius: 16px;
   border: 2px var(--ion-color-light) solid;
 }
+
+.edit-buttons {
+  width: 90px;
+  --border-radius: 10px;
+  float: right;
+}

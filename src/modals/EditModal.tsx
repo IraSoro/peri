@@ -3,8 +3,8 @@ import {
   IonButton,
   IonModal,
   IonDatetime,
-  IonButtons,
   IonContent,
+  IonItem,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
@@ -12,6 +12,7 @@ import "./EditModal.css";
 
 import type { Cycle } from "../data/ClassCycle";
 import { CyclesContext } from "../state/Context";
+import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
 
 interface PropsEditModal {
   isOpen: boolean;
@@ -23,6 +24,7 @@ const EditModal = (props: PropsEditModal) => {
   const { t } = useTranslation();
 
   const { cycles, updateCycles } = useContext(CyclesContext);
+  const averLengthOfCycle = useAverageLengthOfCycle();
 
   const nowDate = new Date();
   nowDate.setHours(0, 0, 0, 0);
@@ -35,13 +37,13 @@ const EditModal = (props: PropsEditModal) => {
     date.setHours(0, 0, 0, 0);
 
     const lastCycleFinish: Date = new Date(cycles[0].startDate);
-    lastCycleFinish.setDate(lastCycleFinish.getDate() + cycles[0].cycleLength);
+    lastCycleFinish.setDate(lastCycleFinish.getDate() + averLengthOfCycle);
     lastCycleFinish.setHours(0, 0, 0, 0);
 
     return date.getTime() < lastCycleFinish.getTime();
   };
 
-  function getPeriodDays() {
+  function periodDays() {
     const value: string[] = [];
 
     for (const cycle of cycles) {
@@ -56,7 +58,6 @@ const EditModal = (props: PropsEditModal) => {
     }
     return value;
   }
-  let periodDays = getPeriodDays();
 
   return (
     <IonModal
@@ -67,6 +68,10 @@ const EditModal = (props: PropsEditModal) => {
         className="ion-padding"
         color="basic"
       >
+        <IonItem
+          color="basic"
+          lines="none"
+        ></IonItem>
         <IonDatetime
           class="edit-modal"
           ref={datetimeRef}
@@ -76,74 +81,69 @@ const EditModal = (props: PropsEditModal) => {
           size="cover"
           multiple
           firstDayOfWeek={1}
-          showDefaultButtons
+          value={periodDays()}
           isDateEnabled={isActiveDates}
-          value={periodDays}
-          titleSelectedDatesFormatter={(selectedDates: string[]) => {
-            console.log("len = ", selectedDates.length);
-            periodDays = selectedDates;
-            return "Editing";
+        ></IonDatetime>
+
+        <IonItem
+          color="basic"
+          lines="none"
+        ></IonItem>
+
+        <IonButton
+          class="edit-buttons"
+          color="dark-basic"
+          fill="solid"
+          onClick={() => {
+            if (datetimeRef.current?.value) {
+              const periodDays = [datetimeRef.current.value].flat().sort();
+              const millisecondsInDay = 24 * 60 * 60 * 1000;
+              periodDays.sort();
+              const newCycles: Cycle[] = [
+                {
+                  cycleLength: 28,
+                  periodLength: 1,
+                  startDate: periodDays[0],
+                },
+              ];
+              for (let i = 1; i < periodDays.length; i++) {
+                const date = new Date(periodDays[i]);
+                const prevDate = new Date(periodDays[i - 1]);
+                const diffInDays = Math.abs(
+                  (date.getTime() - prevDate.getTime()) / millisecondsInDay,
+                );
+
+                if (diffInDays < 2) {
+                  newCycles[0].periodLength++;
+                } else {
+                  newCycles[0].cycleLength =
+                    diffInDays + newCycles[0].periodLength - 1;
+                  newCycles.unshift({
+                    cycleLength: 0,
+                    periodLength: 1,
+                    startDate: periodDays[i],
+                  });
+                }
+              }
+              updateCycles(newCycles);
+            }
+            datetimeRef.current?.confirm().catch((err) => console.error(err));
+            props.setIsOpen(false);
           }}
         >
-          <span slot="title"></span>
-          <IonButtons slot="buttons">
-            <IonButton
-              color="basic"
-              onClick={() => {
-                datetimeRef.current
-                  ?.cancel()
-                  .catch((err) => console.error(err));
-                props.setIsOpen(false);
-                console.log("Cancel");
-              }}
-            >
-              {t("cancel")}
-            </IonButton>
-            <IonButton
-              color="basic"
-              onClick={() => {
-                if (periodDays.length > 0) {
-                  const millisecondsInDay = 24 * 60 * 60 * 1000;
-                  periodDays.sort();
-                  const newCycles: Cycle[] = [
-                    {
-                      cycleLength: 28,
-                      periodLength: 1,
-                      startDate: periodDays[0],
-                    },
-                  ];
-                  for (let i = 1; i < periodDays.length; i++) {
-                    const date = new Date(periodDays[i]);
-                    const prevDate = new Date(periodDays[i - 1]);
-                    const diffInDays = Math.abs(
-                      (date.getTime() - prevDate.getTime()) / millisecondsInDay,
-                    );
-
-                    if (diffInDays < 2) {
-                      newCycles[0].periodLength++;
-                    } else {
-                      newCycles[0].cycleLength =
-                        diffInDays + newCycles[0].periodLength - 1;
-                      newCycles.unshift({
-                        cycleLength: 0,
-                        periodLength: 1,
-                        startDate: periodDays[i],
-                      });
-                    }
-                  }
-                  updateCycles(newCycles);
-                }
-                datetimeRef.current
-                  ?.confirm()
-                  .catch((err) => console.error(err));
-                props.setIsOpen(false);
-                console.log("Save editing");
-              }}
-            >
-              {t("save")}
-            </IonButton>
-          </IonButtons>
-        </IonDatetime>
+          {t("save")}
+        </IonButton>
+        <IonButton
+          class="edit-buttons"
+          color="dark-basic"
+          fill="outline"
+          onClick={() => {
+            datetimeRef.current?.cancel().catch((err) => console.error(err));
+            props.setIsOpen(false);
+          }}
+        >
+          {t("cancel")}
+        </IonButton>
       </IonContent>
     </IonModal>
   );
