@@ -231,6 +231,10 @@ export function getAverageLengthOfPeriod(cycles: Cycle[]) {
 }
 
 export function getNewCyclesHistory(periodDays: string[]) {
+  if (periodDays.length === 0) {
+    return [];
+  }
+
   periodDays.sort();
   const newCycles: Cycle[] = [
     {
@@ -246,8 +250,10 @@ export function getNewCyclesHistory(periodDays: string[]) {
       (date.getTime() - prevDate.getTime()) / millisecondsInDay,
     );
 
-    if (diffInDays < 2) {
+    if (diffInDays <= 1) {
       newCycles[0].periodLength++;
+    } else if (diffInDays <= 2) {
+      newCycles[0].periodLength += 2;
     } else {
       newCycles[0].cycleLength = diffInDays + newCycles[0].periodLength - 1;
       newCycles.unshift({

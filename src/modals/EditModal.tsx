@@ -40,7 +40,10 @@ const EditModal = (props: PropsEditModal) => {
     lastCycleFinish.setDate(lastCycleFinish.getDate() + averLengthOfCycle);
     lastCycleFinish.setHours(0, 0, 0, 0);
 
-    return date.getTime() < lastCycleFinish.getTime();
+    return (
+      date.getTime() < lastCycleFinish.getTime() ||
+      date.getTime() <= nowDate.getTime()
+    );
   };
 
   function periodDays() {

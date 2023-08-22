@@ -8,6 +8,7 @@ import {
   getAverageLengthOfPeriod,
   getDaysBeforePeriod,
   getPhase,
+  getNewCyclesHistory,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -349,5 +350,69 @@ describe("getPhase", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPhase(28, 5, 21)).toEqual(phases.luteal);
+  });
+});
+
+describe("getNewCyclesHistory", () => {
+  test("periodDays array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    expect(getNewCyclesHistory([])).toEqual([]);
+  });
+
+  test("periodDays array has a clear ranges", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const periodDays = [
+      "2023-08-04",
+      "2023-08-05",
+      "2023-08-06",
+      "2023-08-07",
+      "2023-08-08",
+      "2023-08-09",
+      "2023-07-07",
+      "2023-07-08",
+      "2023-07-09",
+      "2023-07-10",
+      "2023-07-11",
+      "2023-07-12",
+      "2023-06-09",
+      "2023-06-10",
+      "2023-06-11",
+      "2023-06-12",
+      "2023-06-13",
+      "2023-06-14",
+    ];
+    expect(getNewCyclesHistory(periodDays)).toEqual([
+      { cycleLength: 0, periodLength: 6, startDate: "2023-08-04" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-07-07" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-06-09" },
+    ]);
+  });
+
+  test("periodDays array has not a clear ranges", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const periodDays = [
+      "2023-08-04",
+      "2023-08-06",
+      "2023-08-08",
+      "2023-08-09",
+      "2023-07-07",
+      "2023-07-09",
+      "2023-07-11",
+      "2023-07-12",
+      "2023-06-09",
+      "2023-06-10",
+      "2023-06-12",
+      "2023-06-14",
+    ];
+    expect(getNewCyclesHistory(periodDays)).toEqual([
+      { cycleLength: 0, periodLength: 6, startDate: "2023-08-04" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-07-07" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-06-09" },
+    ]);
   });
 });
