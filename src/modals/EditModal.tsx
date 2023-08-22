@@ -10,10 +10,9 @@ import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import "./EditModal.css";
 
-import type { Cycle } from "../data/ClassCycle";
 import { CyclesContext } from "../state/Context";
 import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
-import { millisecondsInDay } from "../state/CalculationLogics";
+import { getNewCyclesHistory } from "../state/CalculationLogics";
 
 interface PropsEditModal {
   isOpen: boolean;
@@ -97,33 +96,9 @@ const EditModal = (props: PropsEditModal) => {
           fill="solid"
           onClick={() => {
             if (datetimeRef.current?.value) {
-              const periodDays = [datetimeRef.current.value].flat().sort();
-              const newCycles: Cycle[] = [
-                {
-                  cycleLength: 28,
-                  periodLength: 1,
-                  startDate: periodDays[0],
-                },
-              ];
-              for (let i = 1; i < periodDays.length; i++) {
-                const date = new Date(periodDays[i]);
-                const prevDate = new Date(periodDays[i - 1]);
-                const diffInDays = Math.abs(
-                  (date.getTime() - prevDate.getTime()) / millisecondsInDay,
-                );
-
-                if (diffInDays < 2) {
-                  newCycles[0].periodLength++;
-                } else {
-                  newCycles[0].cycleLength =
-                    diffInDays + newCycles[0].periodLength - 1;
-                  newCycles.unshift({
-                    cycleLength: 0,
-                    periodLength: 1,
-                    startDate: periodDays[i],
-                  });
-                }
-              }
+              const newCycles = getNewCyclesHistory(
+                [datetimeRef.current.value].flat(),
+              );
               updateCycles(newCycles);
             }
             datetimeRef.current?.confirm().catch((err) => console.error(err));

@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
 
-export const millisecondsInDay = 24 * 60 * 60 * 1000;
+const millisecondsInDay = 24 * 60 * 60 * 1000;
 
 export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
   if (!cycleLength || !dayOfCycle) {
@@ -228,4 +228,35 @@ export function getAverageLengthOfPeriod(cycles: Cycle[]) {
   }, 0);
 
   return Math.round(sum / (cycles.length - 1));
+}
+
+export function getNewCyclesHistory(periodDays: string[]) {
+  periodDays.sort();
+  const newCycles: Cycle[] = [
+    {
+      cycleLength: 28,
+      periodLength: 1,
+      startDate: periodDays[0],
+    },
+  ];
+  for (let i = 1; i < periodDays.length; i++) {
+    const date = new Date(periodDays[i]);
+    const prevDate = new Date(periodDays[i - 1]);
+    const diffInDays = Math.abs(
+      (date.getTime() - prevDate.getTime()) / millisecondsInDay,
+    );
+
+    if (diffInDays < 2) {
+      newCycles[0].periodLength++;
+    } else {
+      newCycles[0].cycleLength = diffInDays + newCycles[0].periodLength - 1;
+      newCycles.unshift({
+        cycleLength: 0,
+        periodLength: 1,
+        startDate: periodDays[i],
+      });
+    }
+  }
+
+  return newCycles;
 }
