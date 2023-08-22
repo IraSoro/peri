@@ -13,6 +13,7 @@ import "./EditModal.css";
 import type { Cycle } from "../data/ClassCycle";
 import { CyclesContext } from "../state/Context";
 import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
+import { millisecondsInDay } from "../state/CalculationLogics";
 
 interface PropsEditModal {
   isOpen: boolean;
@@ -49,11 +50,11 @@ const EditModal = (props: PropsEditModal) => {
     for (const cycle of cycles) {
       const startOfCycle = new Date(cycle.startDate);
       startOfCycle.setHours(0, 0, 0, 0);
-      value.push(format(startOfCycle, "yyyy-MM-dd"));
 
-      for (let i = 1; i < cycle.periodLength; i++) {
-        startOfCycle.setDate(startOfCycle.getDate() + 1);
-        value.push(format(startOfCycle, "yyyy-MM-dd"));
+      for (let i = 0; i < cycle.periodLength; i++) {
+        const newDate = new Date(startOfCycle);
+        newDate.setDate(startOfCycle.getDate() + i);
+        value.push(format(newDate, "yyyy-MM-dd"));
       }
     }
     return value;
@@ -71,7 +72,7 @@ const EditModal = (props: PropsEditModal) => {
         <IonItem
           color="basic"
           lines="none"
-        ></IonItem>
+        />
         <IonDatetime
           class="edit-modal"
           ref={datetimeRef}
@@ -83,12 +84,12 @@ const EditModal = (props: PropsEditModal) => {
           firstDayOfWeek={1}
           value={periodDays()}
           isDateEnabled={isActiveDates}
-        ></IonDatetime>
+        />
 
         <IonItem
           color="basic"
           lines="none"
-        ></IonItem>
+        />
 
         <IonButton
           class="edit-buttons"
@@ -97,8 +98,6 @@ const EditModal = (props: PropsEditModal) => {
           onClick={() => {
             if (datetimeRef.current?.value) {
               const periodDays = [datetimeRef.current.value].flat().sort();
-              const millisecondsInDay = 24 * 60 * 60 * 1000;
-              periodDays.sort();
               const newCycles: Cycle[] = [
                 {
                   cycleLength: 28,

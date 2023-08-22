@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
 
-const millisecondsInDay = 24 * 60 * 60 * 1000;
+export const millisecondsInDay = 24 * 60 * 60 * 1000;
 
 export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
   if (!cycleLength || !dayOfCycle) {
