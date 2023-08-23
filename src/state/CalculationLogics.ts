@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
+import { format } from "date-fns";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -265,4 +266,45 @@ export function getNewCyclesHistory(periodDays: string[]) {
   }
 
   return newCycles;
+}
+
+export function getLastPeriodDays(cycles: Cycle[]) {
+  const periodDays: string[] = [];
+
+  for (const cycle of cycles) {
+    const startOfCycle = new Date(cycle.startDate);
+    startOfCycle.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < cycle.periodLength; i++) {
+      const newDate = new Date(startOfCycle);
+      newDate.setDate(startOfCycle.getDate() + i);
+      periodDays.push(format(newDate, "yyyy-MM-dd"));
+    }
+  }
+  return periodDays;
+}
+
+export function getActiveDates(
+  dateString: string,
+  cycles: Cycle[],
+  averLengthOfCycle: number,
+) {
+  if (cycles.length === 0) {
+    return true;
+  }
+
+  const date = new Date(dateString);
+  date.setHours(0, 0, 0, 0);
+
+  const lastCycleFinish: Date = new Date(cycles[0].startDate);
+  lastCycleFinish.setDate(lastCycleFinish.getDate() + averLengthOfCycle);
+  lastCycleFinish.setHours(0, 0, 0, 0);
+
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+
+  return (
+    date.getTime() < lastCycleFinish.getTime() ||
+    date.getTime() <= nowDate.getTime()
+  );
 }

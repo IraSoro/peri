@@ -7,12 +7,15 @@ import {
   IonItem,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
-import { format } from "date-fns";
 import "./EditModal.css";
 
 import { CyclesContext } from "../state/Context";
 import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
-import { getNewCyclesHistory } from "../state/CalculationLogics";
+import {
+  getNewCyclesHistory,
+  getActiveDates,
+  getLastPeriodDays,
+} from "../state/CalculationLogics";
 
 interface PropsEditModal {
   isOpen: boolean;
@@ -26,41 +29,9 @@ const EditModal = (props: PropsEditModal) => {
   const { cycles, updateCycles } = useContext(CyclesContext);
   const averLengthOfCycle = useAverageLengthOfCycle();
 
-  const nowDate = new Date();
-  nowDate.setHours(0, 0, 0, 0);
-
   const isActiveDates = (dateString: string) => {
-    if (cycles.length === 0) {
-      return true;
-    }
-    const date = new Date(dateString);
-    date.setHours(0, 0, 0, 0);
-
-    const lastCycleFinish: Date = new Date(cycles[0].startDate);
-    lastCycleFinish.setDate(lastCycleFinish.getDate() + averLengthOfCycle);
-    lastCycleFinish.setHours(0, 0, 0, 0);
-
-    return (
-      date.getTime() < lastCycleFinish.getTime() ||
-      date.getTime() <= nowDate.getTime()
-    );
+    return getActiveDates(dateString, cycles, averLengthOfCycle);
   };
-
-  function periodDays() {
-    const value: string[] = [];
-
-    for (const cycle of cycles) {
-      const startOfCycle = new Date(cycle.startDate);
-      startOfCycle.setHours(0, 0, 0, 0);
-
-      for (let i = 0; i < cycle.periodLength; i++) {
-        const newDate = new Date(startOfCycle);
-        newDate.setDate(startOfCycle.getDate() + i);
-        value.push(format(newDate, "yyyy-MM-dd"));
-      }
-    }
-    return value;
-  }
 
   return (
     <IonModal
@@ -84,7 +55,7 @@ const EditModal = (props: PropsEditModal) => {
           size="cover"
           multiple
           firstDayOfWeek={1}
-          value={periodDays()}
+          value={getLastPeriodDays(cycles)}
           isDateEnabled={isActiveDates}
         />
 
