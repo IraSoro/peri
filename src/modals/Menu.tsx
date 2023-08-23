@@ -1,10 +1,14 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import {
+  IonButton,
+  IonContent,
+  IonDatetime,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonMenu,
+  IonModal,
   IonSelect,
   IonSelectOption,
   useIonAlert,
@@ -19,7 +23,14 @@ import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
 import { exportConfig, importConfig } from "../data/Config";
 import { CyclesContext } from "../state/Context";
-import EditModal from "./EditModal";
+import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
+import {
+  getNewCyclesHistory,
+  getActiveDates,
+  getLastPeriodDays,
+} from "../state/CalculationLogics";
+
+import "./Menu.css";
 
 const LanguageSwitcher = () => {
   const { t, i18n } = useTranslation();
@@ -135,23 +146,87 @@ const Exporter = () => {
 };
 
 interface EditProps {
-  isEditModal: boolean;
-  setIsEditModal: (newIsOpen: boolean) => void;
+  isOpen: boolean;
+  setIsOpen: (newIsOpen: boolean) => void;
 }
 
 const CyclesEditor = (props: EditProps) => {
   const { t } = useTranslation();
+  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+
+  const { cycles, updateCycles } = useContext(CyclesContext);
+  const averLengthOfCycle = useAverageLengthOfCycle();
+
+  const isActiveDates = (dateString: string) => {
+    return getActiveDates(dateString, cycles, averLengthOfCycle);
+  };
 
   return (
     <>
-      <EditModal
-        isOpen={props.isEditModal}
-        setIsOpen={props.setIsEditModal}
-      />
+      <IonModal
+        isOpen={props.isOpen}
+        backdropDismiss={false}
+      >
+        <IonContent
+          className="ion-padding"
+          color="basic"
+        >
+          <IonItem
+            color="basic"
+            lines="none"
+          />
+          <IonDatetime
+            class="edit-modal"
+            ref={datetimeRef}
+            color="white-basic"
+            presentation="date"
+            locale={t("locale")}
+            size="cover"
+            multiple
+            firstDayOfWeek={1}
+            value={getLastPeriodDays(cycles)}
+            isDateEnabled={isActiveDates}
+          />
+
+          <IonItem
+            color="basic"
+            lines="none"
+          />
+
+          <IonButton
+            class="edit-buttons"
+            color="dark-basic"
+            fill="solid"
+            onClick={() => {
+              if (datetimeRef.current?.value) {
+                const newCycles = getNewCyclesHistory(
+                  [datetimeRef.current.value].flat(),
+                );
+                updateCycles(newCycles);
+              }
+              datetimeRef.current?.confirm().catch((err) => console.error(err));
+              props.setIsOpen(false);
+            }}
+          >
+            {t("save")}
+          </IonButton>
+          <IonButton
+            class="edit-buttons"
+            color="dark-basic"
+            fill="outline"
+            onClick={() => {
+              datetimeRef.current?.cancel().catch((err) => console.error(err));
+              props.setIsOpen(false);
+            }}
+          >
+            {t("cancel")}
+          </IonButton>
+        </IonContent>
+      </IonModal>
       <IonItem
         button
         onClick={() => {
-          props.setIsEditModal(true);
+          props.setIsOpen(true);
         }}
       >
         <IonIcon
@@ -189,8 +264,8 @@ export const Menu = (props: MenuProps) => {
         <Importer />
         <Exporter />
         <CyclesEditor
-          isEditModal={props.isEditModal}
-          setIsEditModal={props.setIsEditModal}
+          isOpen={props.isEditModal}
+          setIsOpen={props.setIsEditModal}
         />
       </IonList>
     </IonMenu>

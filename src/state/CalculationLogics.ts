@@ -296,15 +296,15 @@ export function getActiveDates(
   const date = new Date(dateString);
   date.setHours(0, 0, 0, 0);
 
-  const lastCycleFinish: Date = new Date(cycles[0].startDate);
-  lastCycleFinish.setDate(lastCycleFinish.getDate() + averLengthOfCycle);
-  lastCycleFinish.setHours(0, 0, 0, 0);
+  const futureCycleFinish: Date = new Date(cycles[0].startDate);
+  futureCycleFinish.setDate(futureCycleFinish.getDate() + averLengthOfCycle);
+  futureCycleFinish.setHours(0, 0, 0, 0);
 
   const nowDate = new Date();
   nowDate.setHours(0, 0, 0, 0);
 
   return (
-    date.getTime() < lastCycleFinish.getTime() ||
+    date.getTime() < futureCycleFinish.getTime() ||
     date.getTime() <= nowDate.getTime()
   );
 }
