@@ -51,13 +51,13 @@ Also keeps track of the current phase of the cycle. And displays information abo
   </tr>
     <tr>
     <td><img width="300" src="./demonstration/info.jpg" alt="Info"></td>
-    <td><img width="300" src="./demonstration/calendar.jpg" alt="Info"></td>
-    <td><img width="300" src="./demonstration/mark.jpg" alt="Calendar"></td>
+    <td><img width="300" src="./demonstration/menu.jpg" alt="Menu"></td>
+    <td><img width="300" src="./demonstration/edit.jpg" alt="Edit"></td>
   </tr>
   <tr>
     <td align="center">Phase info</td>
-    <td align="center">Calendar</td>
-    <td align="center">Mark</td>
+    <td align="center">Menu</td>
+    <td align="center">Edit cycles</td>
   </tr>
  </table>
 
