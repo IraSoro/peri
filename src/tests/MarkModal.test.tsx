@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
-import InfoModal from "../modals/InfoModal";
+import MarkModal from "../modals/MarkModal";
 
 test("renders without crashing", () => {
   const { baseElement } = render(
-    <InfoModal
+    <MarkModal
       isOpen
       setIsOpen={() => {}}
     />,

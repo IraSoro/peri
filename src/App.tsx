@@ -52,6 +52,7 @@ setupIonicReact();
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [isLanguageModal, setIsLanguageModal] = useState(false);
+  const [isEditModal, setIsEditModal] = useState(false);
 
   const { t, i18n } = useTranslation();
 
@@ -92,7 +93,11 @@ const App: React.FC = () => {
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
       <IonApp>
-        <Menu contentId="main-content" />
+        <Menu
+          isEditModal={isEditModal}
+          setIsEditModal={setIsEditModal}
+          contentId="main-content"
+        />
         <IonReactRouter>
           <IonHeader class="ion-no-border">
             <IonToolbar color="basic">
@@ -117,6 +122,8 @@ const App: React.FC = () => {
                   <TabHome
                     isLanguageModal={isLanguageModal}
                     setIsLanguageModal={setIsLanguageModal}
+                    isEditModal={isEditModal}
+                    setIsEditModal={setIsEditModal}
                   />
                 </Route>
 

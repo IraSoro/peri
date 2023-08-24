@@ -1,0 +1,10 @@
+ion-datetime.edit-modal {
+  border-radius: 16px;
+  border: 2px var(--ion-color-light) solid;
+}
+
+ion-button.edit-buttons {
+  width: 110px;
+  float: right;
+  --border-radius: 10px;
+}

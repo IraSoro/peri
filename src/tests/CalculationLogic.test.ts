@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
+import { format } from "date-fns";
 import {
   getOvulationStatus,
   getPregnancyChance,
@@ -8,6 +9,9 @@ import {
   getAverageLengthOfPeriod,
   getDaysBeforePeriod,
   getPhase,
+  getNewCyclesHistory,
+  getActiveDates,
+  getLastPeriodDays,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -349,5 +353,237 @@ describe("getPhase", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPhase(28, 5, 21)).toEqual(phases.luteal);
+  });
+});
+
+describe("getNewCyclesHistory", () => {
+  test("periodDays array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    expect(getNewCyclesHistory([])).toEqual([]);
+  });
+
+  test("periodDays array has a clear ranges", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const periodDays = [
+      "2023-08-04",
+      "2023-08-05",
+      "2023-08-06",
+      "2023-08-07",
+      "2023-08-08",
+      "2023-08-09",
+      "2023-07-07",
+      "2023-07-08",
+      "2023-07-09",
+      "2023-07-10",
+      "2023-07-11",
+      "2023-07-12",
+      "2023-06-09",
+      "2023-06-10",
+      "2023-06-11",
+      "2023-06-12",
+      "2023-06-13",
+      "2023-06-14",
+    ];
+    expect(getNewCyclesHistory(periodDays)).toEqual([
+      { cycleLength: 0, periodLength: 6, startDate: "2023-08-04" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-07-07" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-06-09" },
+    ]);
+  });
+
+  test("periodDays array has not a clear ranges", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const periodDays = [
+      "2023-08-04",
+      "2023-08-06",
+      "2023-08-08",
+      "2023-08-09",
+      "2023-07-07",
+      "2023-07-09",
+      "2023-07-11",
+      "2023-07-12",
+      "2023-06-09",
+      "2023-06-10",
+      "2023-06-12",
+      "2023-06-14",
+    ];
+    expect(getNewCyclesHistory(periodDays)).toEqual([
+      { cycleLength: 0, periodLength: 6, startDate: "2023-08-04" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-07-07" },
+      { cycleLength: 28, periodLength: 6, startDate: "2023-06-09" },
+    ]);
+  });
+});
+
+describe("getLastPeriodDays", () => {
+  test("cycles array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    expect(getLastPeriodDays([])).toEqual([]);
+  });
+
+  test("cycles array has a few items", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const cycles: Cycle[] = [
+      {
+        cycleLength: 0,
+        periodLength: 6,
+        startDate: "2023-08-05",
+      },
+      {
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: "2023-07-08",
+      },
+      {
+        cycleLength: 26,
+        periodLength: 4,
+        startDate: "2023-06-10",
+      },
+    ];
+
+    const periodDays = [
+      "2023-08-05",
+      "2023-08-06",
+      "2023-08-07",
+      "2023-08-08",
+      "2023-08-09",
+      "2023-08-10",
+      "2023-07-08",
+      "2023-07-09",
+      "2023-07-10",
+      "2023-07-11",
+      "2023-07-12",
+      "2023-07-13",
+      "2023-06-10",
+      "2023-06-11",
+      "2023-06-12",
+      "2023-06-13",
+    ];
+
+    expect(getLastPeriodDays(cycles)).toEqual(periodDays);
+  });
+});
+
+describe("getActiveDates", () => {
+  test("cycles array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    expect(getActiveDates("", [], 0)).toEqual(true);
+  });
+
+  test("cycles array has a few items and date is less than the finish of the current cycle", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 20);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 10);
+
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+      true,
+    );
+  });
+
+  test("cycles array has a few items and date is more than the finish of the current cycle", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 20);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 40);
+
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+      false,
+    );
+  });
+
+  test("delay a few days and check date is less then the current date", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - 5);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 10);
+
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+      true,
+    );
+  });
+
+  test("delay a few days and check date is more then the current date", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - 5);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 40);
+
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+      false,
+    );
   });
 });

@@ -92,6 +92,13 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-basic-shade: #a9a0d5;
   --ion-color-basic-tint: #c6bdf3;
 
+  --ion-color-white-basic: #c0b6f2;
+  --ion-color-white-basic-rgb: 192, 182, 242;
+  --ion-color-white-basic-contrast: #ffffff;
+  --ion-color-white-basic-contrast-rgb: 0, 0, 0;
+  --ion-color-white-basic-shade: #a9a0d5;
+  --ion-color-white-basic-tint: #c6bdf3;
+
   --ion-color-opposite: #fffdb7;
   --ion-color-opposite-rgb: 255, 253, 183;
   --ion-color-opposite-contrast: #000000;
@@ -114,6 +121,15 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-contrast-rgb: var(--ion-color-basic-contrast-rgb);
   --ion-color-shade: var(--ion-color-basic-shade);
   --ion-color-tint: var(--ion-color-basic-tint);
+}
+
+.ion-color-white-basic {
+  --ion-color-base: var(--ion-color-white-basic);
+  --ion-color-base-rgb: var(--ion-color-white-basic-rgb);
+  --ion-color-contrast: var(--ion-color-white-basic-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-white-basic-contrast-rgb);
+  --ion-color-shade: var(--ion-color-white-basic-shade);
+  --ion-color-tint: var(--ion-color-white-basic-tint);
 }
 
 .ion-color-opposite {

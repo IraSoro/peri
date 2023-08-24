@@ -114,6 +114,8 @@ const PregnancyChance = () => {
 interface HomeProps {
   isLanguageModal: boolean;
   setIsLanguageModal: (newIsOpen: boolean) => void;
+  isEditModal: boolean;
+  setIsEditModal: (newIsOpen: boolean) => void;
 }
 
 const TabHome = (props: HomeProps) => {
@@ -137,12 +139,14 @@ const TabHome = (props: HomeProps) => {
         isCalendarModal ||
         isMarkModal ||
         isInfoModal ||
-        props.isLanguageModal
+        props.isLanguageModal ||
+        props.isEditModal
       ) {
         setIsCalendarModal(false);
         setIsMarkModal(false);
         setIsInfoModal(false);
         props.setIsLanguageModal(false);
+        props.setIsEditModal(false);
         router.push("/home");
         return;
       }

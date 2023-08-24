@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
+import { format } from "date-fns";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -228,4 +229,82 @@ export function getAverageLengthOfPeriod(cycles: Cycle[]) {
   }, 0);
 
   return Math.round(sum / (cycles.length - 1));
+}
+
+export function getNewCyclesHistory(periodDays: string[]) {
+  if (periodDays.length === 0) {
+    return [];
+  }
+
+  periodDays.sort();
+  const newCycles: Cycle[] = [
+    {
+      cycleLength: 28,
+      periodLength: 1,
+      startDate: periodDays[0],
+    },
+  ];
+  for (let i = 1; i < periodDays.length; i++) {
+    const date = new Date(periodDays[i]);
+    const prevDate = new Date(periodDays[i - 1]);
+    const diffInDays = Math.abs(
+      (date.getTime() - prevDate.getTime()) / millisecondsInDay,
+    );
+
+    if (diffInDays <= 1) {
+      newCycles[0].periodLength++;
+    } else if (diffInDays <= 2) {
+      newCycles[0].periodLength += 2;
+    } else {
+      newCycles[0].cycleLength = diffInDays + newCycles[0].periodLength - 1;
+      newCycles.unshift({
+        cycleLength: 0,
+        periodLength: 1,
+        startDate: periodDays[i],
+      });
+    }
+  }
+
+  return newCycles;
+}
+
+export function getLastPeriodDays(cycles: Cycle[]) {
+  const periodDays: string[] = [];
+
+  for (const cycle of cycles) {
+    const startOfCycle = new Date(cycle.startDate);
+    startOfCycle.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < cycle.periodLength; i++) {
+      const newDate = new Date(startOfCycle);
+      newDate.setDate(startOfCycle.getDate() + i);
+      periodDays.push(format(newDate, "yyyy-MM-dd"));
+    }
+  }
+  return periodDays;
+}
+
+export function getActiveDates(
+  dateString: string,
+  cycles: Cycle[],
+  averLengthOfCycle: number,
+) {
+  if (cycles.length === 0) {
+    return true;
+  }
+
+  const date = new Date(dateString);
+  date.setHours(0, 0, 0, 0);
+
+  const futureCycleFinish: Date = new Date(cycles[0].startDate);
+  futureCycleFinish.setDate(futureCycleFinish.getDate() + averLengthOfCycle);
+  futureCycleFinish.setHours(0, 0, 0, 0);
+
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+
+  return (
+    date.getTime() < futureCycleFinish.getTime() ||
+    date.getTime() <= nowDate.getTime()
+  );
 }
