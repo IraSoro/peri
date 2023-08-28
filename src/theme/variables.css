@@ -99,12 +99,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-white-basic-shade: #a9a0d5;
   --ion-color-white-basic-tint: #c6bdf3;
 
-  --ion-color-light-basic: #B6ACE7;
-  --ion-color-light-basic-rgb: 182,172,231;
-  --ion-color-light-basic-contrast: #000000;
+  --ion-color-light-basic: #CCC5FE;
+  --ion-color-light-basic-rgb: 204,197,254;
+  --ion-color-light-basic-contrast: #3B2D7C;
   --ion-color-light-basic-contrast-rgb: 0,0,0;
-  --ion-color-light-basic-shade: #a097cb;
-  --ion-color-light-basic-tint: #bdb4e9;
+  --ion-color-light-basic-shade: #b4ade0;
+  --ion-color-light-basic-tint: #d1cbfe;
 
   --ion-color-opposite: #fffdb7;
   --ion-color-opposite-rgb: 255, 253, 183;
