@@ -28,7 +28,7 @@ const ru = {
   date: "дата",
   // Mark Modal
   mark: "отметить",
-  "select date range": "отметьте диапазон месячных",
+  "Select date range": "Отметьте диапазон месячных",
   cancel: "отмена",
   save: "сохранить",
   // Welcome Modal

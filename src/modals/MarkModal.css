@@ -1,7 +1,11 @@
-.mark-modal {
-  --width: fit-content;
-  --min-width: 250px;
-  --height: fit-content;
-  --border-radius: 16px;
-  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+ion-datetime.mark-modal {
+  border-radius: 16px;
+  border: 2px var(--ion-color-light) solid;
 }
+
+ion-button.save-buttons {
+  width: 110px;
+  float: right;
+  --border-radius: 10px;
+}
+

@@ -1,5 +1,12 @@
-import { useContext, useRef, useState } from "react";
-import { IonButton, IonModal, IonDatetime, IonButtons } from "@ionic/react";
+import { useContext, useRef } from "react";
+import {
+  IonButton,
+  IonModal,
+  IonDatetime,
+  IonContent,
+  IonItem,
+  IonLabel,
+} from "@ionic/react";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import "./MarkModal.css";
@@ -15,11 +22,9 @@ interface PropsMarkModal {
 const MarkModal = (props: PropsMarkModal) => {
   const { t } = useTranslation();
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
-  const [disableSave, setDisableSave] = useState(true);
 
   const { cycles, updateCycles } = useContext(CyclesContext);
   const lengthOfPeriod = useAverageLengthOfPeriod();
-  let markPeriodDays: string[] = [];
 
   const nowDate = new Date();
   nowDate.setHours(0, 0, 0, 0);
@@ -28,7 +33,7 @@ const MarkModal = (props: PropsMarkModal) => {
   nextCycleFinish.setDate(nowDate.getDate() + lengthOfPeriod);
   nextCycleFinish.setHours(0, 0, 0, 0);
 
-  function isLastPeriodDay(date: Date) {
+  function isPastPeriodDay(date: Date) {
     date.setHours(0, 0, 0, 0);
 
     return cycles.some((cycle) => {
@@ -93,69 +98,58 @@ const MarkModal = (props: PropsMarkModal) => {
         isOpen={props.isOpen}
         backdropDismiss={false}
       >
-        <IonDatetime
-          ref={datetimeRef}
-          color="dark-basic"
-          presentation="date"
-          locale={t("locale")}
-          size="cover"
-          multiple
-          firstDayOfWeek={1}
-          showDefaultButtons
-          isDateEnabled={isActiveDates}
-          showDefaultTitle
-          value={nextPeriodDays()}
-          titleSelectedDatesFormatter={(selectedDates: string[]) => {
-            if (selectedDates.length === 0) {
-              setDisableSave(true);
-              return t("select date range");
-            }
-
-            setDisableSave(false);
-            selectedDates.sort();
-            const startPeriod = new Date(selectedDates[0]);
-            const finishPeriod = new Date(selectedDates.at(-1) ?? 0);
-            markPeriodDays = selectedDates;
-
-            return `${format(startPeriod, "d MMM")} - ${format(
-              finishPeriod,
-              "d MMM",
-            )}`;
-          }}
-          highlightedDates={(isoString) => {
-            if (cycles.length === 0) {
-              return undefined;
-            }
-
-            const date = new Date(isoString);
-
-            if (isLastPeriodDay(date)) {
-              return {
-                textColor: "var(--ion-color-light)",
-                backgroundColor: "var(--ion-color-dark-basic)",
-              };
-            }
-
-            return undefined;
-          }}
+        <IonContent
+          className="ion-padding"
+          color="basic"
         >
-          <span slot="title">{t("select date range")}</span>
-          <IonButtons slot="buttons">
-            <IonButton
-              color="basic"
-              onClick={() => {
-                datetimeRef.current
-                  ?.cancel()
-                  .catch((err) => console.error(err));
-                props.setIsOpen(false);
-              }}
+          <div style={{ marginTop: "30px", marginBottom: "40px" }}>
+            <IonLabel
+              color="dark-basic"
+              style={{ fontSize: "20px" }}
             >
-              {t("cancel")}
-            </IonButton>
-            <IonButton
-              color="basic"
-              disabled={disableSave}
-              onClick={() => {
+              {t("Select date range")}
+            </IonLabel>
+          </div>
+          <IonDatetime
+            class="mark-modal"
+            ref={datetimeRef}
+            color="light-basic"
+            presentation="date"
+            locale={t("locale")}
+            size="cover"
+            multiple
+            firstDayOfWeek={1}
+            isDateEnabled={isActiveDates}
+            value={nextPeriodDays()}
+            highlightedDates={(isoString) => {
+              if (cycles.length === 0) {
+                return undefined;
+              }
+
+              const date = new Date(isoString);
+              if (isPastPeriodDay(date)) {
+                return {
+                  textColor: "var(--ion-color-light)",
+                  backgroundColor: "var(--ion-color-basic)",
+                };
+              }
+
+              return undefined;
+            }}
+          />
+          <IonItem
+            color="basic"
+            lines="none"
+          />
+          <IonButton
+            class="edit-buttons"
+            color="dark-basic"
+            fill="solid"
+            onClick={() => {
+              if (datetimeRef.current?.value) {
+                const markPeriodDays = [datetimeRef.current.value]
+                  .flat()
+                  .sort();
                 if (cycles.length > 0) {
                   const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -165,9 +159,8 @@ const MarkModal = (props: PropsMarkModal) => {
                   const diff = new Date(
                     finishDate.getTime() - startDate.getTime(),
                   );
-                  cycles[0].cycleLength = Math.ceil(
-                    diff.getTime() / millisecondsInDay,
-                  );
+                  cycles[0].cycleLength =
+                    Math.ceil(diff.getTime() / millisecondsInDay) - 1;
 
                   cycles.unshift({
                     cycleLength: 0,
@@ -181,22 +174,33 @@ const MarkModal = (props: PropsMarkModal) => {
                     startDate: markPeriodDays[0],
                   });
                 }
+              }
 
-                Promise.all([updateCycles([...cycles])])
-                  .then(() => {
-                    console.log("All new values are set, setIsOpen(false)");
-                    datetimeRef.current
-                      ?.confirm()
-                      .catch((err) => console.error(err));
-                    props.setIsOpen(false);
-                  })
-                  .catch((err) => console.error(err));
-              }}
-            >
-              {t("save")}
-            </IonButton>
-          </IonButtons>
-        </IonDatetime>
+              Promise.all([updateCycles([...cycles])])
+                .then(() => {
+                  console.log("All new values are set, setIsOpen(false)");
+                  datetimeRef.current
+                    ?.confirm()
+                    .catch((err) => console.error(err));
+                  props.setIsOpen(false);
+                })
+                .catch((err) => console.error(err));
+            }}
+          >
+            {t("save")}
+          </IonButton>
+          <IonButton
+            class="edit-buttons"
+            color="dark-basic"
+            fill="outline"
+            onClick={() => {
+              datetimeRef.current?.cancel().catch((err) => console.error(err));
+              props.setIsOpen(false);
+            }}
+          >
+            {t("cancel")}
+          </IonButton>
+        </IonContent>
       </IonModal>
     </>
   );
