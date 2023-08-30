@@ -11,9 +11,8 @@ import { useTranslation } from "react-i18next";
 import "./MarkModal.css";
 
 import { CyclesContext } from "../state/Context";
-import { useAverageLengthOfPeriod } from "../state/CycleInformationHooks";
 import {
-  getMarkActiveDates,
+  getMarkModalActiveDates,
   getPastFuturePeriodDays,
   getNewCyclesHistory,
 } from "../state/CalculationLogics";
@@ -28,10 +27,9 @@ const MarkModal = (props: PropsMarkModal) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
 
   const { cycles, updateCycles } = useContext(CyclesContext);
-  const lengthOfPeriod = useAverageLengthOfPeriod();
 
   const isActiveDates = (date: string) => {
-    return getMarkActiveDates(date, cycles);
+    return getMarkModalActiveDates(date, cycles);
   };
 
   return (
@@ -70,7 +68,7 @@ const MarkModal = (props: PropsMarkModal) => {
             multiple
             firstDayOfWeek={1}
             isDateEnabled={isActiveDates}
-            value={getPastFuturePeriodDays(cycles, lengthOfPeriod)}
+            value={getPastFuturePeriodDays(cycles)}
           />
           <IonItem
             color="basic"
