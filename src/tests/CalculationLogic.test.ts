@@ -12,6 +12,8 @@ import {
   getNewCyclesHistory,
   getActiveDates,
   getLastPeriodDays,
+  getMarkModalActiveDates,
+  getPastFuturePeriodDays,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -585,5 +587,155 @@ describe("getActiveDates", () => {
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
       false,
     );
+  });
+});
+
+describe("getMarkModalActiveDates", () => {
+  test("cycles array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    expect(getMarkModalActiveDates("", [])).toEqual(true);
+  });
+
+  test("cycles array has a few items and date is less than the finish of the last cycle", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 20);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 5);
+
+    expect(
+      getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
+    ).toEqual(false);
+  });
+
+  test("cycles array has a few items and date is more than the finish of the last cycle", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 20);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 40);
+
+    expect(
+      getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
+    ).toEqual(true);
+  });
+});
+
+describe("getPastFuturePeriodDays", () => {
+  test("cycles array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const periodDates: string[] = [];
+    const nowDate = new Date();
+    nowDate.setHours(0, 0, 0, 0);
+
+    for (let day = 0; day < 5; day++) {
+      const periodDay = new Date(nowDate);
+      periodDay.setHours(0, 0, 0, 0);
+      periodDay.setDate(periodDay.getDate() + day);
+
+      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+    }
+    expect(getPastFuturePeriodDays([])).toEqual(periodDates);
+  });
+
+  test("cycles array has a few items", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 10);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 5,
+        startDate: date.toString(),
+      });
+    }
+
+    const periodDates = getLastPeriodDays(cycles);
+    const nowDate = new Date();
+    nowDate.setHours(0, 0, 0, 0);
+
+    for (let day = 0; day < 5; day++) {
+      const periodDay = new Date(nowDate);
+      periodDay.setHours(0, 0, 0, 0);
+      periodDay.setDate(periodDay.getDate() + day);
+
+      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+    }
+
+    expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+  });
+
+  test("delay a few days", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - 5);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 5,
+        startDate: date.toString(),
+      });
+    }
+
+    const periodDates = getLastPeriodDays(cycles);
+    const nowDate = new Date();
+    nowDate.setHours(0, 0, 0, 0);
+
+    for (let day = 0; day < 5; day++) {
+      const periodDay = new Date(nowDate);
+      periodDay.setHours(0, 0, 0, 0);
+      periodDay.setDate(periodDay.getDate() + day);
+
+      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+    }
+
+    expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
   });
 });

@@ -311,7 +311,7 @@ export function getActiveDates(
 
 // For Mark Modal
 
-export function getMarkActiveDates(dateString: string, cycles: Cycle[]) {
+export function getMarkModalActiveDates(dateString: string, cycles: Cycle[]) {
   if (cycles.length === 0) {
     return true;
   }
@@ -328,14 +328,12 @@ export function getMarkActiveDates(dateString: string, cycles: Cycle[]) {
   return date.getTime() > futureCycleFinish.getTime();
 }
 
-export function getPastFuturePeriodDays(
-  cycles: Cycle[],
-  lengthOfPeriod: number,
-) {
+export function getPastFuturePeriodDays(cycles: Cycle[]) {
   const nowDate = new Date();
   nowDate.setHours(0, 0, 0, 0);
 
-  const periodDates: string[] = getLastPeriodDays(cycles);
+  const periodDates = getLastPeriodDays(cycles);
+  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
   if (cycles.length !== 0) {
     const endOfCurrentCycle = new Date(cycles[0].startDate);
