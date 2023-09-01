@@ -10,10 +10,10 @@ import {
 } from "@ionic/react";
 import "./WelcomeModal.css";
 
-import type { Cycle } from "../data/ClassCycle";
 import { useTranslation } from "react-i18next";
 
 import { CyclesContext } from "../state/Context";
+import { getNewCyclesHistory } from "../state/CalculationLogics";
 
 interface PropsWelcomeModal {
   isOpen: boolean;
@@ -24,16 +24,8 @@ interface PropsWelcomeModal {
 }
 
 const Welcome = (props: PropsWelcomeModal) => {
-  const refDatetime = useRef<null | HTMLIonDatetimeElement>(null);
+  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
   const [confirmAlert] = useIonAlert();
-  const cycle: Cycle[] = [
-    {
-      cycleLength: 28,
-      periodLength: 0,
-      startDate: "",
-    },
-  ];
-
   const updateCycles = useContext(CyclesContext).updateCycles;
 
   const { t } = useTranslation();
@@ -76,8 +68,8 @@ const Welcome = (props: PropsWelcomeModal) => {
         <div style={{ marginBottom: "20px" }}>
           <IonDatetime
             style={{ borderRadius: "20px" }}
-            ref={refDatetime}
-            color="basic"
+            ref={datetimeRef}
+            color="light-basic"
             presentation="date"
             locale={t("locale")}
             size="cover"
@@ -90,12 +82,11 @@ const Welcome = (props: PropsWelcomeModal) => {
             class="welcome"
             color="dark-basic"
             onClick={() => {
-              if (refDatetime.current?.value) {
-                const days = [refDatetime.current.value].flat().sort();
-                cycle[0].periodLength = days.length;
-                cycle[0].startDate = days[0];
-
-                updateCycles(cycle);
+              if (datetimeRef.current?.value) {
+                const newCycles = getNewCyclesHistory(
+                  [datetimeRef.current.value].flat(),
+                );
+                updateCycles(newCycles);
                 props.setIsOpen(false);
               } else {
                 confirmAlert({
