@@ -308,3 +308,51 @@ export function getActiveDates(
     date.getTime() <= nowDate.getTime()
   );
 }
+
+// For Mark Modal
+
+export function getMarkModalActiveDates(dateString: string, cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return true;
+  }
+
+  const date = new Date(dateString);
+  date.setHours(0, 0, 0, 0);
+
+  const futureCycleFinish: Date = new Date(cycles[0].startDate);
+  futureCycleFinish.setDate(
+    futureCycleFinish.getDate() + cycles[0].periodLength,
+  );
+  futureCycleFinish.setHours(0, 0, 0, 0);
+
+  return date.getTime() > futureCycleFinish.getTime();
+}
+
+export function getPastFuturePeriodDays(cycles: Cycle[]) {
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+
+  const periodDates = getLastPeriodDays(cycles);
+  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
+
+  if (cycles.length !== 0) {
+    const endOfCurrentCycle = new Date(cycles[0].startDate);
+    endOfCurrentCycle.setDate(
+      endOfCurrentCycle.getDate() + cycles[0].periodLength,
+    );
+    endOfCurrentCycle.setHours(0, 0, 0, 0);
+    if (endOfCurrentCycle >= nowDate) {
+      return undefined;
+    }
+  }
+
+  for (let day = 0; day < (lengthOfPeriod || 5); day++) {
+    const periodDay = new Date(nowDate);
+    periodDay.setHours(0, 0, 0, 0);
+    periodDay.setDate(periodDay.getDate() + day);
+
+    periodDates.push(format(periodDay, "yyyy-MM-dd"));
+  }
+
+  return periodDates;
+}
