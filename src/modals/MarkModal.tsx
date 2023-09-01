@@ -25,12 +25,7 @@ interface PropsMarkModal {
 const MarkModal = (props: PropsMarkModal) => {
   const { t } = useTranslation();
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
-
   const { cycles, updateCycles } = useContext(CyclesContext);
-
-  const isActiveDates = (date: string) => {
-    return getMarkModalActiveDates(date, cycles);
-  };
 
   return (
     <>
@@ -67,7 +62,9 @@ const MarkModal = (props: PropsMarkModal) => {
             size="cover"
             multiple
             firstDayOfWeek={1}
-            isDateEnabled={isActiveDates}
+            isDateEnabled={(date: string) => {
+              return getMarkModalActiveDates(date, cycles);
+            }}
             value={getPastFuturePeriodDays(cycles)}
           />
           <IonItem
