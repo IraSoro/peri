@@ -57,7 +57,7 @@ const Welcome = (props: PropsWelcomeModal) => {
             {t("Welcome to Peri")}
           </IonLabel>
         </div>
-        <div style={{ marginTop: "25px", marginBottom: "25px" }}>
+        <div style={{ marginTop: "20px", marginBottom: "25px" }}>
           <IonLabel style={{ textAlign: "center" }}>
             <p style={{ fontSize: "15px", color: "var(--ion-color-dark)" }}>
               {t("Mark the days of your")}
@@ -74,18 +74,16 @@ const Welcome = (props: PropsWelcomeModal) => {
           </IonLabel>
         </div>
         <div style={{ marginBottom: "20px" }}>
-          <IonCol>
-            <IonDatetime
-              style={{ borderRadius: "20px" }}
-              ref={refDatetime}
-              color="basic"
-              presentation="date"
-              locale={t("locale")}
-              size="cover"
-              multiple
-              firstDayOfWeek={1}
-            />
-          </IonCol>
+          <IonDatetime
+            style={{ borderRadius: "20px" }}
+            ref={refDatetime}
+            color="basic"
+            presentation="date"
+            locale={t("locale")}
+            size="cover"
+            multiple
+            firstDayOfWeek={1}
+          />
         </div>
         <IonCol>
           <IonButton
