@@ -6,7 +6,6 @@ import {
   IonModal,
   useIonAlert,
   IonCol,
-  IonTitle,
   IonDatetime,
 } from "@ionic/react";
 import "./WelcomeModal.css";
@@ -45,28 +44,49 @@ const Welcome = (props: PropsWelcomeModal) => {
       backdropDismiss={false}
     >
       <IonContent
-        fullscreen
+        className="ion-padding"
         color="basic"
       >
-        <IonTitle color="light">{t("Welcome to Peri")}</IonTitle>
-        <IonCol>
+        <div
+          style={{ marginTop: "20px", textAlign: "center", fontWeight: "bold" }}
+        >
           <IonLabel
-            class="welcome"
             color="dark-basic"
+            style={{ fontSize: "30px", marginTop: "20px" }}
           >
-            {t("Please mark the days of your last period")}
+            {t("Welcome to Peri")}
           </IonLabel>
-        </IonCol>
-        <IonDatetime
-          class="welcome"
-          ref={refDatetime}
-          color="basic"
-          presentation="date"
-          locale={t("locale")}
-          size="cover"
-          multiple
-          firstDayOfWeek={1}
-        />
+        </div>
+        <div style={{ marginTop: "25px", marginBottom: "25px" }}>
+          <IonLabel style={{ textAlign: "center" }}>
+            <p style={{ fontSize: "15px", color: "var(--ion-color-dark)" }}>
+              {t("Mark the days of your")}
+            </p>
+            <p
+              style={{
+                fontSize: "15px",
+                color: "var(--ion-color-dark)",
+                fontWeight: "600",
+              }}
+            >
+              {t("last period")}
+            </p>
+          </IonLabel>
+        </div>
+        <div style={{ marginBottom: "20px" }}>
+          <IonCol>
+            <IonDatetime
+              style={{ borderRadius: "20px" }}
+              ref={refDatetime}
+              color="basic"
+              presentation="date"
+              locale={t("locale")}
+              size="cover"
+              multiple
+              firstDayOfWeek={1}
+            />
+          </IonCol>
+        </div>
         <IonCol>
           <IonButton
             class="welcome"

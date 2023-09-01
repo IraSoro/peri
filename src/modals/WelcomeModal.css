@@ -1,11 +1,4 @@
-ion-label.welcome {
-  text-align: center;
-}
-
-ion-datetime.welcome {
-  border-radius: 20px;
-}
-
 ion-button.welcome {
   --border-radius: 10px;
+  width: 150px;
 }

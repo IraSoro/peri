@@ -33,8 +33,8 @@ const ru = {
   save: "сохранить",
   // Welcome Modal
   "Welcome to Peri": "Добро пожаловать в Peri",
-  "Please mark the days of your last period":
-    "Пожалуйста, отметьте дни последней менструации",
+  "Mark the days of your": "Отметьте дни",
+  "last period": "последних месячных",
   Continue: "Продолжить",
   "Forecast will not be generated.": "Прогноз не будет сгенерирован.",
   or: "или",
