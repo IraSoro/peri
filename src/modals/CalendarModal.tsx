@@ -10,14 +10,13 @@ import "./CalendarModal.css";
 
 import { calendarClear } from "ionicons/icons";
 
-import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
 
 import {
-  useAverageLengthOfCycle,
-  useAverageLengthOfPeriod,
-} from "../state/CycleInformationHooks";
+  isPastPeriodsDays,
+  isForecastPeriodDays,
+} from "../state/CalculationLogics";
 
 interface PropsCalendarModal {
   isOpen: boolean;
@@ -26,35 +25,7 @@ interface PropsCalendarModal {
 
 const CalendarModal = (props: PropsCalendarModal) => {
   const { t } = useTranslation();
-  const nowDate = new Date();
-
   const cycles = useContext(CyclesContext).cycles;
-  const lengthOfCycle = useAverageLengthOfCycle();
-  const lengthOfPeriod = useAverageLengthOfPeriod();
-
-  function isPeriodDay(date: Date) {
-    for (let i = 0; i < cycles.length; ++i) {
-      const cycleStart: Date = new Date(cycles[i].startDate);
-      const cycleFinish: Date = new Date(cycles[i].startDate);
-      cycleFinish.setDate(cycleFinish.getDate() + cycles[i].periodLength);
-
-      if (date >= cycleStart && date < cycleFinish) {
-        return true;
-      }
-    }
-
-    const nextCycleStart: Date = new Date(cycles[0].startDate);
-    nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
-    const nextCycleFinish: Date = new Date(cycles[0].startDate);
-    nextCycleFinish.setDate(
-      nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod,
-    );
-    if (date > nowDate && date >= nextCycleStart && date < nextCycleFinish) {
-      return true;
-    }
-
-    return false;
-  }
 
   return (
     <>
@@ -63,7 +34,6 @@ const CalendarModal = (props: PropsCalendarModal) => {
         fill="outline"
         onClick={() => props.setIsOpen(true)}
       >
-        {format(nowDate, "eee, d MMM yyyy")}
         <IonIcon
           slot="end"
           icon={calendarClear}
@@ -80,12 +50,6 @@ const CalendarModal = (props: PropsCalendarModal) => {
           locale={t("locale")}
           size="cover"
           firstDayOfWeek={1}
-          isDateEnabled={(dateString: string) => {
-            const date = new Date(dateString);
-            return format(date, "yyyy-MM-dd") <= format(nowDate, "yyyy-MM-dd")
-              ? true
-              : false;
-          }}
           highlightedDates={(isoString) => {
             if (cycles.length === 0) {
               return undefined;
@@ -93,10 +57,15 @@ const CalendarModal = (props: PropsCalendarModal) => {
 
             const date = new Date(isoString);
 
-            if (isPeriodDay(date)) {
+            if (isPastPeriodsDays(date, cycles)) {
               return {
-                textColor: "var(--ion-color-light)",
-                backgroundColor: "var(--ion-color-basic)",
+                textColor: "var(--ion-color-dark-basic)",
+                backgroundColor: "var(--ion-color-light-basic)",
+              };
+            } else if (isForecastPeriodDays(date, cycles)) {
+              return {
+                textColor: "var(--ion-color-dark)",
+                backgroundColor: "var(--ion-color-transparent-basic)",
               };
             }
 

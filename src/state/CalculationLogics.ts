@@ -309,8 +309,6 @@ export function getActiveDates(
   );
 }
 
-// For Mark Modal
-
 export function getMarkModalActiveDates(dateString: string, cycles: Cycle[]) {
   if (cycles.length === 0) {
     return true;
@@ -355,4 +353,40 @@ export function getPastFuturePeriodDays(cycles: Cycle[]) {
   }
 
   return periodDates;
+}
+
+export function isPastPeriodsDays(date: Date, cycles: Cycle[]) {
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+
+  for (let i = 0; i < cycles.length; ++i) {
+    const cycleStart: Date = new Date(cycles[i].startDate);
+    const cycleFinish: Date = new Date(cycles[i].startDate);
+    cycleFinish.setDate(cycleFinish.getDate() + cycles[i].periodLength);
+
+    if (date >= cycleStart && date < cycleFinish) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+
+  const nextCycleStart: Date = new Date(cycles[0].startDate);
+  nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
+  const nextCycleFinish: Date = new Date(cycles[0].startDate);
+  nextCycleFinish.setDate(
+    nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod,
+  );
+  if (date > nowDate && date >= nextCycleStart && date < nextCycleFinish) {
+    return true;
+  }
+
+  return false;
 }
