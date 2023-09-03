@@ -22,6 +22,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
 import { exportConfig, importConfig } from "../data/Config";
+import { appVersion } from "../data/AppVersion";
 import { CyclesContext } from "../state/Context";
 import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
 import {
@@ -245,6 +246,16 @@ interface MenuProps {
   setIsEditModal: (newIsOpen: boolean) => void;
 }
 
+export const PeriAppVersion = () => {
+  return (
+    <IonItem>
+      <IonLabel color="medium">
+        The Period Tracker App Peri v{appVersion}
+      </IonLabel>
+    </IonItem>
+  );
+};
+
 export const Menu = (props: MenuProps) => {
   const { t } = useTranslation();
 
@@ -268,6 +279,7 @@ export const Menu = (props: MenuProps) => {
           setIsOpen={props.setIsEditModal}
         />
       </IonList>
+      <PeriAppVersion />
     </IonMenu>
   );
 };
