@@ -9,16 +9,29 @@ ion-button {
 
 .mark-button {
   --border-radius: 16px;
+  --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
   width: 150px;
 }
 
 #block {
-  max-width: 350px;
+  max-width: 550px;
   margin-left: auto;
   margin-right: auto;
-  /* border: 2px solid black; */
 }
 
 .transparent {
   --ion-item-background: transparent;
+}
+
+#wide-screen {
+  width: 100%;
+  max-width: 600px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  height: 100%;
+  /* max-height: 700px; */
+
+  box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
 }

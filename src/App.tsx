@@ -99,12 +99,15 @@ const App: React.FC = () => {
           contentId="main-content"
         />
         <IonReactRouter>
-          <IonHeader class="ion-no-border">
-            <IonToolbar color="basic">
+          <IonHeader
+            class="ion-no-border"
+            style={{ backgroundColor: "var(--ion-color-background)" }}
+          >
+            <IonToolbar>
               <IonButtons slot="end">
                 <IonMenuButton>
                   <IonIcon
-                    color="light"
+                    color="dark-basic"
                     icon={menuOutline}
                   />
                 </IonMenuButton>
@@ -112,7 +115,10 @@ const App: React.FC = () => {
             </IonToolbar>
           </IonHeader>
 
-          <IonContent id="main-content">
+          <IonContent
+            id="main-content"
+            color="background"
+          >
             <IonTabs>
               <IonRouterOutlet>
                 <Route
@@ -151,7 +157,7 @@ const App: React.FC = () => {
 
               <IonTabBar
                 slot="top"
-                color="basic"
+                color="transparent-basic"
               >
                 <IonTabButton
                   tab="home"

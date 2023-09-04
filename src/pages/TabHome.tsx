@@ -122,88 +122,93 @@ const TabHome = (props: HomeProps) => {
   const daysBeforePeriod = getDaysBeforePeriod(cycles);
 
   return (
-    <IonPage>
-      <IonContent
-        className="ion-padding"
-        color="light"
-      >
-        <Welcome
-          isOpen={isWelcomeModal}
-          setIsOpen={setIsWelcomeModal}
-          isLanguageModal={props.isLanguageModal}
-          setIsLanguageModal={props.setIsLanguageModal}
-        />
-        <div id="block">
-          <div style={{ marginTop: "30px", marginBottom: "30px" }}>
-            <IonLabel>
-              <p style={{ fontSize: "40px", color: "var(--ion-color-dark)" }}>
-                {daysBeforePeriod.title}
-              </p>
-            </IonLabel>
-          </div>
-          <div>
-            <IonLabel>
-              <p
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "40px",
-                  color: "var(--ion-color-dark-basic)",
-                  marginBottom: "30px",
-                }}
-              >
-                {daysBeforePeriod.days}
-              </p>
-            </IonLabel>
-          </div>
-          <InfoButton setIsInfoModal={setIsInfoModal} />
-          <InfoModal
-            isOpen={isInfoModal}
-            setIsOpen={setIsInfoModal}
+    <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
+      <div id="wide-screen">
+        <IonContent
+          className="ion-padding"
+          color="transparent-basic"
+          class="home"
+        >
+          <Welcome
+            isOpen={isWelcomeModal}
+            setIsOpen={setIsWelcomeModal}
+            isLanguageModal={props.isLanguageModal}
+            setIsLanguageModal={props.setIsLanguageModal}
           />
-          <IonCol style={{ marginBottom: "20px" }}>
-            <IonButton
-              class="mark-button"
-              color="dark-basic"
-              onClick={() => setIsMarkModal(true)}
-            >
-              {t("mark")}
-            </IonButton>
-            <MarkModal
-              isOpen={isMarkModal}
-              setIsOpen={setIsMarkModal}
+          <div id="block">
+            <div style={{ marginTop: "30px", marginBottom: "30px" }}>
+              <IonLabel>
+                <p style={{ fontSize: "40px", color: "var(--ion-color-dark)" }}>
+                  {daysBeforePeriod.title}
+                </p>
+              </IonLabel>
+            </div>
+            <div>
+              <IonLabel>
+                <p
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "40px",
+                    color: "var(--ion-color-dark-basic)",
+                    marginBottom: "30px",
+                  }}
+                >
+                  {daysBeforePeriod.days}
+                </p>
+              </IonLabel>
+            </div>
+            <InfoButton setIsInfoModal={setIsInfoModal} />
+            <InfoModal
+              isOpen={isInfoModal}
+              setIsOpen={setIsInfoModal}
             />
-          </IonCol>
-          <IonDatetime
-            class="calendar"
-            color="basic"
-            presentation="date"
-            locale={t("locale")}
-            size="fixed"
-            firstDayOfWeek={1}
-            highlightedDates={(isoString) => {
-              if (cycles.length === 0) {
-                return undefined;
-              }
+            <IonCol style={{ marginBottom: "20px" }}>
+              <IonButton
+                class="mark-button"
+                color="dark-basic"
+                onClick={() => setIsMarkModal(true)}
+              >
+                {t("mark")}
+              </IonButton>
+              <MarkModal
+                isOpen={isMarkModal}
+                setIsOpen={setIsMarkModal}
+              />
+            </IonCol>
+            <IonCol>
+              <IonDatetime
+                class="calendar"
+                color="basic"
+                presentation="date"
+                locale={t("locale")}
+                size="cover"
+                firstDayOfWeek={1}
+                highlightedDates={(isoString) => {
+                  if (cycles.length === 0) {
+                    return undefined;
+                  }
 
-              const date = new Date(isoString);
+                  const date = new Date(isoString);
 
-              if (isPastPeriodsDays(date, cycles)) {
-                return {
-                  textColor: "var(--ion-color-dark-basic)",
-                  backgroundColor: "var(--ion-color-light-basic)",
-                };
-              } else if (isForecastPeriodDays(date, cycles)) {
-                return {
-                  textColor: "var(--ion-color-dark)",
-                  backgroundColor: "var(--ion-color-transparent-basic)",
-                };
-              }
+                  if (isPastPeriodsDays(date, cycles)) {
+                    return {
+                      textColor: "var(--ion-color-dark-basic)",
+                      backgroundColor: "var(--ion-color-light-basic)",
+                    };
+                  } else if (isForecastPeriodDays(date, cycles)) {
+                    return {
+                      textColor: "var(--ion-color-dark)",
+                      backgroundColor: "#e3dfff",
+                    };
+                  }
 
-              return undefined;
-            }}
-          />
-        </div>
-      </IonContent>
+                  return undefined;
+                }}
+              />
+            </IonCol>
+          </div>
+        </IonContent>
+      </div>
     </IonPage>
   );
 };
