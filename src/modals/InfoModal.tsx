@@ -65,38 +65,28 @@ interface PropsInfoModal {
 }
 
 const InfoModal = (props: PropsInfoModal) => {
-  const { t } = useTranslation();
-
   return (
-    <>
-      <IonButton
-        class="info-button"
-        onClick={() => props.setIsOpen(true)}
+    <IonModal
+      id="info-modal"
+      backdropDismiss={false}
+      isOpen={props.isOpen}
+    >
+      <div id="small-rectangle"></div>
+      <IonContent
+        className="ion-padding"
+        color="basic"
       >
-        {t("learn more about the current state")}
-      </IonButton>
-      <IonModal
-        id="info-modal"
-        backdropDismiss={false}
-        isOpen={props.isOpen}
-      >
+        <Phase />
         <div id="small-rectangle"></div>
-        <IonContent
-          className="ion-padding"
-          color="basic"
+        <IonButton
+          class="ok-modal"
+          color="dark-basic"
+          onClick={() => props.setIsOpen(false)}
         >
-          <Phase />
-          <div id="small-rectangle"></div>
-          <IonButton
-            class="ok-modal"
-            color="dark-basic"
-            onClick={() => props.setIsOpen(false)}
-          >
-            Ok
-          </IonButton>
-        </IonContent>
-      </IonModal>
-    </>
+          Ok
+        </IonButton>
+      </IonContent>
+    </IonModal>
   );
 };
 

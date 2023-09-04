@@ -39,3 +39,10 @@ ion-title {
   font-weight: bold;
   font-size: 20px;
 }
+
+ion-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

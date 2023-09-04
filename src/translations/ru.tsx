@@ -15,9 +15,9 @@ const ru = {
   finished: "завершена",
   tomorrow: "завтра",
   in: "через",
-  "Chance of getting pregnant": "Вероятность забеременеть",
-  high: "высокая",
-  low: "низкая",
+  "chance of getting pregnant": "вероятность забеременеть",
+  High: "Высокая",
+  Low: "Низкая",
   // Details Tab
   Details: "Детали",
   "Period length": "Длина месячных",

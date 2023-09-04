@@ -1,115 +1,35 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   IonContent,
   IonPage,
-  IonCard,
-  IonCardContent,
-  IonItem,
-  IonImg,
   IonLabel,
-  IonRow,
-  IonCol,
   useIonRouter,
+  IonDatetime,
+  IonButton,
+  IonCol,
+  IonIcon,
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
+import { CyclesContext } from "../state/Context";
 
 import "./TabHome.css";
-import uterus from "../assets/uterus.svg";
-import {
-  useDayOfCycle,
-  useLastStartDate,
-  useAverageLengthOfCycle,
-} from "../state/CycleInformationHooks";
 
 import { storage } from "../data/Storage";
 
 import Welcome from "../modals/WelcomeModal";
 import MarkModal from "../modals/MarkModal";
 import InfoModal from "../modals/InfoModal";
-import CalendarModal from "../modals/CalendarModal";
 
 import {
-  getOvulationStatus,
   getPregnancyChance,
   getDaysBeforePeriod,
+  isPastPeriodsDays,
+  isForecastPeriodDays,
 } from "../state/CalculationLogics";
 
-const pStyle = {
-  fontSize: "10px" as const,
-  color: "var(--ion-color-light)" as const,
-};
-
-const hStyle = {
-  fontWeight: "bold" as const,
-  color: "var(--ion-color-light)" as const,
-};
-
-function DaysBeforePeriod() {
-  const startDate = useLastStartDate();
-  const cycleLength = useAverageLengthOfCycle();
-
-  const daysBeforePeriod = getDaysBeforePeriod(cycleLength, startDate);
-
-  return (
-    <>
-      <IonLabel style={{ textAlign: "center" }}>
-        <h2>{daysBeforePeriod.title}</h2>
-      </IonLabel>
-      <IonLabel
-        style={{ textAlign: "center" }}
-        color="dark-basic"
-      >
-        <h1 style={{ fontWeight: "bold" }}>{daysBeforePeriod.days}</h1>
-      </IonLabel>
-    </>
-  );
-}
-
-const DayOfCycle = () => {
-  const dayOfCycle = useDayOfCycle();
-  const { t } = useTranslation();
-
-  return (
-    <>
-      <p style={pStyle}>{t("Current cycle day")}</p>
-      <h1 style={hStyle}>{dayOfCycle}</h1>
-    </>
-  );
-};
-
-const OvulationStatus = () => {
-  const cycleLength = useAverageLengthOfCycle();
-  const dayOfCycle = Number(useDayOfCycle());
-
-  const { t } = useTranslation();
-
-  const ovulationStatus = getOvulationStatus(cycleLength, dayOfCycle);
-
-  return (
-    <>
-      <p style={pStyle}>{t("Ovulation")}</p>
-      <h1 style={hStyle}>{ovulationStatus}</h1>
-    </>
-  );
-};
-
-const PregnancyChance = () => {
-  const cycleLength = useAverageLengthOfCycle();
-  const dayOfCycle = Number(useDayOfCycle());
-
-  const { t } = useTranslation();
-
-  const pregnancyChance = getPregnancyChance(cycleLength, dayOfCycle);
-
-  return (
-    <>
-      <p style={pStyle}>{t("Chance of getting pregnant")}</p>
-      <h1 style={hStyle}>{pregnancyChance}</h1>
-    </>
-  );
-};
+import { chevronForwardOutline } from "ionicons/icons";
 
 interface HomeProps {
   isLanguageModal: boolean;
@@ -121,7 +41,6 @@ interface HomeProps {
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
-  const [isCalendarModal, setIsCalendarModal] = useState(false);
   const [isMarkModal, setIsMarkModal] = useState(false);
 
   const router = useIonRouter();
@@ -136,13 +55,11 @@ const TabHome = (props: HomeProps) => {
   useEffect(() => {
     const backButtonHandler = () => {
       if (
-        isCalendarModal ||
         isMarkModal ||
         isInfoModal ||
         props.isLanguageModal ||
         props.isEditModal
       ) {
-        setIsCalendarModal(false);
         setIsMarkModal(false);
         setIsInfoModal(false);
         props.setIsLanguageModal(false);
@@ -161,81 +78,116 @@ const TabHome = (props: HomeProps) => {
     return () => {
       document.removeEventListener("ionBackButton", backButtonHandler);
     };
-  }, [router, isInfoModal, isCalendarModal, isMarkModal, props]);
+  }, [router, isInfoModal, isMarkModal, props]);
+
+  const { t } = useTranslation();
+  const cycles = useContext(CyclesContext).cycles;
+  const daysBeforePeriod = getDaysBeforePeriod(cycles);
+  const pregnancyChance = getPregnancyChance(cycles);
 
   return (
     <IonPage>
       <IonContent
-        color="basic"
-        fullscreen
+        className="ion-padding"
+        color="light"
       >
-        <IonCard
-          class="large-card"
-          color="light"
-        >
-          <IonCardContent class="align-center">
-            <Welcome
-              isOpen={isWelcomeModal}
-              setIsOpen={setIsWelcomeModal}
-              isLanguageModal={props.isLanguageModal}
-              setIsLanguageModal={props.setIsLanguageModal}
+        <Welcome
+          isOpen={isWelcomeModal}
+          setIsOpen={setIsWelcomeModal}
+          isLanguageModal={props.isLanguageModal}
+          setIsLanguageModal={props.setIsLanguageModal}
+        />
+        <div id="block">
+          <div style={{ marginTop: "30px", marginBottom: "30px" }}>
+            <IonLabel>
+              <p style={{ fontSize: "40px", color: "var(--ion-color-dark)" }}>
+                {daysBeforePeriod.title}
+              </p>
+            </IonLabel>
+          </div>
+          <div>
+            <IonLabel>
+              <p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "40px",
+                  color: "var(--ion-color-dark-basic)",
+                  marginBottom: "30px",
+                }}
+              >
+                {daysBeforePeriod.days}
+              </p>
+            </IonLabel>
+          </div>
+          <IonLabel
+            class="info-button"
+            onClick={() => setIsInfoModal(true)}
+          >
+            <p
+              style={{
+                fontSize: "14px",
+                color: "var(--ion-color-medium)",
+                marginBottom: "20px",
+              }}
+            >
+              <span style={{ color: "var(--ion-color-dark)" }}>
+                {pregnancyChance}
+              </span>{" "}
+              - {t("chance of getting pregnant")}
+              <IonIcon
+                color="medium"
+                slot="end"
+                icon={chevronForwardOutline}
+              />
+            </p>
+          </IonLabel>
+          <InfoModal
+            isOpen={isInfoModal}
+            setIsOpen={setIsInfoModal}
+          />
+          <IonCol style={{ marginBottom: "20px" }}>
+            <IonButton
+              class="mark-button"
+              color="dark-basic"
+              onClick={() => setIsMarkModal(true)}
+            >
+              {t("mark")}
+            </IonButton>
+            <MarkModal
+              isOpen={isMarkModal}
+              setIsOpen={setIsMarkModal}
             />
-            <IonRow>
-              <IonCol>
-                <CalendarModal
-                  isOpen={isCalendarModal}
-                  setIsOpen={setIsCalendarModal}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonImg src={uterus} />
-              </IonCol>
-              <IonCol>
-                <div>
-                  <DaysBeforePeriod />
-                  <MarkModal
-                    isOpen={isMarkModal}
-                    setIsOpen={setIsMarkModal}
-                  />
-                </div>
-              </IonCol>
-            </IonRow>
-            <IonCard color="basic">
-              <IonCardContent>
-                <IonItem
-                  color="basic"
-                  lines="full"
-                >
-                  <IonLabel>
-                    <DayOfCycle />
-                  </IonLabel>
-                </IonItem>
-                <IonItem
-                  color="basic"
-                  lines="full"
-                >
-                  <IonLabel>
-                    <OvulationStatus />
-                  </IonLabel>
-                </IonItem>
-                <IonItem
-                  color="basic"
-                  lines="none"
-                >
-                  <IonLabel>
-                    <PregnancyChance />
-                  </IonLabel>
-                </IonItem>
-              </IonCardContent>
-            </IonCard>
-            <InfoModal
-              isOpen={isInfoModal}
-              setIsOpen={setIsInfoModal}
-            />
-          </IonCardContent>
-        </IonCard>
+          </IonCol>
+          <IonDatetime
+            class="calendar"
+            color="basic"
+            presentation="date"
+            locale={t("locale")}
+            size="fixed"
+            firstDayOfWeek={1}
+            highlightedDates={(isoString) => {
+              if (cycles.length === 0) {
+                return undefined;
+              }
+
+              const date = new Date(isoString);
+
+              if (isPastPeriodsDays(date, cycles)) {
+                return {
+                  textColor: "var(--ion-color-dark-basic)",
+                  backgroundColor: "var(--ion-color-light-basic)",
+                };
+              } else if (isForecastPeriodDays(date, cycles)) {
+                return {
+                  textColor: "var(--ion-color-dark)",
+                  backgroundColor: "var(--ion-color-transparent-basic)",
+                };
+              }
+
+              return undefined;
+            }}
+          />
+        </div>
       </IonContent>
     </IonPage>
   );

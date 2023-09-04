@@ -30,28 +30,34 @@ export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
   })}`;
 }
 
-export function getPregnancyChance(cycleLength: number, dayOfCycle: number) {
-  if (!cycleLength || !dayOfCycle) {
+export function getPregnancyChance(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return "";
   }
+
+  const dayOfCycle = Number(getDayOfCycle(cycles[0].startDate));
+  const cycleLength = getAverageLengthOfCycle(cycles);
 
   const lutealPhaseLength = 14;
   const ovulationDay = cycleLength - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
 
   if (diffDay >= -2 && diffDay <= 4) {
-    return i18n.t("high");
+    return i18n.t("High");
   }
-  return i18n.t("low");
+  return i18n.t("Low");
 }
 
-export function getDaysBeforePeriod(cycleLength: number, startDate: string) {
-  if (!startDate || !cycleLength) {
+export function getDaysBeforePeriod(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return {
       title: i18n.t("Period in"),
       days: i18n.t("no info"),
     };
   }
+
+  const startDate = cycles[0].startDate;
+  const cycleLength = getAverageLengthOfCycle(cycles);
 
   const dateOfFinish = new Date(startDate);
   dateOfFinish.setDate(dateOfFinish.getDate() + cycleLength);
