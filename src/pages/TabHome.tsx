@@ -31,6 +31,43 @@ import {
 
 import { chevronForwardOutline } from "ionicons/icons";
 
+interface InfoButtonProps {
+  setIsInfoModal: (newIsOpen: boolean) => void;
+}
+
+const InfoButton = (props: InfoButtonProps) => {
+  const { t } = useTranslation();
+  const cycles = useContext(CyclesContext).cycles;
+  const pregnancyChance = getPregnancyChance(cycles);
+  if (cycles.length === 0) {
+    return <></>;
+  }
+  return (
+    <IonLabel
+      class="info-button"
+      onClick={() => props.setIsInfoModal(true)}
+    >
+      <p
+        style={{
+          fontSize: "14px",
+          color: "var(--ion-color-medium)",
+          marginBottom: "20px",
+        }}
+      >
+        <span style={{ color: "var(--ion-color-dark)" }}>
+          {pregnancyChance}
+        </span>{" "}
+        - {t("chance of getting pregnant")}
+        <IonIcon
+          color="medium"
+          slot="end"
+          icon={chevronForwardOutline}
+        />
+      </p>
+    </IonLabel>
+  );
+};
+
 interface HomeProps {
   isLanguageModal: boolean;
   setIsLanguageModal: (newIsOpen: boolean) => void;
@@ -83,7 +120,6 @@ const TabHome = (props: HomeProps) => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
   const daysBeforePeriod = getDaysBeforePeriod(cycles);
-  const pregnancyChance = getPregnancyChance(cycles);
 
   return (
     <IonPage>
@@ -119,28 +155,7 @@ const TabHome = (props: HomeProps) => {
               </p>
             </IonLabel>
           </div>
-          <IonLabel
-            class="info-button"
-            onClick={() => setIsInfoModal(true)}
-          >
-            <p
-              style={{
-                fontSize: "14px",
-                color: "var(--ion-color-medium)",
-                marginBottom: "20px",
-              }}
-            >
-              <span style={{ color: "var(--ion-color-dark)" }}>
-                {pregnancyChance}
-              </span>{" "}
-              - {t("chance of getting pregnant")}
-              <IonIcon
-                color="medium"
-                slot="end"
-                icon={chevronForwardOutline}
-              />
-            </p>
-          </IonLabel>
+          <InfoButton setIsInfoModal={setIsInfoModal} />
           <InfoModal
             isOpen={isInfoModal}
             setIsOpen={setIsInfoModal}

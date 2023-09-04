@@ -52,7 +52,7 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return {
       title: i18n.t("Period in"),
-      days: i18n.t("no info"),
+      days: i18n.t("---"),
     };
   }
 
@@ -119,15 +119,9 @@ export function getPhase(
 
   const phases = {
     non: {
-      title: i18n.t("The menstrual cycle can be divided into 4 phases."),
-      description: i18n.t(
-        "When information about your cycle appears, it will be reported which phase you are in.",
-      ),
-      symptoms: [
-        i18n.t(
-          "This section will indicate the symptoms characteristic of this cycle.",
-        ),
-      ],
+      title: "",
+      description: "",
+      symptoms: [""],
     },
     menstrual: {
       title: i18n.t("Menstrual phase"),
