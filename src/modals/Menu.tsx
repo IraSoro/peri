@@ -246,16 +246,6 @@ interface MenuProps {
   setIsEditModal: (newIsOpen: boolean) => void;
 }
 
-export const PeriAppVersion = () => {
-  return (
-    <IonItem>
-      <IonLabel color="medium">
-        The Period Tracker App Peri v{appVersion}
-      </IonLabel>
-    </IonItem>
-  );
-};
-
 export const Menu = (props: MenuProps) => {
   const { t } = useTranslation();
 
@@ -279,7 +269,11 @@ export const Menu = (props: MenuProps) => {
           setIsOpen={props.setIsEditModal}
         />
       </IonList>
-      <PeriAppVersion />
+      <IonItem>
+        <IonLabel color="medium">
+          The Period Tracker App Peri v{appVersion}
+        </IonLabel>
+      </IonItem>
     </IonMenu>
   );
 };
