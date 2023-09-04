@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   IonButton,
   IonContent,
@@ -14,6 +14,7 @@ import {
   useIonAlert,
 } from "@ionic/react";
 import {
+  arrowDownOutline,
   cloudDownloadOutline,
   cloudUploadOutline,
   createOutline,
@@ -22,7 +23,11 @@ import {
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
 import { exportConfig, importConfig } from "../data/Config";
-import { appVersion } from "../data/AppVersion";
+import {
+  appVersion,
+  downloadLatestRelease,
+  isNewVersionAvailable,
+} from "../data/AppVersion";
 import { CyclesContext } from "../state/Context";
 import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
 import {
@@ -248,6 +253,20 @@ interface MenuProps {
 
 export const Menu = (props: MenuProps) => {
   const { t } = useTranslation();
+  const [needUpdate, setNeedUpdate] = useState(false);
+
+  useEffect(() => {
+    isNewVersionAvailable()
+      .then((newVersionAvailable) => {
+        if (!newVersionAvailable) {
+          return;
+        }
+        setNeedUpdate(true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <IonMenu
@@ -268,10 +287,27 @@ export const Menu = (props: MenuProps) => {
           isOpen={props.isEditModal}
           setIsOpen={props.setIsEditModal}
         />
+        {needUpdate && (
+          <IonItem
+            button
+            onClick={() => {
+              downloadLatestRelease().catch((err) => {
+                console.error(err);
+              });
+            }}
+          >
+            <IonIcon
+              slot="start"
+              color="warning"
+              icon={arrowDownOutline}
+            />
+            <IonLabel color="warning">{t("Download latest version")}</IonLabel>
+          </IonItem>
+        )}
       </IonList>
       <IonItem>
         <IonLabel color="medium">
-          The Period Tracker App Peri v{appVersion}
+          The Period Tracker App Peri {appVersion}
         </IonLabel>
       </IonItem>
     </IonMenu>
