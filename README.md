@@ -145,7 +145,6 @@ This Docker image already has `@ionic/cli`, `Android Studio` and all necessary J
 
 ```shell
 npm run build # this command builds production-optimized Peri's code
-npm install -g @ionic/cli@7.1.1 # this package will be installed globally to use capacitor
 ionic cap build android # generates Android project
 cd android
 ./gradlew assembleDebug
