@@ -7,7 +7,7 @@ export interface GithubReleaseAsset {
   browser_download_url: string;
   // NOTE: Other fields are not significant
   //       You can see all fields with the following command:
-  //       `https://api.github.com/repos/IraSoro/peri/releases/latest`
+  //       `curl https://api.github.com/repos/IraSoro/peri/releases/latest`
 }
 
 export interface GithubReleaseInfo {
@@ -16,7 +16,7 @@ export interface GithubReleaseInfo {
   assets: GithubReleaseAsset[];
   // NOTE: Other fields are not significant
   //       You can see all fields with the following command:
-  //       `https://api.github.com/repos/IraSoro/peri/releases/latest`
+  //       `curl https://api.github.com/repos/IraSoro/peri/releases/latest`
 }
 
 export interface LatestReleaseInfo {
