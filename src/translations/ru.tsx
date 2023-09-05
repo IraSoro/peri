@@ -91,6 +91,7 @@ const ru = {
   "Export config": "Экспортировать данные",
   "Edit cycles": "Редактировать циклы",
   "Configuration has been imported": "Данные были успешно импортированы",
+  "Download latest version": "Загрузить новую версию",
 };
 
 export default ru;

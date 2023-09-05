@@ -46,8 +46,27 @@ import { storage } from "./data/Storage";
 import type { Cycle } from "./data/ClassCycle";
 import { CyclesContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
+import { isNewVersionAvailable } from "./data/AppVersion";
 
 setupIonicReact();
+
+const Badge = () => {
+  // NOTE: Ionic's badge can't be empty and need some text in it,
+  //       that's why I decided to write my own badge component
+  return (
+    <div
+      style={{
+        position: "fixed",
+        right: 5,
+        top: 5,
+        backgroundColor: "orange",
+        minWidth: 10,
+        minHeight: 10,
+        borderRadius: 10,
+      }}
+    />
+  );
+};
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
@@ -55,6 +74,7 @@ const App: React.FC = () => {
   const [isEditModal, setIsEditModal] = useState(false);
 
   const { t, i18n } = useTranslation();
+  const [needUpdate, setNeedUpdate] = useState(false);
 
   const changeLanguage = useCallback(
     (lng: string) => {
@@ -71,6 +91,19 @@ const App: React.FC = () => {
     setCycles(newCycles);
     storage.set.cycles(newCycles).catch((err) => console.error(err));
   }
+
+  useEffect(() => {
+    isNewVersionAvailable()
+      .then((newVersionAvailable) => {
+        if (!newVersionAvailable) {
+          return;
+        }
+        setNeedUpdate(true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   useEffect(() => {
     storage.get
@@ -107,6 +140,7 @@ const App: React.FC = () => {
                     color="light"
                     icon={menuOutline}
                   />
+                  {needUpdate && <Badge />}
                 </IonMenuButton>
               </IonButtons>
             </IonToolbar>
