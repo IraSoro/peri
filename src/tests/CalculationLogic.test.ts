@@ -14,17 +14,33 @@ import {
   getLastPeriodDays,
   getMarkModalActiveDates,
   getPastFuturePeriodDays,
+  getLastStartDate,
+  getLengthOfLastPeriod,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
   test("cycles array is empty", () => {
-    expect(getOvulationStatus(0, 0)).toEqual("");
+    expect(getOvulationStatus([])).toEqual("");
   });
 
   test("a few days before ovulation", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getOvulationStatus(28, 5)).toEqual(
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 24);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    expect(getOvulationStatus(cycles)).toEqual(
       `${i18n.t("in")} 9 ${i18n.t("Days_interval", {
         postProcess: "interval",
         count: 9,
@@ -35,49 +51,134 @@ describe("getOvulationStatus", () => {
   test("ovulation is tomorrow", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    expect(getOvulationStatus(28, 13)).toEqual("tomorrow");
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 16);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    expect(getOvulationStatus(cycles)).toEqual("tomorrow");
   });
 
   test("ovulation is today", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    expect(getOvulationStatus(28, 14)).toEqual("today");
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 15);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    expect(getOvulationStatus(cycles)).toEqual("today");
   });
 
   test("if ovulation is possible", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    expect(getOvulationStatus(28, 15)).toEqual("possible");
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 14);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    expect(getOvulationStatus(cycles)).toEqual("possible");
   });
 
   test("ovulation is finished", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    expect(getOvulationStatus(28, 18)).toEqual("finished");
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 10);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    expect(getOvulationStatus(cycles)).toEqual("finished");
   });
 });
 
 describe("getPregnancyChance", () => {
   test("cycles array is empty", () => {
-    expect(getPregnancyChance(0, 0)).toEqual("");
+    expect(getPregnancyChance([])).toEqual("");
   });
 
   test("pregnancy chance is high", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPregnancyChance(28, 14)).toEqual("high");
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 15);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    expect(getPregnancyChance(cycles)).toEqual("High");
   });
 
   test("pregnancy chance is low", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPregnancyChance(28, 20)).toEqual("low");
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 20);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    expect(getPregnancyChance(cycles)).toEqual("Low");
   });
 });
 
 describe("getDayOfCycle", () => {
-  test("no info about start cycle date", () => {
-    expect(getDayOfCycle("")).toEqual("");
+  test("cycles array is empty", () => {
+    expect(getDayOfCycle([])).toEqual("");
   });
 
   test("middle of the cycle", () => {
@@ -86,8 +187,20 @@ describe("getDayOfCycle", () => {
 
     const date: Date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 13);
-    expect(getDayOfCycle(date.toString())).toEqual("14");
+    date.setDate(date.getDate() + 15);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDayOfCycle(cycles)).toEqual("14");
   });
 });
 
@@ -184,9 +297,9 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    expect(getDaysBeforePeriod(0, "")).toEqual({
+    expect(getDaysBeforePeriod([])).toEqual({
       title: i18n.t("Period in"),
-      days: i18n.t("no info"),
+      days: i18n.t("---"),
     });
   });
 
@@ -196,8 +309,20 @@ describe("getDaysBeforePeriod", () => {
 
     const date: Date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 18);
-    expect(getDaysBeforePeriod(28, date.toString())).toEqual({
+    date.setDate(date.getDate() + 10);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
       days: `10 ${i18n.t("Days_interval", {
         postProcess: "interval",
@@ -212,8 +337,20 @@ describe("getDaysBeforePeriod", () => {
 
     const date: Date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 27);
-    expect(getDaysBeforePeriod(28, date.toString())).toEqual({
+    date.setDate(date.getDate() + 1);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
       days: `1 ${i18n.t("Days_interval", {
         postProcess: "interval",
@@ -228,8 +365,20 @@ describe("getDaysBeforePeriod", () => {
 
     const date: Date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 28);
-    expect(getDaysBeforePeriod(28, date.toString())).toEqual({
+    date.setDate(date.getDate());
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period"),
       days: i18n.t("today"),
     });
@@ -241,8 +390,20 @@ describe("getDaysBeforePeriod", () => {
 
     const date: Date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 29);
-    expect(getDaysBeforePeriod(28, date.toString())).toEqual({
+    date.setDate(date.getDate() - 1);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
       days: `1 ${i18n.t("Days_interval", {
         postProcess: "interval",
@@ -257,8 +418,20 @@ describe("getDaysBeforePeriod", () => {
 
     const date: Date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 38);
-    expect(getDaysBeforePeriod(28, date.toString())).toEqual({
+    date.setDate(date.getDate() - 10);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
       days: `10 ${i18n.t("Days_interval", {
         postProcess: "interval",
@@ -270,12 +443,9 @@ describe("getDaysBeforePeriod", () => {
 
 const phases = {
   non: {
-    title: "The menstrual cycle can be divided into 4 phases.",
-    description:
-      "When information about your cycle appears, it will be reported which phase you are in.",
-    symptoms: [
-      "This section will indicate the symptoms characteristic of this cycle.",
-    ],
+    title: "",
+    description: "",
+    symptoms: [""],
   },
   menstrual: {
     title: "Menstrual phase",
@@ -737,5 +907,61 @@ describe("getPastFuturePeriodDays", () => {
     }
 
     expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+  });
+});
+
+describe("getLastStartDate", () => {
+  test("cycles array is empty", () => {
+    expect(getLastStartDate([])).toEqual("");
+  });
+
+  test("cycles array has a few items", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 15);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getLastStartDate(cycles)).toEqual(cycles[0].startDate);
+  });
+});
+
+describe("getLengthOfLastPeriod", () => {
+  test("cycles array is empty", () => {
+    expect(getLengthOfLastPeriod([])).toEqual(0);
+  });
+
+  test("cycles array has a few items", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 15);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getLengthOfLastPeriod(cycles)).toEqual(cycles[0].periodLength);
   });
 });

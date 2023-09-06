@@ -4,10 +4,29 @@ import { format } from "date-fns";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
-  if (!cycleLength || !dayOfCycle) {
+export function getLastStartDate(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return "";
   }
+
+  return cycles[0].startDate;
+}
+
+export function getLengthOfLastPeriod(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  return Number(cycles[0].periodLength);
+}
+
+export function getOvulationStatus(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return "";
+  }
+
+  const cycleLength = getAverageLengthOfCycle(cycles);
+  const dayOfCycle = Number(getDayOfCycle(cycles));
 
   const lutealPhaseLength = 14;
   const ovulationDay = cycleLength - lutealPhaseLength;
@@ -35,7 +54,7 @@ export function getPregnancyChance(cycles: Cycle[]) {
     return "";
   }
 
-  const dayOfCycle = Number(getDayOfCycle(cycles[0].startDate));
+  const dayOfCycle = Number(getDayOfCycle(cycles));
   const cycleLength = getAverageLengthOfCycle(cycles);
 
   const lutealPhaseLength = 14;
@@ -92,12 +111,12 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
   };
 }
 
-export function getDayOfCycle(startDate: string) {
-  if (!startDate) {
+export function getDayOfCycle(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return "";
   }
 
-  const start = new Date(startDate);
+  const start = new Date(cycles[0].startDate);
   start.setHours(0, 0, 0, 0);
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
