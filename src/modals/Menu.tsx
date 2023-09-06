@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
 import { exportConfig, importConfig } from "../data/Config";
 import { CyclesContext } from "../state/Context";
-import { useAverageLengthOfCycle } from "../state/CycleInformationHooks";
+import { getAverageLengthOfCycle } from "../state/CalculationLogics";
 import {
   getNewCyclesHistory,
   getActiveDates,
@@ -155,7 +155,7 @@ const CyclesEditor = (props: EditProps) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
 
   const { cycles, updateCycles } = useContext(CyclesContext);
-  const averLengthOfCycle = useAverageLengthOfCycle();
+  const averLengthOfCycle = getAverageLengthOfCycle(cycles);
 
   const isActiveDates = (dateString: string) => {
     return getActiveDates(dateString, cycles, averLengthOfCycle);

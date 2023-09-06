@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   IonContent,
   IonModal,
@@ -9,18 +10,20 @@ import {
 import { useTranslation } from "react-i18next";
 import "./InfoModal.css";
 
+import { CyclesContext } from "../state/Context";
 import {
-  useLengthOfLastPeriod,
-  useAverageLengthOfCycle,
-  useDayOfCycle,
-} from "../state/CycleInformationHooks";
-
-import { getPhase } from "../state/CalculationLogics";
+  getLengthOfLastPeriod,
+  getAverageLengthOfCycle,
+  getDayOfCycle,
+  getPhase,
+} from "../state/CalculationLogics";
 
 const Phase = () => {
-  const lengthOfCycle = useAverageLengthOfCycle();
-  const lengthOfPeriod = useLengthOfLastPeriod();
-  const currentDay = useDayOfCycle();
+  const cycles = useContext(CyclesContext).cycles;
+
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const lengthOfPeriod = getLengthOfLastPeriod(cycles);
+  const currentDay = getDayOfCycle(cycles);
 
   const { t } = useTranslation();
 

@@ -10,17 +10,17 @@ import {
 import "./TabDetails.css";
 
 import {
-  useDayOfCycle,
-  useLengthOfLastPeriod,
-  useAverageLengthOfCycle,
-  useAverageLengthOfPeriod,
-  useLastStartDate,
-} from "../state/CycleInformationHooks";
+  getAverageLengthOfCycle,
+  getAverageLengthOfPeriod,
+  getDayOfCycle,
+  getLastStartDate,
+} from "../state/CalculationLogics";
 import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
 
 function useTitleLastCycle() {
-  const dayOfCycle = useDayOfCycle();
+  const cycles = useContext(CyclesContext).cycles;
+  const dayOfCycle = getDayOfCycle(cycles);
   const { t } = useTranslation();
 
   if (!dayOfCycle) {
@@ -34,7 +34,8 @@ function useTitleLastCycle() {
 }
 
 function useProgressBarBuffer() {
-  const dayOfCycle = useDayOfCycle();
+  const cycles = useContext(CyclesContext).cycles;
+  const dayOfCycle = getDayOfCycle(cycles);
   const defaultLengthOfCycle = 28;
 
   if (!dayOfCycle) {
@@ -87,9 +88,11 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
 
 const CurrentCycle = () => {
   const title = useTitleLastCycle();
-  const startDate = useLastStartDate();
-  const lengthOfPeriod = useLengthOfLastPeriod();
   const progressBarBuffer = useProgressBarBuffer();
+
+  const cycles = useContext(CyclesContext).cycles;
+  const startDate = getLastStartDate(cycles);
+  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
   const { t } = useTranslation();
 
@@ -167,9 +170,10 @@ const ListProgress = () => {
 
 const TabDetails = () => {
   const { t } = useTranslation();
+  const cycles = useContext(CyclesContext).cycles;
 
-  const averageLengthOfCycle = useAverageLengthOfCycle();
-  const averageLengthOfPeriod = useAverageLengthOfPeriod();
+  const averageLengthOfCycle = getAverageLengthOfCycle(cycles);
+  const averageLengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
   const lengthOfCycle = `${averageLengthOfCycle} ${t("Days_interval", {
     postProcess: "interval",
