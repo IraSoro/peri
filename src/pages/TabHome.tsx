@@ -177,7 +177,7 @@ const TabHome = (props: HomeProps) => {
             </IonCol>
             <IonCol>
               <IonDatetime
-                class="calendar"
+                style={{ borderRadius: "20px" }}
                 color="basic"
                 presentation="date"
                 locale={t("locale")}

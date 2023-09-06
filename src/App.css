@@ -12,13 +12,15 @@ ion-tab-bar {
 ion-tab-button {
   background: var(--ion-color-light);
   color: var(--ion-color-dark-basic);
-  border: 1px var(--ion-color-dark-basic) solid;
+  border: 1px var(--ion-color-light) solid;
   border-radius: 10px;
   max-width: 30%;
   margin-right: 5%;
   margin-left: 5%;
   font-size: 13px;
   height: 25px;
+
+  --color-selected: var(--ion-color-dark-basic);
 }
 
 ion-tab-button.tab-selected {
@@ -31,6 +33,8 @@ ion-tab-button.tab-selected {
   margin-left: 5%;
   font-size: 14px;
   height: 25px;
+
+  --color-selected: var(--ion-color-light);
 }
 
 ion-col {
