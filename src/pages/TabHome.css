@@ -1,60 +1,32 @@
-.large-card {
-  height: 96%;
-}
-
-ion-card {
-  border-radius: 20px;
-  box-shadow: none !important;
-}
-
-ion-datetime {
-  color: var(--ion-color-dark) !important;
-}
-
 ion-button {
   --box-shadow: none;
 }
 
 .mark-button {
-  --border-radius: 10px;
+  --border-radius: 16px;
+  --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+  width: 150px;
 }
 
-.info-button {
-  font-size: 10px;
-
-  --border-radius: 10px;
-  --color: var(--ion-color-dark-basic);
-  --background: #ffffff;
-}
-
-.info-button:hover {
-  border: 2px var(--ion-color-dark-basic) solid;
-  border-radius: 10px;
-}
-
-.calendar-button {
-  --border-radius: 10px;
-}
-
-.calendar-button:hover {
-  border-radius: 10px;
-  color: var(--ion-color-dark-basic);
-}
-
-ion-col {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.align-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
+#block {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .transparent {
   --ion-item-background: transparent;
+}
+
+#wide-screen {
+  width: 100%;
+  max-width: 600px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  height: 100%;
+  /* max-height: 700px; */
+
+  box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
 }

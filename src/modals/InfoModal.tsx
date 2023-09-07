@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   IonContent,
   IonModal,
@@ -9,18 +10,20 @@ import {
 import { useTranslation } from "react-i18next";
 import "./InfoModal.css";
 
+import { CyclesContext } from "../state/Context";
 import {
-  useLengthOfLastPeriod,
-  useAverageLengthOfCycle,
-  useDayOfCycle,
-} from "../state/CycleInformationHooks";
-
-import { getPhase } from "../state/CalculationLogics";
+  getLengthOfLastPeriod,
+  getAverageLengthOfCycle,
+  getDayOfCycle,
+  getPhase,
+} from "../state/CalculationLogics";
 
 const Phase = () => {
-  const lengthOfCycle = useAverageLengthOfCycle();
-  const lengthOfPeriod = useLengthOfLastPeriod();
-  const currentDay = useDayOfCycle();
+  const cycles = useContext(CyclesContext).cycles;
+
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const lengthOfPeriod = getLengthOfLastPeriod(cycles);
+  const currentDay = getDayOfCycle(cycles);
 
   const { t } = useTranslation();
 
@@ -65,38 +68,28 @@ interface PropsInfoModal {
 }
 
 const InfoModal = (props: PropsInfoModal) => {
-  const { t } = useTranslation();
-
   return (
-    <>
-      <IonButton
-        class="info-button"
-        onClick={() => props.setIsOpen(true)}
+    <IonModal
+      id="info-modal"
+      backdropDismiss={false}
+      isOpen={props.isOpen}
+    >
+      <div id="small-rectangle"></div>
+      <IonContent
+        className="ion-padding"
+        color="basic"
       >
-        {t("learn more about the current state")}
-      </IonButton>
-      <IonModal
-        id="info-modal"
-        backdropDismiss={false}
-        isOpen={props.isOpen}
-      >
+        <Phase />
         <div id="small-rectangle"></div>
-        <IonContent
-          className="ion-padding"
-          color="basic"
+        <IonButton
+          class="ok-modal"
+          color="dark-basic"
+          onClick={() => props.setIsOpen(false)}
         >
-          <Phase />
-          <div id="small-rectangle"></div>
-          <IonButton
-            class="ok-modal"
-            color="dark-basic"
-            onClick={() => props.setIsOpen(false)}
-          >
-            Ok
-          </IonButton>
-        </IonContent>
-      </IonModal>
-    </>
+          Ok
+        </IonButton>
+      </IonContent>
+    </IonModal>
   );
 };
 

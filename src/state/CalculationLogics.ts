@@ -4,10 +4,29 @@ import { format } from "date-fns";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
-  if (!cycleLength || !dayOfCycle) {
+export function getLastStartDate(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return "";
   }
+
+  return cycles[0].startDate;
+}
+
+export function getLengthOfLastPeriod(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  return Number(cycles[0].periodLength);
+}
+
+export function getOvulationStatus(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return "";
+  }
+
+  const cycleLength = getAverageLengthOfCycle(cycles);
+  const dayOfCycle = Number(getDayOfCycle(cycles));
 
   const lutealPhaseLength = 14;
   const ovulationDay = cycleLength - lutealPhaseLength;
@@ -30,28 +49,34 @@ export function getOvulationStatus(cycleLength: number, dayOfCycle: number) {
   })}`;
 }
 
-export function getPregnancyChance(cycleLength: number, dayOfCycle: number) {
-  if (!cycleLength || !dayOfCycle) {
+export function getPregnancyChance(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return "";
   }
+
+  const dayOfCycle = Number(getDayOfCycle(cycles));
+  const cycleLength = getAverageLengthOfCycle(cycles);
 
   const lutealPhaseLength = 14;
   const ovulationDay = cycleLength - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
 
   if (diffDay >= -2 && diffDay <= 4) {
-    return i18n.t("high");
+    return i18n.t("High");
   }
-  return i18n.t("low");
+  return i18n.t("Low");
 }
 
-export function getDaysBeforePeriod(cycleLength: number, startDate: string) {
-  if (!startDate || !cycleLength) {
+export function getDaysBeforePeriod(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return {
       title: i18n.t("Period in"),
-      days: i18n.t("no info"),
+      days: i18n.t("---"),
     };
   }
+
+  const startDate = cycles[0].startDate;
+  const cycleLength = getAverageLengthOfCycle(cycles);
 
   const dateOfFinish = new Date(startDate);
   dateOfFinish.setDate(dateOfFinish.getDate() + cycleLength);
@@ -86,12 +111,12 @@ export function getDaysBeforePeriod(cycleLength: number, startDate: string) {
   };
 }
 
-export function getDayOfCycle(startDate: string) {
-  if (!startDate) {
+export function getDayOfCycle(cycles: Cycle[]) {
+  if (cycles.length === 0) {
     return "";
   }
 
-  const start = new Date(startDate);
+  const start = new Date(cycles[0].startDate);
   start.setHours(0, 0, 0, 0);
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
@@ -113,15 +138,9 @@ export function getPhase(
 
   const phases = {
     non: {
-      title: i18n.t("The menstrual cycle can be divided into 4 phases."),
-      description: i18n.t(
-        "When information about your cycle appears, it will be reported which phase you are in.",
-      ),
-      symptoms: [
-        i18n.t(
-          "This section will indicate the symptoms characteristic of this cycle.",
-        ),
-      ],
+      title: "",
+      description: "",
+      symptoms: [""],
     },
     menstrual: {
       title: i18n.t("Menstrual phase"),
@@ -309,8 +328,6 @@ export function getActiveDates(
   );
 }
 
-// For Mark Modal
-
 export function getMarkModalActiveDates(dateString: string, cycles: Cycle[]) {
   if (cycles.length === 0) {
     return true;
@@ -355,4 +372,40 @@ export function getPastFuturePeriodDays(cycles: Cycle[]) {
   }
 
   return periodDates;
+}
+
+export function isPastPeriodsDays(date: Date, cycles: Cycle[]) {
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+
+  for (let i = 0; i < cycles.length; ++i) {
+    const cycleStart: Date = new Date(cycles[i].startDate);
+    const cycleFinish: Date = new Date(cycles[i].startDate);
+    cycleFinish.setDate(cycleFinish.getDate() + cycles[i].periodLength);
+
+    if (date >= cycleStart && date < cycleFinish) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+
+  const nextCycleStart: Date = new Date(cycles[0].startDate);
+  nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
+  const nextCycleFinish: Date = new Date(cycles[0].startDate);
+  nextCycleFinish.setDate(
+    nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod,
+  );
+  if (date > nowDate && date >= nextCycleStart && date < nextCycleFinish) {
+    return true;
+  }
+
+  return false;
 }

@@ -15,9 +15,9 @@ const ru = {
   finished: "завершена",
   tomorrow: "завтра",
   in: "через",
-  "Chance of getting pregnant": "Вероятность забеременеть",
-  high: "высокая",
-  low: "низкая",
+  "chance of getting pregnant": "вероятность забеременеть",
+  High: "Высокая",
+  Low: "Низкая",
   // Details Tab
   Details: "Детали",
   "Period length": "Длина месячных",
@@ -42,13 +42,6 @@ const ru = {
   "learn more about the current state": "узнать больше о текущем состоянии",
   "Frequent symptoms": "Частые симптомы",
   // Phases info
-  "The menstrual cycle can be divided into 4 phases.":
-    "Менструальный цикл можно разделить на 4 фазы.",
-  "When information about your cycle appears, it will be reported which phase you are in.":
-    "Когда появится информация о вашем цикле, будет сообщено, в какой фазе вы находитесь.",
-  "This section will indicate the symptoms characteristic of this cycle.":
-    "В этом разделе будут указаны симптомы, характерные для этого цикла.",
-
   "Menstrual phase": "Менструация",
   "This cycle is accompanied by low hormone levels.":
     "Этот цикл сопровождается низким уровнем гормонов.",
