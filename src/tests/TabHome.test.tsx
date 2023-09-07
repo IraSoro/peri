@@ -1,7 +1,16 @@
 import { render } from "@testing-library/react";
-import TabDetails from "../pages/TabDetails";
+import TabHome from "../pages/TabHome";
 
 test("renders without crashing", () => {
-  const { baseElement } = render(<TabDetails />);
+  const { baseElement } = render(
+    <TabHome
+      isLanguageModal
+      setIsLanguageModal={() => {}}
+      isEditModal
+      setIsEditModal={() => {}}
+      isMarkModal
+      setIsMarkModal={() => {}}
+    />,
+  );
   expect(baseElement).toBeDefined();
 });

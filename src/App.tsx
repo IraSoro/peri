@@ -72,6 +72,7 @@ const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [isLanguageModal, setIsLanguageModal] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
+  const [isMarkModal, setIsMarkModal] = useState(false);
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
@@ -164,6 +165,8 @@ const App: React.FC = () => {
                     setIsLanguageModal={setIsLanguageModal}
                     isEditModal={isEditModal}
                     setIsEditModal={setIsEditModal}
+                    isMarkModal={isMarkModal}
+                    setIsMarkModal={setIsMarkModal}
                   />
                 </Route>
 
@@ -171,7 +174,10 @@ const App: React.FC = () => {
                   exact
                   path="/details"
                 >
-                  <TabDetails />
+                  <TabDetails
+                    isMarkModal={isMarkModal}
+                    setIsMarkModal={setIsMarkModal}
+                  />
                 </Route>
 
                 <Route

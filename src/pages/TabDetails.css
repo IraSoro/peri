@@ -14,6 +14,11 @@ ion-progress-bar {
   border-radius: 20px;
 }
 
+ion-progress-bar.current-progress {
+  height: 8px;
+  border-radius: 20px;
+}
+
 ion-progress-bar::part(progress) {
   border-radius: 20px;
   background: var(--ion-color-dark-basic);
@@ -21,22 +26,17 @@ ion-progress-bar::part(progress) {
 
 ion-progress-bar::part(track) {
   border-radius: 20px;
-  background: var(--ion-color-transparent-basic);
+  background: var(--ion-color-light-basic);
 }
 
-.current-progress::part(track) {
+ion-progress-bar.current-progress::part(track) {
   border-radius: 20px;
-  background: var(--ion-color-light);
-  border: 2px var(--ion-color-transparent-basic) solid;
+  background: var(--ion-color-transparent-basic);
 }
 
 ion-progress-bar::part(stream) {
   border-radius: 20px;
   background: #ffffff;
-}
-
-.transparent-center {
-  --ion-item-background: transparent;
 }
 
 #average-length {

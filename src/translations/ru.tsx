@@ -22,6 +22,7 @@ const ru = {
   Details: "Детали",
   "Period length": "Длина месячных",
   "Cycle length": "Длина цикла",
+  "You haven't marked any periods yet": "Вы еще не отметили дни месячных",
   // Mark Modal
   mark: "отметить",
   "Select date range": "Отметьте диапазон месячных",

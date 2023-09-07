@@ -6,6 +6,7 @@ import {
   IonProgressBar,
   IonList,
   IonCol,
+  IonButton,
 } from "@ionic/react";
 import "./TabDetails.css";
 
@@ -19,6 +20,8 @@ import { CyclesContext } from "../state/Context";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
+
+import MarkModal from "../modals/MarkModal";
 
 function useTitleLastCycle() {
   const cycles = useContext(CyclesContext).cycles;
@@ -64,7 +67,7 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
       lengthOfCycleNumber: defaultLengthOfCycle,
       lengthOfCycleString: t("Cycle length"),
       lengthOfPeriod: 0,
-      dates: t("date"),
+      dates: "",
     };
   }
   const cycleLenNumber = cycles[idx].cycleLength;
@@ -153,8 +156,10 @@ interface IdxProps {
 }
 
 const ListProgress = () => {
+  const cycles = useContext(CyclesContext).cycles;
+
   const ItemProgress = (props: IdxProps) => {
-    const info = useInfoForOneCycle(props.idx);
+    const info = useInfoForOneCycle(props.idx + 1);
 
     return (
       <div
@@ -178,18 +183,28 @@ const ListProgress = () => {
     );
   };
 
-  const numbers = [1, 2, 3, 4, 5];
-  const list = numbers.map((idx) => (
-    <ItemProgress
-      key={idx}
-      idx={idx}
-    />
-  ));
+  const list = cycles
+    .filter((_value, idx) => {
+      return idx > 0;
+    })
+    .map((_item, idx) => {
+      return (
+        <ItemProgress
+          key={idx}
+          idx={idx}
+        />
+      );
+    });
 
   return <>{list}</>;
 };
 
-const TabDetails = () => {
+interface DetailsProps {
+  isMarkModal: boolean;
+  setIsMarkModal: (newIsOpen: boolean) => void;
+}
+
+const TabDetails = (props: DetailsProps) => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
 
@@ -219,6 +234,46 @@ const TabDetails = () => {
     textAlign: "left" as const,
   };
 
+  const History = () => {
+    if (cycles.length === 0) {
+      return (
+        <IonList>
+          <div id="progress-block">
+            <p style={{ fontSize: "13px" }}>
+              {t("You haven't marked any periods yet")}
+            </p>
+          </div>
+          <div style={{ marginTop: "40px" }}>
+            <IonButton
+              class="mark-button"
+              color="dark-basic"
+              onClick={() => props.setIsMarkModal(true)}
+            >
+              {t("mark")}
+            </IonButton>
+            <MarkModal
+              isOpen={props.isMarkModal}
+              setIsOpen={props.setIsMarkModal}
+            />
+          </div>
+        </IonList>
+      );
+    } else if (cycles.length === 1) {
+      return (
+        <IonList>
+          <CurrentCycle />
+        </IonList>
+      );
+    } else {
+      return (
+        <IonList>
+          <CurrentCycle />
+          <ListProgress />
+        </IonList>
+      );
+    }
+  };
+
   return (
     <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
       <div id="wide-screen">
@@ -234,26 +289,31 @@ const TabDetails = () => {
               >
                 <IonCol>
                   <div id="inline-block">
-                    <IonLabel>
-                      <p style={p_style}>{t("Period length")}</p>
-                      <p style={h_style}>{lengthOfPeriod}</p>
+                    <IonLabel style={{ marginBottom: "10px" }}>
+                      <p style={p_style}>{t("Cycle length")}</p>
+                      {averageLengthOfCycle ? (
+                        <p style={h_style}>{lengthOfCycle}</p>
+                      ) : (
+                        <p style={h_style}>---</p>
+                      )}
                     </IonLabel>
                   </div>
                   <div id="vertical-line" />
                   <div id="inline-block">
-                    <IonLabel style={{ marginBottom: "10px" }}>
-                      <p style={p_style}>{t("Cycle length")}</p>
-                      <p style={h_style}>{lengthOfCycle}</p>
+                    <IonLabel>
+                      <p style={p_style}>{t("Period length")}</p>
+                      {averageLengthOfPeriod ? (
+                        <p style={h_style}>{lengthOfPeriod}</p>
+                      ) : (
+                        <p style={h_style}>---</p>
+                      )}
                     </IonLabel>
                   </div>
                 </IonCol>
               </div>
             </IonCol>
             <IonCol>
-              <IonList class="transparent-center">
-                <CurrentCycle />
-                <ListProgress />
-              </IonList>
+              <History />
             </IonCol>
           </div>
         </IonContent>
