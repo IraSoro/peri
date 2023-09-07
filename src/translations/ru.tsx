@@ -22,10 +22,6 @@ const ru = {
   Details: "Детали",
   "Period length": "Длина месячных",
   "Cycle length": "Длина цикла",
-  "Current cycle": "Текущий цикл",
-  started: "Начался",
-  "Started date": "Дата начала",
-  date: "дата",
   // Mark Modal
   mark: "отметить",
   "Select date range": "Отметьте диапазон месячных",
