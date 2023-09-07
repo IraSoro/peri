@@ -6,6 +6,7 @@ import {
   IonProgressBar,
   IonItem,
   IonList,
+  IonCol,
 } from "@ionic/react";
 import "./TabDetails.css";
 
@@ -186,40 +187,52 @@ const TabDetails = () => {
   })}`;
 
   const p_style = {
-    fontSize: "10px" as const,
-    color: "var(--ion-color-basic)" as const,
-    textAlign: "center" as const,
+    fontSize: "13px" as const,
+    color: "var(--ion-color-light)" as const,
+    textAlign: "left" as const,
+    marginBottom: "5px" as const,
   };
 
   const h_style = {
-    fontWeight: "bold" as const,
-    color: "var(--ion-color-dark-basic)" as const,
-    textAlign: "center" as const,
+    fontSize: "20px" as const,
+    color: "var(--ion-color-light)" as const,
+    textAlign: "left" as const,
   };
 
   return (
-    <IonPage>
-      <IonContent
-        color="basic"
-        fullscreen
-      >
-        <div id="rectangle-top">
-          <div id="circle">
-            <IonLabel>
-              <p style={p_style}>{t("Period length")}</p>
-              <h1 style={h_style}>{lengthOfPeriod}</h1>
-              <p style={p_style}>{t("Cycle length")}</p>
-              <h1 style={h_style}>{lengthOfCycle}</h1>
-            </IonLabel>
+    <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
+      <div id="wide-screen">
+        <IonContent
+          className="ion-padding"
+          color="transparent-basic"
+        >
+          <div id="context-size">
+            <IonCol>
+              <div id="average-length">
+                <IonCol>
+                  <div id="inline-block">
+                    <IonLabel>
+                      <p style={p_style}>{t("Period length")}</p>
+                      <p style={h_style}>{lengthOfPeriod}</p>
+                    </IonLabel>
+                  </div>
+                  <div id="vertical-line" />
+                  <div id="inline-block">
+                    <IonLabel style={{ marginBottom: "10px" }}>
+                      <p style={p_style}>{t("Cycle length")}</p>
+                      <p style={h_style}>{lengthOfCycle}</p>
+                    </IonLabel>
+                  </div>
+                </IonCol>
+              </div>
+            </IonCol>
+            <IonList class="transparent-center">
+              <CurrentCycle />
+              <ListProgress />
+            </IonList>
           </div>
-        </div>
-        <div id="rectangle-bottom">
-          <IonList class="transparent-center">
-            <CurrentCycle />
-            <ListProgress />
-          </IonList>
-        </div>
-      </IonContent>
+        </IonContent>
+      </div>
     </IonPage>
   );
 };
