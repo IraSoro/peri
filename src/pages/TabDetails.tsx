@@ -202,31 +202,6 @@ const TabDetails = () => {
     textAlign: "left" as const,
   };
 
-  const History = () => {
-    if (cycles.length === 0) {
-      return (
-        <div id="progress-block">
-          <p style={{ fontSize: "13px" }}>
-            {t("You haven't marked any periods yet")}
-          </p>
-        </div>
-      );
-    } else if (cycles.length === 1) {
-      return (
-        <IonList>
-          <CurrentCycle />
-        </IonList>
-      );
-    } else {
-      return (
-        <IonList>
-          <CurrentCycle />
-          <ListProgress />
-        </IonList>
-      );
-    }
-  };
-
   return (
     <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
       <div id="wide-screen">
@@ -244,29 +219,36 @@ const TabDetails = () => {
                   <div id="inline-block">
                     <IonLabel style={{ marginBottom: "10px" }}>
                       <p style={p_style}>{t("Cycle length")}</p>
-                      {averageLengthOfCycle ? (
-                        <p style={h_style}>{lengthOfCycle}</p>
-                      ) : (
-                        <p style={h_style}>---</p>
-                      )}
+                      <p style={h_style}>
+                        {averageLengthOfCycle ? lengthOfCycle : "---"}
+                      </p>
                     </IonLabel>
                   </div>
                   <div id="vertical-line" />
                   <div id="inline-block">
                     <IonLabel>
                       <p style={p_style}>{t("Period length")}</p>
-                      {averageLengthOfPeriod ? (
-                        <p style={h_style}>{lengthOfPeriod}</p>
-                      ) : (
-                        <p style={h_style}>---</p>
-                      )}
+                      <p style={h_style}>
+                        {averageLengthOfPeriod ? lengthOfPeriod : "---"}
+                      </p>
                     </IonLabel>
                   </div>
                 </IonCol>
               </div>
             </IonCol>
             <IonCol>
-              <History />
+              {cycles.length > 0 ? (
+                <IonList>
+                  <CurrentCycle />
+                  {cycles.length > 1 && <ListProgress />}
+                </IonList>
+              ) : (
+                <div id="progress-block">
+                  <p style={{ fontSize: "13px" }}>
+                    {t("You haven't marked any periods yet")}
+                  </p>
+                </div>
+              )}
             </IonCol>
           </div>
         </IonContent>
