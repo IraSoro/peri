@@ -76,6 +76,19 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
     };
   }
 
+  const periodLength = cycles[0].periodLength;
+  const dayOfCycle = Number(getDayOfCycle(cycles));
+
+  if (dayOfCycle <= periodLength) {
+    return {
+      title: i18n.t("Today is the"),
+      days: `${i18n.t("day of your period", {
+        count: dayOfCycle,
+        ordinal: true,
+      })}`,
+    };
+  }
+
   const startDate = cycles[0].startDate;
   const cycleLength = getAverageLengthOfCycle(cycles);
 

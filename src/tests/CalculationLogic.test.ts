@@ -441,6 +441,31 @@ describe("getDaysBeforePeriod", () => {
       })}`,
     });
   });
+
+  test("today is one of the days of period", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 25);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
+      title: i18n.t("Today is the"),
+      days: i18n.t("day of your period"),
+    });
+  });
 });
 
 const phases = {

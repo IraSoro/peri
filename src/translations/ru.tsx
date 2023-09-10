@@ -6,10 +6,14 @@ const ru = {
   "no info": "неизвестно",
   Period: "Месячные",
   today: "сегодня",
+  "Today is the": "Сегодня",
   Delay: "Задержка",
   Days_interval:
     "(0)[Дней];(1)[День];(2-4)[Дня];(5-20)[Дней];(21)[День];(22-24)[Дня];(25-30)[Дней];(31)[День];(32-34)[Дня];(35-40)[Дней];",
   "Current cycle day": "Текущий день цикла",
+  // NOTE: i18next doesn't support ordinals for the Russian language and instead
+  //       always use `day of your period_ordinal_other` with the `ый` ordinal
+  "day of your period": "{{count}} день цикла",
   Ovulation: "Овуляция",
   possible: "может быть сегодня",
   finished: "завершена",
