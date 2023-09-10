@@ -8,8 +8,6 @@ test("renders without crashing", () => {
       setIsLanguageModal={() => {}}
       isEditModal
       setIsEditModal={() => {}}
-      isMarkModal
-      setIsMarkModal={() => {}}
     />,
   );
   expect(baseElement).toBeDefined();

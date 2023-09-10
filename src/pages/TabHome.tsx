@@ -73,13 +73,12 @@ interface HomeProps {
   setIsLanguageModal: (newIsOpen: boolean) => void;
   isEditModal: boolean;
   setIsEditModal: (newIsOpen: boolean) => void;
-  isMarkModal: boolean;
-  setIsMarkModal: (newIsOpen: boolean) => void;
 }
 
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [isMarkModal, setIsMarkModal] = useState(false);
 
   const router = useIonRouter();
 
@@ -93,12 +92,12 @@ const TabHome = (props: HomeProps) => {
   useEffect(() => {
     const backButtonHandler = () => {
       if (
-        props.isMarkModal ||
+        isMarkModal ||
         isInfoModal ||
         props.isLanguageModal ||
         props.isEditModal
       ) {
-        props.setIsMarkModal(false);
+        setIsMarkModal(false);
         setIsInfoModal(false);
         props.setIsLanguageModal(false);
         props.setIsEditModal(false);
@@ -116,7 +115,7 @@ const TabHome = (props: HomeProps) => {
     return () => {
       document.removeEventListener("ionBackButton", backButtonHandler);
     };
-  }, [router, isInfoModal, props]);
+  }, [router, isInfoModal, isMarkModal, props]);
 
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
@@ -166,13 +165,13 @@ const TabHome = (props: HomeProps) => {
               <IonButton
                 class="mark-button"
                 color="dark-basic"
-                onClick={() => props.setIsMarkModal(true)}
+                onClick={() => setIsMarkModal(true)}
               >
                 {t("mark")}
               </IonButton>
               <MarkModal
-                isOpen={props.isMarkModal}
-                setIsOpen={props.setIsMarkModal}
+                isOpen={isMarkModal}
+                setIsOpen={setIsMarkModal}
               />
             </IonCol>
             <IonCol>
