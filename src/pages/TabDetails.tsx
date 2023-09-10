@@ -76,6 +76,21 @@ const datesStyle = {
   textAlign: "left" as const,
 };
 
+const progressBarStyle = {
+  marginTop: "5px" as const,
+  marginBottom: "5px" as const,
+};
+
+function setBufferProgress(value: number) {
+  return (value / 100) * 3;
+}
+
+function setValueProgress(lengthOfPeriod: number, dayOfCycle: number) {
+  return dayOfCycle < lengthOfPeriod
+    ? (dayOfCycle / 100) * 3
+    : (lengthOfPeriod / 100) * 3;
+}
+
 const CurrentCycle = () => {
   const cycles = useContext(CyclesContext).cycles;
   const { t } = useTranslation();
@@ -96,9 +111,9 @@ const CurrentCycle = () => {
         </IonLabel>
         <IonProgressBar
           class="current-progress"
-          style={{ marginTop: "5px", marginBottom: "5px" }}
-          value={(lengthOfPeriod / 100) * 3}
-          buffer={(dayOfCycle / 100) * 3}
+          style={progressBarStyle}
+          value={setValueProgress(lengthOfPeriod, dayOfCycle)}
+          buffer={setBufferProgress(dayOfCycle)}
         />
         <IonLabel>
           <p style={datesStyle}>{getFormattedDate(startDate, t("locale"))}</p>
@@ -117,6 +132,7 @@ const ListProgress = () => {
 
   const ItemProgress = (props: IdxProps) => {
     const info = useInfoForOneCycle(props.idx + 1);
+    const dayOfCycle = getDayOfCycle(cycles);
 
     return (
       <div
@@ -128,9 +144,9 @@ const ListProgress = () => {
             <p style={lenCycleStyle}>{info.lengthOfCycleString}</p>
           </IonLabel>
           <IonProgressBar
-            style={{ marginTop: "5px", marginBottom: "5px" }}
-            value={(info.lengthOfPeriod / 100) * 3}
-            buffer={(info.lengthOfCycleNumber / 100) * 3}
+            style={progressBarStyle}
+            value={setValueProgress(info.lengthOfPeriod, dayOfCycle)}
+            buffer={setBufferProgress(info.lengthOfCycleNumber)}
           />
           <IonLabel>
             <p style={datesStyle}>{info.dates}</p>
