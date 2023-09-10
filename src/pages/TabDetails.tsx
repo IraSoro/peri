@@ -15,36 +15,9 @@ import {
   getAverageLengthOfPeriod,
   getDayOfCycle,
   getLastStartDate,
+  getFormattedDate,
 } from "../state/CalculationLogics";
 import { CyclesContext } from "../state/Context";
-import { format } from "date-fns";
-import { ru } from "date-fns/locale";
-
-function useTitleLastCycle() {
-  const cycles = useContext(CyclesContext).cycles;
-  const dayOfCycle = getDayOfCycle(cycles);
-  const { t } = useTranslation();
-
-  if (!dayOfCycle) {
-    return "";
-  }
-
-  return `${dayOfCycle} ${t("Days_interval", {
-    postProcess: "interval",
-    count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
-  })}`;
-}
-
-function useProgressBarBuffer() {
-  const cycles = useContext(CyclesContext).cycles;
-  const dayOfCycle = getDayOfCycle(cycles);
-  const defaultLengthOfCycle = 28;
-
-  if (!dayOfCycle) {
-    return defaultLengthOfCycle;
-  }
-  return Number(dayOfCycle);
-}
 
 interface InfoOneCycle {
   lengthOfCycleString: string;
@@ -53,7 +26,7 @@ interface InfoOneCycle {
   dates: string;
 }
 
-export function useInfoForOneCycle(idx: number): InfoOneCycle {
+function useInfoForOneCycle(idx: number): InfoOneCycle {
   const cycles = useContext(CyclesContext).cycles;
   const { t } = useTranslation();
 
@@ -78,17 +51,10 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
   const dateStart: Date = new Date(cycles[idx].startDate);
   const dateFinish: Date = new Date(cycles[idx].startDate);
   dateFinish.setDate(dateFinish.getDate() + cycleLenNumber - 1);
-  let dates = `${format(dateStart, "MMM dd")} - ${format(
-    dateFinish,
-    "MMM dd",
-  )}`;
-  if (t("locale") === "ru") {
-    dates = `${format(dateStart, "dd MMMM", {
-      locale: ru,
-    })} - ${format(dateFinish, "dd MMMM", {
-      locale: ru,
-    })}`;
-  }
+  const dates = `${getFormattedDate(
+    dateStart,
+    t("locale"),
+  )} - ${getFormattedDate(dateFinish, t("locale"))}`;
 
   return {
     lengthOfCycleNumber: cycleLenNumber,
@@ -111,12 +77,15 @@ const datesStyle = {
 };
 
 const CurrentCycle = () => {
-  const { t } = useTranslation();
-  const title = useTitleLastCycle();
-  const progressBarBuffer = useProgressBarBuffer();
-
   const cycles = useContext(CyclesContext).cycles;
-  const startDate = getLastStartDate(cycles);
+  const { t } = useTranslation();
+  const dayOfCycle = getDayOfCycle(cycles);
+  const title = `${dayOfCycle} ${t("Days_interval", {
+    postProcess: "interval",
+    count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
+  })}`;
+
+  const startDate = new Date(getLastStartDate(cycles));
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
   return (
@@ -129,19 +98,10 @@ const CurrentCycle = () => {
           class="current-progress"
           style={{ marginTop: "5px", marginBottom: "5px" }}
           value={(lengthOfPeriod / 100) * 3}
-          buffer={(progressBarBuffer / 100) * 3}
+          buffer={(dayOfCycle / 100) * 3}
         />
         <IonLabel>
-          {t("locale") === "ru" ? (
-            <p style={datesStyle}>{`${format(new Date(startDate), "dd MMMM", {
-              locale: ru,
-            })} - `}</p>
-          ) : (
-            <p style={datesStyle}>{`${format(
-              new Date(startDate),
-              "MMM dd",
-            )} - `}</p>
-          )}
+          <p style={datesStyle}>{getFormattedDate(startDate, t("locale"))}</p>
         </IonLabel>
       </div>
     </div>

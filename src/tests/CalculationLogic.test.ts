@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
 import { format } from "date-fns";
+import { ru } from "date-fns/locale";
 import {
   getOvulationStatus,
   getPregnancyChance,
@@ -16,6 +17,7 @@ import {
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
+  getFormattedDate,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -178,7 +180,7 @@ describe("getPregnancyChance", () => {
 
 describe("getDayOfCycle", () => {
   test("cycles array is empty", () => {
-    expect(getDayOfCycle([])).toEqual("");
+    expect(getDayOfCycle([])).toEqual(0);
   });
 
   test("middle of the cycle", () => {
@@ -200,7 +202,7 @@ describe("getDayOfCycle", () => {
       });
     }
 
-    expect(getDayOfCycle(cycles)).toEqual("14");
+    expect(getDayOfCycle(cycles)).toEqual(14);
   });
 });
 
@@ -963,5 +965,29 @@ describe("getLengthOfLastPeriod", () => {
     }
 
     expect(getLengthOfLastPeriod(cycles)).toEqual(cycles[0].periodLength);
+  });
+});
+
+describe("getFormattedDate", () => {
+  test("English date format", () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    expect(getFormattedDate(today, "en-GB")).toEqual(format(today, "MMM d"));
+  });
+
+  test("Russian date format", () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    expect(getFormattedDate(today, "ru")).toEqual(
+      format(today, "d MMMM", {
+        locale: ru,
+      }),
+    );
+  });
+
+  test("Unknown date format", () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    expect(getFormattedDate(today, "1")).toEqual(format(today, "MMM d"));
   });
 });
