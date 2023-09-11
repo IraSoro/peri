@@ -81,10 +81,9 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
 
   if (dayOfCycle <= periodLength) {
     return {
-      title: i18n.t("Today is the"),
-      days: `${i18n.t("day of your period", {
+      title: i18n.t("Period"),
+      days: `${i18n.t("day", {
         count: dayOfCycle,
-        postProcess: "interval",
         ordinal: true,
       })}`,
     };

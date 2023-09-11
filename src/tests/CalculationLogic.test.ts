@@ -462,8 +462,8 @@ describe("getDaysBeforePeriod", () => {
     }
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
-      title: i18n.t("Today is the"),
-      days: i18n.t("day of your period"),
+      title: i18n.t("Period"),
+      days: i18n.t("day"),
     });
   });
 });
