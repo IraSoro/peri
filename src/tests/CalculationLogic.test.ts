@@ -43,7 +43,7 @@ describe("getOvulationStatus", () => {
       });
     }
     expect(getOvulationStatus(cycles)).toEqual(
-      `${i18n.t("in")} 9 ${i18n.t("Days_interval", {
+      `${i18n.t("in")} 9 ${i18n.t("Days", {
         postProcess: "interval",
         count: 9,
       })}`,
@@ -326,7 +326,7 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
-      days: `10 ${i18n.t("Days_interval", {
+      days: `10 ${i18n.t("Days", {
         postProcess: "interval",
         count: 10,
       })}`,
@@ -354,7 +354,7 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
-      days: `1 ${i18n.t("Days_interval", {
+      days: `1 ${i18n.t("Days", {
         postProcess: "interval",
         count: 1,
       })}`,
@@ -407,7 +407,7 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
-      days: `1 ${i18n.t("Days_interval", {
+      days: `1 ${i18n.t("Days", {
         postProcess: "interval",
         count: 1,
       })}`,
@@ -435,10 +435,35 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
-      days: `10 ${i18n.t("Days_interval", {
+      days: `10 ${i18n.t("Days", {
         postProcess: "interval",
         count: 10,
       })}`,
+    });
+  });
+
+  test("today is one of the days of period", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 25);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
+      title: i18n.t("Period"),
+      days: i18n.t("day"),
     });
   });
 });

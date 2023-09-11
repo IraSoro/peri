@@ -44,7 +44,7 @@ export function getOvulationStatus(cycles: Cycle[]) {
   if (diffDay === 1) {
     return i18n.t("tomorrow");
   }
-  return `${i18n.t("in")} ${diffDay} ${i18n.t("Days_interval", {
+  return `${i18n.t("in")} ${diffDay} ${i18n.t("Days", {
     postProcess: "interval",
     count: diffDay,
   })}`;
@@ -76,6 +76,19 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
     };
   }
 
+  const periodLength = cycles[0].periodLength;
+  const dayOfCycle = Number(getDayOfCycle(cycles));
+
+  if (dayOfCycle <= periodLength) {
+    return {
+      title: i18n.t("Period"),
+      days: `${i18n.t("day", {
+        count: dayOfCycle,
+        ordinal: true,
+      })}`,
+    };
+  }
+
   const startDate = cycles[0].startDate;
   const cycleLength = getAverageLengthOfCycle(cycles);
 
@@ -91,7 +104,7 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
   if (dayBefore > 0) {
     return {
       title: i18n.t("Period in"),
-      days: `${dayBefore} ${i18n.t("Days_interval", {
+      days: `${dayBefore} ${i18n.t("Days", {
         postProcess: "interval",
         count: dayBefore,
       })}`,
@@ -105,7 +118,7 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
   }
   return {
     title: i18n.t("Delay"),
-    days: `${Math.abs(dayBefore)} ${i18n.t("Days_interval", {
+    days: `${Math.abs(dayBefore)} ${i18n.t("Days", {
       postProcess: "interval",
       count: Math.abs(dayBefore),
     })}`,
