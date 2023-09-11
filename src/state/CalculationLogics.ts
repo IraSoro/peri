@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
 import { format } from "date-fns";
+import { ru } from "date-fns/locale";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -26,7 +27,7 @@ export function getOvulationStatus(cycles: Cycle[]) {
   }
 
   const cycleLength = getAverageLengthOfCycle(cycles);
-  const dayOfCycle = Number(getDayOfCycle(cycles));
+  const dayOfCycle = getDayOfCycle(cycles);
 
   const lutealPhaseLength = 14;
   const ovulationDay = cycleLength - lutealPhaseLength;
@@ -54,7 +55,7 @@ export function getPregnancyChance(cycles: Cycle[]) {
     return "";
   }
 
-  const dayOfCycle = Number(getDayOfCycle(cycles));
+  const dayOfCycle = getDayOfCycle(cycles);
   const cycleLength = getAverageLengthOfCycle(cycles);
 
   const lutealPhaseLength = 14;
@@ -113,7 +114,7 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
 
 export function getDayOfCycle(cycles: Cycle[]) {
   if (cycles.length === 0) {
-    return "";
+    return 0;
   }
 
   const start = new Date(cycles[0].startDate);
@@ -125,7 +126,7 @@ export function getDayOfCycle(cycles: Cycle[]) {
     Math.ceil((currentDate.getTime() - start.getTime()) / millisecondsInDay) +
     1;
 
-  return diff.toString();
+  return diff;
 }
 
 export function getPhase(
@@ -408,4 +409,17 @@ export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
   }
 
   return false;
+}
+
+export function getFormattedDate(date: Date, language: string) {
+  const formattedDates = new Map<string, string>([
+    ["en-GB", format(date, "MMM d")],
+    [
+      "ru",
+      format(date, "d MMMM", {
+        locale: ru,
+      }),
+    ],
+  ]);
+  return formattedDates.get(language) ?? format(date, "MMM d");
 }

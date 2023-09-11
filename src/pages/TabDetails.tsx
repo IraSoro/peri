@@ -4,9 +4,10 @@ import {
   IonPage,
   IonLabel,
   IonProgressBar,
-  IonItem,
   IonList,
+  IonCol,
 } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 import "./TabDetails.css";
 
 import {
@@ -14,35 +15,9 @@ import {
   getAverageLengthOfPeriod,
   getDayOfCycle,
   getLastStartDate,
+  getFormattedDate,
 } from "../state/CalculationLogics";
-import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
-
-function useTitleLastCycle() {
-  const cycles = useContext(CyclesContext).cycles;
-  const dayOfCycle = getDayOfCycle(cycles);
-  const { t } = useTranslation();
-
-  if (!dayOfCycle) {
-    return "";
-  }
-
-  return `${dayOfCycle} ${t("Days_interval", {
-    postProcess: "interval",
-    count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
-  })}`;
-}
-
-function useProgressBarBuffer() {
-  const cycles = useContext(CyclesContext).cycles;
-  const dayOfCycle = getDayOfCycle(cycles);
-  const defaultLengthOfCycle = 28;
-
-  if (!dayOfCycle) {
-    return defaultLengthOfCycle;
-  }
-  return Number(dayOfCycle);
-}
 
 interface InfoOneCycle {
   lengthOfCycleString: string;
@@ -51,7 +26,7 @@ interface InfoOneCycle {
   dates: string;
 }
 
-export function useInfoForOneCycle(idx: number): InfoOneCycle {
+function useInfoForOneCycle(idx: number): InfoOneCycle {
   const cycles = useContext(CyclesContext).cycles;
   const { t } = useTranslation();
 
@@ -62,7 +37,7 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
       lengthOfCycleNumber: defaultLengthOfCycle,
       lengthOfCycleString: t("Cycle length"),
       lengthOfPeriod: 0,
-      dates: t("date"),
+      dates: "",
     };
   }
   const cycleLenNumber = cycles[idx].cycleLength;
@@ -76,7 +51,10 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
   const dateStart: Date = new Date(cycles[idx].startDate);
   const dateFinish: Date = new Date(cycles[idx].startDate);
   dateFinish.setDate(dateFinish.getDate() + cycleLenNumber - 1);
-  const dates = `${dateStart.toLocaleDateString()} - ${dateFinish.toLocaleDateString()}`;
+  const dates = `${getFormattedDate(
+    dateStart,
+    t("locale"),
+  )} - ${getFormattedDate(dateFinish, t("locale"))}`;
 
   return {
     lengthOfCycleNumber: cycleLenNumber,
@@ -86,45 +64,62 @@ export function useInfoForOneCycle(idx: number): InfoOneCycle {
   };
 }
 
-const CurrentCycle = () => {
-  const title = useTitleLastCycle();
-  const progressBarBuffer = useProgressBarBuffer();
+const lenCycleStyle = {
+  fontSize: "13px" as const,
+  color: "var(--ion-color-black)" as const,
+  textAlign: "left" as const,
+};
 
+const datesStyle = {
+  fontSize: "11px" as const,
+  color: "var(--ion-color-medium)" as const,
+  textAlign: "left" as const,
+};
+
+const progressBarStyle = {
+  marginTop: "5px" as const,
+  marginBottom: "5px" as const,
+};
+
+function setBufferProgress(value: number) {
+  return (value / 100) * 3;
+}
+
+function setValueProgress(lengthOfPeriod: number, dayOfCycle: number) {
+  return dayOfCycle < lengthOfPeriod
+    ? (dayOfCycle / 100) * 3
+    : (lengthOfPeriod / 100) * 3;
+}
+
+const CurrentCycle = () => {
   const cycles = useContext(CyclesContext).cycles;
-  const startDate = getLastStartDate(cycles);
+  const { t } = useTranslation();
+  const dayOfCycle = getDayOfCycle(cycles);
+  const title = `${dayOfCycle} ${t("Days_interval", {
+    postProcess: "interval",
+    count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
+  })}`;
+
+  const startDate = new Date(getLastStartDate(cycles));
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
-  const { t } = useTranslation();
-
   return (
-    <IonItem
-      class="transparent-center"
-      lines="none"
-    >
-      <IonLabel position="stacked">
-        {title ? (
-          <h2>{`${t("Current cycle")}: ${title}`}</h2>
-        ) : (
-          <h2>{t("Current cycle")}</h2>
-        )}
-      </IonLabel>
-      <IonLabel position="stacked">
-        {startDate ? (
-          <p>{`${t("Started date")} ${new Date(
-            startDate,
-          ).toLocaleDateString()}`}</p>
-        ) : (
-          <p>{t("Started date")}</p>
-        )}
-      </IonLabel>
-      <IonLabel position="stacked">
+    <div id="progress-block">
+      <div style={{ marginLeft: "15px" }}>
+        <IonLabel>
+          <p style={lenCycleStyle}>{title}</p>
+        </IonLabel>
         <IonProgressBar
           class="current-progress"
-          value={(lengthOfPeriod / 100) * 3}
-          buffer={(progressBarBuffer / 100) * 3}
-        ></IonProgressBar>
-      </IonLabel>
-    </IonItem>
+          style={progressBarStyle}
+          value={setValueProgress(lengthOfPeriod, dayOfCycle)}
+          buffer={setBufferProgress(dayOfCycle)}
+        />
+        <IonLabel>
+          <p style={datesStyle}>{getFormattedDate(startDate, t("locale"))}</p>
+        </IonLabel>
+      </div>
+    </div>
   );
 };
 
@@ -132,38 +127,47 @@ interface IdxProps {
   idx: number;
 }
 
-const ItemProgress = (props: IdxProps) => {
-  const info = useInfoForOneCycle(props.idx);
-
-  return (
-    <IonItem
-      class="transparent-center"
-      lines="none"
-    >
-      <IonLabel position="stacked">
-        <h2>{info.lengthOfCycleString}</h2>
-      </IonLabel>
-      <IonLabel position="stacked">
-        <p>{info.dates}</p>
-      </IonLabel>
-      <IonLabel position="stacked">
-        <IonProgressBar
-          value={(info.lengthOfPeriod / 100) * 3}
-          buffer={(info.lengthOfCycleNumber / 100) * 3}
-        ></IonProgressBar>
-      </IonLabel>
-    </IonItem>
-  );
-};
-
 const ListProgress = () => {
-  const numbers = [1, 2, 3, 4, 5];
-  const list = numbers.map((idx) => (
-    <ItemProgress
-      key={idx}
-      idx={idx}
-    />
-  ));
+  const cycles = useContext(CyclesContext).cycles;
+
+  const ItemProgress = (props: IdxProps) => {
+    const info = useInfoForOneCycle(props.idx + 1);
+    const dayOfCycle = getDayOfCycle(cycles);
+
+    return (
+      <div
+        id="progress-block"
+        style={{ marginTop: "15px" }}
+      >
+        <div style={{ marginLeft: "15px" }}>
+          <IonLabel>
+            <p style={lenCycleStyle}>{info.lengthOfCycleString}</p>
+          </IonLabel>
+          <IonProgressBar
+            style={progressBarStyle}
+            value={setValueProgress(info.lengthOfPeriod, dayOfCycle)}
+            buffer={setBufferProgress(info.lengthOfCycleNumber)}
+          />
+          <IonLabel>
+            <p style={datesStyle}>{info.dates}</p>
+          </IonLabel>
+        </div>
+      </div>
+    );
+  };
+
+  const list = cycles
+    .filter((_value, idx) => {
+      return idx > 0;
+    })
+    .map((_item, idx) => {
+      return (
+        <ItemProgress
+          key={idx}
+          idx={idx}
+        />
+      );
+    });
 
   return <>{list}</>;
 };
@@ -186,40 +190,69 @@ const TabDetails = () => {
   })}`;
 
   const p_style = {
-    fontSize: "10px" as const,
-    color: "var(--ion-color-basic)" as const,
-    textAlign: "center" as const,
+    fontSize: "13px" as const,
+    color: "var(--ion-color-light)" as const,
+    textAlign: "left" as const,
+    marginBottom: "5px" as const,
   };
 
   const h_style = {
-    fontWeight: "bold" as const,
-    color: "var(--ion-color-dark-basic)" as const,
-    textAlign: "center" as const,
+    fontSize: "20px" as const,
+    color: "var(--ion-color-light)" as const,
+    textAlign: "left" as const,
   };
 
   return (
-    <IonPage>
-      <IonContent
-        color="basic"
-        fullscreen
-      >
-        <div id="rectangle-top">
-          <div id="circle">
-            <IonLabel>
-              <p style={p_style}>{t("Period length")}</p>
-              <h1 style={h_style}>{lengthOfPeriod}</h1>
-              <p style={p_style}>{t("Cycle length")}</p>
-              <h1 style={h_style}>{lengthOfCycle}</h1>
-            </IonLabel>
+    <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
+      <div id="wide-screen">
+        <IonContent
+          className="ion-padding"
+          color="transparent-basic"
+        >
+          <div id="context-size">
+            <IonCol>
+              <div
+                id="average-length"
+                style={{ marginBottom: "15px" }}
+              >
+                <IonCol>
+                  <div id="inline-block">
+                    <IonLabel style={{ marginBottom: "10px" }}>
+                      <p style={p_style}>{t("Cycle length")}</p>
+                      <p style={h_style}>
+                        {averageLengthOfCycle ? lengthOfCycle : "---"}
+                      </p>
+                    </IonLabel>
+                  </div>
+                  <div id="vertical-line" />
+                  <div id="inline-block">
+                    <IonLabel>
+                      <p style={p_style}>{t("Period length")}</p>
+                      <p style={h_style}>
+                        {averageLengthOfPeriod ? lengthOfPeriod : "---"}
+                      </p>
+                    </IonLabel>
+                  </div>
+                </IonCol>
+              </div>
+            </IonCol>
+            <IonCol>
+              {cycles.length > 0 ? (
+                <IonList>
+                  <CurrentCycle />
+                  {cycles.length > 1 && <ListProgress />}
+                </IonList>
+              ) : (
+                <div id="progress-block">
+                  <p style={{ fontSize: "13px" }}>
+                    {t("You haven't marked any periods yet")}
+                  </p>
+                </div>
+              )}
+            </IonCol>
           </div>
-        </div>
-        <div id="rectangle-bottom">
-          <IonList class="transparent-center">
-            <CurrentCycle />
-            <ListProgress />
-          </IonList>
-        </div>
-      </IonContent>
+        </IonContent>
+      </div>
     </IonPage>
   );
 };

@@ -52,3 +52,34 @@ ion-toolbar {
 
   --background: var(--ion-color-transparent-basic);
 }
+
+#context-size {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#wide-screen {
+  width: 100%;
+  max-width: 600px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  height: 100%;
+  box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+}
+
+ion-button {
+  --box-shadow: none;
+}
+
+ion-button.mark-button {
+  --border-radius: 16px;
+  --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+  width: 150px;
+}
+
+ion-list {
+  --ion-item-background: transparent;
+}

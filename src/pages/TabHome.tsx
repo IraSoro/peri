@@ -127,7 +127,6 @@ const TabHome = (props: HomeProps) => {
         <IonContent
           className="ion-padding"
           color="transparent-basic"
-          class="home"
         >
           <Welcome
             isOpen={isWelcomeModal}
@@ -135,7 +134,7 @@ const TabHome = (props: HomeProps) => {
             isLanguageModal={props.isLanguageModal}
             setIsLanguageModal={props.setIsLanguageModal}
           />
-          <div id="block">
+          <div id="context-size">
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>
               <IonLabel>
                 <p style={{ fontSize: "40px", color: "var(--ion-color-dark)" }}>
