@@ -43,7 +43,7 @@ describe("getOvulationStatus", () => {
       });
     }
     expect(getOvulationStatus(cycles)).toEqual(
-      `${i18n.t("in")} 9 ${i18n.t("Days_interval", {
+      `${i18n.t("in")} 9 ${i18n.t("Days", {
         postProcess: "interval",
         count: 9,
       })}`,
@@ -326,7 +326,7 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
-      days: `10 ${i18n.t("Days_interval", {
+      days: `10 ${i18n.t("Days", {
         postProcess: "interval",
         count: 10,
       })}`,
@@ -354,7 +354,7 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
-      days: `1 ${i18n.t("Days_interval", {
+      days: `1 ${i18n.t("Days", {
         postProcess: "interval",
         count: 1,
       })}`,
@@ -407,7 +407,7 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
-      days: `1 ${i18n.t("Days_interval", {
+      days: `1 ${i18n.t("Days", {
         postProcess: "interval",
         count: 1,
       })}`,
@@ -435,7 +435,7 @@ describe("getDaysBeforePeriod", () => {
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
-      days: `10 ${i18n.t("Days_interval", {
+      days: `10 ${i18n.t("Days", {
         postProcess: "interval",
         count: 10,
       })}`,

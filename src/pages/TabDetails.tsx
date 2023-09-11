@@ -41,7 +41,7 @@ function useInfoForOneCycle(idx: number): InfoOneCycle {
     };
   }
   const cycleLenNumber = cycles[idx].cycleLength;
-  const cycleLenString = `${cycleLenNumber} ${t("Days_interval", {
+  const cycleLenString = `${cycleLenNumber} ${t("Days", {
     postProcess: "interval",
     count: cycleLenNumber,
   })}`;
@@ -95,7 +95,7 @@ const CurrentCycle = () => {
   const cycles = useContext(CyclesContext).cycles;
   const { t } = useTranslation();
   const dayOfCycle = getDayOfCycle(cycles);
-  const title = `${dayOfCycle} ${t("Days_interval", {
+  const title = `${dayOfCycle} ${t("Days", {
     postProcess: "interval",
     count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
   })}`;
@@ -179,12 +179,12 @@ const TabDetails = () => {
   const averageLengthOfCycle = getAverageLengthOfCycle(cycles);
   const averageLengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
-  const lengthOfCycle = `${averageLengthOfCycle} ${t("Days_interval", {
+  const lengthOfCycle = `${averageLengthOfCycle} ${t("Days", {
     postProcess: "interval",
     count: averageLengthOfCycle,
   })}`;
 
-  const lengthOfPeriod = `${averageLengthOfPeriod} ${t("Days_interval", {
+  const lengthOfPeriod = `${averageLengthOfPeriod} ${t("Days", {
     postProcess: "interval",
     count: averageLengthOfPeriod,
   })}`;
