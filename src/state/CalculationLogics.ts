@@ -211,7 +211,7 @@ export function getPhase(cycles: Cycle[]) {
     luteal: {
       title: i18n.t("Luteal phase"),
       description: {
-        startDescription: i18n.t("Levels of the hormones "),
+        startDescription: i18n.t("Levels of the hormones"),
         hormone: i18n.t("estrogen and progesterone"),
         endDescription: i18n.t(
           "first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.",

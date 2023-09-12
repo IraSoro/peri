@@ -78,7 +78,7 @@ const InfoModal = (props: PropsInfoModal) => {
                 >
                   {phase.title}
                 </span>
-                <span> is current phase of cycle</span>
+                <span> {t("is current phase of cycle")}</span>
               </li>
               <li
                 style={{

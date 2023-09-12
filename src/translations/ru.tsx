@@ -36,8 +36,8 @@ const ru = {
   "Forecast will not be generated.": "Прогноз не будет сгенерирован.",
   or: "или",
   // Info Modal
-  "learn more about the current state": "узнать больше о текущем состоянии",
   "Frequent symptoms": "Частые симптомы",
+  "is current phase of cycle": "- текущая фаза цикла",
   // Phases info
   "Menstrual phase": "Менструация",
   "This cycle is accompanied by": "Этот цикл сопровождается",
