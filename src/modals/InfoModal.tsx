@@ -7,6 +7,7 @@ import {
   IonCardHeader,
   IonCardContent,
 } from "@ionic/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { useTranslation } from "react-i18next";
 import "./InfoModal.css";
 
@@ -17,6 +18,10 @@ import {
   getDayOfCycle,
   getPhase,
 } from "../state/CalculationLogics";
+
+import { Pagination } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
 
 const Phase = () => {
   const cycles = useContext(CyclesContext).cycles;
@@ -74,21 +79,36 @@ const InfoModal = (props: PropsInfoModal) => {
       backdropDismiss={false}
       isOpen={props.isOpen}
     >
-      <div id="small-rectangle"></div>
-      <IonContent
-        className="ion-padding"
-        color="basic"
+      <Swiper
+        modules={[Pagination]}
+        pagination={true}
       >
-        <Phase />
-        <div id="small-rectangle"></div>
-        <IonButton
-          class="ok-modal"
-          color="dark-basic"
-          onClick={() => props.setIsOpen(false)}
-        >
-          Ok
-        </IonButton>
-      </IonContent>
+        <SwiperSlide key={1}>
+          <IonContent
+            fullscreen
+            color="dark-basic"
+          >
+            <IonButton onClick={() => props.setIsOpen(false)}></IonButton>
+            Slide 1
+          </IonContent>
+        </SwiperSlide>
+        <SwiperSlide key={2}>
+          <IonContent
+            fullscreen
+            color="medium"
+          >
+            Slide 2
+          </IonContent>
+        </SwiperSlide>
+        <SwiperSlide key={3}>
+          <IonContent
+            fullscreen
+            color="basic"
+          >
+            Slide 3
+          </IonContent>
+        </SwiperSlide>
+      </Swiper>
     </IonModal>
   );
 };
