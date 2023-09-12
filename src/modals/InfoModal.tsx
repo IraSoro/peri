@@ -1,71 +1,22 @@
 import { useContext } from "react";
-import {
-  IonContent,
-  IonModal,
-  IonButton,
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
-} from "@ionic/react";
+import { IonContent, IonModal, IonButton, IonCol } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
 import { useTranslation } from "react-i18next";
+
+import "swiper/css";
+import "swiper/css/pagination";
+
 import "./InfoModal.css";
 
 import { CyclesContext } from "../state/Context";
 import {
-  getLengthOfLastPeriod,
   getAverageLengthOfCycle,
   getDayOfCycle,
   getPhase,
+  getOvulationStatus,
+  getPregnancyChance,
 } from "../state/CalculationLogics";
-
-import { Pagination } from "swiper";
-import "swiper/css";
-import "swiper/css/pagination";
-
-const Phase = () => {
-  const cycles = useContext(CyclesContext).cycles;
-
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
-  const lengthOfPeriod = getLengthOfLastPeriod(cycles);
-  const currentDay = getDayOfCycle(cycles);
-
-  const { t } = useTranslation();
-
-  const phase = getPhase(lengthOfCycle, lengthOfPeriod, Number(currentDay));
-
-  return (
-    <>
-      <div id="rectangle">
-        <IonCard>
-          <IonCardHeader class="info">{phase.title}</IonCardHeader>
-          <IonCardContent style={{ textAlign: "justify" }}>
-            {phase.description}
-          </IonCardContent>
-        </IonCard>
-      </div>
-      <div id="small-rectangle"></div>
-      <div id="rectangle">
-        <IonCard>
-          <IonCardHeader class="info">{t("Frequent symptoms")}</IonCardHeader>
-          <IonCardContent style={{ textAlign: "justify" }}>
-            <SymptomsList symptoms={phase.symptoms} />
-          </IonCardContent>
-        </IonCard>
-      </div>
-    </>
-  );
-};
-
-interface PropsSymptoms {
-  symptoms: string[];
-}
-
-const SymptomsList = (props: PropsSymptoms) => {
-  const list = props.symptoms.map((item, idx) => <p key={idx}>{item}</p>);
-
-  return <>{list}</>;
-};
 
 interface PropsInfoModal {
   isOpen: boolean;
@@ -73,6 +24,16 @@ interface PropsInfoModal {
 }
 
 const InfoModal = (props: PropsInfoModal) => {
+  const { t } = useTranslation();
+  const cycles = useContext(CyclesContext).cycles;
+
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const currentDay = getDayOfCycle(cycles);
+  const ovulationStatus = getOvulationStatus(cycles);
+  const pregnancyChance = getPregnancyChance(cycles);
+
+  const phase = getPhase(cycles);
+
   return (
     <IonModal
       id="info-modal"
@@ -80,32 +41,160 @@ const InfoModal = (props: PropsInfoModal) => {
       isOpen={props.isOpen}
     >
       <Swiper
+        pagination={{
+          type: "fraction",
+        }}
         modules={[Pagination]}
-        pagination={true}
       >
         <SwiperSlide key={1}>
           <IonContent
-            fullscreen
-            color="dark-basic"
+            className="ion-padding"
+            color="background"
           >
-            <IonButton onClick={() => props.setIsOpen(false)}></IonButton>
-            Slide 1
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "25px",
+                color: "var(--ion-color-dark-basic)",
+                marginBottom: "30px",
+                marginTop: "60px",
+              }}
+            >
+              Day {currentDay}/{lengthOfCycle}
+            </p>
+            <ul>
+              <li
+                style={{
+                  fontSize: "16px",
+                  color: "var(--ion-color-dark)",
+                  marginBottom: "20px",
+                }}
+              >
+                <span
+                  style={{
+                    color: "var(--ion-color-dark-basic)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {phase.title}
+                </span>
+                <span> is current phase of cycle</span>
+              </li>
+              <li
+                style={{
+                  fontSize: "16px",
+                  color: "var(--ion-color-dark)",
+                  marginBottom: "20px",
+                }}
+              >
+                <span>{t("Ovulation")}</span>
+                <span
+                  style={{
+                    color: "var(--ion-color-dark-basic)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {" "}
+                  {ovulationStatus}
+                </span>
+              </li>
+              <li
+                style={{
+                  fontSize: "16px",
+                  color: "var(--ion-color-dark)",
+                  marginBottom: "20px",
+                }}
+              >
+                <span
+                  style={{
+                    color: "var(--ion-color-dark-basic)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {pregnancyChance}
+                </span>
+                <span> {t("chance of getting pregnant")}</span>
+              </li>
+            </ul>
           </IonContent>
         </SwiperSlide>
         <SwiperSlide key={2}>
           <IonContent
-            fullscreen
-            color="medium"
+            className="ion-padding"
+            color="background"
           >
-            Slide 2
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "25px",
+                color: "var(--ion-color-dark-basic)",
+                marginBottom: "30px",
+                marginTop: "60px",
+              }}
+            >
+              Day {currentDay}/{lengthOfCycle}
+            </p>
+            <dl>
+              <dd
+                style={{
+                  fontSize: "16px",
+                  color: "var(--ion-color-dark)",
+                  marginBottom: "20px",
+                }}
+              >
+                <span>{phase.description.startDescription} </span>
+                <span
+                  style={{
+                    color: "var(--ion-color-dark-basic)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {phase.description.hormone}
+                </span>
+                <span> {phase.description.endDescription}</span>
+              </dd>
+            </dl>
           </IonContent>
         </SwiperSlide>
         <SwiperSlide key={3}>
           <IonContent
-            fullscreen
-            color="basic"
+            className="ion-padding"
+            color="background"
           >
-            Slide 3
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "25px",
+                color: "var(--ion-color-dark-basic)",
+                marginBottom: "30px",
+                marginTop: "60px",
+              }}
+            >
+              {t("Frequent symptoms")}
+            </p>
+            <ul>
+              {phase.symptoms.map((item, idx) => (
+                <li
+                  style={{
+                    fontSize: "16px",
+                    color: "var(--ion-color-dark)",
+                    marginBottom: "20px",
+                  }}
+                  key={idx}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <IonCol style={{ marginTop: "50px" }}>
+              <IonButton
+                class="ok"
+                color="dark-basic"
+                onClick={() => props.setIsOpen(false)}
+              >
+                OK
+              </IonButton>
+            </IonCol>
           </IonContent>
         </SwiperSlide>
       </Swiper>

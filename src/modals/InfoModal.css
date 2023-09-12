@@ -1,74 +1,18 @@
-#rectangle {
-  width: 100%;
-  height: 35%;
-  background: #ffffff;
-  border-radius: 20px;
-
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
-
-  transform: translateX(-10%);
-}
-
-#small-rectangle {
-  width: 100%;
-  height: 5%;
-  background: var(--ion-color-basic);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-ion-card-header.info {
-  color: var(--ion-color-dark-basic);
-  text-align: center;
-}
-
-#button-rectangle {
-  width: 100%;
-  height: 10%;
-  background: var(--ion-color-opposite);
-  border-radius: 20px;
-
-  display: flex;
-  align-items: center;
-
-  transform: translateX(85%);
-}
-
-ion-button.ok-modal {
-  font-size: 20px;
-  width: 30%;
-  height: 10%;
-
-  --border-radius: 20px;
-
-  transform: translateX(-40%);
-}
-
 .swiper {
   width: 100%;
   height: 100%;
+  color: var(--ion-color-medium);
 }
 
 .swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
+  text-align: left;
 
-  /* Center slide text vertically */
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
   justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
   align-items: center;
+}
+
+ion-button.ok {
+  --border-radius: 16px;
+  width: 150px;
 }

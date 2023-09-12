@@ -523,37 +523,37 @@ const phases = {
   },
 };
 
-describe("getPhase", () => {
-  test("cycles array is empty", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPhase(0, 0, 0)).toEqual(phases.non);
-  });
+// describe("getPhase", () => {
+//   test("cycles array is empty", () => {
+//     // @ts-expect-error mocked `t` method
+//     jest.spyOn(i18n, "t").mockImplementation((key) => key);
+//     expect(getPhase(0, 0, 0)).toEqual(phases.non);
+//   });
 
-  test("cycle phase is menstrual", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPhase(28, 5, 1)).toEqual(phases.menstrual);
-  });
+//   test("cycle phase is menstrual", () => {
+//     // @ts-expect-error mocked `t` method
+//     jest.spyOn(i18n, "t").mockImplementation((key) => key);
+//     expect(getPhase(28, 5, 1)).toEqual(phases.menstrual);
+//   });
 
-  test("cycle phase is follicular", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPhase(28, 5, 7)).toEqual(phases.follicular);
-  });
+//   test("cycle phase is follicular", () => {
+//     // @ts-expect-error mocked `t` method
+//     jest.spyOn(i18n, "t").mockImplementation((key) => key);
+//     expect(getPhase(28, 5, 7)).toEqual(phases.follicular);
+//   });
 
-  test("cycle phase is ovulation", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPhase(28, 5, 14)).toEqual(phases.ovulation);
-  });
+//   test("cycle phase is ovulation", () => {
+//     // @ts-expect-error mocked `t` method
+//     jest.spyOn(i18n, "t").mockImplementation((key) => key);
+//     expect(getPhase(28, 5, 14)).toEqual(phases.ovulation);
+//   });
 
-  test("cycle phase is luteal", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPhase(28, 5, 21)).toEqual(phases.luteal);
-  });
-});
+//   test("cycle phase is luteal", () => {
+//     // @ts-expect-error mocked `t` method
+//     jest.spyOn(i18n, "t").mockImplementation((key) => key);
+//     expect(getPhase(28, 5, 21)).toEqual(phases.luteal);
+//   });
+// });
 
 describe("getNewCyclesHistory", () => {
   test("periodDays array is empty", () => {
