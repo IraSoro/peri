@@ -4,7 +4,6 @@ import {
   IonModal,
   IonDatetime,
   IonContent,
-  IonItem,
   IonLabel,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
@@ -35,7 +34,7 @@ const MarkModal = (props: PropsMarkModal) => {
     >
       <IonContent
         className="ion-padding"
-        color="basic"
+        color="transparent-basic"
       >
         <div style={{ marginTop: "30px", marginBottom: "40px" }}>
           <IonLabel
@@ -47,6 +46,7 @@ const MarkModal = (props: PropsMarkModal) => {
         </div>
         <IonDatetime
           class="mark-modal"
+          style={{ marginBottom: "40px" }}
           ref={datetimeRef}
           color="light-basic"
           presentation="date"
@@ -59,12 +59,8 @@ const MarkModal = (props: PropsMarkModal) => {
           }}
           value={getPastFuturePeriodDays(cycles)}
         />
-        <IonItem
-          color="basic"
-          lines="none"
-        />
         <IonButton
-          class="edit-buttons"
+          class="mark-modal-buttons"
           color="dark-basic"
           fill="solid"
           onClick={() => {
@@ -81,9 +77,9 @@ const MarkModal = (props: PropsMarkModal) => {
           {t("save")}
         </IonButton>
         <IonButton
-          class="edit-buttons"
+          class="mark-modal-buttons"
           color="dark-basic"
-          fill="outline"
+          fill="clear"
           onClick={() => {
             datetimeRef.current?.cancel().catch((err) => console.error(err));
             props.setIsOpen(false);
