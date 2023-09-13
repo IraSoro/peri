@@ -20,8 +20,6 @@ const InfoModal = (props: PropsInfoModal) => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
 
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
-  const currentDay = getDayOfCycle(cycles);
   const ovulationStatus = getOvulationStatus(cycles);
   const pregnancyChance = getPregnancyChance(cycles);
 
@@ -45,11 +43,11 @@ const InfoModal = (props: PropsInfoModal) => {
             marginBottom: "24px",
           }}
         >
-          {t("Days_interval", {
+          {`${t("Days", {
             postProcess: "interval",
             count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
-          })}{" "}
-          {currentDay}/{lengthOfCycle}
+          })} `}
+          {getDayOfCycle(cycles)}/{getAverageLengthOfCycle(cycles)}
         </p>
         <ul>
           <li
@@ -83,8 +81,7 @@ const InfoModal = (props: PropsInfoModal) => {
                 fontWeight: "bold",
               }}
             >
-              {" "}
-              {ovulationStatus}
+              {` ${ovulationStatus}`}
             </span>
           </li>
           <li
