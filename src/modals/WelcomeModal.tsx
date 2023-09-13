@@ -8,8 +8,6 @@ import {
   IonCol,
   IonDatetime,
 } from "@ionic/react";
-import "./WelcomeModal.css";
-
 import { useTranslation } from "react-i18next";
 
 import { CyclesContext } from "../state/Context";
@@ -79,7 +77,7 @@ const Welcome = (props: PropsWelcomeModal) => {
         </div>
         <IonCol>
           <IonButton
-            class="welcome"
+            class="main"
             color="dark-basic"
             onClick={() => {
               if (datetimeRef.current?.value) {
