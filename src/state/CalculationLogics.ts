@@ -153,20 +153,12 @@ export function getPhase(cycles: Cycle[]) {
   const phases = {
     non: {
       title: "",
-      description: {
-        startDescription: "",
-        hormone: "",
-        endDescription: "",
-      },
+      description: "",
       symptoms: [""],
     },
     menstrual: {
       title: i18n.t("Menstrual phase"),
-      description: {
-        startDescription: i18n.t("This cycle is accompanied by"),
-        hormone: i18n.t("low hormone levels."),
-        endDescription: "",
-      },
+      description: i18n.t("This cycle is accompanied by low hormone levels."),
       symptoms: [
         i18n.t("lack of energy and strength"),
         i18n.t("pain"),
@@ -176,13 +168,9 @@ export function getPhase(cycles: Cycle[]) {
     },
     follicular: {
       title: i18n.t("Follicular phase"),
-      description: {
-        startDescription: i18n.t("The level of"),
-        hormone: i18n.t("estrogen"),
-        endDescription: i18n.t(
-          "in this phase rises and reaches a maximum level.",
-        ),
-      },
+      description: i18n.t(
+        "The level of estrogen in this phase rises and reaches a maximum level.",
+      ),
       symptoms: [
         i18n.t("strength and vigor appear"),
         i18n.t("endurance increases"),
@@ -192,13 +180,9 @@ export function getPhase(cycles: Cycle[]) {
     },
     ovulation: {
       title: i18n.t("Ovulation phase"),
-      description: {
-        startDescription: i18n.t("Once"),
-        hormone: i18n.t("estrogen levels"),
-        endDescription: i18n.t(
-          "peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.",
-        ),
-      },
+      description: i18n.t(
+        "Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.",
+      ),
       symptoms: [
         i18n.t("increased sexual desire"),
         i18n.t("optimistic mood"),
@@ -210,13 +194,9 @@ export function getPhase(cycles: Cycle[]) {
     },
     luteal: {
       title: i18n.t("Luteal phase"),
-      description: {
-        startDescription: i18n.t("Levels of the hormones"),
-        hormone: i18n.t("estrogen and progesterone"),
-        endDescription: i18n.t(
-          "first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.",
-        ),
-      },
+      description: i18n.t(
+        "Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.",
+      ),
       symptoms: [
         i18n.t("breast tenderness"),
         i18n.t("puffiness"),

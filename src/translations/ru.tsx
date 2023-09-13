@@ -40,28 +40,24 @@ const ru = {
   "is current phase of cycle": "- текущая фаза цикла",
   // Phases info
   "Menstrual phase": "Менструация",
-  "This cycle is accompanied by": "Этот цикл сопровождается",
-  "low hormone levels.": "низким уровнем гормонов.",
+  "This cycle is accompanied by low hormone levels.":
+    "Этот цикл сопровождается низким уровнем гормонов.",
   "lack of energy and strength": "недостаток энергии и сил",
   pain: "боль",
   "weakness and irritability": "слабость и раздражительность",
   "increased appetite": "повышенный аппетит",
 
   "Follicular phase": "Фолликулярная фаза",
-  "The level of": "Уровень",
-  estrogen: "эстрогена",
-  "in this phase rises and reaches a maximum level.":
-    "в эту фазу растет и достигает максимального уровня.",
+  "The level of estrogen in this phase rises and reaches a maximum level.":
+    "Уровень эстрогена в эту фазу растет и достигает максимального уровня.",
   "strength and vigor appear": "появляются силы и бодрость",
   "endurance increases": "увеличивается выносливость",
   "new ideas and plans appear": "появляются новые идеи и планы",
   "libido increases": "повышается либидо",
 
   "Ovulation phase": "Овуляция",
-  Once: "Как только",
-  "estrogen levels": "уровень эстрогена",
-  "peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.":
-    "достигает пика, он вызывает выброс двух важных гормонов овуляции — фолликулостимулирующего гормона и лютеинизирующего гормона.",
+  "Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.":
+    "Как только уровень эстрогена достигает пика, он вызывает выброс двух важных гормонов овуляции — фолликулостимулирующего гормона и лютеинизирующего гормона.",
   "increased sexual desire": "усиление полового влечения",
   "optimistic mood": "оптимистичное настроение",
   "mild fever": "незначительное повышение температуры",
@@ -70,10 +66,8 @@ const ru = {
   "characteristic secretions": "характерные выделения",
 
   "Luteal phase": "Лютеиновая фаза",
-  "Levels of the hormones": "Уровни гормонов",
-  "estrogen and progesterone": "эстрогена и прогестерона",
-  "first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.":
-    "сначала повышаются, а прямо перед менструацией резко падают. Прогестерон в лютеиновую фазу достигает своего пика.",
+  "Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.":
+    "Уровни гормонов эстрогена и прогестерона сначала повышаются, а прямо перед менструацией резко падают. Прогестерон в лютеиновую фазу достигает своего пика.",
   "breast tenderness": "чувствительность груди",
   puffiness: "отечность",
   "acne and skin rashes": "акне и высыпания на коже",
