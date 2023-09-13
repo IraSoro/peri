@@ -1,66 +1,15 @@
 import { useContext } from "react";
-import {
-  IonContent,
-  IonModal,
-  IonButton,
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
-} from "@ionic/react";
+import { IonContent, IonModal, IonButton, IonCol } from "@ionic/react";
 import { useTranslation } from "react-i18next";
-import "./InfoModal.css";
 
 import { CyclesContext } from "../state/Context";
 import {
-  getLengthOfLastPeriod,
   getAverageLengthOfCycle,
   getDayOfCycle,
   getPhase,
+  getOvulationStatus,
+  getPregnancyChance,
 } from "../state/CalculationLogics";
-
-const Phase = () => {
-  const cycles = useContext(CyclesContext).cycles;
-
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
-  const lengthOfPeriod = getLengthOfLastPeriod(cycles);
-  const currentDay = getDayOfCycle(cycles);
-
-  const { t } = useTranslation();
-
-  const phase = getPhase(lengthOfCycle, lengthOfPeriod, Number(currentDay));
-
-  return (
-    <>
-      <div id="rectangle">
-        <IonCard>
-          <IonCardHeader class="info">{phase.title}</IonCardHeader>
-          <IonCardContent style={{ textAlign: "justify" }}>
-            {phase.description}
-          </IonCardContent>
-        </IonCard>
-      </div>
-      <div id="small-rectangle"></div>
-      <div id="rectangle">
-        <IonCard>
-          <IonCardHeader class="info">{t("Frequent symptoms")}</IonCardHeader>
-          <IonCardContent style={{ textAlign: "justify" }}>
-            <SymptomsList symptoms={phase.symptoms} />
-          </IonCardContent>
-        </IonCard>
-      </div>
-    </>
-  );
-};
-
-interface PropsSymptoms {
-  symptoms: string[];
-}
-
-const SymptomsList = (props: PropsSymptoms) => {
-  const list = props.symptoms.map((item, idx) => <p key={idx}>{item}</p>);
-
-  return <>{list}</>;
-};
 
 interface PropsInfoModal {
   isOpen: boolean;
@@ -68,26 +17,126 @@ interface PropsInfoModal {
 }
 
 const InfoModal = (props: PropsInfoModal) => {
+  const { t } = useTranslation();
+  const cycles = useContext(CyclesContext).cycles;
+
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const currentDay = getDayOfCycle(cycles);
+  const ovulationStatus = getOvulationStatus(cycles);
+  const pregnancyChance = getPregnancyChance(cycles);
+
+  const phase = getPhase(cycles);
+
   return (
     <IonModal
       id="info-modal"
       backdropDismiss={false}
       isOpen={props.isOpen}
     >
-      <div id="small-rectangle"></div>
       <IonContent
         className="ion-padding"
-        color="basic"
+        color="background"
       >
-        <Phase />
-        <div id="small-rectangle"></div>
-        <IonButton
-          class="ok-modal"
-          color="dark-basic"
-          onClick={() => props.setIsOpen(false)}
+        <p
+          style={{
+            fontWeight: "bold",
+            fontSize: "25px",
+            color: "var(--ion-color-dark-basic)",
+            marginBottom: "24px",
+          }}
         >
-          Ok
-        </IonButton>
+          {`${t("Days", {
+            postProcess: "interval",
+            count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
+          })} `}
+          {currentDay}/{lengthOfCycle}
+        </p>
+        <ul>
+          <li
+            style={{
+              fontSize: "16px",
+              color: "var(--ion-color-dark)",
+              marginBottom: "20px",
+            }}
+          >
+            <span
+              style={{
+                color: "var(--ion-color-dark-basic)",
+                fontWeight: "bold",
+              }}
+            >
+              {phase.title}
+            </span>
+            <span> {t("is current phase of cycle")}</span>
+          </li>
+          <li
+            style={{
+              fontSize: "16px",
+              color: "var(--ion-color-dark)",
+              marginBottom: "20px",
+            }}
+          >
+            <span>{t("Ovulation")}</span>
+            <span
+              style={{
+                color: "var(--ion-color-dark-basic)",
+                fontWeight: "bold",
+              }}
+            >
+              {` ${ovulationStatus}`}
+            </span>
+          </li>
+          <li
+            style={{
+              fontSize: "16px",
+              color: "var(--ion-color-dark)",
+              marginBottom: "20px",
+            }}
+          >
+            <span
+              style={{
+                color: "var(--ion-color-dark-basic)",
+                fontWeight: "bold",
+              }}
+            >
+              {pregnancyChance}
+            </span>
+            <span> {t("chance of getting pregnant")}</span>
+          </li>
+        </ul>
+        <p
+          style={{
+            fontWeight: "bold",
+            fontSize: "25px",
+            color: "var(--ion-color-dark-basic)",
+            marginBottom: "24px",
+          }}
+        >
+          {t("Frequent symptoms")}
+        </p>
+        <ul>
+          {phase.symptoms.map((item, idx) => (
+            <li
+              style={{
+                fontSize: "16px",
+                color: "var(--ion-color-dark)",
+                marginBottom: "20px",
+              }}
+              key={idx}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+        <IonCol>
+          <IonButton
+            class="main"
+            color="dark-basic"
+            onClick={() => props.setIsOpen(false)}
+          >
+            OK
+          </IonButton>
+        </IonCol>
       </IonContent>
     </IonModal>
   );

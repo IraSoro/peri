@@ -62,7 +62,7 @@ export function getPregnancyChance(cycles: Cycle[]) {
   const ovulationDay = cycleLength - lutealPhaseLength;
   const diffDay = ovulationDay - dayOfCycle;
 
-  if (diffDay >= -2 && diffDay <= 4) {
+  if (diffDay >= -2 && diffDay <= 1) {
     return i18n.t("High");
   }
   return i18n.t("Low");
@@ -142,13 +142,13 @@ export function getDayOfCycle(cycles: Cycle[]) {
   return diff;
 }
 
-export function getPhase(
-  lengthOfCycle: number,
-  lengthOfPeriod: number,
-  currentDay: number,
-) {
+export function getPhase(cycles: Cycle[]) {
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const lengthOfPeriod = getLengthOfLastPeriod(cycles);
+  const currentDay = getDayOfCycle(cycles);
+
   const lutealPhaseLength = 14;
-  const ovulationOnError = 3;
+  const ovulationOnError = 2;
 
   const phases = {
     non: {
@@ -208,7 +208,7 @@ export function getPhase(
     },
   };
 
-  if (!lengthOfCycle || !currentDay || !lengthOfPeriod) {
+  if (cycles.length === 0) {
     return phases.non;
   }
 
@@ -220,7 +220,7 @@ export function getPhase(
   if (currentDay <= ovulationDay - ovulationOnError) {
     return phases.follicular;
   }
-  if (currentDay <= ovulationDay) {
+  if (currentDay <= ovulationDay + ovulationOnError) {
     return phases.ovulation;
   }
   return phases.luteal;

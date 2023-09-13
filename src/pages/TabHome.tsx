@@ -14,8 +14,6 @@ import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
 import { CyclesContext } from "../state/Context";
 
-import "./TabHome.css";
-
 import { storage } from "../data/Storage";
 
 import Welcome from "../modals/WelcomeModal";
@@ -163,7 +161,7 @@ const TabHome = (props: HomeProps) => {
             />
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
-                class="mark-button"
+                class="main"
                 color="dark-basic"
                 onClick={() => setIsMarkModal(true)}
               >
