@@ -275,11 +275,11 @@ export const Menu = (props: MenuProps) => {
     >
       <IonList lines="none">
         <IonItem lines="full">
-          <IonLabel color="primary">{t("Preferences")}</IonLabel>
+          <IonLabel color="dark-basic">{t("Preferences")}</IonLabel>
         </IonItem>
         <LanguageSwitcher />
         <IonItem lines="full">
-          <IonLabel color="primary">{t("Edit")}</IonLabel>
+          <IonLabel color="dark-basic">{t("Edit")}</IonLabel>
         </IonItem>
         <Importer />
         <Exporter />
@@ -298,10 +298,10 @@ export const Menu = (props: MenuProps) => {
           >
             <IonIcon
               slot="start"
-              color="warning"
+              color="opposite"
               icon={arrowDownOutline}
             />
-            <IonLabel color="warning">{t("Download latest version")}</IonLabel>
+            <IonLabel color="opposite">{t("Download latest version")}</IonLabel>
           </IonItem>
         )}
       </IonList>
