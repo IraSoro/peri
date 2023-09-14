@@ -126,6 +126,13 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-opposite-contrast-rgb: 0, 0, 0;
   --ion-color-opposite-shade: #c89439;
   --ion-color-opposite-tint: #e6b154;
+
+  --ion-color-less-dark-basic: #6654bf;
+  --ion-color-less-dark-basic-rgb: 102, 84, 191;
+  --ion-color-less-dark-basic-contrast: #ffffff;
+  --ion-color-less-dark-basic-contrast-rgb: 255, 255, 255;
+  --ion-color-less-dark-basic-shade: #5a4aa8;
+  --ion-color-less-dark-basic-tint: #7565c5;
 }
 
 .ion-color-basic {
@@ -180,4 +187,13 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-contrast-rgb: var(--ion-color-opposite-contrast-rgb);
   --ion-color-shade: var(--ion-color-opposite-shade);
   --ion-color-tint: var(--ion-color-opposite-tint);
+}
+
+.ion-color-less-dark-basic {
+  --ion-color-base: var(--ion-color-less-dark-basic);
+  --ion-color-base-rgb: var(--ion-color-less-dark-basic-rgb);
+  --ion-color-contrast: var(--ion-color-less-dark-basic-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-less-dark-basic-contrast-rgb);
+  --ion-color-shade: var(--ion-color-less-dark-basic-shade);
+  --ion-color-tint: var(--ion-color-less-dark-basic-tint);
 }
