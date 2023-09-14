@@ -6,5 +6,5 @@ ion-datetime.edit-modal {
 ion-button.edit-buttons {
   width: 110px;
   float: right;
-  --border-radius: 10px;
+  --border-radius: 16px;
 }

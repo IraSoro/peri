@@ -352,7 +352,7 @@ export function getMarkModalActiveDates(dateString: string, cycles: Cycle[]) {
 
   const futureCycleFinish: Date = new Date(cycles[0].startDate);
   futureCycleFinish.setDate(
-    futureCycleFinish.getDate() + cycles[0].periodLength,
+    futureCycleFinish.getDate() + cycles[0].periodLength - 1,
   );
   futureCycleFinish.setHours(0, 0, 0, 0);
 

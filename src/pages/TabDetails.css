@@ -42,7 +42,7 @@ ion-progress-bar::part(stream) {
 #average-length {
   width: 300px;
   height: 75px;
-  background: var(--ion-color-dark-basic);
+  background: var(--ion-color-less-dark-basic);
   border-radius: 20px;
 
   display: flex;
@@ -50,7 +50,7 @@ ion-progress-bar::part(stream) {
 
 #inline-block {
   width: 149px;
-  background: var(--ion-color-dark-basic);
+  background: var(--ion-color-less-dark-basic);
   border-radius: 20px;
 
   margin-left: 15px;

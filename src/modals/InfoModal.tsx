@@ -61,7 +61,7 @@ const InfoModal = (props: PropsInfoModal) => {
           >
             <span
               style={{
-                color: "var(--ion-color-dark-basic)",
+                color: "var(--ion-color-less-dark-basic)",
                 fontWeight: "bold",
               }}
             >
@@ -79,7 +79,7 @@ const InfoModal = (props: PropsInfoModal) => {
             <span>{t("Ovulation")}</span>
             <span
               style={{
-                color: "var(--ion-color-dark-basic)",
+                color: "var(--ion-color-less-dark-basic)",
                 fontWeight: "bold",
               }}
             >
@@ -95,7 +95,7 @@ const InfoModal = (props: PropsInfoModal) => {
           >
             <span
               style={{
-                color: "var(--ion-color-dark-basic)",
+                color: "var(--ion-color-less-dark-basic)",
                 fontWeight: "bold",
               }}
             >

@@ -3,10 +3,11 @@ ion-tab-bar {
   border: 0;
 
   width: 100%;
-  max-width: 600px;
+  max-width: 594px;
   margin: 0 auto;
 
-  box-shadow: 0 -6px 6px 0 rgb(0, 0, 0, 0.25);
+  border-right: 3px solid rgb(192, 182, 242, 0.4);
+  border-left: 3px solid rgb(192, 182, 242, 0.4);
 }
 
 ion-tab-button {
@@ -48,9 +49,10 @@ ion-toolbar {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 -6px 6px 0 rgb(0, 0, 0, 0.25);
 
   --background: var(--ion-color-transparent-basic);
+  border-right: 3px solid rgb(192, 182, 242, 0.4);
+  border-left: 3px solid rgb(192, 182, 242, 0.4);
 }
 
 #context-size {
@@ -60,14 +62,15 @@ ion-toolbar {
 }
 
 #wide-screen {
+  height: 100%;
   width: 100%;
   max-width: 600px;
 
   margin-left: auto;
   margin-right: auto;
 
-  height: 100%;
-  box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+  border-right: 3px solid rgb(192, 182, 242, 0.4);
+  border-left: 3px solid rgb(192, 182, 242, 0.4);
 }
 
 ion-button {

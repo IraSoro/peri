@@ -35,7 +35,7 @@ const Welcome = (props: PropsWelcomeModal) => {
     >
       <IonContent
         className="ion-padding"
-        color="basic"
+        color="transparent-basic"
       >
         <div
           style={{ marginTop: "20px", textAlign: "center", fontWeight: "bold" }}

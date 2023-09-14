@@ -175,16 +175,13 @@ const CyclesEditor = (props: EditProps) => {
       >
         <IonContent
           className="ion-padding"
-          color="basic"
+          color="transparent-basic"
         >
-          <IonItem
-            color="basic"
-            lines="none"
-          />
           <IonDatetime
             class="edit-modal"
+            style={{ marginBottom: "50px", marginTop: "50px" }}
             ref={datetimeRef}
-            color="white-basic"
+            color="light-basic"
             presentation="date"
             locale={t("locale")}
             size="cover"
@@ -193,12 +190,6 @@ const CyclesEditor = (props: EditProps) => {
             value={getLastPeriodDays(cycles)}
             isDateEnabled={isActiveDates}
           />
-
-          <IonItem
-            color="basic"
-            lines="none"
-          />
-
           <IonButton
             class="edit-buttons"
             color="dark-basic"
@@ -219,7 +210,7 @@ const CyclesEditor = (props: EditProps) => {
           <IonButton
             class="edit-buttons"
             color="dark-basic"
-            fill="outline"
+            fill="clear"
             onClick={() => {
               datetimeRef.current?.cancel().catch((err) => console.error(err));
               props.setIsOpen(false);
@@ -275,11 +266,11 @@ export const Menu = (props: MenuProps) => {
     >
       <IonList lines="none">
         <IonItem lines="full">
-          <IonLabel color="primary">{t("Preferences")}</IonLabel>
+          <IonLabel color="dark-basic">{t("Preferences")}</IonLabel>
         </IonItem>
         <LanguageSwitcher />
         <IonItem lines="full">
-          <IonLabel color="primary">{t("Edit")}</IonLabel>
+          <IonLabel color="dark-basic">{t("Edit")}</IonLabel>
         </IonItem>
         <Importer />
         <Exporter />
@@ -298,10 +289,10 @@ export const Menu = (props: MenuProps) => {
           >
             <IonIcon
               slot="start"
-              color="warning"
+              color="opposite"
               icon={arrowDownOutline}
             />
-            <IonLabel color="warning">{t("Download latest version")}</IonLabel>
+            <IonLabel color="opposite">{t("Download latest version")}</IonLabel>
           </IonItem>
         )}
       </IonList>

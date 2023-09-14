@@ -3,8 +3,8 @@ ion-datetime.mark-modal {
   border: 2px var(--ion-color-light) solid;
 }
 
-ion-button.save-buttons {
+ion-button.mark-modal-buttons {
   width: 110px;
   float: right;
-  --border-radius: 10px;
+  --border-radius: 16px;
 }

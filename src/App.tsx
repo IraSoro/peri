@@ -59,7 +59,7 @@ const Badge = () => {
         position: "fixed",
         right: 5,
         top: 5,
-        backgroundColor: "orange",
+        backgroundColor: "var(--ion-color-opposite)",
         minWidth: 10,
         minHeight: 10,
         borderRadius: 10,
