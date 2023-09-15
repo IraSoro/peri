@@ -1,11 +1,6 @@
-<!-- PROJECT LOGO -->
-
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="./public/assets/icon/icon.svg" alt="Logo" width="80" height="80">
-  </a>
+    <img src="./public/assets/icon/favicon.ico" alt="Logo" width="80" height="80">
   <h3 align="center">Peri</h3>
-
   <p align="center">
     The Period Tracker App
   </p>
@@ -14,28 +9,22 @@
   </p>
 </p>
 
-<!-- ABOUT THE PROJECT -->
 ### About The Project
 
-Peri is period tracker application. The application has the necessary features that help you track your cycle. App show:
+Peri is period tracker application. The application has the necessary features that help you track your cycle. The app shows:
 
-- number of days before menstruation,
+- number of days before period,
 - current cycle day,
 - chance of getting pregnant,
-- the number of days before ovulation,
-- possible next cycle date,
+- number of days before ovulation,
+- possible next period date,
 - history of previous cycles,
-- the average value of the length of the cycle and the average value of the length of menstruation.
+- the average value of the cycle length and the average value of the period length.
 
-Also keeps track of the current phase of the cycle. And displays information about this phase and the symptoms that a woman may feel in this phase.
+It also tracks the current phase of the cycle. And displays information about this phase and the symptoms that a woman may feel during this phase.
 
-### Built With
+See the [open issues](https://github.com/IraSoro/peri/issues) and [project](https://github.com/users/IraSoro/projects/4/views/1) for a full list of known issues.
 
-- [Ionic](https://ionicframework.com/)
-- [React](https://reactjs.org/)
-- [Ionic Storage](https://github.com/ionic-team/ionic-storage)
-
-<!-- USAGE EXAMPLES -->
 ### Usage
 
 <table>
@@ -60,20 +49,6 @@ Also keeps track of the current phase of the cycle. And displays information abo
     <td align="center">Edit cycles</td>
   </tr>
  </table>
-
- <!-- FUTURE FEATURES -->
-### Future features
-
-- [ ] Sync data with other apps
-- [x] Multi-language Support
-- [x] Mark the days of your period on the calendar
-
-See the [open issues](https://github.com/IraSoro/peri/issues) and [project](https://github.com/users/IraSoro/projects/4/views/1) for a full list of proposed features (and known issues).
-
- <!-- ICON -->
-### Icon
-
-From <https://www.svgrepo.com/svg/14201/uterus-and-fallopian-tube-inside-woman-body-outline>
 
 ### How to build
 
