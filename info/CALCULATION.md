@@ -1,14 +1,15 @@
-# Описание вычислений
+# Description of calculations
 
-Введем два основных понятия, которые лежат в основе вычислений: длина цикла и длина месячных.
+Let us introduce two basic concepts that are necessary for calculations: cycle length and period length.
 
-__Длина месячных__ - дни выделения крови из матки у женщины.
-__Длина цикла__ - количество дней от первого дня текущих месячных до первого дня следующих. Месячные являются частью цикла. С них начинается цикл.
-Длина месячных обычно составляет 3-7 дней, длина цикла 21-35 дней. Отметим, что каждый новый цикл эти значения могут меняться.
+__Period length__ - days of release of blood from the uterus in a woman.
+__Cycle length__ - count of days from the first day of the current period to the first day of the next period. Period is part of the cycle. The cycle begins with it.
 
-## Вычисление предполагаемой даты начала следующих месячных
+The length of period usually 3-7 days, the length usually 21-35 days. These values may change each new cycle.
 
-Допустим, мы знаем дату начала текущих месячных, среднее значение длины цикла. Тогда, чтобы узнать дату начала следующих месячных нужно:
+## Calculation the expected start date of the next period
+
+Let's say we know the start date of the last period and average cycle length. Then, to calculate the start date of the next period you need:
 
 ```ts
 function getNextPeriod(startDate: Date, cycleLength: number){
@@ -16,11 +17,11 @@ function getNextPeriod(startDate: Date, cycleLength: number){
 }
 ```
 
-Значение предполагаемое, потому что длина каждого нового цикла может отличаться и это нормально. Длина месячных также может отличаться, поэтому длина следующих месячных вычисляется как среднее значение предыдущих.
+But we only got the expected value, because the length of each new cycle is not always the same and this is normal. The length of the period may also change, so the length of the next period is calculated as the average value of previous ones.
 
-## Текущий день цикла
+## Current day of cycle
 
-Текущий день цикла важен для дальнейших вычислений. В зависимости от того, какой сейчас день цикла, в организме происходят изменения, о которых будет написано ниже. Поэтому для начала опишем как он вычисляется:
+The current day of the cycle is important for next calculations. Depending on what day of the cycle it is, experience changes in the body (this is written below). This value is calculated as follows:
 
 ```ts
 function getCurrentDay(startDate: Date, cycleLength: number){
@@ -29,22 +30,22 @@ function getCurrentDay(startDate: Date, cycleLength: number){
 }
 ```
 
-## День овуляции
+## Ovulation day
 
-### Немного о том, что такое овуляция
+### What is ovulation
 
-Овуляция - это выход зрелой яйцеклетки из фолликула яичника в брюшную полость. Яйцеклетка ждет своего оплодотворения 12-48 часов. Дальше оплодотворение невозможно. Таким образом только в овуляцию девушка может забеременеть.
+__Ovulation__ is the release of a mature egg from an ovarian follicle into the abdomen. The egg waits 12-48 hours for fertilization. Further fertilization is impossible. So, only during ovulation can a woman become pregnant.
 
-Определение дней овуляции расчетами носит только примерный характер, который берет средние значения. На деле все намного сложнее: овуляция может быть ранней или поздней, ее может быть две, а может не быть и вовсе и тд. Точно узнать, когда произошла овуляция, можно только с помощью специальных медицинских тестов. Но у многих день овуляции все-таки совпадает с вычислениями.
+Definition of the day of ovulation by calculations is only approximate. There are many reasons for this: ovulation may be early or late, there may be two, or there may not be, etc. You can find out exactly when ovulation occurred only with the help of special medical tests. But often ovulation coincides with calculations.
 
-### Как рассчитать день овуляции
+### How to calculate the day of ovulation
 
-Мы знаем значение длины цикла и дату начала текущего цикла. Для примера пусть длина цикла будет 30 дней. В большинстве случаев овуляция происходит за 14 дней до начала месячных, то есть за 14 дней до начала нового цикла. Следовательно, если длина цикла 30 дней, тогда овуляция произойдет на ```30-14=16``` день цикла.
+We know the value of the cycle length and the start date of the current cycle. For example, let the length of cycle is 30 days. In most cases, ovulation occurs 14 days before the start of your period (14 days before the start of a new cycle). Therefore, if the cycle length is 30 days, then ovulation will occur on ```30-14=16``` day of the cycle.
 
-Конкретный пример с датами:
-Пусть месячные (а следовательно и цикл) начались 1 января, средняя длина месячных 25 дней. Тогда овуляция произойдет на 11 дней цикла, то есть 11 января.
+Another example with dates:
+Let period (and therefore the cycle) begin on January 1, the average length of cycle is 25 days. Then ovulation will occur on the 11th day of the cycle, that is, January 11.
 
-Таким образом, функция будет выглядеть следующим образом:
+So the function will look like this:
 
 ```ts
 function getOvulationStatus(startDate: Date, cycleLength: number){
@@ -61,7 +62,7 @@ function getOvulationStatus(startDate: Date, cycleLength: number){
 }
 ```
 
-Немного усовершенствуем функцию. Так как яйцеклетка может существовать 12-48 часов, следовательно овуляция может длиться дольше на 2 дня. Тогда функция будет выглядеть следующим образом:
+Let's improve the function. Since the egg can exist for 12-48 hours, so ovulation can last 2 days longer. Then the function will look like this:
 
 ```ts
 function getOvulationStatus(startDate: Date, cycleLength: number){
@@ -81,9 +82,9 @@ function getOvulationStatus(startDate: Date, cycleLength: number){
 }
 ```
 
-## Шанс забеременеть
+## Chance of getting pregnant
 
-Как написано выше, беременность происходит только в овуляцию. Тогда получается, что в дни овуляции высокий шанс забеременеть. Тогда функция будет выглядеть так:
+As written above, the pregnancy occurs only during ovulation. Therefore, during ovulation there is a high chance of getting pregnant. Then the function will look like this:
 
 ```ts
 function getPregnancyChance(startDate: Date, cycleLength: number){
@@ -97,7 +98,7 @@ function getPregnancyChance(startDate: Date, cycleLength: number){
 }
 ```
 
-Но, как описано в предыдущем разделе, овуляция может происходить не только в день расчетов. Поэтому добавим равную в 2 дня погрешность:
+But ovulation can occurs not only on the day of calculation. So, let's add an error equal to 2 days:
 
 ```ts
 function getPregnancyChance(startDate: Date, cycleLength: number){
@@ -112,9 +113,9 @@ function getPregnancyChance(startDate: Date, cycleLength: number){
 }
 ```
 
-## Количество дней до месячных
+## Days before period
 
-Чтобы узнать сколько дней осталось до месячных, нам необходимо два вводных значения: средняя длина цикла ```lengthCycle``` и дата начала текущего цикла ```startDate```. Тогда расчеты будут выглядеть так:
+To find out how many days are left before period, we need to know two values: the average cycle length ```lengthCycle``` and the start date of the current cycle ```startDate```. Then the calculation will look like this:
 
 ```ts
 function getDaysBeforePeriod(startDate: Date, cycleLength: number){
@@ -127,9 +128,9 @@ function getDaysBeforePeriod(startDate: Date, cycleLength: number){
 }
 ```
 
-Может возникнуть ситуация, когда предполагаемый день месячный прошел, а месячные так и не наступили. В этом случае введем понятие "задержка". Учитывать ее также нужно. Задержка до 8-10 дней считается нормой, больше может говорить о некоторых проблемах со здоровьем, беременности или других факторах.
+Let's introduce one more concepts - __delay__. A delay for 8-10 days is normal, more may indicate some health problems, pregnancy or other.
 
-После этого функция будет выглядеть так:
+Then the function will look like this:
 
 ```ts
 function getDaysBeforePeriod(startDate: Date, cycleLength: number){
@@ -141,30 +142,30 @@ function getDaysBeforePeriod(startDate: Date, cycleLength: number){
     if (diff === 0){
         return "Period is today";
     }
-    return `Period in ${Math.abs(diff)} Days`;
+    return `Delay in ${Math.abs(diff)} Days`;
 }
 ```
 
-## Фазы цикла
+## Phase of the cycle
 
-### Теоретическая информация
+### Theoretical information
 
-Весь менструальный цикл можно разделить на 2 фазы: фолликулярную и лютеиновую. Фолликулярна фаза начинается с первого дня месячных и продолжается до овуляции. Лютеиновая фаза начинается после овуляции и заканчивается месячными. В течение этих фаз главные гормоны постоянно перестраиваются, что сказывается на самочувствие. Ниже на картинке представлен график 28-дневного цикла. На нем показано, как меняются гормоны в каждую фазу.
+The menstrual cycle can be divides into two phases: follicular and luteal. The follicular phase begins on the first day of period and ends with ovulation. The luteal phase begins after ovulation and ends with period. During these phases the main hormones are constantly rearranged, which affects the woman’s well-being. The picture below shows a graph of a 28-day cycle. It shows how hormones change during each phase
 
-![Фазы менструального цикла](https://qpicture.ru/images/2022/12/27/crc.jpg)
+![Phase of the menstrual cycle](https://crh.ucsf.edu/media/2021/09/graph-Menstrual_Cycle.png)
 
-Как видно на графике, дни месячных входят в фолликулярную фазу. Однако, для более точного описание состояния организма, я выделила 4 фазы:
+As can be seen in the graph, days of menstruation are part of the follicular phase. But for more accurate description of the state of the body, I identified 4 phases:
 
-- Менструальная фаза
-- Фолликулярная фаза
-- Овуляция
-- Лютеиновая фаза.
+- Menstrual phase
+- Follicular phase
+- Ovulation
+- Luteal phase.
 
-Для каждой фазы из-за перестройки гормонов свойственны характерные симптомы. Наиболее частый и показательный из них - это либидо (перед и во время овуляции оно возрастает), ПМС (характерен для лютеиновой фазы) и др.
+Each phase has characteristic symptoms. The most common and indicative of them are libido (it increases before and during ovulation), PMS (in the luteal phase), etc.
 
-### Расчет текущей фазы
+### Calculation of the current phase
 
-Для расчетов нам необходимы три вводных значения: длина цикла ```lengthCycle```, длина месячных ```lengthPeriod``` и дата начала цикла ```startDate```. Как описано выше, деление фаз зависит от овуляции, значит ее расчеты также необходимы. Функция будет выглядеть следующим образом:
+For calculations we need to know three values: the length of cycle ```lengthCycle```, the length of period ```lengthPeriod``` and start date of the cycle ```startDate```. As written above, the division of phases depends on ovulation, which means it's calculations are also necessary. The function will look like this:
 
 ```ts
 function getPhase(cycleLength: number, periodLength: number, startDate: Date){
@@ -184,7 +185,7 @@ function getPhase(cycleLength: number, periodLength: number, startDate: Date){
 }
 ```
 
-## Источники
+## Sources
 
 - "[Period Power](https://www.amazon.com/Period-Power-Harness-Hormones-Working/dp/147296361X): Harness Your Hormones and Get Your Cycle Working For You" by Maisie Hill;
 - "[Viva la vagina.](https://www.litres.ru/book/nina-brokmann/viva-la-vagina-hvatit-zamalchivat-skrytye-vozmozhnosti-organ-31217415/) Хватит замалчивать скрытые возможности органа, который не принято называть" by Nina Brochmann and Ellen Stokken Dahl.
