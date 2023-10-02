@@ -49,12 +49,12 @@ __Овуляция__ - это выход зрелой яйцеклетки из 
 ```ts
 function getOvulationStatus(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff > 14){
-        return `Ovulation in ${diff - 14} Days`;
+    if (diffInDays > 14){
+        return `Ovulation in ${diffInDays - 14} Days`;
     }
-    if (diff === 14){
+    if (diffInDays === 14){
         return "Ovulation today";
     }
     return "Ovulation finished";
@@ -66,15 +66,15 @@ function getOvulationStatus(startDate: Date, cycleLength: number){
 ```ts
 function getOvulationStatus(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff > 14){
-        return `Ovulation in ${diff - 14} Days`;
+    if (diffInDays > 14){
+        return `Ovulation in ${diffInDays - 14} Days`;
     }
-    if (diff === 14){
+    if (diffInDays === 14){
         return "Ovulation today";
     }
-    if (diff >= 12){
+    if (diffInDays >= 12){
         "Ovulation possible"
     }
     return "Ovulation finished";
@@ -88,9 +88,9 @@ function getOvulationStatus(startDate: Date, cycleLength: number){
 ```ts
 function getPregnancyChance(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff === 14){
+    if (diffInDays === 14){
         return "High";
     }
     return "Low";
@@ -103,9 +103,9 @@ function getPregnancyChance(startDate: Date, cycleLength: number){
 function getPregnancyChance(startDate: Date, cycleLength: number){
     const error = 2;
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff >= 14 - error && diff <= 14 + error){
+    if (diffInDays >= 14 - error && diffInDays <= 14 + error){
         return "High";
     }
     return "Low";
@@ -119,11 +119,11 @@ function getPregnancyChance(startDate: Date, cycleLength: number){
 ```ts
 function getDaysBeforePeriod(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cyclesLength - currentDay;
-    if (diff === 0){
+    const diffInDays = cyclesLength - currentDay;
+    if (diffInDays === 0){
         return "Period is today";
     }
-    return `Period in ${diff} Days`;
+    return `Period in ${diffInDays} Days`;
 }
 ```
 
@@ -134,14 +134,14 @@ function getDaysBeforePeriod(startDate: Date, cycleLength: number){
 ```ts
 function getDaysBeforePeriod(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cyclesLength - currentDay;
-    if (diff > 0){
-        return `Period in ${diff} Days`;
+    const diffInDays = cyclesLength - currentDay;
+    if (diffInDays > 0){
+        return `Period in ${diffInDays} Days`;
     }
-    if (diff === 0){
+    if (diffInDays === 0){
         return "Period is today";
     }
-    return `Delay ${Math.abs(diff)} Days`;
+    return `Delay ${Math.abs(diffInDays)} Days`;
 }
 ```
 

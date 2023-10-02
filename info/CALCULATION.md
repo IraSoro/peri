@@ -1,6 +1,6 @@
 # Description of calculations
 
-Let us introduce two basic concepts that are necessary for calculations: cycle length and period length.
+Let's introduce two basic concepts that are necessary for calculations: cycle length and period length.
 
 __Period length__ - days of release of blood from the uterus in a woman.
 __Cycle length__ - count of days from the first day of the current period to the first day of the next period. Period is part of the cycle. The cycle begins with it.
@@ -9,7 +9,7 @@ The length of period usually 3-7 days, the length usually 21-35 days. These valu
 
 ## Calculation the expected start date of the next period
 
-Let's say we know the start date of the last period and average cycle length. Then, to calculate the start date of the next period you need:
+Let's say we know the start date of the last period and average cycle length. Then, to calculate the start date of the next period you should:
 
 ```ts
 function getNextPeriod(startDate: Date, cycleLength: number){
@@ -50,12 +50,12 @@ So the function will look like this:
 ```ts
 function getOvulationStatus(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff > 14){
-        return `Ovulation in ${diff - 14} Days`;
+    if (diffInDays > 14){
+        return `Ovulation in ${diffInDays - 14} Days`;
     }
-    if (diff === 14){
+    if (diffInDays === 14){
         return "Ovulation today";
     }
     return "Ovulation finished";
@@ -67,15 +67,15 @@ Let's improve the function. Since the egg can exist for 12-48 hours, so ovulatio
 ```ts
 function getOvulationStatus(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff > 14){
-        return `Ovulation in ${diff - 14} Days`;
+    if (diffInDays > 14){
+        return `Ovulation in ${diffInDays - 14} Days`;
     }
-    if (diff === 14){
+    if (diffInDays === 14){
         return "Ovulation today";
     }
-    if (diff >= 12){
+    if (diffInDays >= 12){
         "Ovulation possible"
     }
     return "Ovulation finished";
@@ -89,9 +89,9 @@ As written above, the pregnancy occurs only during ovulation. Therefore, during 
 ```ts
 function getPregnancyChance(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff === 14){
+    if (diffInDays === 14){
         return "High";
     }
     return "Low";
@@ -104,9 +104,9 @@ But ovulation can occurs not only on the day of calculation. So, let's add an er
 function getPregnancyChance(startDate: Date, cycleLength: number){
     const error = 2;
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cycleLength - currentDay;
+    const diffInDays = cycleLength - currentDay;
 
-    if (diff >= 14 - error && diff <= 14 + error){
+    if (diffInDays >= 14 - error && diffInDays <= 14 + error){
         return "High";
     }
     return "Low";
@@ -120,11 +120,11 @@ To find out how many days are left before period, we need to know two values: th
 ```ts
 function getDaysBeforePeriod(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cyclesLength - currentDay;
-    if (diff === 0){
+    const diffInDays = cyclesLength - currentDay;
+    if (diffInDays === 0){
         return "Period is today";
     }
-    return `Period in ${diff} Days`;
+    return `Period in ${diffInDays} Days`;
 }
 ```
 
@@ -135,14 +135,14 @@ Then the function will look like this:
 ```ts
 function getDaysBeforePeriod(startDate: Date, cycleLength: number){
     const currentDay = getCurrentDay(startDate, cycleLength);
-    const diff = cyclesLength - currentDay;
-    if (diff > 0){
-        return `Period in ${diff} Days`;
+    const diffInDays = cyclesLength - currentDay;
+    if (diffInDays > 0){
+        return `Period in ${diffInDays} Days`;
     }
-    if (diff === 0){
+    if (diffInDays === 0){
         return "Period is today";
     }
-    return `Delay in ${Math.abs(diff)} Days`;
+    return `Delay in ${Math.abs(diffInDays)} Days`;
 }
 ```
 
