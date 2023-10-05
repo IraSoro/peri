@@ -18,7 +18,6 @@ import { CyclesContext } from "../state/Context";
 import { storage } from "../data/Storage";
 
 import Welcome from "../modals/WelcomeModal";
-import MarkModal from "../modals/MarkModal";
 import InfoModal from "../modals/InfoModal";
 
 import {
@@ -28,6 +27,7 @@ import {
   getNewCyclesHistory,
   getLastPeriodDays,
   getActiveDates,
+  getPastFuturePeriodDays,
 } from "../state/CalculationLogics";
 
 import { chevronForwardOutline } from "ionicons/icons";
@@ -79,7 +79,6 @@ interface HomeProps {
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
-  const [isMarkModal, setIsMarkModal] = useState(false);
 
   const router = useIonRouter();
 
@@ -92,13 +91,7 @@ const TabHome = (props: HomeProps) => {
 
   useEffect(() => {
     const backButtonHandler = () => {
-      if (
-        isMarkModal ||
-        isInfoModal ||
-        props.isLanguageModal ||
-        props.isEditModal
-      ) {
-        setIsMarkModal(false);
+      if (isInfoModal || props.isLanguageModal || props.isEditModal) {
         setIsInfoModal(false);
         props.setIsLanguageModal(false);
         props.setIsEditModal(false);
@@ -116,7 +109,7 @@ const TabHome = (props: HomeProps) => {
     return () => {
       document.removeEventListener("ionBackButton", backButtonHandler);
     };
-  }, [router, isInfoModal, isMarkModal, props]);
+  }, [router, isInfoModal, props]);
 
   const { t } = useTranslation();
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
@@ -174,15 +167,17 @@ const TabHome = (props: HomeProps) => {
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
                 class="main"
+                style={{ width: "200px" }}
                 color="dark-basic"
-                onClick={() => setIsMarkModal(true)}
+                onClick={() => {
+                  const newCycles = getNewCyclesHistory(
+                    getPastFuturePeriodDays(cycles),
+                  );
+                  updateCycles(newCycles);
+                }}
               >
-                {t("mark")}
+                {t("mark period today")}
               </IonButton>
-              <MarkModal
-                isOpen={isMarkModal}
-                setIsOpen={setIsMarkModal}
-              />
             </IonCol>
             <IonCol>
               <IonDatetime
