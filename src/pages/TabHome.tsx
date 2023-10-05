@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   IonContent,
   IonPage,
@@ -8,6 +8,7 @@ import {
   IonButton,
   IonCol,
   IonIcon,
+  IonButtons,
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -23,8 +24,10 @@ import InfoModal from "../modals/InfoModal";
 import {
   getPregnancyChance,
   getDaysBeforePeriod,
-  isPastPeriodsDays,
   isForecastPeriodDays,
+  getNewCyclesHistory,
+  getLastPeriodDays,
+  getActiveDates,
 } from "../state/CalculationLogics";
 
 import { chevronForwardOutline } from "ionicons/icons";
@@ -116,8 +119,17 @@ const TabHome = (props: HomeProps) => {
   }, [router, isInfoModal, isMarkModal, props]);
 
   const { t } = useTranslation();
-  const cycles = useContext(CyclesContext).cycles;
-  const daysBeforePeriod = getDaysBeforePeriod(cycles);
+  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+  const { cycles, updateCycles } = useContext(CyclesContext);
+
+  useEffect(() => {
+    if (!datetimeRef.current) return;
+    const lastPeriodDays = getLastPeriodDays(cycles);
+    if (!lastPeriodDays.length) {
+      return;
+    }
+    datetimeRef.current.value = getLastPeriodDays(cycles);
+  }, [cycles]);
 
   return (
     <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
@@ -136,7 +148,7 @@ const TabHome = (props: HomeProps) => {
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>
               <IonLabel>
                 <p style={{ fontSize: "40px", color: "var(--ion-color-dark)" }}>
-                  {daysBeforePeriod.title}
+                  {getDaysBeforePeriod(cycles).title}
                 </p>
               </IonLabel>
             </div>
@@ -150,7 +162,7 @@ const TabHome = (props: HomeProps) => {
                     marginBottom: "30px",
                   }}
                 >
-                  {daysBeforePeriod.days}
+                  {getDaysBeforePeriod(cycles).days}
                 </p>
               </IonLabel>
             </div>
@@ -175,33 +187,51 @@ const TabHome = (props: HomeProps) => {
             <IonCol>
               <IonDatetime
                 style={{ borderRadius: "20px" }}
-                color="basic"
+                ref={datetimeRef}
+                color="light-basic"
                 presentation="date"
                 locale={t("locale")}
                 size="cover"
+                multiple
                 firstDayOfWeek={1}
+                // isDateEnabled={(date: string) => {
+                //   return getActiveDates(date, cycles);
+                // }}
                 highlightedDates={(isoString) => {
                   if (cycles.length === 0) {
                     return undefined;
                   }
 
                   const date = new Date(isoString);
-
-                  if (isPastPeriodsDays(date, cycles)) {
-                    return {
-                      textColor: "var(--ion-color-dark-basic)",
-                      backgroundColor: "var(--ion-color-light-basic)",
-                    };
-                  } else if (isForecastPeriodDays(date, cycles)) {
+                  if (isForecastPeriodDays(date, cycles)) {
                     return {
                       textColor: "var(--ion-color-dark)",
-                      backgroundColor: "#e3dfff",
+                      backgroundColor: "var(--ion-color-transparent-basic)",
                     };
                   }
 
                   return undefined;
                 }}
-              />
+              >
+                <IonButtons slot="buttons">
+                  <IonButton
+                    color="primary"
+                    onClick={() => {
+                      datetimeRef.current
+                        ?.confirm()
+                        .catch((err) => console.error(err));
+                      if (datetimeRef.current?.value) {
+                        const newCycles = getNewCyclesHistory(
+                          [datetimeRef.current.value].flat(),
+                        );
+                        updateCycles(newCycles);
+                      }
+                    }}
+                  >
+                    save
+                  </IonButton>
+                </IonButtons>
+              </IonDatetime>
             </IonCol>
           </div>
         </IonContent>
