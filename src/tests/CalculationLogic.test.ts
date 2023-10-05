@@ -739,7 +739,7 @@ describe("getActiveDates", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getActiveDates("", [], 0)).toEqual(true);
+    expect(getActiveDates("", [])).toEqual(true);
   });
 
   test("cycles array has a few items and date is less than the finish of the current cycle", () => {
@@ -764,7 +764,7 @@ describe("getActiveDates", () => {
     const dateCheck = new Date(cycles[0].startDate);
     dateCheck.setDate(dateCheck.getDate() + 10);
 
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       true,
     );
   });
@@ -791,7 +791,7 @@ describe("getActiveDates", () => {
     const dateCheck = new Date(cycles[0].startDate);
     dateCheck.setDate(dateCheck.getDate() + 40);
 
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       false,
     );
   });
@@ -818,7 +818,7 @@ describe("getActiveDates", () => {
     const dateCheck = new Date(cycles[0].startDate);
     dateCheck.setDate(dateCheck.getDate() + 10);
 
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       true,
     );
   });
@@ -845,7 +845,7 @@ describe("getActiveDates", () => {
     const dateCheck = new Date(cycles[0].startDate);
     dateCheck.setDate(dateCheck.getDate() + 40);
 
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles, 28)).toEqual(
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       false,
     );
   });

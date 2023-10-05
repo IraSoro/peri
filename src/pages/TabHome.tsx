@@ -9,6 +9,7 @@ import {
   IonCol,
   IonIcon,
   IonButtons,
+  useIonAlert,
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -28,6 +29,7 @@ import {
   getLastPeriodDays,
   getActiveDates,
   getPastFuturePeriodDays,
+  isPeriodToday,
 } from "../state/CalculationLogics";
 
 import { chevronForwardOutline } from "ionicons/icons";
@@ -79,6 +81,7 @@ interface HomeProps {
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [periodTodayAlert] = useIonAlert();
 
   const router = useIonRouter();
 
@@ -170,6 +173,13 @@ const TabHome = (props: HomeProps) => {
                 style={{ width: "200px" }}
                 color="dark-basic"
                 onClick={() => {
+                  if (isPeriodToday(cycles)) {
+                    periodTodayAlert({
+                      header: "Period today",
+                      buttons: ["OK"],
+                    }).catch((err) => console.log(err));
+                    return;
+                  }
                   const newCycles = getNewCyclesHistory(
                     getPastFuturePeriodDays(cycles),
                   );
@@ -189,9 +199,9 @@ const TabHome = (props: HomeProps) => {
                 size="cover"
                 multiple
                 firstDayOfWeek={1}
-                // isDateEnabled={(date: string) => {
-                //   return getActiveDates(date, cycles);
-                // }}
+                isDateEnabled={(date: string) => {
+                  return getActiveDates(date, cycles);
+                }}
                 highlightedDates={(isoString) => {
                   if (cycles.length === 0) {
                     return undefined;
@@ -201,7 +211,7 @@ const TabHome = (props: HomeProps) => {
                   if (isForecastPeriodDays(date, cycles)) {
                     return {
                       textColor: "var(--ion-color-dark)",
-                      backgroundColor: "var(--ion-color-transparent-basic)",
+                      backgroundColor: "var(--ion-color-light-basic)",
                     };
                   }
 
@@ -210,7 +220,8 @@ const TabHome = (props: HomeProps) => {
               >
                 <IonButtons slot="buttons">
                   <IonButton
-                    color="primary"
+                    color="dark-basic"
+                    style={{ fontSize: "16px" }}
                     onClick={() => {
                       datetimeRef.current
                         ?.confirm()
