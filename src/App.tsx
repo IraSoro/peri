@@ -55,8 +55,8 @@ const Badge = () => {
     <div
       style={{
         position: "fixed",
-        right: 5,
-        top: 5,
+        left: 42,
+        top: 0,
         backgroundColor: "var(--ion-color-opposite)",
         minWidth: 10,
         minHeight: 10,
@@ -69,7 +69,6 @@ const Badge = () => {
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [isLanguageModal, setIsLanguageModal] = useState(false);
-  const [isEditModal, setIsEditModal] = useState(false);
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
@@ -124,11 +123,7 @@ const App: React.FC = () => {
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
       <IonApp>
-        <Menu
-          isEditModal={isEditModal}
-          setIsEditModal={setIsEditModal}
-          contentId="main-content"
-        />
+        <Menu contentId="main-content" />
         <IonReactRouter>
           <IonHeader
             class="ion-no-border"
@@ -150,8 +145,6 @@ const App: React.FC = () => {
                   <TabHome
                     isLanguageModal={isLanguageModal}
                     setIsLanguageModal={setIsLanguageModal}
-                    isEditModal={isEditModal}
-                    setIsEditModal={setIsEditModal}
                   />
                 </Route>
 

@@ -74,8 +74,6 @@ const InfoButton = (props: InfoButtonProps) => {
 interface HomeProps {
   isLanguageModal: boolean;
   setIsLanguageModal: (newIsOpen: boolean) => void;
-  isEditModal: boolean;
-  setIsEditModal: (newIsOpen: boolean) => void;
 }
 
 const TabHome = (props: HomeProps) => {
@@ -94,10 +92,9 @@ const TabHome = (props: HomeProps) => {
 
   useEffect(() => {
     const backButtonHandler = () => {
-      if (isInfoModal || props.isLanguageModal || props.isEditModal) {
+      if (isInfoModal || props.isLanguageModal) {
         setIsInfoModal(false);
         props.setIsLanguageModal(false);
-        props.setIsEditModal(false);
         router.push("/home");
         return;
       }

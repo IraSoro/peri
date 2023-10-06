@@ -1,14 +1,10 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
-  IonButton,
-  IonContent,
-  IonDatetime,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonMenu,
-  IonModal,
   IonSelect,
   IonSelectOption,
   useIonAlert,
@@ -17,7 +13,6 @@ import {
   arrowDownOutline,
   cloudDownloadOutline,
   cloudUploadOutline,
-  createOutline,
   globeOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
@@ -29,12 +24,6 @@ import {
   isNewVersionAvailable,
 } from "../data/AppVersion";
 import { CyclesContext } from "../state/Context";
-import { getAverageLengthOfCycle } from "../state/CalculationLogics";
-import {
-  getNewCyclesHistory,
-  getActiveDates,
-  getLastPeriodDays,
-} from "../state/CalculationLogics";
 
 import "./Menu.css";
 
@@ -151,95 +140,8 @@ const Exporter = () => {
   );
 };
 
-interface EditProps {
-  isOpen: boolean;
-  setIsOpen: (newIsOpen: boolean) => void;
-}
-
-const CyclesEditor = (props: EditProps) => {
-  const { t } = useTranslation();
-  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
-
-  const { cycles, updateCycles } = useContext(CyclesContext);
-  const averLengthOfCycle = getAverageLengthOfCycle(cycles);
-
-  const isActiveDates = (dateString: string) => {
-    return getActiveDates(dateString, cycles, averLengthOfCycle);
-  };
-
-  return (
-    <>
-      <IonModal
-        isOpen={props.isOpen}
-        backdropDismiss={false}
-      >
-        <IonContent
-          className="ion-padding"
-          color="transparent-basic"
-        >
-          <IonDatetime
-            class="edit-modal"
-            style={{ marginBottom: "50px", marginTop: "50px" }}
-            ref={datetimeRef}
-            color="light-basic"
-            presentation="date"
-            locale={t("locale")}
-            size="cover"
-            multiple
-            firstDayOfWeek={1}
-            value={getLastPeriodDays(cycles)}
-            isDateEnabled={isActiveDates}
-          />
-          <IonButton
-            class="edit-buttons"
-            color="dark-basic"
-            fill="solid"
-            onClick={() => {
-              if (datetimeRef.current?.value) {
-                const newCycles = getNewCyclesHistory(
-                  [datetimeRef.current.value].flat(),
-                );
-                updateCycles(newCycles);
-              }
-              datetimeRef.current?.confirm().catch((err) => console.error(err));
-              props.setIsOpen(false);
-            }}
-          >
-            {t("save")}
-          </IonButton>
-          <IonButton
-            class="edit-buttons"
-            color="dark-basic"
-            fill="clear"
-            onClick={() => {
-              datetimeRef.current?.cancel().catch((err) => console.error(err));
-              props.setIsOpen(false);
-            }}
-          >
-            {t("cancel")}
-          </IonButton>
-        </IonContent>
-      </IonModal>
-      <IonItem
-        button
-        onClick={() => {
-          props.setIsOpen(true);
-        }}
-      >
-        <IonIcon
-          slot="start"
-          icon={createOutline}
-        />
-        <IonLabel>{t("Edit cycles")}</IonLabel>
-      </IonItem>
-    </>
-  );
-};
-
 interface MenuProps {
   contentId: string;
-  isEditModal: boolean;
-  setIsEditModal: (newIsOpen: boolean) => void;
 }
 
 export const Menu = (props: MenuProps) => {
@@ -260,10 +162,7 @@ export const Menu = (props: MenuProps) => {
   }, []);
 
   return (
-    <IonMenu
-      contentId={props.contentId}
-      side="end"
-    >
+    <IonMenu contentId={props.contentId}>
       <IonList lines="none">
         <IonItem lines="full">
           <IonLabel color="dark-basic">{t("Preferences")}</IonLabel>
@@ -274,10 +173,6 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <Importer />
         <Exporter />
-        <CyclesEditor
-          isOpen={props.isEditModal}
-          setIsOpen={props.setIsEditModal}
-        />
         {needUpdate && (
           <IonItem
             button
