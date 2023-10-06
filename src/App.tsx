@@ -9,11 +9,9 @@ import {
   IonTabs,
   setupIonicReact,
   IonHeader,
-  IonToolbar,
   IonContent,
   IonMenuButton,
   IonIcon,
-  IonButtons,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { menuOutline } from "ionicons/icons";
@@ -136,17 +134,7 @@ const App: React.FC = () => {
             class="ion-no-border"
             style={{ backgroundColor: "var(--ion-color-background)" }}
           >
-            <IonToolbar>
-              <IonButtons slot="end">
-                <IonMenuButton>
-                  <IonIcon
-                    color="dark-basic"
-                    icon={menuOutline}
-                  />
-                  {needUpdate && <Badge />}
-                </IonMenuButton>
-              </IonButtons>
-            </IonToolbar>
+            <div id="top-space" />
           </IonHeader>
 
           <IonContent
@@ -194,14 +182,30 @@ const App: React.FC = () => {
                 color="transparent-basic"
               >
                 <IonTabButton
+                  tab="menu"
+                  class="menu-tab"
+                >
+                  <IonMenuButton>
+                    <IonIcon
+                      color="dark-basic"
+                      icon={menuOutline}
+                      size="large"
+                    />
+                    {needUpdate && <Badge />}
+                  </IonMenuButton>
+                </IonTabButton>
+
+                <IonTabButton
                   tab="home"
                   href="/home"
+                  class="home-tab"
                 >
                   <IonLabel>{t("Home")}</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   tab="details"
                   href="/details"
+                  class="details-tab"
                 >
                   <IonLabel>{t("Details")}</IonLabel>
                 </IonTabButton>
