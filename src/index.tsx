@@ -5,8 +5,8 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import intervalPlural from "i18next-intervalplural-postprocessor";
 
-import en from "./translations/en";
-import ru from "./translations/ru";
+import en from "./languages/en";
+import ru from "./languages/ru";
 import { storage } from "./data/Storage";
 
 import App from "./App";

@@ -24,8 +24,7 @@ const ru = {
   "Cycle length": "Длина цикла",
   "You haven't marked any periods yet": "Вы еще не отметили дни месячных",
   // Mark Modal
-  mark: "отметить",
-  "Select date range": "Отметьте диапазон месячных",
+  "mark period today": "месячные сегодня: отметить",
   cancel: "отмена",
   save: "сохранить",
   // Welcome Modal
@@ -76,10 +75,8 @@ const ru = {
     "раздражительность и подавленное настроение",
   Preferences: "Настройки",
   Language: "Язык",
-  Edit: "Редактирование",
   "Import config": "Импортировать данные",
   "Export config": "Экспортировать данные",
-  "Edit cycles": "Редактировать циклы",
   "Configuration has been imported": "Данные были успешно импортированы",
   "Download latest version": "Загрузить новую версию",
 };

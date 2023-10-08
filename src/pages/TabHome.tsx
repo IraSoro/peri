@@ -167,7 +167,7 @@ const TabHome = (props: HomeProps) => {
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
                 class="main"
-                style={{ width: "200px" }}
+                style={{ minWidth: "200px", display: "flex" }}
                 color="dark-basic"
                 onClick={() => {
                   if (isPeriodToday(cycles)) {
@@ -218,7 +218,6 @@ const TabHome = (props: HomeProps) => {
                 <IonButtons slot="buttons">
                   <IonButton
                     color="dark-basic"
-                    style={{ fontSize: "16px" }}
                     onClick={() => {
                       datetimeRef.current
                         ?.confirm()
@@ -231,7 +230,7 @@ const TabHome = (props: HomeProps) => {
                       }
                     }}
                   >
-                    save
+                    {t("save")}
                   </IonButton>
                 </IonButtons>
               </IonDatetime>
