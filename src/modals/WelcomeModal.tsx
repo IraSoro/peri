@@ -73,6 +73,11 @@ const Welcome = (props: PropsWelcomeModal) => {
             size="cover"
             multiple
             firstDayOfWeek={1}
+            isDateEnabled={(dateISO) => {
+              const currentDate = new Date();
+              const date = new Date(dateISO);
+              return date <= currentDate;
+            }}
           />
         </div>
         <IonCol>
