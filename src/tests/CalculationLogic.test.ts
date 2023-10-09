@@ -739,16 +739,19 @@ describe("getActiveDates", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getActiveDates("", [])).toEqual(true);
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    expect(getActiveDates(format(now, "yyyy-MM-dd"), [])).toEqual(true);
   });
 
-  test("cycles array has a few items and date is less than the finish of the current cycle", () => {
+  test("now is menstrual phase items and checking 2th day of period", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const date: Date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 20);
+    date.setDate(date.getDate() + 26);
 
     const cycles: Cycle[] = [];
 
@@ -762,14 +765,41 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 10);
+    dateCheck.setDate(dateCheck.getDate() + 1);
 
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       true,
     );
   });
 
-  test("cycles array has a few items and date is more than the finish of the current cycle", () => {
+  test("now is menstrual phase items and checking 8th day of cycle", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 26);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 7);
+
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
+      false,
+    );
+  });
+
+  test("now is follicular phase items and checking not day of cycle less than now", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
@@ -789,7 +819,34 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 40);
+    dateCheck.setDate(dateCheck.getDate() + 7);
+
+    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
+      true,
+    );
+  });
+
+  test("now is follicular phase items and checking not day of cycle more than now", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date: Date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 20);
+
+    const cycles: Cycle[] = [];
+
+    for (let i = 0; i < 6; ++i) {
+      date.setDate(date.getDate() - 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+
+    const dateCheck = new Date(cycles[0].startDate);
+    dateCheck.setDate(dateCheck.getDate() + 15);
 
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       false,
