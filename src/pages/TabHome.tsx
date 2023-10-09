@@ -167,7 +167,6 @@ const TabHome = (props: HomeProps) => {
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
                 class="main"
-                style={{ minWidth: "200px", display: "flex" }}
                 color="dark-basic"
                 onClick={() => {
                   if (isPeriodToday(cycles)) {
@@ -183,7 +182,7 @@ const TabHome = (props: HomeProps) => {
                   updateCycles(newCycles);
                 }}
               >
-                {t("mark period today")}
+                {t("mark")}
               </IonButton>
             </IonCol>
             <IonCol>

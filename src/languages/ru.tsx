@@ -29,7 +29,7 @@ const ru = {
   save: "сохранить",
   // Welcome Modal
   "Welcome to Peri": "Добро пожаловать в Peri",
-  "Mark the days of your": "Отметьте дни",
+  mark: "отметить",
   "last period": "последних месячных",
   Continue: "Продолжить",
   "Forecast will not be generated.": "Прогноз не будет сгенерирован.",
