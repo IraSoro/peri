@@ -75,7 +75,11 @@ const Welcome = (props: PropsWelcomeModal) => {
             firstDayOfWeek={1}
             isDateEnabled={(dateISO) => {
               const currentDate = new Date();
+              currentDate.setHours(0, 0, 0, 0);
+
               const date = new Date(dateISO);
+              date.setHours(0, 0, 0, 0);
+
               return date <= currentDate;
             }}
           />
