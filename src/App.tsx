@@ -9,11 +9,9 @@ import {
   IonTabs,
   setupIonicReact,
   IonHeader,
-  IonToolbar,
   IonContent,
   IonMenuButton,
   IonIcon,
-  IonButtons,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { menuOutline } from "ionicons/icons";
@@ -57,8 +55,8 @@ const Badge = () => {
     <div
       style={{
         position: "fixed",
-        right: 5,
-        top: 5,
+        left: 42,
+        top: 0,
         backgroundColor: "var(--ion-color-opposite)",
         minWidth: 10,
         minHeight: 10,
@@ -71,7 +69,6 @@ const Badge = () => {
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [isLanguageModal, setIsLanguageModal] = useState(false);
-  const [isEditModal, setIsEditModal] = useState(false);
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
@@ -84,7 +81,7 @@ const App: React.FC = () => {
   );
 
   function updateCycles(newCycles: Cycle[]) {
-    const maxOfCycles = 7;
+    const maxOfCycles = 6;
     if (newCycles.length > maxOfCycles) {
       newCycles.splice(maxOfCycles);
     }
@@ -126,27 +123,13 @@ const App: React.FC = () => {
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
       <IonApp>
-        <Menu
-          isEditModal={isEditModal}
-          setIsEditModal={setIsEditModal}
-          contentId="main-content"
-        />
+        <Menu contentId="main-content" />
         <IonReactRouter>
           <IonHeader
             class="ion-no-border"
             style={{ backgroundColor: "var(--ion-color-background)" }}
           >
-            <IonToolbar>
-              <IonButtons slot="end">
-                <IonMenuButton>
-                  <IonIcon
-                    color="dark-basic"
-                    icon={menuOutline}
-                  />
-                  {needUpdate && <Badge />}
-                </IonMenuButton>
-              </IonButtons>
-            </IonToolbar>
+            <div id="top-space" />
           </IonHeader>
 
           <IonContent
@@ -162,8 +145,6 @@ const App: React.FC = () => {
                   <TabHome
                     isLanguageModal={isLanguageModal}
                     setIsLanguageModal={setIsLanguageModal}
-                    isEditModal={isEditModal}
-                    setIsEditModal={setIsEditModal}
                   />
                 </Route>
 
@@ -194,14 +175,30 @@ const App: React.FC = () => {
                 color="transparent-basic"
               >
                 <IonTabButton
+                  tab="menu"
+                  class="menu-tab"
+                >
+                  <IonMenuButton>
+                    <IonIcon
+                      color="dark-basic"
+                      icon={menuOutline}
+                      size="large"
+                    />
+                    {needUpdate && <Badge />}
+                  </IonMenuButton>
+                </IonTabButton>
+
+                <IonTabButton
                   tab="home"
                   href="/home"
+                  class="home-tab"
                 >
                   <IonLabel>{t("Home")}</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   tab="details"
                   href="/details"
+                  class="details-tab"
                 >
                   <IonLabel>{t("Details")}</IonLabel>
                 </IonTabButton>

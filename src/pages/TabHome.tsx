@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   IonContent,
   IonPage,
@@ -8,6 +8,8 @@ import {
   IonButton,
   IonCol,
   IonIcon,
+  IonButtons,
+  useIonAlert,
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -17,14 +19,17 @@ import { CyclesContext } from "../state/Context";
 import { storage } from "../data/Storage";
 
 import Welcome from "../modals/WelcomeModal";
-import MarkModal from "../modals/MarkModal";
 import InfoModal from "../modals/InfoModal";
 
 import {
   getPregnancyChance,
   getDaysBeforePeriod,
-  isPastPeriodsDays,
   isForecastPeriodDays,
+  getNewCyclesHistory,
+  getLastPeriodDays,
+  getActiveDates,
+  getPastFuturePeriodDays,
+  isPeriodToday,
 } from "../state/CalculationLogics";
 
 import { chevronForwardOutline } from "ionicons/icons";
@@ -69,14 +74,12 @@ const InfoButton = (props: InfoButtonProps) => {
 interface HomeProps {
   isLanguageModal: boolean;
   setIsLanguageModal: (newIsOpen: boolean) => void;
-  isEditModal: boolean;
-  setIsEditModal: (newIsOpen: boolean) => void;
 }
 
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
-  const [isMarkModal, setIsMarkModal] = useState(false);
+  const [periodTodayAlert] = useIonAlert();
 
   const router = useIonRouter();
 
@@ -89,16 +92,9 @@ const TabHome = (props: HomeProps) => {
 
   useEffect(() => {
     const backButtonHandler = () => {
-      if (
-        isMarkModal ||
-        isInfoModal ||
-        props.isLanguageModal ||
-        props.isEditModal
-      ) {
-        setIsMarkModal(false);
+      if (isInfoModal || props.isLanguageModal) {
         setIsInfoModal(false);
         props.setIsLanguageModal(false);
-        props.setIsEditModal(false);
         router.push("/home");
         return;
       }
@@ -113,11 +109,20 @@ const TabHome = (props: HomeProps) => {
     return () => {
       document.removeEventListener("ionBackButton", backButtonHandler);
     };
-  }, [router, isInfoModal, isMarkModal, props]);
+  }, [router, isInfoModal, props]);
 
   const { t } = useTranslation();
-  const cycles = useContext(CyclesContext).cycles;
-  const daysBeforePeriod = getDaysBeforePeriod(cycles);
+  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+  const { cycles, updateCycles } = useContext(CyclesContext);
+
+  useEffect(() => {
+    if (!datetimeRef.current) return;
+    const lastPeriodDays = getLastPeriodDays(cycles);
+    if (!lastPeriodDays.length) {
+      return;
+    }
+    datetimeRef.current.value = getLastPeriodDays(cycles);
+  }, [cycles]);
 
   return (
     <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
@@ -136,7 +141,7 @@ const TabHome = (props: HomeProps) => {
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>
               <IonLabel>
                 <p style={{ fontSize: "40px", color: "var(--ion-color-dark)" }}>
-                  {daysBeforePeriod.title}
+                  {getDaysBeforePeriod(cycles).title}
                 </p>
               </IonLabel>
             </div>
@@ -150,7 +155,7 @@ const TabHome = (props: HomeProps) => {
                     marginBottom: "30px",
                   }}
                 >
-                  {daysBeforePeriod.days}
+                  {getDaysBeforePeriod(cycles).days}
                 </p>
               </IonLabel>
             </div>
@@ -163,45 +168,71 @@ const TabHome = (props: HomeProps) => {
               <IonButton
                 class="main"
                 color="dark-basic"
-                onClick={() => setIsMarkModal(true)}
+                onClick={() => {
+                  if (isPeriodToday(cycles)) {
+                    periodTodayAlert({
+                      header: "Period today",
+                      buttons: ["OK"],
+                    }).catch((err) => console.log(err));
+                    return;
+                  }
+                  const newCycles = getNewCyclesHistory(
+                    getPastFuturePeriodDays(cycles),
+                  );
+                  updateCycles(newCycles);
+                }}
               >
                 {t("mark")}
               </IonButton>
-              <MarkModal
-                isOpen={isMarkModal}
-                setIsOpen={setIsMarkModal}
-              />
             </IonCol>
             <IonCol>
               <IonDatetime
                 style={{ borderRadius: "20px" }}
-                color="basic"
+                ref={datetimeRef}
+                color="light-basic"
                 presentation="date"
                 locale={t("locale")}
                 size="cover"
+                multiple
                 firstDayOfWeek={1}
+                isDateEnabled={(date: string) => {
+                  return getActiveDates(date, cycles);
+                }}
                 highlightedDates={(isoString) => {
                   if (cycles.length === 0) {
                     return undefined;
                   }
 
                   const date = new Date(isoString);
-
-                  if (isPastPeriodsDays(date, cycles)) {
-                    return {
-                      textColor: "var(--ion-color-dark-basic)",
-                      backgroundColor: "var(--ion-color-light-basic)",
-                    };
-                  } else if (isForecastPeriodDays(date, cycles)) {
+                  if (isForecastPeriodDays(date, cycles)) {
                     return {
                       textColor: "var(--ion-color-dark)",
-                      backgroundColor: "#e3dfff",
+                      backgroundColor: "var(--ion-color-light-basic)",
                     };
                   }
 
                   return undefined;
                 }}
-              />
+              >
+                <IonButtons slot="buttons">
+                  <IonButton
+                    color="dark-basic"
+                    onClick={() => {
+                      datetimeRef.current
+                        ?.confirm()
+                        .catch((err) => console.error(err));
+                      if (datetimeRef.current?.value) {
+                        const newCycles = getNewCyclesHistory(
+                          [datetimeRef.current.value].flat(),
+                        );
+                        updateCycles(newCycles);
+                      }
+                    }}
+                  >
+                    {t("save")}
+                  </IonButton>
+                </IonButtons>
+              </IonDatetime>
             </IonCol>
           </div>
         </IonContent>

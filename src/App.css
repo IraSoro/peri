@@ -15,9 +15,7 @@ ion-tab-button {
   color: var(--ion-color-dark-basic);
   border: 1px var(--ion-color-light) solid;
   border-radius: 10px;
-  max-width: 30%;
-  margin-right: 5%;
-  margin-left: 5%;
+  max-width: 100px;
   font-size: 13px;
   height: 25px;
 
@@ -29,13 +27,28 @@ ion-tab-button.tab-selected {
   color: var(--ion-color-light);
   border: 1px var(--ion-color-dark-basic) solid;
   border-radius: 10px;
-  max-width: 30%;
-  margin-right: 5%;
-  margin-left: 5%;
+  max-width: 100px;
   font-size: 14px;
   height: 25px;
 
   --color-selected: var(--ion-color-light);
+}
+
+ion-tab-button.menu-tab {
+  background: var(--ion-color-transparent-basic);
+  border: var(--ion-color-transparent-basic);
+  max-width: 30px;
+
+  margin-left: 15px;
+}
+
+ion-tab-button.home-tab {
+  margin-left: auto;
+}
+
+ion-tab-button.details-tab {
+  margin-left: 15px;
+  margin-right: 20px;
 }
 
 ion-col {
@@ -43,16 +56,6 @@ ion-col {
   align-items: center;
   justify-content: center;
   text-align: center;
-}
-
-ion-toolbar {
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-
-  --background: var(--ion-color-transparent-basic);
-  border-right: 3px solid rgb(192, 182, 242, 0.4);
-  border-left: 3px solid rgb(192, 182, 242, 0.4);
 }
 
 #context-size {
@@ -69,6 +72,16 @@ ion-toolbar {
   margin-left: auto;
   margin-right: auto;
 
+  border-right: 3px solid rgb(192, 182, 242, 0.4);
+  border-left: 3px solid rgb(192, 182, 242, 0.4);
+}
+
+#top-space {
+  height: 15px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--ion-color-transparent-basic);
   border-right: 3px solid rgb(192, 182, 242, 0.4);
   border-left: 3px solid rgb(192, 182, 242, 0.4);
 }

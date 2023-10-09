@@ -6,8 +6,6 @@ test("renders without crashing", () => {
     <TabHome
       isLanguageModal
       setIsLanguageModal={() => {}}
-      isEditModal
-      setIsEditModal={() => {}}
     />,
   );
   expect(baseElement).toBeDefined();
