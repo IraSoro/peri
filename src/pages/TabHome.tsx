@@ -140,7 +140,7 @@ const TabHome = (props: HomeProps) => {
           <div id="context-size">
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>
               <IonLabel>
-                <p style={{ fontSize: "40px", color: "var(--ion-color-dark)" }}>
+                <p style={{ fontSize: "35px", color: "var(--ion-color-dark)" }}>
                   {getDaysBeforePeriod(cycles).title}
                 </p>
               </IonLabel>
