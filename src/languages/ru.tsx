@@ -24,12 +24,12 @@ const ru = {
   "Cycle length": "Длина цикла",
   "You haven't marked any periods yet": "Вы еще не отметили дни месячных",
   // Mark Modal
-  "mark period today": "месячные сегодня: отметить",
+  mark: "отметить",
   cancel: "отмена",
   save: "сохранить",
   // Welcome Modal
   "Welcome to Peri": "Добро пожаловать в Peri",
-  mark: "отметить",
+  "Mark the days of your": "Отметьте дни",
   "last period": "последних месячных",
   Continue: "Продолжить",
   "Forecast will not be generated.": "Прогноз не будет сгенерирован.",
