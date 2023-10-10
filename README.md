@@ -41,12 +41,10 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
     <tr>
     <td><img width="300" src="./demonstration/info.jpg" alt="Info"></td>
     <td><img width="300" src="./demonstration/menu.jpg" alt="Menu"></td>
-    <td><img width="300" src="./demonstration/edit.jpg" alt="Edit"></td>
   </tr>
   <tr>
-    <td align="center">Phase info</td>
+    <td align="center">Additional Info</td>
     <td align="center">Menu</td>
-    <td align="center">Edit cycles</td>
   </tr>
  </table>
 
