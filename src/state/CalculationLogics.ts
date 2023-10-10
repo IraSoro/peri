@@ -328,10 +328,9 @@ export function getActiveDates(dateString: string, cycles: Cycle[]) {
     return date <= now;
   }
 
-  const averLengthOfPeriod = getAverageLengthOfPeriod(cycles);
   const endPeriod = new Date(cycles[0].startDate);
   endPeriod.setHours(0, 0, 0, 0);
-  endPeriod.setDate(endPeriod.getDate() + averLengthOfPeriod - 1);
+  endPeriod.setDate(endPeriod.getDate() + cycles[0].periodLength - 1);
 
   return date <= endPeriod || date <= now;
 }
