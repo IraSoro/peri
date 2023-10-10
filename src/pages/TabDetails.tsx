@@ -85,10 +85,8 @@ function setBufferProgress(value: number) {
   return (value / 100) * 3;
 }
 
-function setValueProgress(lengthOfPeriod: number, dayOfCycle: number) {
-  return dayOfCycle < lengthOfPeriod
-    ? (dayOfCycle / 100) * 3
-    : (lengthOfPeriod / 100) * 3;
+function setValueProgress(lengthOfPeriod: number) {
+  return (lengthOfPeriod / 100) * 3;
 }
 
 const CurrentCycle = () => {
@@ -112,7 +110,9 @@ const CurrentCycle = () => {
         <IonProgressBar
           class="current-progress"
           style={progressBarStyle}
-          value={setValueProgress(lengthOfPeriod, dayOfCycle)}
+          value={setValueProgress(
+            lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
+          )}
           buffer={setBufferProgress(dayOfCycle)}
         />
         <IonLabel>
@@ -132,7 +132,6 @@ const ListProgress = () => {
 
   const ItemProgress = (props: IdxProps) => {
     const info = useInfoForOneCycle(props.idx + 1);
-    const dayOfCycle = getDayOfCycle(cycles);
 
     return (
       <div
@@ -145,7 +144,7 @@ const ListProgress = () => {
           </IonLabel>
           <IonProgressBar
             style={progressBarStyle}
-            value={setValueProgress(info.lengthOfPeriod, dayOfCycle)}
+            value={setValueProgress(info.lengthOfPeriod)}
             buffer={setBufferProgress(info.lengthOfCycleNumber)}
           />
           <IonLabel>
