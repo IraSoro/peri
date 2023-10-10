@@ -1,5 +1,6 @@
 import { Storage, Drivers } from "@ionic/storage";
 import type { Cycle } from "./ClassCycle";
+import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
 
 export interface Context {
   cycles: Cycle[];
@@ -69,6 +70,12 @@ export const storage = {
 // _lutealPhase(6).catch((err) => console.error(err));
 // _delayOfCycle(6).catch((err) => console.error(err));
 
+function random(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 function _emptyArrayOfCycles(): Promise<void> {
   return storageImpl.remove("cycles") as Promise<void>;
 }
@@ -80,13 +87,17 @@ function _todayPeriod(countOfCycles: number): Promise<void> {
   const cycles: Cycle[] = [];
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    const cycleLength = random(26, 30);
+    date.setDate(date.getDate() - cycleLength);
     cycles.push({
-      cycleLength: 28,
-      periodLength: 6,
+      cycleLength: cycleLength,
+      periodLength: random(4, 6),
       startDate: date.toString(),
     });
   }
+
+  const averagePeriod = getAverageLengthOfPeriod(cycles);
+  cycles[0].periodLength = averagePeriod;
 
   return storage.set.cycles(cycles);
 }
@@ -99,13 +110,17 @@ function _todayOvulation(countOfCycles: number): Promise<void> {
   const cycles: Cycle[] = [];
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    const cycleLength = random(26, 30);
+    date.setDate(date.getDate() - cycleLength);
     cycles.push({
-      cycleLength: 28,
-      periodLength: 6,
+      cycleLength: cycleLength,
+      periodLength: random(4, 6),
       startDate: date.toString(),
     });
   }
+
+  const averagePeriod = getAverageLengthOfPeriod(cycles);
+  cycles[0].periodLength = averagePeriod;
 
   return storage.set.cycles(cycles);
 }
@@ -118,13 +133,17 @@ function _tomorrowOvulation(countOfCycles: number): Promise<void> {
   const cycles: Cycle[] = [];
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    const cycleLength = random(26, 30);
+    date.setDate(date.getDate() - cycleLength);
     cycles.push({
-      cycleLength: 28,
-      periodLength: 6,
+      cycleLength: cycleLength,
+      periodLength: random(4, 6),
       startDate: date.toString(),
     });
   }
+
+  const averagePeriod = getAverageLengthOfPeriod(cycles);
+  cycles[0].periodLength = averagePeriod;
 
   return storage.set.cycles(cycles);
 }
@@ -132,18 +151,22 @@ function _tomorrowOvulation(countOfCycles: number): Promise<void> {
 function _menstrualPhase(countOfCycles: number): Promise<void> {
   const date: Date = new Date();
   date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 25);
+  date.setDate(date.getDate() + 26);
 
   const cycles: Cycle[] = [];
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    const cycleLength = random(26, 30);
+    date.setDate(date.getDate() - cycleLength);
     cycles.push({
-      cycleLength: 28,
-      periodLength: 6,
+      cycleLength: cycleLength,
+      periodLength: random(4, 6),
       startDate: date.toString(),
     });
   }
+
+  const averagePeriod = getAverageLengthOfPeriod(cycles);
+  cycles[0].periodLength = averagePeriod;
 
   return storage.set.cycles(cycles);
 }
@@ -156,13 +179,17 @@ function _follicularPhase(countOfCycles: number): Promise<void> {
   const cycles: Cycle[] = [];
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    const cycleLength = random(26, 30);
+    date.setDate(date.getDate() - cycleLength);
     cycles.push({
-      cycleLength: 28,
-      periodLength: 6,
+      cycleLength: cycleLength,
+      periodLength: random(4, 6),
       startDate: date.toString(),
     });
   }
+
+  const averagePeriod = getAverageLengthOfPeriod(cycles);
+  cycles[0].periodLength = averagePeriod;
 
   return storage.set.cycles(cycles);
 }
@@ -175,13 +202,17 @@ function _lutealPhase(countOfCycles: number): Promise<void> {
   const cycles: Cycle[] = [];
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    const cycleLength = random(26, 30);
+    date.setDate(date.getDate() - cycleLength);
     cycles.push({
-      cycleLength: 28,
-      periodLength: 6,
+      cycleLength: cycleLength,
+      periodLength: random(4, 6),
       startDate: date.toString(),
     });
   }
+
+  const averagePeriod = getAverageLengthOfPeriod(cycles);
+  cycles[0].periodLength = averagePeriod;
 
   return storage.set.cycles(cycles);
 }
@@ -194,13 +225,17 @@ function _delayOfCycle(countOfCycles: number): Promise<void> {
   const cycles: Cycle[] = [];
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    const cycleLength = random(26, 30);
+    date.setDate(date.getDate() - cycleLength);
     cycles.push({
-      cycleLength: 28,
-      periodLength: 6,
+      cycleLength: cycleLength,
+      periodLength: random(4, 6),
       startDate: date.toString(),
     });
   }
+
+  const averagePeriod = getAverageLengthOfPeriod(cycles);
+  cycles[0].periodLength = averagePeriod;
 
   return storage.set.cycles(cycles);
 }
