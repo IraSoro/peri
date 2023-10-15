@@ -74,6 +74,7 @@ const ru = {
   "irritability and depressed mood":
     "раздражительность и подавленное настроение",
   Preferences: "Настройки",
+  Edit: "Редактирование",
   Language: "Язык",
   "Import config": "Импортировать данные",
   "Export config": "Экспортировать данные",
