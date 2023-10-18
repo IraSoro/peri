@@ -51,7 +51,11 @@ async function getLatestReleaseInfo(): Promise<LatestReleaseInfo> {
 }
 
 export async function isNewVersionAvailable(): Promise<boolean> {
-  if (!isPlatform("android")) {
+  if (
+    isPlatform("desktop") ||
+    isPlatform("mobileweb") ||
+    !isPlatform("android")
+  ) {
     return false;
   }
 
