@@ -34,6 +34,8 @@ import {
 
 import { chevronForwardOutline } from "ionicons/icons";
 
+import "./TabHome.css";
+
 interface InfoButtonProps {
   setIsInfoModal: (newIsOpen: boolean) => void;
 }
@@ -79,6 +81,7 @@ interface HomeProps {
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [isSaveButton, setIsSaveButton] = useState(false);
   const [periodTodayAlert] = useIonAlert();
 
   const router = useIonRouter();
@@ -213,25 +216,44 @@ const TabHome = (props: HomeProps) => {
 
                   return undefined;
                 }}
+                onClick={() => {
+                  const lastPeriodDays = getLastPeriodDays(cycles);
+                  datetimeRef.current
+                    ?.confirm()
+                    .catch((err) => console.error(err));
+                  if (datetimeRef.current?.value) {
+                    if (
+                      JSON.stringify(
+                        [datetimeRef.current.value].flat().sort(),
+                      ) === JSON.stringify(lastPeriodDays.sort())
+                    ) {
+                      setIsSaveButton(false);
+                    } else {
+                      setIsSaveButton(true);
+                    }
+                  }
+                }}
               >
-                <IonButtons slot="buttons">
-                  <IonButton
-                    color="dark-basic"
-                    onClick={() => {
-                      datetimeRef.current
-                        ?.confirm()
-                        .catch((err) => console.error(err));
-                      if (datetimeRef.current?.value) {
-                        const newCycles = getNewCyclesHistory(
-                          [datetimeRef.current.value].flat(),
-                        );
-                        updateCycles(newCycles);
-                      }
-                    }}
-                  >
-                    {t("save")}
-                  </IonButton>
-                </IonButtons>
+                {isSaveButton && (
+                  <IonButtons slot="buttons">
+                    <IonButton
+                      color="dark-basic"
+                      onClick={() => {
+                        datetimeRef.current
+                          ?.confirm()
+                          .catch((err) => console.error(err));
+                        if (datetimeRef.current?.value) {
+                          const newCycles = getNewCyclesHistory(
+                            [datetimeRef.current.value].flat(),
+                          );
+                          updateCycles(newCycles);
+                        }
+                      }}
+                    >
+                      {t("save")}
+                    </IonButton>
+                  </IonButtons>
+                )}
               </IonDatetime>
             </IonCol>
           </div>
