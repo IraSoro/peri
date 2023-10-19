@@ -86,7 +86,7 @@ const Welcome = (props: PropsWelcomeModal) => {
         </div>
         <IonCol>
           <IonButton
-            class="main"
+            className="main"
             color="dark-basic"
             onClick={() => {
               if (datetimeRef.current?.value) {

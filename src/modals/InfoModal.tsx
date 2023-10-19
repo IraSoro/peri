@@ -130,7 +130,7 @@ const InfoModal = (props: PropsInfoModal) => {
         </ul>
         <IonCol>
           <IonButton
-            class="main"
+            className="main"
             color="dark-basic"
             onClick={() => props.setIsOpen(false)}
           >

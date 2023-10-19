@@ -176,7 +176,7 @@ const App: React.FC = () => {
               >
                 <IonTabButton
                   tab="menu"
-                  class="menu-tab"
+                  className="menu-tab"
                 >
                   <IonMenuButton>
                     <IonIcon
@@ -191,14 +191,14 @@ const App: React.FC = () => {
                 <IonTabButton
                   tab="home"
                   href="/home"
-                  class="home-tab"
+                  className="home-tab"
                 >
                   <IonLabel>{t("Home")}</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   tab="details"
                   href="/details"
-                  class="details-tab"
+                  className="details-tab"
                 >
                   <IonLabel>{t("Details")}</IonLabel>
                 </IonTabButton>

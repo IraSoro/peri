@@ -34,8 +34,6 @@ import {
 
 import { chevronForwardOutline } from "ionicons/icons";
 
-import "./TabHome.css";
-
 interface InfoButtonProps {
   setIsInfoModal: (newIsOpen: boolean) => void;
 }
@@ -169,7 +167,7 @@ const TabHome = (props: HomeProps) => {
             />
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
-                class="main"
+                className="main"
                 color="dark-basic"
                 onClick={() => {
                   if (isPeriodToday(cycles)) {
