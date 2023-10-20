@@ -114,7 +114,7 @@ After that, you can start the container with:
 docker run -it --rm -v $(pwd):/home/app peri-android-env
 ```
 
-This Docker image already has `@ionic/cli`, `Android Studio` and all necessary JDS/SDK installed. You can just run the following commands to build the `apk` file:
+This Docker image already has `@ionic/cli`, `Android Studio` and all necessary JDK/SDK installed. You can just run the following commands to build the `apk` file:
 
 ```shell
 npm run build # this command builds production-optimized Peri's code
