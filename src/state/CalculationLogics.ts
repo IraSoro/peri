@@ -388,24 +388,44 @@ export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
   nowDate.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
 
+  if (date <= nowDate) {
+    return false;
+  }
+
   const nextCycleStart: Date = new Date(cycles[0].startDate);
   nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
   const nextCycleFinish: Date = new Date(cycles[0].startDate);
   nextCycleFinish.setDate(
-    nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod,
+    nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod - 1,
   );
 
-  if (date > nowDate && date >= nextCycleStart && date < nextCycleFinish) {
+  if (date >= nextCycleStart && date < nextCycleFinish) {
     return true;
   }
 
   const delayDate = new Date();
   delayDate.setHours(0, 0, 0, 0);
-  delayDate.setDate(delayDate.getDate() + lengthOfPeriod);
+  delayDate.setDate(delayDate.getDate() + lengthOfPeriod - 1);
 
   const dayOfCycle = getDayOfCycle(cycles);
 
-  if (dayOfCycle > lengthOfCycle && date > nowDate && date <= delayDate) {
+  if (dayOfCycle > lengthOfCycle && date <= delayDate) {
+    return true;
+  }
+
+  return false;
+}
+
+export function isForecastPeriodToday(date: Date, cycles: Cycle[]) {
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0);
+
+  const nextCycleStart: Date = new Date(cycles[0].startDate);
+  nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
+
+  if (date.getTime() === nowDate.getTime() && date >= nextCycleStart) {
     return true;
   }
 

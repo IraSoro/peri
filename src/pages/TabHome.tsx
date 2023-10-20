@@ -25,6 +25,7 @@ import {
   getPregnancyChance,
   getDaysBeforePeriod,
   isForecastPeriodDays,
+  isForecastPeriodToday,
   getNewCyclesHistory,
   getLastPeriodDays,
   getActiveDates,
@@ -33,6 +34,8 @@ import {
 } from "../state/CalculationLogics";
 
 import { chevronForwardOutline } from "ionicons/icons";
+
+import "./TabHome.css";
 
 interface InfoButtonProps {
   setIsInfoModal: (newIsOpen: boolean) => void;
@@ -79,7 +82,6 @@ interface HomeProps {
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
-  const [isSaveButton, setIsSaveButton] = useState(false);
   const [periodTodayAlert] = useIonAlert();
 
   const router = useIonRouter();
@@ -190,7 +192,6 @@ const TabHome = (props: HomeProps) => {
               <IonDatetime
                 style={{ borderRadius: "20px" }}
                 ref={datetimeRef}
-                color="light-basic"
                 presentation="date"
                 locale={t("locale")}
                 size="cover"
@@ -210,48 +211,34 @@ const TabHome = (props: HomeProps) => {
                       textColor: "var(--ion-color-dark)",
                       backgroundColor: "var(--ion-color-light-basic)",
                     };
+                  } else if (isForecastPeriodToday(date, cycles)) {
+                    return {
+                      backgroundColor:
+                        "rgba(var(--ion-color-light-basic-rgb), 0.5)",
+                    };
                   }
 
                   return undefined;
                 }}
-                onClick={() => {
-                  const lastPeriodDays = getLastPeriodDays(cycles);
-                  datetimeRef.current
-                    ?.confirm()
-                    .catch((err) => console.error(err));
-                  if (datetimeRef.current?.value) {
-                    if (
-                      JSON.stringify(
-                        [datetimeRef.current.value].flat().sort(),
-                      ) === JSON.stringify(lastPeriodDays.sort())
-                    ) {
-                      setIsSaveButton(false);
-                    } else {
-                      setIsSaveButton(true);
-                    }
-                  }
-                }}
               >
-                {isSaveButton && (
-                  <IonButtons slot="buttons">
-                    <IonButton
-                      color="dark-basic"
-                      onClick={() => {
-                        datetimeRef.current
-                          ?.confirm()
-                          .catch((err) => console.error(err));
-                        if (datetimeRef.current?.value) {
-                          const newCycles = getNewCyclesHistory(
-                            [datetimeRef.current.value].flat(),
-                          );
-                          updateCycles(newCycles);
-                        }
-                      }}
-                    >
-                      {t("save")}
-                    </IonButton>
-                  </IonButtons>
-                )}
+                <IonButtons slot="buttons">
+                  <IonButton
+                    color="dark-basic"
+                    onClick={() => {
+                      datetimeRef.current
+                        ?.confirm()
+                        .catch((err) => console.error(err));
+                      if (datetimeRef.current?.value) {
+                        const newCycles = getNewCyclesHistory(
+                          [datetimeRef.current.value].flat(),
+                        );
+                        updateCycles(newCycles);
+                      }
+                    }}
+                  >
+                    {t("save")}
+                  </IonButton>
+                </IonButtons>
               </IonDatetime>
             </IonCol>
           </div>
