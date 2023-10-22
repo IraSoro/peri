@@ -35,8 +35,6 @@ import {
 
 import { chevronForwardOutline } from "ionicons/icons";
 
-import "./TabHome.css";
-
 interface InfoButtonProps {
   setIsInfoModal: (newIsOpen: boolean) => void;
 }
