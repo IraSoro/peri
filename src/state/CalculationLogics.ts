@@ -392,9 +392,9 @@ export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
     return false;
   }
 
-  const nextCycleStart: Date = new Date(cycles[0].startDate);
+  const nextCycleStart = new Date(cycles[0].startDate);
   nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
-  const nextCycleFinish: Date = new Date(cycles[0].startDate);
+  const nextCycleFinish = new Date(cycles[0].startDate);
   nextCycleFinish.setDate(
     nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod - 1,
   );
@@ -422,7 +422,7 @@ export function isForecastPeriodToday(date: Date, cycles: Cycle[]) {
   nowDate.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
 
-  const nextCycleStart: Date = new Date(cycles[0].startDate);
+  const nextCycleStart = new Date(cycles[0].startDate);
   nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
 
   if (date.getTime() === nowDate.getTime() && date >= nextCycleStart) {
