@@ -25,6 +25,7 @@ import {
   getPregnancyChance,
   getDaysBeforePeriod,
   isForecastPeriodDays,
+  isForecastPeriodToday,
   getNewCyclesHistory,
   getLastPeriodDays,
   getActiveDates,
@@ -166,7 +167,7 @@ const TabHome = (props: HomeProps) => {
             />
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
-                class="main"
+                className="main"
                 color="dark-basic"
                 onClick={() => {
                   if (isPeriodToday(cycles)) {
@@ -189,7 +190,6 @@ const TabHome = (props: HomeProps) => {
               <IonDatetime
                 style={{ borderRadius: "20px" }}
                 ref={datetimeRef}
-                color="light-basic"
                 presentation="date"
                 locale={t("locale")}
                 size="cover"
@@ -208,6 +208,11 @@ const TabHome = (props: HomeProps) => {
                     return {
                       textColor: "var(--ion-color-dark)",
                       backgroundColor: "var(--ion-color-light-basic)",
+                    };
+                  } else if (isForecastPeriodToday(date, cycles)) {
+                    return {
+                      backgroundColor:
+                        "rgba(var(--ion-color-light-basic-rgb), 0.5)",
                     };
                   }
 

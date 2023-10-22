@@ -99,3 +99,17 @@ ion-button.main {
 ion-list {
   --ion-item-background: transparent;
 }
+
+ion-datetime::part(calendar-day today) {
+  color: var(--ion-color-dark-basic);
+  border-color: var(--ion-color-dark-basic);
+  background-color: #fff;
+  border-width: 2px;
+  font-weight: bold;
+}
+
+ion-datetime::part(calendar-day active),
+ion-datetime::part(calendar-day active):focus {
+  background-color: rgba(var(--ion-color-light-basic-rgb), 0.8);
+  color: #43348d;
+}
