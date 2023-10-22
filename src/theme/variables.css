@@ -4,13 +4,13 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 @font-face {
-  font-family: "DMSans-Medium";
-  src: url("../fonts/DMSans-Medium.ttf");
+  font-family: "Roboto-Regular";
+  src: url("../fonts/Roboto-Regular.ttf");
 }
 
 :root {
   /** fonts **/
-  --ion-font-family: "DMSans-Medium";
+  --ion-font-family: "Roboto-Regular";
 
   /** primary **/
   --ion-color-primary: #c0b6f2;

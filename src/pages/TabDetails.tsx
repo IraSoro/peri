@@ -189,7 +189,7 @@ const TabDetails = () => {
   })}`;
 
   const p_style = {
-    fontSize: "13px" as const,
+    fontSize: "12px" as const,
     color: "var(--ion-color-light)" as const,
     textAlign: "left" as const,
     marginBottom: "5px" as const,
