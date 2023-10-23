@@ -1,4 +1,5 @@
 import { Storage, Drivers } from "@ionic/storage";
+import { addDays, startOfToday, subDays } from "date-fns";
 import type { Cycle } from "./ClassCycle";
 import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
 
@@ -66,12 +67,12 @@ export const storage = {
 // _todayOvulation(6).catch((err) => console.error(err));
 // _tomorrowOvulation(6).catch((err) => console.error(err));
 // _menstrualPhase(6).catch((err) => console.error(err));
-// _randomMenstrualPhase(6).catch((err) => console.error(err));
 // _follicularPhase(6).catch((err) => console.error(err));
-// _randomFollicularPhase(6).catch((err) => console.error(err));
 // _lutealPhase(6).catch((err) => console.error(err));
-// _randomLutealPhase(6).catch((err) => console.error(err));
 // _delayOfCycle(6).catch((err) => console.error(err));
+// _randomMenstrualPhase(6).catch((err) => console.error(err));
+// _randomFollicularPhase(6).catch((err) => console.error(err));
+// _randomLutealPhase(6).catch((err) => console.error(err));
 // _randomDelayOfCycle(6).catch((err) => console.error(err));
 
 function _emptyArrayOfCycles(): Promise<void> {
@@ -79,13 +80,12 @@ function _emptyArrayOfCycles(): Promise<void> {
 }
 
 function _todayPeriod(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-
   const cycles: Cycle[] = [];
+  let date = startOfToday();
 
-  for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+  for (let i = 0; i < countOfCycles; i++) {
+    date = subDays(date, 28);
+
     cycles.push({
       cycleLength: 28,
       periodLength: 6,
@@ -97,14 +97,11 @@ function _todayPeriod(countOfCycles: number): Promise<void> {
 }
 
 function _todayOvulation(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 15);
-
   const cycles: Cycle[] = [];
+  let date = addDays(startOfToday(), 15);
 
-  for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+  for (let i = 0; i < countOfCycles; i++) {
+    date = subDays(date, 28);
     cycles.push({
       cycleLength: 28,
       periodLength: 6,
@@ -116,14 +113,11 @@ function _todayOvulation(countOfCycles: number): Promise<void> {
 }
 
 function _tomorrowOvulation(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 16);
-
   const cycles: Cycle[] = [];
+  let date = addDays(startOfToday(), 16);
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    date = subDays(date, 28);
     cycles.push({
       cycleLength: 28,
       periodLength: 6,
@@ -135,14 +129,11 @@ function _tomorrowOvulation(countOfCycles: number): Promise<void> {
 }
 
 function _menstrualPhase(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 25);
-
   const cycles: Cycle[] = [];
+  let date = addDays(startOfToday(), 25);
 
-  for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+  for (let i = 0; i < countOfCycles; i++) {
+    date = subDays(date, 28);
     cycles.push({
       cycleLength: 28,
       periodLength: 6,
@@ -154,14 +145,11 @@ function _menstrualPhase(countOfCycles: number): Promise<void> {
 }
 
 function _follicularPhase(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 20);
-
   const cycles: Cycle[] = [];
+  let date = addDays(startOfToday(), 20);
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    date = subDays(date, 28);
     cycles.push({
       cycleLength: 28,
       periodLength: 6,
@@ -173,14 +161,11 @@ function _follicularPhase(countOfCycles: number): Promise<void> {
 }
 
 function _lutealPhase(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 10);
-
   const cycles: Cycle[] = [];
+  let date = addDays(startOfToday(), 10);
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    date = subDays(date, 28);
     cycles.push({
       cycleLength: 28,
       periodLength: 6,
@@ -192,14 +177,11 @@ function _lutealPhase(countOfCycles: number): Promise<void> {
 }
 
 function _delayOfCycle(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() - 5);
-
   const cycles: Cycle[] = [];
+  let date = subDays(startOfToday(), 5);
 
   for (let i = 0; i < countOfCycles; ++i) {
-    date.setDate(date.getDate() - 28);
+    date = subDays(date, 28);
     cycles.push({
       cycleLength: 28,
       periodLength: 6,
@@ -217,15 +199,12 @@ function random(min: number, max: number) {
 }
 
 function _randomMenstrualPhase(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 26);
-
   const cycles: Cycle[] = [];
+  let date: Date = addDays(startOfToday(), 26);
 
   for (let i = 0; i < countOfCycles; ++i) {
     const cycleLength = random(26, 30);
-    date.setDate(date.getDate() - cycleLength);
+    date = subDays(date, cycleLength);
     cycles.push({
       cycleLength: cycleLength,
       periodLength: random(4, 6),
@@ -240,15 +219,12 @@ function _randomMenstrualPhase(countOfCycles: number): Promise<void> {
 }
 
 function _randomFollicularPhase(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 20);
-
   const cycles: Cycle[] = [];
+  let date = addDays(startOfToday(), 20);
 
   for (let i = 0; i < countOfCycles; ++i) {
     const cycleLength = random(26, 30);
-    date.setDate(date.getDate() - cycleLength);
+    date = subDays(date, cycleLength);
     cycles.push({
       cycleLength: cycleLength,
       periodLength: random(4, 6),
@@ -263,15 +239,12 @@ function _randomFollicularPhase(countOfCycles: number): Promise<void> {
 }
 
 function _randomLutealPhase(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 10);
-
   const cycles: Cycle[] = [];
+  let date = addDays(startOfToday(), 10);
 
   for (let i = 0; i < countOfCycles; ++i) {
     const cycleLength = random(26, 30);
-    date.setDate(date.getDate() - cycleLength);
+    date = subDays(date, cycleLength);
     cycles.push({
       cycleLength: cycleLength,
       periodLength: random(4, 6),
@@ -286,15 +259,12 @@ function _randomLutealPhase(countOfCycles: number): Promise<void> {
 }
 
 function _randomDelayOfCycle(countOfCycles: number): Promise<void> {
-  const date: Date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() - 5);
-
   const cycles: Cycle[] = [];
+  let date = subDays(startOfToday(), 5);
 
   for (let i = 0; i < countOfCycles; ++i) {
     const cycleLength = random(26, 30);
-    date.setDate(date.getDate() - cycleLength);
+    date = subDays(date, cycleLength);
     cycles.push({
       cycleLength: cycleLength,
       periodLength: random(4, 6),
