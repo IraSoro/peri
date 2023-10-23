@@ -1,7 +1,13 @@
 import i18n from "i18next";
+import {
+  addDays,
+  startOfDay,
+  startOfToday,
+  startOfTomorrow,
+  startOfYesterday,
+  subDays,
+} from "date-fns";
 import { Cycle } from "../data/ClassCycle";
-import { format } from "date-fns";
-import { ru } from "date-fns/locale";
 import {
   getOvulationStatus,
   getPregnancyChance,
@@ -18,6 +24,7 @@ import {
   getLastStartDate,
   getLengthOfLastPeriod,
 } from "../state/CalculationLogics";
+import { format } from "../utils/datetime";
 
 describe("getOvulationStatus", () => {
   test("cycles array is empty", () => {
@@ -27,14 +34,12 @@ describe("getOvulationStatus", () => {
   test("a few days before ovulation", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 24);
 
     const cycles: Cycle[] = [];
+    let date = addDays(startOfToday(), 24);
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -52,14 +57,12 @@ describe("getOvulationStatus", () => {
   test("ovulation is tomorrow", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 16);
 
     const cycles: Cycle[] = [];
+    let date = addDays(startOfToday(), 16);
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -72,14 +75,12 @@ describe("getOvulationStatus", () => {
   test("ovulation is today", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 15);
 
     const cycles: Cycle[] = [];
+    let date: Date = addDays(startOfToday(), 15);
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -92,14 +93,12 @@ describe("getOvulationStatus", () => {
   test("if ovulation is possible", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 14);
 
     const cycles: Cycle[] = [];
+    let date = addDays(startOfToday(), 14);
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -112,14 +111,12 @@ describe("getOvulationStatus", () => {
   test("ovulation is finished", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 10);
 
     const cycles: Cycle[] = [];
+    let date = addDays(startOfToday(), 10);
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -139,14 +136,11 @@ describe("getPregnancyChance", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 15);
-
+    let date = addDays(startOfToday(), 15);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -159,14 +153,11 @@ describe("getPregnancyChance", () => {
   test("pregnancy chance is low", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 20);
-
+    let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -186,14 +177,12 @@ describe("getDayOfCycle", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 15);
+    let date = addDays(startOfToday(), 15);
 
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -308,14 +297,11 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 10);
-
+    let date = addDays(startOfToday(), 10);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -336,14 +322,11 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 1);
-
+    let date = startOfTomorrow();
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -364,14 +347,12 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate());
+    let date = startOfToday();
 
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -389,14 +370,11 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 1);
-
+    let date = startOfYesterday();
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -417,14 +395,11 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 10);
-
+    let date = subDays(startOfToday(), 10);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -445,14 +420,11 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 25);
-
+    let date = addDays(startOfToday(), 25);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -533,14 +505,11 @@ describe("getPhase", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 26);
-
+    let date = addDays(startOfToday(), 26);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -555,14 +524,11 @@ describe("getPhase", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 20);
-
+    let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -577,14 +543,11 @@ describe("getPhase", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 14);
-
+    let date = addDays(startOfToday(), 14);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -599,14 +562,11 @@ describe("getPhase", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 5);
-
+    let date = addDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -739,23 +699,20 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    expect(getActiveDates(format(now, "yyyy-MM-dd"), [])).toEqual(true);
+    expect(getActiveDates(format(startOfToday(), "yyyy-MM-dd"), [])).toEqual(
+      true,
+    );
   });
 
   test("now is menstrual phase items and checking 2th day of period", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 26);
-
+    let date = addDays(startOfToday(), 26);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -763,9 +720,7 @@ describe("getActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 1);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 1);
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       true,
     );
@@ -775,14 +730,11 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 26);
-
+    let date = addDays(startOfToday(), 26);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -790,9 +742,7 @@ describe("getActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 7);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       false,
     );
@@ -802,14 +752,11 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 20);
-
+    let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -817,9 +764,7 @@ describe("getActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 7);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       true,
     );
@@ -829,14 +774,11 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 20);
-
+    let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -844,9 +786,7 @@ describe("getActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 15);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 15);
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       false,
     );
@@ -856,14 +796,11 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 5);
-
+    let date = subDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -871,9 +808,7 @@ describe("getActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 10);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 10);
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       true,
     );
@@ -883,14 +818,11 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 5);
-
+    let date = subDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -898,9 +830,7 @@ describe("getActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 40);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 40);
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       false,
     );
@@ -918,14 +848,11 @@ describe("getMarkModalActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 20);
-
+    let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -933,9 +860,7 @@ describe("getMarkModalActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 5);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 5);
     expect(
       getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
     ).toEqual(false);
@@ -945,14 +870,11 @@ describe("getMarkModalActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 20);
-
+    let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -960,9 +882,7 @@ describe("getMarkModalActiveDates", () => {
       });
     }
 
-    const dateCheck = new Date(cycles[0].startDate);
-    dateCheck.setDate(dateCheck.getDate() + 40);
-
+    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 40);
     expect(
       getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
     ).toEqual(true);
@@ -975,14 +895,9 @@ describe("getPastFuturePeriodDays", () => {
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const periodDates: string[] = [];
-    const nowDate = new Date();
-    nowDate.setHours(0, 0, 0, 0);
-
+    const nowDate = startOfToday();
     for (let day = 0; day < 5; day++) {
-      const periodDay = new Date(nowDate);
-      periodDay.setHours(0, 0, 0, 0);
-      periodDay.setDate(periodDay.getDate() + day);
-
+      const periodDay = addDays(nowDate, day);
       periodDates.push(format(periodDay, "yyyy-MM-dd"));
     }
     expect(getPastFuturePeriodDays([])).toEqual(periodDates);
@@ -992,14 +907,11 @@ describe("getPastFuturePeriodDays", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 10);
-
+    let date = addDays(startOfToday(), 10);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 5,
@@ -1008,14 +920,9 @@ describe("getPastFuturePeriodDays", () => {
     }
 
     const periodDates = getLastPeriodDays(cycles);
-    const nowDate = new Date();
-    nowDate.setHours(0, 0, 0, 0);
-
+    const nowDate = startOfToday();
     for (let day = 0; day < 5; day++) {
-      const periodDay = new Date(nowDate);
-      periodDay.setHours(0, 0, 0, 0);
-      periodDay.setDate(periodDay.getDate() + day);
-
+      const periodDay = addDays(nowDate, day);
       periodDates.push(format(periodDay, "yyyy-MM-dd"));
     }
 
@@ -1026,14 +933,11 @@ describe("getPastFuturePeriodDays", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - 5);
-
+    let date = subDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 5,
@@ -1042,14 +946,10 @@ describe("getPastFuturePeriodDays", () => {
     }
 
     const periodDates = getLastPeriodDays(cycles);
-    const nowDate = new Date();
-    nowDate.setHours(0, 0, 0, 0);
+    const nowDate = startOfToday();
 
     for (let day = 0; day < 5; day++) {
-      const periodDay = new Date(nowDate);
-      periodDay.setHours(0, 0, 0, 0);
-      periodDay.setDate(periodDay.getDate() + day);
-
+      const periodDay = addDays(nowDate, day);
       periodDates.push(format(periodDay, "yyyy-MM-dd"));
     }
 
@@ -1066,14 +966,11 @@ describe("getLastStartDate", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 15);
-
+    let date = addDays(startOfToday(), 15);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,
@@ -1094,14 +991,11 @@ describe("getLengthOfLastPeriod", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    const date: Date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 15);
-
+    let date = addDays(startOfToday(), 15);
     const cycles: Cycle[] = [];
 
     for (let i = 0; i < 6; ++i) {
-      date.setDate(date.getDate() - 28);
+      date = subDays(date, 28);
       cycles.push({
         cycleLength: 28,
         periodLength: 6,

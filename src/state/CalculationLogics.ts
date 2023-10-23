@@ -1,9 +1,8 @@
 import i18n from "i18next";
+import { addDays, differenceInDays, startOfDay, startOfToday } from "date-fns";
+
 import { Cycle } from "../data/ClassCycle";
-
 import { format } from "../utils/datetime";
-
-const millisecondsInDay = 24 * 60 * 60 * 1000;
 
 export function getLastStartDate(cycles: Cycle[]) {
   if (cycles.length === 0) {
@@ -92,14 +91,9 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
   const startDate = cycles[0].startDate;
   const cycleLength = getAverageLengthOfCycle(cycles);
 
-  const dateOfFinish = new Date(startDate);
-  dateOfFinish.setDate(dateOfFinish.getDate() + cycleLength);
-  dateOfFinish.setHours(0, 0, 0, 0);
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  const dayBefore = Math.round(
-    (Number(dateOfFinish) - Number(now)) / millisecondsInDay,
-  );
+  const dateOfFinish = addDays(startOfDay(new Date(startDate)), cycleLength);
+  const now = startOfToday();
+  const dayBefore = differenceInDays(dateOfFinish, now);
 
   if (dayBefore > 0) {
     return {
@@ -130,16 +124,10 @@ export function getDayOfCycle(cycles: Cycle[]) {
     return 0;
   }
 
-  const start = new Date(cycles[0].startDate);
-  start.setHours(0, 0, 0, 0);
-  const currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
+  const start = startOfDay(new Date(cycles[0].startDate));
+  const currentDate = startOfToday();
 
-  const diff =
-    Math.ceil((currentDate.getTime() - start.getTime()) / millisecondsInDay) +
-    1;
-
-  return diff;
+  return differenceInDays(currentDate, start) + 1;
 }
 
 export function getPhase(cycles: Cycle[]) {
@@ -278,11 +266,9 @@ export function getNewCyclesHistory(periodDays: string[]) {
     },
   ];
   for (let i = 1; i < periodDays.length; i++) {
-    const date = new Date(periodDays[i]);
-    const prevDate = new Date(periodDays[i - 1]);
-    const diffInDays = Math.abs(
-      (date.getTime() - prevDate.getTime()) / millisecondsInDay,
-    );
+    const date = startOfDay(new Date(periodDays[i]));
+    const prevDate = startOfDay(new Date(periodDays[i - 1]));
+    const diffInDays = differenceInDays(date, prevDate);
 
     if (diffInDays <= 1) {
       newCycles[0].periodLength++;
@@ -305,12 +291,10 @@ export function getLastPeriodDays(cycles: Cycle[]) {
   const periodDays: string[] = [];
 
   for (const cycle of cycles) {
-    const startOfCycle = new Date(cycle.startDate);
-    startOfCycle.setHours(0, 0, 0, 0);
+    const startOfCycle = startOfDay(new Date(cycle.startDate));
 
     for (let i = 0; i < cycle.periodLength; i++) {
-      const newDate = new Date(startOfCycle);
-      newDate.setDate(startOfCycle.getDate() + i);
+      const newDate = addDays(startOfCycle, i);
       periodDays.push(format(newDate, "yyyy-MM-dd"));
     }
   }
@@ -318,19 +302,17 @@ export function getLastPeriodDays(cycles: Cycle[]) {
 }
 
 export function getActiveDates(dateString: string, cycles: Cycle[]) {
-  const date = new Date(dateString);
-  date.setHours(0, 0, 0, 0);
-
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
+  const date = startOfDay(new Date(dateString));
+  const now = startOfToday();
 
   if (cycles.length === 0) {
     return date <= now;
   }
 
-  const endPeriod = new Date(cycles[0].startDate);
-  endPeriod.setHours(0, 0, 0, 0);
-  endPeriod.setDate(endPeriod.getDate() + cycles[0].periodLength - 1);
+  const endPeriod = addDays(
+    startOfDay(new Date(cycles[0].startDate)),
+    cycles[0].periodLength - 1,
+  );
 
   return date <= endPeriod || date <= now;
 }
@@ -340,41 +322,32 @@ export function getMarkModalActiveDates(dateString: string, cycles: Cycle[]) {
     return true;
   }
 
-  const date = new Date(dateString);
-  date.setHours(0, 0, 0, 0);
-
-  const futureCycleFinish: Date = new Date(cycles[0].startDate);
-  futureCycleFinish.setDate(
-    futureCycleFinish.getDate() + cycles[0].periodLength - 1,
+  const date = startOfDay(new Date(dateString));
+  const futureCycleFinish = addDays(
+    startOfDay(new Date(cycles[0].startDate)),
+    cycles[0].periodLength - 1,
   );
-  futureCycleFinish.setHours(0, 0, 0, 0);
 
   return date.getTime() > futureCycleFinish.getTime();
 }
 
 export function getPastFuturePeriodDays(cycles: Cycle[]) {
-  const nowDate = new Date();
-  nowDate.setHours(0, 0, 0, 0);
-
+  const nowDate = startOfToday();
   const periodDates = getLastPeriodDays(cycles);
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
   if (cycles.length !== 0) {
-    const endOfCurrentCycle = new Date(cycles[0].startDate);
-    endOfCurrentCycle.setDate(
-      endOfCurrentCycle.getDate() + cycles[0].periodLength,
+    const endOfCurrentCycle = addDays(
+      startOfDay(new Date(cycles[0].startDate)),
+      cycles[0].periodLength,
     );
-    endOfCurrentCycle.setHours(0, 0, 0, 0);
     if (endOfCurrentCycle >= nowDate) {
       return [];
     }
   }
 
   for (let day = 0; day < (lengthOfPeriod || 5); day++) {
-    const periodDay = new Date(nowDate);
-    periodDay.setHours(0, 0, 0, 0);
-    periodDay.setDate(periodDay.getDate() + day);
-
+    const periodDay = addDays(nowDate, day);
     periodDates.push(format(periodDay, "yyyy-MM-dd"));
   }
 
@@ -384,29 +357,27 @@ export function getPastFuturePeriodDays(cycles: Cycle[]) {
 export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
   const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
-  const nowDate = new Date();
-  nowDate.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
+  const nowDate = startOfToday();
+  date = startOfDay(date);
 
   if (date <= nowDate) {
     return false;
   }
 
-  const nextCycleStart = new Date(cycles[0].startDate);
-  nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
-  const nextCycleFinish = new Date(cycles[0].startDate);
-  nextCycleFinish.setDate(
-    nextCycleFinish.getDate() + lengthOfCycle + lengthOfPeriod - 1,
+  const nextCycleStart = addDays(
+    startOfDay(new Date(cycles[0].startDate)),
+    lengthOfCycle,
+  );
+  const nextCycleFinish = addDays(
+    startOfDay(new Date(cycles[0].startDate)),
+    lengthOfCycle + lengthOfPeriod - 1,
   );
 
   if (date >= nextCycleStart && date < nextCycleFinish) {
     return true;
   }
 
-  const delayDate = new Date();
-  delayDate.setHours(0, 0, 0, 0);
-  delayDate.setDate(delayDate.getDate() + lengthOfPeriod - 1);
-
+  const delayDate = addDays(startOfToday(), lengthOfPeriod - 1);
   const dayOfCycle = getDayOfCycle(cycles);
 
   if (dayOfCycle > lengthOfCycle && date <= delayDate) {
@@ -436,9 +407,6 @@ export function isPeriodToday(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return false;
   }
-
-  const nowDate = new Date();
-  nowDate.setHours(0, 0, 0, 0);
 
   const dayOfCycle = getDayOfCycle(cycles);
 

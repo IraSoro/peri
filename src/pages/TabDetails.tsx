@@ -8,7 +8,7 @@ import {
   IonCol,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
-import "./TabDetails.css";
+import { addDays, startOfDay } from "date-fns";
 
 import {
   getAverageLengthOfCycle,
@@ -18,6 +18,8 @@ import {
 } from "../state/CalculationLogics";
 import { CyclesContext } from "../state/Context";
 import { format } from "../utils/datetime";
+
+import "./TabDetails.css";
 
 interface InfoOneCycle {
   lengthOfCycleString: string;
@@ -48,13 +50,9 @@ function useInfoForOneCycle(idx: number): InfoOneCycle {
 
   const periodLenNumber: number = cycles[idx].periodLength;
 
-  const dateStart: Date = new Date(cycles[idx].startDate);
-  const dateFinish: Date = new Date(cycles[idx].startDate);
-  dateFinish.setDate(dateFinish.getDate() + cycleLenNumber - 1);
-  const dates = `${format(dateStart, "MMMM d")} - ${format(
-    dateFinish,
-    "MMMM d",
-  )}`;
+  const startDate = startOfDay(new Date(cycles[idx].startDate));
+  const endDate = addDays(startDate, cycleLenNumber - 1);
+  const dates = `${format(startDate, "MMMM d")} - ${format(endDate, "MMMM d")}`;
 
   return {
     lengthOfCycleNumber: cycleLenNumber,
