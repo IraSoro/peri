@@ -17,7 +17,6 @@ import {
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
-  getFormattedDate,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -1111,29 +1110,5 @@ describe("getLengthOfLastPeriod", () => {
     }
 
     expect(getLengthOfLastPeriod(cycles)).toEqual(cycles[0].periodLength);
-  });
-});
-
-describe("getFormattedDate", () => {
-  test("English date format", () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    expect(getFormattedDate(today, "en-GB")).toEqual(format(today, "MMM d"));
-  });
-
-  test("Russian date format", () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    expect(getFormattedDate(today, "ru")).toEqual(
-      format(today, "d MMMM", {
-        locale: ru,
-      }),
-    );
-  });
-
-  test("Unknown date format", () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    expect(getFormattedDate(today, "1")).toEqual(format(today, "MMM d"));
   });
 });

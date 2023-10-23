@@ -15,9 +15,9 @@ import {
   getAverageLengthOfPeriod,
   getDayOfCycle,
   getLastStartDate,
-  getFormattedDate,
 } from "../state/CalculationLogics";
 import { CyclesContext } from "../state/Context";
+import { format } from "../utils/datetime";
 
 interface InfoOneCycle {
   lengthOfCycleString: string;
@@ -51,10 +51,10 @@ function useInfoForOneCycle(idx: number): InfoOneCycle {
   const dateStart: Date = new Date(cycles[idx].startDate);
   const dateFinish: Date = new Date(cycles[idx].startDate);
   dateFinish.setDate(dateFinish.getDate() + cycleLenNumber - 1);
-  const dates = `${getFormattedDate(
-    dateStart,
-    t("locale"),
-  )} - ${getFormattedDate(dateFinish, t("locale"))}`;
+  const dates = `${format(dateStart, "MMMM d")} - ${format(
+    dateFinish,
+    "MMMM d",
+  )}`;
 
   return {
     lengthOfCycleNumber: cycleLenNumber,
@@ -116,7 +116,7 @@ const CurrentCycle = () => {
           buffer={setBufferProgress(dayOfCycle)}
         />
         <IonLabel>
-          <p style={datesStyle}>{getFormattedDate(startDate, t("locale"))}</p>
+          <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
         </IonLabel>
       </div>
     </div>

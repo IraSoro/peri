@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import { Cycle } from "../data/ClassCycle";
-import { format } from "date-fns";
-import { ru } from "date-fns/locale";
+
+import { format } from "../utils/datetime";
 
 const millisecondsInDay = 24 * 60 * 60 * 1000;
 
@@ -430,19 +430,6 @@ export function isForecastPeriodToday(date: Date, cycles: Cycle[]) {
   }
 
   return false;
-}
-
-export function getFormattedDate(date: Date, language: string) {
-  const formattedDates = new Map<string, string>([
-    ["en-GB", format(date, "MMM d")],
-    [
-      "ru",
-      format(date, "d MMMM", {
-        locale: ru,
-      }),
-    ],
-  ]);
-  return formattedDates.get(language) ?? format(date, "MMM d");
 }
 
 export function isPeriodToday(cycles: Cycle[]) {

@@ -1,34 +1,45 @@
-import dayjs from "dayjs";
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-
-import en from "dayjs/locale/en";
-import ru from "dayjs/locale/ru";
+import { format as dateFnsFormat } from "date-fns";
+import { enUS, ru } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
 
 const locales = new Map([
-  ["en", en],
+  ["en", enUS],
   ["ru", ru],
 ]);
 
 const defaultLocale = "en";
+let currentLocale = defaultLocale;
 
 export async function init() {
-  dayjs.extend(isSameOrBefore);
-
   const appLanguage = await storage.get.language();
 
   if (!locales.has(appLanguage)) {
-    dayjs.locale(defaultLocale);
     console.log(
       `Application language ${appLanguage} is not supported now by datetime, set default ${defaultLocale}`,
     );
     return;
   }
-  dayjs.locale(appLanguage);
-  console.log(`Datetime locale is ${dayjs.locale()}`);
+
+  currentLocale = appLanguage;
+  console.log(`Set datetime locale ${currentLocale}`);
 }
 
 export function changeDateTimeLocale(language: string) {
-  dayjs.locale(language);
+  currentLocale = language;
+}
+
+function modifyFormatString(formatString: string) {
+  if (formatString === "MMMM d" && ["ru"].includes(currentLocale)) {
+    return "d MMMM";
+  }
+  return formatString;
+}
+
+export function format(date: Date, formatString: string) {
+  formatString = modifyFormatString(formatString);
+
+  return dateFnsFormat(date, formatString, {
+    locale: locales.get(currentLocale),
+  });
 }

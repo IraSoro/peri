@@ -12,6 +12,7 @@ export const supportedLanguages = new Map([
 ]);
 
 const defaultLanguageCode = "en";
+let currentLanguage = defaultLanguageCode;
 
 export async function init() {
   await i18n
@@ -39,11 +40,17 @@ export async function init() {
     throw new Error("Can't get language from i18next");
   }
 
+  currentLanguage = appLanguage;
   await storage.set.language(appLanguage);
 
   console.log(`App language is ${appLanguage}`);
 }
 
 export function changeTranslation(language: string) {
+  currentLanguage = language;
   return i18n.changeLanguage(language);
+}
+
+export function getCurrentTranslation(): string {
+  return currentLanguage;
 }

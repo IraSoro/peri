@@ -24,13 +24,17 @@ import {
   isNewVersionAvailable,
 } from "../data/AppVersion";
 import { CyclesContext } from "../state/Context";
-import { changeTranslation, supportedLanguages } from "../utils/translation";
+import {
+  changeTranslation,
+  getCurrentTranslation,
+  supportedLanguages,
+} from "../utils/translation";
 import { changeDateTimeLocale } from "../utils/datetime";
 
 import "./Menu.css";
 
 const LanguageSwitcher = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const changeLanguage = async (language: string) => {
     await changeTranslation(language);
@@ -60,8 +64,7 @@ const LanguageSwitcher = () => {
       />
       <IonLabel color="dark">{t("Language")}</IonLabel>
       <IonSelect
-        value={i18n.language}
-        placeholder={supportedLanguages.get(i18n.language)}
+        value={getCurrentTranslation()}
         interface="popover"
         onIonChange={(event) => {
           changeLanguage(event.target.value as string).catch((err) => {

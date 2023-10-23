@@ -28,7 +28,6 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "date-fns": "^2.30.0",
-    "dayjs": "^1.11.10",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.32.2",
