@@ -47,6 +47,10 @@ export async function init() {
 }
 
 export function changeTranslation(language: string) {
+  if (!supportedLanguages.has(language)) {
+    console.warn(`Language ${language} is not supported yet`);
+    return;
+  }
   currentLanguage = language;
   return i18n.changeLanguage(language);
 }

@@ -26,6 +26,10 @@ export async function init() {
 }
 
 export function changeDateTimeLocale(language: string) {
+  if (!locales.has(language)) {
+    console.warn(`Language ${language} is not supported yet`);
+    return;
+  }
   currentLocale = language;
 }
 
