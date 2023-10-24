@@ -8,16 +8,18 @@ import {
   IonCol,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
-import "./TabDetails.css";
+import { addDays, startOfDay } from "date-fns";
 
 import {
   getAverageLengthOfCycle,
   getAverageLengthOfPeriod,
   getDayOfCycle,
   getLastStartDate,
-  getFormattedDate,
 } from "../state/CalculationLogics";
 import { CyclesContext } from "../state/Context";
+import { format } from "../utils/datetime";
+
+import "./TabDetails.css";
 
 interface InfoOneCycle {
   lengthOfCycleString: string;
@@ -48,13 +50,9 @@ function useInfoForOneCycle(idx: number): InfoOneCycle {
 
   const periodLenNumber: number = cycles[idx].periodLength;
 
-  const dateStart: Date = new Date(cycles[idx].startDate);
-  const dateFinish: Date = new Date(cycles[idx].startDate);
-  dateFinish.setDate(dateFinish.getDate() + cycleLenNumber - 1);
-  const dates = `${getFormattedDate(
-    dateStart,
-    t("locale"),
-  )} - ${getFormattedDate(dateFinish, t("locale"))}`;
+  const startDate = startOfDay(new Date(cycles[idx].startDate));
+  const endDate = addDays(startDate, cycleLenNumber - 1);
+  const dates = `${format(startDate, "MMMM d")} - ${format(endDate, "MMMM d")}`;
 
   return {
     lengthOfCycleNumber: cycleLenNumber,
@@ -116,7 +114,7 @@ const CurrentCycle = () => {
           buffer={setBufferProgress(dayOfCycle)}
         />
         <IonLabel>
-          <p style={datesStyle}>{getFormattedDate(startDate, t("locale"))}</p>
+          <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
         </IonLabel>
       </div>
     </div>

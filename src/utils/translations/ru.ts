@@ -1,5 +1,4 @@
 const ru = {
-  locale: "ru",
   // Home Tab
   Home: "Главная",
   "Period in": "Месячные через",

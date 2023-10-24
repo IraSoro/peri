@@ -32,6 +32,7 @@ import {
   getPastFuturePeriodDays,
   isPeriodToday,
 } from "../state/CalculationLogics";
+import { getCurrentTranslation } from "../utils/translation";
 
 import { chevronForwardOutline } from "ionicons/icons";
 
@@ -191,7 +192,7 @@ const TabHome = (props: HomeProps) => {
                 style={{ borderRadius: "20px" }}
                 ref={datetimeRef}
                 presentation="date"
-                locale={t("locale")}
+                locale={getCurrentTranslation()}
                 size="cover"
                 multiple
                 firstDayOfWeek={1}

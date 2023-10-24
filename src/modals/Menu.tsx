@@ -24,26 +24,28 @@ import {
   isNewVersionAvailable,
 } from "../data/AppVersion";
 import { CyclesContext } from "../state/Context";
+import {
+  changeTranslation,
+  getCurrentTranslation,
+  supportedLanguages,
+} from "../utils/translation";
+import { changeDateTimeLocale } from "../utils/datetime";
 
 import "./Menu.css";
 
 const LanguageSwitcher = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  type LanguageCode = string;
-  type Language = string;
-  const supportedLanguages = new Map<LanguageCode, Language>([
-    ["en", "english"],
-    ["ru", "русский"],
-  ]);
+  const changeLanguage = async (language: string) => {
+    await changeTranslation(language);
+    changeDateTimeLocale(language);
+    await storage.set.language(language);
 
-  const changeLanguage = async (languageCode: string) => {
-    await i18n.changeLanguage(languageCode);
-    await storage.set.language(languageCode);
+    console.log(`Application language has been changed to ${language}`);
   };
 
   const languages = [];
-  for (const [code, language] of supportedLanguages.entries()) {
+  for (const [code, language] of supportedLanguages) {
     languages.push(
       <IonSelectOption
         key={code}
@@ -62,8 +64,7 @@ const LanguageSwitcher = () => {
       />
       <IonLabel color="dark">{t("Language")}</IonLabel>
       <IonSelect
-        value={i18n.language}
-        placeholder={supportedLanguages.get(i18n.language)}
+        value={getCurrentTranslation()}
         interface="popover"
         onIonChange={(event) => {
           changeLanguage(event.target.value as string).catch((err) => {

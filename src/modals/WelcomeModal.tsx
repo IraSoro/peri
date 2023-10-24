@@ -9,9 +9,11 @@ import {
   IonDatetime,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
+import { startOfDay, startOfToday } from "date-fns";
 
 import { CyclesContext } from "../state/Context";
 import { getNewCyclesHistory } from "../state/CalculationLogics";
+import { getCurrentTranslation } from "../utils/translation";
 
 interface PropsWelcomeModal {
   isOpen: boolean;
@@ -68,18 +70,12 @@ const Welcome = (props: PropsWelcomeModal) => {
             style={{ borderRadius: "20px", maxHeight: "340px" }}
             ref={datetimeRef}
             presentation="date"
-            locale={t("locale")}
+            locale={getCurrentTranslation()}
             size="cover"
             multiple
             firstDayOfWeek={1}
-            isDateEnabled={(dateISO) => {
-              const currentDate = new Date();
-              currentDate.setHours(0, 0, 0, 0);
-
-              const date = new Date(dateISO);
-              date.setHours(0, 0, 0, 0);
-
-              return date <= currentDate;
+            isDateEnabled={(selectedDate) => {
+              return startOfDay(new Date(selectedDate)) <= startOfToday();
             }}
           />
         </div>
