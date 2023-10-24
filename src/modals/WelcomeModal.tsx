@@ -13,6 +13,7 @@ import { startOfDay, startOfToday } from "date-fns";
 
 import { CyclesContext } from "../state/Context";
 import { getNewCyclesHistory } from "../state/CalculationLogics";
+import { getCurrentTranslation } from "../utils/translation";
 
 interface PropsWelcomeModal {
   isOpen: boolean;
@@ -69,7 +70,7 @@ const Welcome = (props: PropsWelcomeModal) => {
             style={{ borderRadius: "20px", maxHeight: "340px" }}
             ref={datetimeRef}
             presentation="date"
-            locale={t("locale")}
+            locale={getCurrentTranslation()}
             size="cover"
             multiple
             firstDayOfWeek={1}
