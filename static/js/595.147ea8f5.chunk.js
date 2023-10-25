@@ -1,0 +1,3 @@
+/*! For license information please see 595.147ea8f5.chunk.js.LICENSE.txt */
+"use strict";(self.webpackChunkperi=self.webpackChunkperi||[]).push([[595],{595:function(e,t,l){l.r(t),l.d(t,{c:function(){return a}});var n=l(4852),a=function(e){var t,l=e;return{hasLegacyControl:function(){if(void 0===t){var e=void 0!==l.label||r(l),a=l.hasAttribute("aria-label")||l.hasAttribute("aria-labelledby")&&null===l.shadowRoot,u=(0,n.h)(l);t=!0===l.legacy||!e&&!a&&null!==u}return t}}},r=function(e){return null!==e.shadowRoot&&(!(!u.includes(e.tagName)||null===e.querySelector('[slot="label"]'))||!(!o.includes(e.tagName)||""===e.textContent))},u=["ION-RANGE"],o=["ION-TOGGLE","ION-CHECKBOX","ION-RADIO"]}}]);
+//# sourceMappingURL=595.147ea8f5.chunk.js.map
