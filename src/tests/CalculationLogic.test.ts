@@ -19,7 +19,6 @@ import {
   getNewCyclesHistory,
   getActiveDates,
   getLastPeriodDays,
-  getMarkModalActiveDates,
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
@@ -834,58 +833,6 @@ describe("getActiveDates", () => {
     expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
       false,
     );
-  });
-});
-
-describe("getMarkModalActiveDates", () => {
-  test("cycles array is empty", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getMarkModalActiveDates("", [])).toEqual(true);
-  });
-
-  test("cycles array has a few items and date is less than the finish of the last cycle", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-
-    let date = addDays(startOfToday(), 20);
-    const cycles: Cycle[] = [];
-
-    for (let i = 0; i < 6; ++i) {
-      date = subDays(date, 28);
-      cycles.push({
-        cycleLength: 28,
-        periodLength: 6,
-        startDate: date.toString(),
-      });
-    }
-
-    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 5);
-    expect(
-      getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
-    ).toEqual(false);
-  });
-
-  test("cycles array has a few items and date is more than the finish of the last cycle", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-
-    let date = addDays(startOfToday(), 20);
-    const cycles: Cycle[] = [];
-
-    for (let i = 0; i < 6; ++i) {
-      date = subDays(date, 28);
-      cycles.push({
-        cycleLength: 28,
-        periodLength: 6,
-        startDate: date.toString(),
-      });
-    }
-
-    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 40);
-    expect(
-      getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
-    ).toEqual(true);
   });
 });
 

@@ -317,20 +317,6 @@ export function getActiveDates(dateString: string, cycles: Cycle[]) {
   return date <= endPeriod || date <= now;
 }
 
-export function getMarkModalActiveDates(dateString: string, cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return true;
-  }
-
-  const date = startOfDay(new Date(dateString));
-  const futureCycleFinish = addDays(
-    startOfDay(new Date(cycles[0].startDate)),
-    cycles[0].periodLength - 1,
-  );
-
-  return date.getTime() > futureCycleFinish.getTime();
-}
-
 export function getPastFuturePeriodDays(cycles: Cycle[]) {
   const nowDate = startOfToday();
   const periodDates = getLastPeriodDays(cycles);
