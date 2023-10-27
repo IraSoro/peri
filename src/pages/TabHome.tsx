@@ -14,6 +14,7 @@ import {
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
+import { parseISO, startOfDay } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
@@ -199,12 +200,12 @@ const TabHome = (props: HomeProps) => {
                 isDateEnabled={(date: string) => {
                   return getActiveDates(date, cycles);
                 }}
-                highlightedDates={(isoString) => {
+                highlightedDates={(isoDateString) => {
                   if (cycles.length === 0) {
                     return undefined;
                   }
 
-                  const date = new Date(isoString);
+                  const date = startOfDay(parseISO(isoDateString));
                   if (isForecastPeriodDays(date, cycles)) {
                     return {
                       textColor: "var(--ion-color-dark)",
