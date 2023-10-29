@@ -698,9 +698,7 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    expect(getActiveDates(format(startOfToday(), "yyyy-MM-dd"), [])).toEqual(
-      true,
-    );
+    expect(getActiveDates(startOfToday(), [])).toEqual(true);
   });
 
   test("now is menstrual phase items and checking 2th day of period", () => {
@@ -720,9 +718,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 1);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      true,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
   test("now is menstrual phase items and checking 8th day of cycle", () => {
@@ -742,9 +738,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      false,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 
   test("now is follicular phase items and checking not day of cycle less than now", () => {
@@ -764,9 +758,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      true,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
   test("now is follicular phase items and checking not day of cycle more than now", () => {
@@ -786,9 +778,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 15);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      false,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 
   test("delay a few days and check date is less then the current date", () => {
@@ -808,9 +798,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 10);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      true,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
   test("delay a few days and check date is more then the current date", () => {
@@ -830,9 +818,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 40);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      false,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 });
 

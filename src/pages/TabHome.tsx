@@ -197,8 +197,8 @@ const TabHome = (props: HomeProps) => {
                 size="cover"
                 multiple
                 firstDayOfWeek={1}
-                isDateEnabled={(date: string) => {
-                  return getActiveDates(date, cycles);
+                isDateEnabled={(isoDateString) => {
+                  return getActiveDates(parseISO(isoDateString), cycles);
                 }}
                 highlightedDates={(isoDateString) => {
                   if (cycles.length === 0) {
