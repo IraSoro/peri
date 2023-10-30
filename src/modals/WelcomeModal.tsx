@@ -9,7 +9,7 @@ import {
   IonDatetime,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
-import { startOfDay, startOfToday } from "date-fns";
+import { parseISO, startOfDay, startOfToday } from "date-fns";
 
 import { CyclesContext } from "../state/Context";
 import { getNewCyclesHistory } from "../state/CalculationLogics";
@@ -74,8 +74,8 @@ const Welcome = (props: PropsWelcomeModal) => {
             size="cover"
             multiple
             firstDayOfWeek={1}
-            isDateEnabled={(selectedDate) => {
-              return startOfDay(new Date(selectedDate)) <= startOfToday();
+            isDateEnabled={(isoDateString) => {
+              return startOfDay(parseISO(isoDateString)) <= startOfToday();
             }}
           />
         </div>
@@ -85,10 +85,13 @@ const Welcome = (props: PropsWelcomeModal) => {
             color="dark-basic"
             onClick={() => {
               if (datetimeRef.current?.value) {
-                const newCycles = getNewCyclesHistory(
-                  [datetimeRef.current.value].flat(),
-                );
-                updateCycles(newCycles);
+                const periodDaysString = (
+                  datetimeRef.current.value as string[]
+                ).map((isoDateString) => {
+                  return parseISO(isoDateString).toString();
+                });
+
+                updateCycles(getNewCyclesHistory(periodDaysString));
                 props.setIsOpen(false);
               } else {
                 confirmAlert({

@@ -14,6 +14,7 @@ import {
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
+import { isSameDay, parseISO, startOfDay, startOfToday } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
@@ -123,7 +124,7 @@ const TabHome = (props: HomeProps) => {
     if (!lastPeriodDays.length) {
       return;
     }
-    datetimeRef.current.value = getLastPeriodDays(cycles);
+    datetimeRef.current.value = lastPeriodDays;
   }, [cycles]);
 
   return (
@@ -196,24 +197,27 @@ const TabHome = (props: HomeProps) => {
                 size="cover"
                 multiple
                 firstDayOfWeek={1}
-                isDateEnabled={(date: string) => {
-                  return getActiveDates(date, cycles);
+                isDateEnabled={(isoDateString) => {
+                  return getActiveDates(parseISO(isoDateString), cycles);
                 }}
-                highlightedDates={(isoString) => {
+                highlightedDates={(isoDateString) => {
                   if (cycles.length === 0) {
                     return undefined;
                   }
 
-                  const date = new Date(isoString);
-                  if (isForecastPeriodDays(date, cycles)) {
-                    return {
-                      textColor: "var(--ion-color-dark)",
-                      backgroundColor: "var(--ion-color-light-basic)",
-                    };
-                  } else if (isForecastPeriodToday(date, cycles)) {
+                  const date = startOfDay(parseISO(isoDateString));
+                  if (
+                    isSameDay(date, startOfToday()) &&
+                    isForecastPeriodToday(cycles)
+                  ) {
                     return {
                       backgroundColor:
                         "rgba(var(--ion-color-light-basic-rgb), 0.5)",
+                    };
+                  } else if (isForecastPeriodDays(date, cycles)) {
+                    return {
+                      textColor: "var(--ion-color-dark)",
+                      backgroundColor: "var(--ion-color-light-basic)",
                     };
                   }
 
@@ -228,10 +232,13 @@ const TabHome = (props: HomeProps) => {
                         ?.confirm()
                         .catch((err) => console.error(err));
                       if (datetimeRef.current?.value) {
-                        const newCycles = getNewCyclesHistory(
-                          [datetimeRef.current.value].flat(),
-                        );
-                        updateCycles(newCycles);
+                        const periodDaysString = (
+                          datetimeRef.current.value as string[]
+                        ).map((isoDateString) => {
+                          return parseISO(isoDateString).toString();
+                        });
+
+                        updateCycles(getNewCyclesHistory(periodDaysString));
                       }
                     }}
                   >

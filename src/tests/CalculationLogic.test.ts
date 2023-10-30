@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import {
   addDays,
+  parseISO,
   startOfDay,
   startOfToday,
   startOfTomorrow,
@@ -19,12 +20,12 @@ import {
   getNewCyclesHistory,
   getActiveDates,
   getLastPeriodDays,
-  getMarkModalActiveDates,
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
+  isForecastPeriodDays,
+  isForecastPeriodToday,
 } from "../state/CalculationLogics";
-import { format } from "../utils/datetime";
 
 describe("getOvulationStatus", () => {
   test("cycles array is empty", () => {
@@ -699,9 +700,7 @@ describe("getActiveDates", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    expect(getActiveDates(format(startOfToday(), "yyyy-MM-dd"), [])).toEqual(
-      true,
-    );
+    expect(getActiveDates(startOfToday(), [])).toEqual(true);
   });
 
   test("now is menstrual phase items and checking 2th day of period", () => {
@@ -721,9 +720,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 1);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      true,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
   test("now is menstrual phase items and checking 8th day of cycle", () => {
@@ -743,9 +740,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      false,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 
   test("now is follicular phase items and checking not day of cycle less than now", () => {
@@ -765,9 +760,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      true,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
   test("now is follicular phase items and checking not day of cycle more than now", () => {
@@ -787,9 +780,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 15);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      false,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 
   test("delay a few days and check date is less then the current date", () => {
@@ -809,9 +800,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 10);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      true,
-    );
+    expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
   test("delay a few days and check date is more then the current date", () => {
@@ -831,61 +820,7 @@ describe("getActiveDates", () => {
     }
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 40);
-    expect(getActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles)).toEqual(
-      false,
-    );
-  });
-});
-
-describe("getMarkModalActiveDates", () => {
-  test("cycles array is empty", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getMarkModalActiveDates("", [])).toEqual(true);
-  });
-
-  test("cycles array has a few items and date is less than the finish of the last cycle", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-
-    let date = addDays(startOfToday(), 20);
-    const cycles: Cycle[] = [];
-
-    for (let i = 0; i < 6; ++i) {
-      date = subDays(date, 28);
-      cycles.push({
-        cycleLength: 28,
-        periodLength: 6,
-        startDate: date.toString(),
-      });
-    }
-
-    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 5);
-    expect(
-      getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
-    ).toEqual(false);
-  });
-
-  test("cycles array has a few items and date is more than the finish of the last cycle", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-
-    let date = addDays(startOfToday(), 20);
-    const cycles: Cycle[] = [];
-
-    for (let i = 0; i < 6; ++i) {
-      date = subDays(date, 28);
-      cycles.push({
-        cycleLength: 28,
-        periodLength: 6,
-        startDate: date.toString(),
-      });
-    }
-
-    const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 40);
-    expect(
-      getMarkModalActiveDates(format(dateCheck, "yyyy-MM-dd"), cycles),
-    ).toEqual(true);
+    expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 });
 
@@ -898,7 +833,7 @@ describe("getPastFuturePeriodDays", () => {
     const nowDate = startOfToday();
     for (let day = 0; day < 5; day++) {
       const periodDay = addDays(nowDate, day);
-      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+      periodDates.push(periodDay.toString());
     }
     expect(getPastFuturePeriodDays([])).toEqual(periodDates);
   });
@@ -919,11 +854,13 @@ describe("getPastFuturePeriodDays", () => {
       });
     }
 
-    const periodDates = getLastPeriodDays(cycles);
+    const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+      return parseISO(isoDateString).toString();
+    });
     const nowDate = startOfToday();
     for (let day = 0; day < 5; day++) {
       const periodDay = addDays(nowDate, day);
-      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+      periodDates.push(periodDay.toString());
     }
 
     expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
@@ -945,15 +882,118 @@ describe("getPastFuturePeriodDays", () => {
       });
     }
 
-    const periodDates = getLastPeriodDays(cycles);
+    const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+      return parseISO(isoDateString).toString();
+    });
     const nowDate = startOfToday();
 
     for (let day = 0; day < 5; day++) {
       const periodDay = addDays(nowDate, day);
-      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+      periodDates.push(periodDay.toString());
     }
 
     expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+  });
+});
+
+describe("isForecastPeriodDays", () => {
+  test("Every day is a period day", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = startOfToday();
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+
+    for (
+      let date = nextPeriodStart;
+      date < addDays(nextPeriodStart, 3);
+      date = addDays(date, 1)
+    ) {
+      expect(isForecastPeriodDays(date, cycles)).toEqual(true);
+    }
+  });
+
+  test("Day before and after period are not marked as period days", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = startOfToday();
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+
+    const dayBeforeNextPeriod = subDays(nextPeriodStart, 1);
+    const dayAfterNextPeriod = addDays(nextPeriodStart, 28 + 4);
+
+    expect(isForecastPeriodDays(dayBeforeNextPeriod, cycles)).toEqual(false);
+    expect(isForecastPeriodDays(dayAfterNextPeriod, cycles)).toEqual(false);
+  });
+
+  test("Don't mark a day as forecast if it has already passed", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfToday(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+    expect(isForecastPeriodDays(nextPeriodStart, cycles)).toEqual(false);
+    const nextDayAfterPeriodStart = addDays(nextPeriodStart, 1);
+    expect(isForecastPeriodDays(nextDayAfterPeriodStart, cycles)).toEqual(true);
+  });
+
+  test("Don't mark a day as forecast if period is already due", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfToday(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+    const nextDayAfterPeriod = addDays(nextPeriodStart, 3);
+    expect(isForecastPeriodDays(nextDayAfterPeriod, cycles)).toEqual(false);
+  });
+});
+
+describe("isForecastPeriodToday", () => {
+  test("Period is today", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfToday(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    expect(isForecastPeriodToday(cycles)).toEqual(true);
+  });
+
+  test("Period is not today", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfTomorrow(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    expect(isForecastPeriodToday(cycles)).toEqual(false);
   });
 });
 
