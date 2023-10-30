@@ -257,7 +257,12 @@ export function getNewCyclesHistory(periodDays: string[]) {
     return [];
   }
 
-  periodDays.sort();
+  periodDays.sort((left, right) => {
+    const leftDate = new Date(left);
+    const rightDate = new Date(right);
+    return leftDate.getTime() - rightDate.getTime();
+  });
+
   const newCycles: Cycle[] = [
     {
       cycleLength: 28,
@@ -356,31 +361,31 @@ export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
   );
   const nextCycleFinish = addDays(
     startOfDay(new Date(cycles[0].startDate)),
-    lengthOfCycle + lengthOfPeriod - 1,
+    lengthOfCycle + lengthOfPeriod,
   );
 
   if (date >= nextCycleStart && date < nextCycleFinish) {
     return true;
   }
 
-  const delayDate = addDays(startOfToday(), lengthOfPeriod - 1);
+  const delayDate = addDays(startOfToday(), lengthOfPeriod);
   const dayOfCycle = getDayOfCycle(cycles);
 
-  if (dayOfCycle > lengthOfCycle && date <= delayDate) {
+  if (dayOfCycle > lengthOfCycle && date < delayDate) {
     return true;
   }
 
   return false;
 }
 
-export function isForecastPeriodToday(date: Date, cycles: Cycle[]) {
+export function isForecastPeriodToday(cycles: Cycle[]) {
   const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const nowDate = startOfToday();
 
   const nextCycleStart = new Date(cycles[0].startDate);
   nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
 
-  if (date.getTime() === nowDate.getTime() && date >= nextCycleStart) {
+  if (nowDate >= nextCycleStart) {
     return true;
   }
 

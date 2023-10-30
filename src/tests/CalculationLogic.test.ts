@@ -22,6 +22,8 @@ import {
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
+  isForecastPeriodDays,
+  isForecastPeriodToday,
 } from "../state/CalculationLogics";
 import { format } from "../utils/datetime";
 
@@ -887,6 +889,107 @@ describe("getPastFuturePeriodDays", () => {
     }
 
     expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+  });
+});
+
+describe("isForecastPeriodDays", () => {
+  test("Every day is a period day", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = startOfToday();
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+
+    for (
+      let date = nextPeriodStart;
+      date < addDays(nextPeriodStart, 3);
+      date = addDays(date, 1)
+    ) {
+      expect(isForecastPeriodDays(date, cycles)).toEqual(true);
+    }
+  });
+
+  test("Day before and after period are not marked as period days", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = startOfToday();
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+
+    const dayBeforeNextPeriod = subDays(nextPeriodStart, 1);
+    const dayAfterNextPeriod = addDays(nextPeriodStart, 28 + 4);
+
+    expect(isForecastPeriodDays(dayBeforeNextPeriod, cycles)).toEqual(false);
+    expect(isForecastPeriodDays(dayAfterNextPeriod, cycles)).toEqual(false);
+  });
+
+  test("Don't mark a day as forecast if it has already passed", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfToday(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+    expect(isForecastPeriodDays(nextPeriodStart, cycles)).toEqual(false);
+    const nextDayAfterPeriodStart = addDays(nextPeriodStart, 1);
+    expect(isForecastPeriodDays(nextDayAfterPeriodStart, cycles)).toEqual(true);
+  });
+
+  test("Don't mark a day as forecast if period is already due", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfToday(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    const nextPeriodStart = addDays(startOfPeriod, 28);
+    const nextDayAfterPeriod = addDays(nextPeriodStart, 3);
+    expect(isForecastPeriodDays(nextDayAfterPeriod, cycles)).toEqual(false);
+  });
+});
+
+describe("isForecastPeriodToday", () => {
+  test("Period is today", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfToday(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    expect(isForecastPeriodToday(cycles)).toEqual(true);
+  });
+
+  test("Period is not today", () => {
+    const cycles: Cycle[] = [];
+    const startOfPeriod = subDays(startOfTomorrow(), 28);
+
+    cycles.push({
+      cycleLength: 28,
+      periodLength: 3,
+      startDate: startOfPeriod.toString(),
+    });
+
+    expect(isForecastPeriodToday(cycles)).toEqual(false);
   });
 });
 

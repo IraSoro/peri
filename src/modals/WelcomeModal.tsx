@@ -85,10 +85,13 @@ const Welcome = (props: PropsWelcomeModal) => {
             color="dark-basic"
             onClick={() => {
               if (datetimeRef.current?.value) {
-                const newCycles = getNewCyclesHistory(
-                  [datetimeRef.current.value].flat(),
-                );
-                updateCycles(newCycles);
+                const periodDaysString = (
+                  datetimeRef.current.value as string[]
+                ).map((isoDateString) => {
+                  return parseISO(isoDateString).toString();
+                });
+
+                updateCycles(getNewCyclesHistory(periodDaysString));
                 props.setIsOpen(false);
               } else {
                 confirmAlert({
