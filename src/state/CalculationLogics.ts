@@ -1,5 +1,11 @@
 import i18n from "i18next";
-import { addDays, differenceInDays, startOfDay, startOfToday } from "date-fns";
+import {
+  addDays,
+  differenceInDays,
+  parseISO,
+  startOfDay,
+  startOfToday,
+} from "date-fns";
 
 import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
@@ -324,7 +330,9 @@ export function getActiveDates(date: Date, cycles: Cycle[]) {
 
 export function getPastFuturePeriodDays(cycles: Cycle[]) {
   const nowDate = startOfToday();
-  const periodDates = getLastPeriodDays(cycles);
+  const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+    return parseISO(isoDateString).toString();
+  });
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
 
   if (cycles.length !== 0) {
@@ -339,7 +347,7 @@ export function getPastFuturePeriodDays(cycles: Cycle[]) {
 
   for (let day = 0; day < (lengthOfPeriod || 5); day++) {
     const periodDay = addDays(nowDate, day);
-    periodDates.push(format(periodDay, "yyyy-MM-dd"));
+    periodDates.push(periodDay.toString());
   }
 
   return periodDates;

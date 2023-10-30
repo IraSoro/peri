@@ -124,7 +124,7 @@ const TabHome = (props: HomeProps) => {
     if (!lastPeriodDays.length) {
       return;
     }
-    datetimeRef.current.value = getLastPeriodDays(cycles);
+    datetimeRef.current.value = lastPeriodDays;
   }, [cycles]);
 
   return (

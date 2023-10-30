@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import {
   addDays,
+  parseISO,
   startOfDay,
   startOfToday,
   startOfTomorrow,
@@ -25,7 +26,6 @@ import {
   isForecastPeriodDays,
   isForecastPeriodToday,
 } from "../state/CalculationLogics";
-import { format } from "../utils/datetime";
 
 describe("getOvulationStatus", () => {
   test("cycles array is empty", () => {
@@ -833,7 +833,7 @@ describe("getPastFuturePeriodDays", () => {
     const nowDate = startOfToday();
     for (let day = 0; day < 5; day++) {
       const periodDay = addDays(nowDate, day);
-      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+      periodDates.push(periodDay.toString());
     }
     expect(getPastFuturePeriodDays([])).toEqual(periodDates);
   });
@@ -854,11 +854,13 @@ describe("getPastFuturePeriodDays", () => {
       });
     }
 
-    const periodDates = getLastPeriodDays(cycles);
+    const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+      return parseISO(isoDateString).toString();
+    });
     const nowDate = startOfToday();
     for (let day = 0; day < 5; day++) {
       const periodDay = addDays(nowDate, day);
-      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+      periodDates.push(periodDay.toString());
     }
 
     expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
@@ -880,12 +882,14 @@ describe("getPastFuturePeriodDays", () => {
       });
     }
 
-    const periodDates = getLastPeriodDays(cycles);
+    const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+      return parseISO(isoDateString).toString();
+    });
     const nowDate = startOfToday();
 
     for (let day = 0; day < 5; day++) {
       const periodDay = addDays(nowDate, day);
-      periodDates.push(format(periodDay, "yyyy-MM-dd"));
+      periodDates.push(periodDay.toString());
     }
 
     expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
