@@ -6,20 +6,20 @@ We welcome contributions for translating our application into various languages.
 
 ### Steps
 
-1. Look for the `/utils/translations` directory to find existing translations. If you don't find the language you wish to translate the application into, proceed to step 2.
+1. Look for the `./src/utils/translations` directory to find existing translations. If you didn't find the language you interested in then proceed to step 2.
 
-2. Create a new file for the language by duplicating the `ru.ts` file in the `/translations` directory. Name it using the language code (e.g., `fr.ts` for French translations).
+2. Create a new file for the language by duplicating the `./src/utils/translations/ru.ts` file. Name it using the language code (e.g., `fr.ts` for French translations).
 
-3. Translate the content within the file into your desired language.
+3. Translate the keys into your language.
 
-4. In the directory `/utils` open the file `translation.ts`. Import the generated file like this:
+4. Import translation file in the `./src/utils/translations.ts`. Import the generated file like this:
 
    ```ts
    import en from "./translations/en";
    import ru from "./translations/ru";
    ```
 
-5. Add the language to the `supportedLanguages` variable like this:
+5. Add the language to the `supportedLanguages` map like this, to show this language in the app's menu:
 
    ```ts
    export const supportedLanguages = new Map([
@@ -41,7 +41,7 @@ We welcome contributions for translating our application into various languages.
    },
    ```
 
-7. In the directory `/utils` open the file `datetime.ts`. Add the locale to the `locales` variable like this:
+7. Open the file `./src/utils/datetime.ts`. Add the locale to the `locales` variable like this:
 
    ```ts
    const locales = new Map([
@@ -50,7 +50,7 @@ We welcome contributions for translating our application into various languages.
    ]);
    ```
 
-8. Submit a Pull Request with the translated file.
+8. Make a Pull Request with the translated file.
 
 ### Guidelines
 
