@@ -9,7 +9,7 @@
   </p>
 </p>
 
-### About The Project
+### About the project
 
 Peri is period tracker application. The application has the necessary features that help you track your cycle. The app shows:
 
@@ -55,3 +55,7 @@ You can find the full instruction about the project building in [BUILDING.md](ht
 ### Help with translation
 
 We welcome contributions to translate our application into different languages. If you want help with translations, you can find complete instructions in [CONTRIBUTING.md](https://github.com/IraSoro/peri/blob/master/CONTRIBUTING.md) file.
+
+### Algorithms and calculations
+
+You can find a description of the logic and algorithms that are used in the application in [CALCULATION.md](https://github.com/IraSoro/peri/blob/master/info/CALCULATION.md).
