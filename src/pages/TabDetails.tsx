@@ -80,11 +80,11 @@ const progressBarStyle = {
 };
 
 function setBufferProgress(value: number) {
-  return (value / 100) * 3;
+  return (value / 100) * 2.5;
 }
 
 function setValueProgress(lengthOfPeriod: number) {
-  return (lengthOfPeriod / 100) * 3;
+  return (lengthOfPeriod / 100) * 2.5;
 }
 
 const CurrentCycle = () => {
