@@ -103,7 +103,7 @@ const CurrentCycle = () => {
   })}`;
 
   const startDate = new Date(getLastStartDate(cycles));
-  const averLengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  const lengthOfPeriod = cycles[0].periodLength ?? 0;
   const averLengthOfCycle = getAverageLengthOfCycle(cycles);
 
   return (
@@ -116,7 +116,7 @@ const CurrentCycle = () => {
           class="current-progress"
           style={progressBarStyle}
           value={setValueProgress(
-            averLengthOfPeriod > dayOfCycle ? dayOfCycle : averLengthOfPeriod,
+            lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
             averLengthOfCycle,
           )}
           buffer={setBufferProgress(dayOfCycle, averLengthOfCycle)}
