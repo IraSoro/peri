@@ -80,7 +80,7 @@ const progressBarStyle = {
 };
 
 function setProgressBar(value: number, maxLength: number) {
-  return (value * 0.95) / maxLength;
+  return (value / maxLength) * 0.95;
 }
 
 const CurrentCycle = () => {
