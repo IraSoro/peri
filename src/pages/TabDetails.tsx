@@ -79,12 +79,8 @@ const progressBarStyle = {
   marginBottom: "5px" as const,
 };
 
-function setBufferProgress(value: number) {
-  return (value / 100) * 3;
-}
-
-function setValueProgress(lengthOfPeriod: number) {
-  return (lengthOfPeriod / 100) * 3;
+function setProgressBar(value: number, maxLength: number) {
+  return (value / maxLength) * 0.95;
 }
 
 const CurrentCycle = () => {
@@ -97,7 +93,11 @@ const CurrentCycle = () => {
   })}`;
 
   const startDate = new Date(getLastStartDate(cycles));
-  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  const lengthOfPeriod = cycles[0].periodLength ?? 0;
+
+  const maxLength = cycles.reduce((max: number, item) => {
+    return Math.max(max, item.cycleLength);
+  }, dayOfCycle);
 
   return (
     <div id="progress-block">
@@ -108,10 +108,11 @@ const CurrentCycle = () => {
         <IonProgressBar
           class="current-progress"
           style={progressBarStyle}
-          value={setValueProgress(
+          value={setProgressBar(
             lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
+            maxLength,
           )}
-          buffer={setBufferProgress(dayOfCycle)}
+          buffer={setProgressBar(dayOfCycle, maxLength)}
         />
         <IonLabel>
           <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
@@ -127,6 +128,11 @@ interface IdxProps {
 
 const ListProgress = () => {
   const cycles = useContext(CyclesContext).cycles;
+  const dayOfCycle = getDayOfCycle(cycles);
+
+  const maxLength = cycles.reduce((max: number, item) => {
+    return Math.max(max, item.cycleLength);
+  }, dayOfCycle);
 
   const ItemProgress = (props: IdxProps) => {
     const info = useInfoForOneCycle(props.idx + 1);
@@ -142,8 +148,8 @@ const ListProgress = () => {
           </IonLabel>
           <IonProgressBar
             style={progressBarStyle}
-            value={setValueProgress(info.lengthOfPeriod)}
-            buffer={setBufferProgress(info.lengthOfCycleNumber)}
+            value={setProgressBar(info.lengthOfPeriod, maxLength)}
+            buffer={setProgressBar(info.lengthOfCycleNumber, maxLength)}
           />
           <IonLabel>
             <p style={datesStyle}>{info.dates}</p>
