@@ -176,7 +176,7 @@ const TabHome = (props: HomeProps) => {
                 onClick={() => {
                   if (isPeriodToday(cycles)) {
                     periodTodayAlert({
-                      header: "Period today",
+                      header: t("Period today"),
                       buttons: ["OK"],
                     }).catch((err) => console.log(err));
                     return;
@@ -246,7 +246,7 @@ const TabHome = (props: HomeProps) => {
                           datetimeRef.current.value = getLastPeriodDays(cycles);
 
                           noSaveAlert({
-                            header: "You can't mark future days",
+                            header: t("You can't mark future days"),
                             buttons: ["OK"],
                           }).catch((err) => console.error(err));
                         }
