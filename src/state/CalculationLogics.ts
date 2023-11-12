@@ -409,3 +409,30 @@ export function isPeriodToday(cycles: Cycle[]) {
 
   return dayOfCycle <= cycles[0].periodLength;
 }
+
+export function isMarkedFutureDays(periodDays: string[]) {
+  if (periodDays.length === 0) {
+    return false;
+  }
+
+  periodDays.sort((left, right) => {
+    const leftDate = new Date(left);
+    const rightDate = new Date(right);
+    return leftDate.getTime() - rightDate.getTime();
+  });
+
+  const today = startOfToday();
+
+  if (periodDays.includes(today.toString())) {
+    return false;
+  }
+
+  if (
+    periodDays.find((date) => {
+      return new Date(date) > today;
+    })
+  ) {
+    return true;
+  }
+  return false;
+}
