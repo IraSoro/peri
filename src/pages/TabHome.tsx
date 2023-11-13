@@ -84,7 +84,7 @@ const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [periodTodayAlert] = useIonAlert();
-  const [noSaveAlert] = useIonAlert();
+  const [cannotSaveAlert] = useIonAlert();
 
   const router = useIonRouter();
 
@@ -240,16 +240,17 @@ const TabHome = (props: HomeProps) => {
                           return parseISO(isoDateString).toString();
                         });
 
-                        if (!isMarkedFutureDays(periodDaysString)) {
-                          updateCycles(getNewCyclesHistory(periodDaysString));
-                        } else {
+                        if (isMarkedFutureDays(periodDaysString)) {
                           datetimeRef.current.value = getLastPeriodDays(cycles);
 
-                          noSaveAlert({
+                          cannotSaveAlert({
                             header: t("You can't mark future days"),
                             buttons: ["OK"],
                           }).catch((err) => console.error(err));
+
+                          return;
                         }
+                        updateCycles(getNewCyclesHistory(periodDaysString));
                       }
                     }}
                   >
