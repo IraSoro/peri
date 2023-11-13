@@ -75,6 +75,120 @@ const InfoButton = (props: InfoButtonProps) => {
   );
 };
 
+const ViewCalendar = () => {
+  const { t } = useTranslation();
+  const { cycles } = useContext(CyclesContext);
+
+  const lastPeriodDays = getLastPeriodDays(cycles);
+
+  return (
+    <IonDatetime
+      style={{ borderRadius: "20px" }}
+      color="light"
+      presentation="date"
+      locale={getCurrentTranslation()}
+      size="cover"
+      firstDayOfWeek={1}
+      highlightedDates={(isoDateString) => {
+        if (cycles.length === 0) {
+          return undefined;
+        }
+
+        const date = startOfDay(parseISO(isoDateString));
+        if (isSameDay(date, startOfToday()) && isForecastPeriodToday(cycles)) {
+          return {
+            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.5)",
+          };
+        } else if (isForecastPeriodDays(date, cycles)) {
+          return {
+            textColor: "var(--ion-color-dark)",
+            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.5)",
+          };
+        } else if (lastPeriodDays.includes(isoDateString)) {
+          return {
+            textColor: "#000",
+            backgroundColor: "var(--ion-color-light-basic)",
+          };
+        }
+
+        return undefined;
+      }}
+    >
+      <IonButtons slot="buttons">
+        <IonButton
+          color="dark-basic"
+          onClick={() => {}}
+        >
+          {t("edit")}
+        </IonButton>
+      </IonButtons>
+    </IonDatetime>
+  );
+};
+
+const EditCalendar = () => {
+  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
+  const [cannotSaveAlert] = useIonAlert();
+
+  const { t } = useTranslation();
+  const { cycles, updateCycles } = useContext(CyclesContext);
+
+  useEffect(() => {
+    if (!datetimeRef.current) return;
+    const lastPeriodDays = getLastPeriodDays(cycles);
+    if (!lastPeriodDays.length) {
+      return;
+    }
+    datetimeRef.current.value = lastPeriodDays;
+  }, [cycles]);
+
+  return (
+    <IonDatetime
+      style={{ borderRadius: "20px" }}
+      color="light-basic"
+      ref={datetimeRef}
+      presentation="date"
+      locale={getCurrentTranslation()}
+      size="cover"
+      multiple
+      firstDayOfWeek={1}
+      isDateEnabled={(isoDateString) => {
+        return getActiveDates(parseISO(isoDateString), cycles);
+      }}
+    >
+      <IonButtons slot="buttons">
+        <IonButton
+          color="dark-basic"
+          onClick={() => {
+            datetimeRef.current?.confirm().catch((err) => console.error(err));
+            if (datetimeRef.current?.value) {
+              const periodDaysString = (
+                datetimeRef.current.value as string[]
+              ).map((isoDateString) => {
+                return parseISO(isoDateString).toString();
+              });
+
+              if (isMarkedFutureDays(periodDaysString)) {
+                datetimeRef.current.value = getLastPeriodDays(cycles);
+
+                cannotSaveAlert({
+                  header: t("You can't mark future days"),
+                  buttons: ["OK"],
+                }).catch((err) => console.error(err));
+
+                return;
+              }
+              updateCycles(getNewCyclesHistory(periodDaysString));
+            }
+          }}
+        >
+          {t("save")}
+        </IonButton>
+      </IonButtons>
+    </IonDatetime>
+  );
+};
+
 interface HomeProps {
   isLanguageModal: boolean;
   setIsLanguageModal: (newIsOpen: boolean) => void;
@@ -84,7 +198,6 @@ const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [periodTodayAlert] = useIonAlert();
-  const [cannotSaveAlert] = useIonAlert();
 
   const router = useIonRouter();
 
@@ -117,17 +230,7 @@ const TabHome = (props: HomeProps) => {
   }, [router, isInfoModal, props]);
 
   const { t } = useTranslation();
-  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
   const { cycles, updateCycles } = useContext(CyclesContext);
-
-  useEffect(() => {
-    if (!datetimeRef.current) return;
-    const lastPeriodDays = getLastPeriodDays(cycles);
-    if (!lastPeriodDays.length) {
-      return;
-    }
-    datetimeRef.current.value = lastPeriodDays;
-  }, [cycles]);
 
   return (
     <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
@@ -191,73 +294,8 @@ const TabHome = (props: HomeProps) => {
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonDatetime
-                style={{ borderRadius: "20px" }}
-                ref={datetimeRef}
-                presentation="date"
-                locale={getCurrentTranslation()}
-                size="cover"
-                multiple
-                firstDayOfWeek={1}
-                isDateEnabled={(isoDateString) => {
-                  return getActiveDates(parseISO(isoDateString), cycles);
-                }}
-                highlightedDates={(isoDateString) => {
-                  if (cycles.length === 0) {
-                    return undefined;
-                  }
-
-                  const date = startOfDay(parseISO(isoDateString));
-                  if (
-                    isSameDay(date, startOfToday()) &&
-                    isForecastPeriodToday(cycles)
-                  ) {
-                    return {
-                      backgroundColor:
-                        "rgba(var(--ion-color-light-basic-rgb), 0.5)",
-                    };
-                  } else if (isForecastPeriodDays(date, cycles)) {
-                    return {
-                      textColor: "var(--ion-color-dark)",
-                      backgroundColor: "var(--ion-color-light-basic)",
-                    };
-                  }
-
-                  return undefined;
-                }}
-              >
-                <IonButtons slot="buttons">
-                  <IonButton
-                    color="dark-basic"
-                    onClick={() => {
-                      datetimeRef.current
-                        ?.confirm()
-                        .catch((err) => console.error(err));
-                      if (datetimeRef.current?.value) {
-                        const periodDaysString = (
-                          datetimeRef.current.value as string[]
-                        ).map((isoDateString) => {
-                          return parseISO(isoDateString).toString();
-                        });
-
-                        if (isMarkedFutureDays(periodDaysString)) {
-                          datetimeRef.current.value = getLastPeriodDays(cycles);
-
-                          cannotSaveAlert({
-                            header: t("You can't mark future days"),
-                            buttons: ["OK"],
-                          }).catch((err) => console.error(err));
-
-                          return;
-                        }
-                        updateCycles(getNewCyclesHistory(periodDaysString));
-                      }
-                    }}
-                  >
-                    {t("save")}
-                  </IonButton>
-                </IonButtons>
-              </IonDatetime>
+              <ViewCalendar />
+              {/* <EditCalendar /> */}
             </IonCol>
           </div>
         </IonContent>

@@ -27,7 +27,7 @@ const ru = {
   // Mark Modal
   mark: "отметить",
   cancel: "отмена",
-  save: "сохранить",
+  edit: "редактировать",
   // Welcome Modal
   "Welcome to Peri": "Добро пожаловать в Peri",
   "Mark the days of your": "Отметьте дни",
