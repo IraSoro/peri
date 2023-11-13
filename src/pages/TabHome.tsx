@@ -101,17 +101,17 @@ const ViewCalendar = (props: SelectCalendarProps) => {
         const date = startOfDay(parseISO(isoDateString));
         if (isSameDay(date, startOfToday()) && isForecastPeriodToday(cycles)) {
           return {
-            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.5)",
+            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.4)",
           };
         } else if (isForecastPeriodDays(date, cycles)) {
           return {
-            textColor: "var(--ion-color-dark)",
-            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.5)",
+            textColor: "var(--ion-color-dark-basic)",
+            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.4)",
           };
         } else if (lastPeriodDays.includes(isoDateString)) {
           return {
-            textColor: "#000",
-            backgroundColor: "var(--ion-color-light-basic)",
+            textColor: "#43348d",
+            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.8)",
           };
         }
 
@@ -150,8 +150,8 @@ const EditCalendar = (props: SelectCalendarProps) => {
 
   return (
     <IonDatetime
+      className="edit-calendar"
       style={{ borderRadius: "20px" }}
-      color="light-basic"
       ref={datetimeRef}
       presentation="date"
       locale={getCurrentTranslation()}
@@ -163,6 +163,14 @@ const EditCalendar = (props: SelectCalendarProps) => {
       }}
     >
       <IonButtons slot="buttons">
+        <IonButton
+          color="dark-basic"
+          onClick={() => {
+            props.setIsEditCalendar(false);
+          }}
+        >
+          {t("cancel")}
+        </IonButton>
         <IonButton
           color="dark-basic"
           onClick={() => {
