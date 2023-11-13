@@ -5,6 +5,7 @@ import {
   parseISO,
   startOfDay,
   startOfToday,
+  differenceInMilliseconds,
 } from "date-fns";
 
 import { Cycle } from "../data/ClassCycle";
@@ -408,4 +409,22 @@ export function isPeriodToday(cycles: Cycle[]) {
   const dayOfCycle = getDayOfCycle(cycles);
 
   return dayOfCycle <= cycles[0].periodLength;
+}
+
+export function isMarkedFutureDays(periodDays: string[]) {
+  periodDays.sort((left, right) => {
+    const leftDate = startOfDay(new Date(left));
+    const rightDate = startOfDay(new Date(right));
+    return differenceInMilliseconds(leftDate, rightDate);
+  });
+
+  const today = startOfToday();
+
+  if (periodDays.includes(today.toString())) {
+    return false;
+  }
+
+  return periodDays.some((date) => {
+    return startOfDay(new Date(date)) > today;
+  });
 }

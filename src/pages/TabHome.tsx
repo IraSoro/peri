@@ -32,6 +32,7 @@ import {
   getActiveDates,
   getPastFuturePeriodDays,
   isPeriodToday,
+  isMarkedFutureDays,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 
@@ -83,6 +84,7 @@ const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [periodTodayAlert] = useIonAlert();
+  const [cannotSaveAlert] = useIonAlert();
 
   const router = useIonRouter();
 
@@ -174,7 +176,7 @@ const TabHome = (props: HomeProps) => {
                 onClick={() => {
                   if (isPeriodToday(cycles)) {
                     periodTodayAlert({
-                      header: "Period today",
+                      header: t("Period today"),
                       buttons: ["OK"],
                     }).catch((err) => console.log(err));
                     return;
@@ -238,6 +240,16 @@ const TabHome = (props: HomeProps) => {
                           return parseISO(isoDateString).toString();
                         });
 
+                        if (isMarkedFutureDays(periodDaysString)) {
+                          datetimeRef.current.value = getLastPeriodDays(cycles);
+
+                          cannotSaveAlert({
+                            header: t("You can't mark future days"),
+                            buttons: ["OK"],
+                          }).catch((err) => console.error(err));
+
+                          return;
+                        }
                         updateCycles(getNewCyclesHistory(periodDaysString));
                       }
                     }}
