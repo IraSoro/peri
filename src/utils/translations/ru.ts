@@ -19,6 +19,8 @@ const ru = {
   Low: "Низкая",
   "Period today": "Месячные сегодня",
   "You can't mark future days": "Вы не можете отметить будущие дни",
+  edit: "редактировать",
+  save: "сохранить",
   // Details Tab
   Details: "Детали",
   "Period length": "Длина месячных",
@@ -27,7 +29,6 @@ const ru = {
   // Mark Modal
   mark: "отметить",
   cancel: "отмена",
-  edit: "редактировать",
   // Welcome Modal
   "Welcome to Peri": "Добро пожаловать в Peri",
   "Mark the days of your": "Отметьте дни",

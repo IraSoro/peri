@@ -75,7 +75,11 @@ const InfoButton = (props: InfoButtonProps) => {
   );
 };
 
-const ViewCalendar = () => {
+interface SelectCalendarProps {
+  setIsEditCalendar: (newIsOpen: boolean) => void;
+}
+
+const ViewCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles } = useContext(CyclesContext);
 
@@ -117,7 +121,9 @@ const ViewCalendar = () => {
       <IonButtons slot="buttons">
         <IonButton
           color="dark-basic"
-          onClick={() => {}}
+          onClick={() => {
+            props.setIsEditCalendar(true);
+          }}
         >
           {t("edit")}
         </IonButton>
@@ -126,7 +132,7 @@ const ViewCalendar = () => {
   );
 };
 
-const EditCalendar = () => {
+const EditCalendar = (props: SelectCalendarProps) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
   const [cannotSaveAlert] = useIonAlert();
 
@@ -180,6 +186,7 @@ const EditCalendar = () => {
               }
               updateCycles(getNewCyclesHistory(periodDaysString));
             }
+            props.setIsEditCalendar(false);
           }}
         >
           {t("save")}
@@ -197,6 +204,7 @@ interface HomeProps {
 const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
+  const [isEditCalendar, setIsEditCalendar] = useState(false);
   const [periodTodayAlert] = useIonAlert();
 
   const router = useIonRouter();
@@ -294,8 +302,11 @@ const TabHome = (props: HomeProps) => {
               </IonButton>
             </IonCol>
             <IonCol>
-              <ViewCalendar />
-              {/* <EditCalendar /> */}
+              {isEditCalendar ? (
+                <EditCalendar setIsEditCalendar={setIsEditCalendar} />
+              ) : (
+                <ViewCalendar setIsEditCalendar={setIsEditCalendar} />
+              )}
             </IonCol>
           </div>
         </IonContent>
