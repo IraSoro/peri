@@ -67,7 +67,6 @@ const Welcome = (props: PropsWelcomeModal) => {
         </div>
         <div style={{ marginBottom: "20px" }}>
           <IonDatetime
-            style={{ borderRadius: "20px", maxHeight: "340px" }}
             ref={datetimeRef}
             presentation="date"
             locale={getCurrentTranslation()}

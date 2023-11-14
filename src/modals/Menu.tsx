@@ -31,8 +31,6 @@ import {
 } from "../utils/translation";
 import { changeDateTimeLocale } from "../utils/datetime";
 
-import "./Menu.css";
-
 const LanguageSwitcher = () => {
   const { t } = useTranslation();
 

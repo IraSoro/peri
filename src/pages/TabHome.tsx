@@ -87,7 +87,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
   return (
     <IonDatetime
-      style={{ borderRadius: "20px" }}
+      className="view-calendar"
       color="light"
       presentation="date"
       locale={getCurrentTranslation()}
@@ -152,7 +152,6 @@ const EditCalendar = (props: SelectCalendarProps) => {
     <IonDatetime
       className="edit-calendar"
       color="light"
-      style={{ borderRadius: "20px" }}
       ref={datetimeRef}
       presentation="date"
       locale={getCurrentTranslation()}
@@ -165,7 +164,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
     >
       <IonButtons slot="buttons">
         <IonButton
-          color="dark-basic"
+          color="dark"
           onClick={() => {
             props.setIsEditCalendar(false);
           }}
@@ -173,7 +172,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
           {t("cancel")}
         </IonButton>
         <IonButton
-          color="dark-basic"
+          color="dark"
           onClick={() => {
             datetimeRef.current?.confirm().catch((err) => console.error(err));
             if (datetimeRef.current?.value) {
