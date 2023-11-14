@@ -118,18 +118,11 @@ ion-datetime::part(calendar-day active):focus {
   color: var(--ion-color-dark-basic);
 }
 
-ion-datetime.edit-calendar::part(calendar-day today) {
-  color: var(--ion-color-dark);
-  border-color: var(--ion-color-dark);
-  background-color: #fff;
-  border-width: 2px;
-  font-weight: bold;
-}
-
 ion-datetime.edit-calendar::part(calendar-day active),
 ion-datetime.edit-calendar::part(calendar-day active):focus {
-  background-color: rgba(var(--ion-color-medium-rgb), 0.3);
-  color: var(--ion-color-dark);
+  color: var(--ion-color-blackout-basic);
+  border: 2px dotted var(--ion-color-blackout-basic);
+  background-color: var(--ion-color-light);
 }
 
 ion-datetime.view-calendar::part(calendar-day active),

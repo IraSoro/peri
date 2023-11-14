@@ -164,7 +164,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
     >
       <IonButtons slot="buttons">
         <IonButton
-          color="dark"
+          color="blackout-basic"
           onClick={() => {
             props.setIsEditCalendar(false);
           }}
@@ -172,7 +172,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
           {t("cancel")}
         </IonButton>
         <IonButton
-          color="dark"
+          color="blackout-basic"
           onClick={() => {
             datetimeRef.current?.confirm().catch((err) => console.error(err));
             if (datetimeRef.current?.value) {
