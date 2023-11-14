@@ -110,6 +110,5 @@ ion-datetime::part(calendar-day today) {
 
 ion-datetime.edit-calendar::part(calendar-day active),
 ion-datetime.edit-calendar::part(calendar-day active):focus {
-  background-color: rgba(var(--ion-color-light-basic-rgb), 0.8);
-  color: #43348d;
+  background-color: rgba(var(--ion-color-medium-rgb), 0.3);
 }

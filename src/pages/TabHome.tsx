@@ -101,12 +101,12 @@ const ViewCalendar = (props: SelectCalendarProps) => {
         const date = startOfDay(parseISO(isoDateString));
         if (isSameDay(date, startOfToday()) && isForecastPeriodToday(cycles)) {
           return {
-            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.4)",
+            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
           };
         } else if (isForecastPeriodDays(date, cycles)) {
           return {
             textColor: "var(--ion-color-dark-basic)",
-            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.4)",
+            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
           };
         } else if (lastPeriodDays.includes(isoDateString)) {
           return {
@@ -151,6 +151,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
   return (
     <IonDatetime
       className="edit-calendar"
+      color="light"
       style={{ borderRadius: "20px" }}
       ref={datetimeRef}
       presentation="date"
