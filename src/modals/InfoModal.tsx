@@ -49,7 +49,13 @@ const InfoModal = (props: PropsInfoModal) => {
             postProcess: "interval",
             count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
           })} `}
-          {currentDay}/{lengthOfCycle}
+          {cycles.length === 1 ? (
+            currentDay
+          ) : (
+            <>
+              {currentDay}/{lengthOfCycle}
+            </>
+          )}
         </p>
         <ul>
           <li
