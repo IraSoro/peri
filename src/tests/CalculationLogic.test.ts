@@ -368,6 +368,26 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
+  test("cycles length is one and period is today", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date = startOfToday();
+
+    const cycles: Cycle[] = [
+      {
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: subDays(date, 28).toString(),
+      },
+    ];
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
+      title: i18n.t("Period is"),
+      days: i18n.t("possible today"),
+    });
+  });
+
   test("delay 1 day", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
@@ -415,6 +435,25 @@ describe("getDaysBeforePeriod", () => {
         postProcess: "interval",
         count: 10,
       })}`,
+    });
+  });
+
+  test("cycles length is one and delay a few days", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const date = subDays(startOfToday(), 10);
+    const cycles: Cycle[] = [
+      {
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: subDays(date, 28).toString(),
+      },
+    ];
+
+    expect(getDaysBeforePeriod(cycles)).toEqual({
+      title: i18n.t("Period is"),
+      days: i18n.t("possible today"),
     });
   });
 

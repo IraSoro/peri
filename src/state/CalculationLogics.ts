@@ -111,6 +111,12 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
       })}`,
     };
   }
+  if (cycles.length === 1) {
+    return {
+      title: i18n.t("Period is"),
+      days: i18n.t("possible today"),
+    };
+  }
   if (dayBefore === 0) {
     return {
       title: i18n.t("Period"),
