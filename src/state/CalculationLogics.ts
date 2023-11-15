@@ -388,11 +388,13 @@ export function getForecastPeriodDays(cycles: Cycle[]) {
     nextCycleStart = nowDate;
   }
   addForecastDates(nextCycleStart);
+
   const cycleCount = 6;
   for (let i = 0; i < cycleCount; ++i) {
     nextCycleStart = addDays(nextCycleStart, lengthOfCycle);
     addForecastDates(nextCycleStart);
   }
+
   return forecastDates;
 }
 
