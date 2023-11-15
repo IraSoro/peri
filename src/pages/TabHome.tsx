@@ -25,7 +25,6 @@ import InfoModal from "../modals/InfoModal";
 import {
   getPregnancyChance,
   getDaysBeforePeriod,
-  isForecastPeriodDays,
   isForecastPeriodToday,
   getNewCyclesHistory,
   getLastPeriodDays,
@@ -33,6 +32,7 @@ import {
   getPastFuturePeriodDays,
   isPeriodToday,
   isMarkedFutureDays,
+  getForecastPeriodDays,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 
@@ -84,6 +84,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const { cycles } = useContext(CyclesContext);
 
   const lastPeriodDays = getLastPeriodDays(cycles);
+  const forecastPeriodDays = getForecastPeriodDays(cycles);
 
   return (
     <IonDatetime
@@ -103,7 +104,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
           return {
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
           };
-        } else if (isForecastPeriodDays(date, cycles)) {
+        } else if (forecastPeriodDays.includes(isoDateString)) {
           return {
             textColor: "var(--ion-color-dark-basic)",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
