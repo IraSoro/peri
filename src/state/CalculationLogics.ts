@@ -370,24 +370,39 @@ export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
     return false;
   }
 
-  const nextCycleStart = addDays(
-    startOfDay(new Date(cycles[0].startDate)),
-    lengthOfCycle,
-  );
-  const nextCycleFinish = addDays(
-    startOfDay(new Date(cycles[0].startDate)),
-    lengthOfCycle + lengthOfPeriod,
-  );
+  const nextCycleStart = [];
+  const nextCycleFinish = [];
 
-  if (date >= nextCycleStart && date < nextCycleFinish) {
-    return true;
+  const dayOfCycle = getDayOfCycle(cycles);
+  if (dayOfCycle <= lengthOfCycle) {
+    nextCycleStart.push(
+      addDays(startOfDay(new Date(cycles[0].startDate)), lengthOfCycle),
+    );
+    nextCycleFinish.push(
+      addDays(
+        startOfDay(new Date(cycles[0].startDate)),
+        lengthOfCycle + lengthOfPeriod,
+      ),
+    );
+  } else {
+    const delayDate = addDays(startOfToday(), lengthOfPeriod);
+    if (date < delayDate) {
+      return true;
+    }
+    nextCycleStart.push(addDays(nowDate, lengthOfCycle));
+    nextCycleFinish.push(addDays(nowDate, lengthOfCycle + lengthOfPeriod));
   }
 
-  const delayDate = addDays(startOfToday(), lengthOfPeriod);
-  const dayOfCycle = getDayOfCycle(cycles);
+  const cycleCount = 6;
+  for (let i = 0; i < cycleCount; ++i) {
+    nextCycleStart.push(addDays(nextCycleStart[i - 1], lengthOfCycle));
+    nextCycleFinish.push(addDays(nextCycleFinish[i - 1], lengthOfCycle));
+  }
 
-  if (dayOfCycle > lengthOfCycle && date < delayDate) {
-    return true;
+  for (let i = 0; i < cycleCount; ++i) {
+    if (date >= nextCycleStart[i] && date < nextCycleFinish[i]) {
+      return true;
+    }
   }
 
   return false;
