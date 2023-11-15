@@ -14,7 +14,7 @@ import {
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
-import { isSameDay, parseISO, startOfDay, startOfToday } from "date-fns";
+import { parseISO } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
@@ -25,7 +25,6 @@ import InfoModal from "../modals/InfoModal";
 import {
   getPregnancyChance,
   getDaysBeforePeriod,
-  isForecastPeriodToday,
   getNewCyclesHistory,
   getLastPeriodDays,
   getActiveDates,
@@ -98,13 +97,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
         if (cycles.length === 0) {
           return undefined;
         }
-
-        const date = startOfDay(parseISO(isoDateString));
-        if (isSameDay(date, startOfToday()) && isForecastPeriodToday(cycles)) {
-          return {
-            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
-          };
-        } else if (forecastPeriodDays.includes(isoDateString)) {
+        if (forecastPeriodDays.includes(isoDateString)) {
           return {
             textColor: "var(--ion-color-dark-basic)",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",

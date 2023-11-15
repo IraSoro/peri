@@ -396,20 +396,6 @@ export function getForecastPeriodDays(cycles: Cycle[]) {
   return forecastDates;
 }
 
-export function isForecastPeriodToday(cycles: Cycle[]) {
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
-  const nowDate = startOfToday();
-
-  const nextCycleStart = new Date(cycles[0].startDate);
-  nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
-
-  if (nowDate >= nextCycleStart) {
-    return true;
-  }
-
-  return false;
-}
-
 export function isPeriodToday(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return false;
