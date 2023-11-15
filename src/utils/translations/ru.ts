@@ -21,6 +21,8 @@ const ru = {
   "You can't mark future days": "Вы не можете отметить будущие дни",
   edit: "редактировать",
   save: "сохранить",
+  "Period is": "Месячные",
+  "possible today": "возможно сегодня",
   // Details Tab
   Details: "Детали",
   "Period length": "Длина месячных",

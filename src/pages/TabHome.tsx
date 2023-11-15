@@ -272,12 +272,21 @@ const TabHome = (props: HomeProps) => {
             <div>
               <IonLabel>
                 <p
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "40px",
-                    color: "var(--ion-color-dark-basic)",
-                    marginBottom: "30px",
-                  }}
+                  style={
+                    cycles.length === 1
+                      ? {
+                          fontWeight: "bold",
+                          fontSize: "35px",
+                          color: "var(--ion-color-dark-basic)",
+                          marginBottom: "30px",
+                        }
+                      : {
+                          fontWeight: "bold",
+                          fontSize: "40px",
+                          color: "var(--ion-color-dark-basic)",
+                          marginBottom: "30px",
+                        }
+                  }
                 >
                   {getDaysBeforePeriod(cycles).days}
                 </p>

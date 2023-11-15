@@ -223,7 +223,9 @@ const TabDetails = () => {
                     <IonLabel style={{ marginBottom: "10px" }}>
                       <p style={p_style}>{t("Cycle length")}</p>
                       <p style={h_style}>
-                        {averageLengthOfCycle ? lengthOfCycle : "---"}
+                        {averageLengthOfCycle && cycles.length > 1
+                          ? lengthOfCycle
+                          : "---"}
                       </p>
                     </IonLabel>
                   </div>
