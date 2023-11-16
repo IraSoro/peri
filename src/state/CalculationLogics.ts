@@ -425,3 +425,33 @@ export function isMarkedFutureDays(periodDays: string[]) {
     return startOfDay(new Date(date)) > today;
   });
 }
+
+export function getOvulationDays(cycles: Cycle[]) {
+  if (cycles.length < 2) {
+    return [];
+  }
+  const averageCycle = getAverageLengthOfCycle(cycles);
+  const dayOfCycle = getDayOfCycle(cycles);
+  const ovulationDates = [];
+
+  for (const cycle of cycles) {
+    const startOfCycle = startOfDay(new Date(cycle.startDate));
+    let finishOfCycle;
+    if (cycle.cycleLength === 0) {
+      if (dayOfCycle > averageCycle) {
+        finishOfCycle = addDays(startOfCycle, dayOfCycle - 16);
+      } else {
+        finishOfCycle = addDays(startOfCycle, averageCycle - 16);
+      }
+    } else {
+      finishOfCycle = addDays(startOfCycle, cycle.cycleLength - 16);
+    }
+
+    for (let i = 0; i < 4; ++i) {
+      const newDate = addDays(finishOfCycle, i);
+      ovulationDates.push(format(newDate, "yyyy-MM-dd"));
+    }
+  }
+
+  return ovulationDates;
+}
