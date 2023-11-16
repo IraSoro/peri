@@ -360,51 +360,42 @@ export function getPastFuturePeriodDays(cycles: Cycle[]) {
   return periodDates;
 }
 
-export function isForecastPeriodDays(date: Date, cycles: Cycle[]) {
+export function getForecastPeriodDays(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return [];
+  }
+
   const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
-  const nowDate = startOfToday();
-  date = startOfDay(date);
-
-  if (date <= nowDate) {
-    return false;
-  }
-
-  const nextCycleStart = addDays(
-    startOfDay(new Date(cycles[0].startDate)),
-    lengthOfCycle,
-  );
-  const nextCycleFinish = addDays(
-    startOfDay(new Date(cycles[0].startDate)),
-    lengthOfCycle + lengthOfPeriod,
-  );
-
-  if (date >= nextCycleStart && date < nextCycleFinish) {
-    return true;
-  }
-
-  const delayDate = addDays(startOfToday(), lengthOfPeriod);
   const dayOfCycle = getDayOfCycle(cycles);
-
-  if (dayOfCycle > lengthOfCycle && date < delayDate) {
-    return true;
-  }
-
-  return false;
-}
-
-export function isForecastPeriodToday(cycles: Cycle[]) {
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const nowDate = startOfToday();
 
-  const nextCycleStart = new Date(cycles[0].startDate);
-  nextCycleStart.setDate(nextCycleStart.getDate() + lengthOfCycle);
+  let nextCycleStart;
+  const forecastDates: string[] = [];
 
-  if (nowDate >= nextCycleStart) {
-    return true;
+  function addForecastDates(startDate: Date) {
+    for (let i = 0; i < lengthOfPeriod; ++i) {
+      forecastDates.push(format(addDays(startDate, i), "yyyy-MM-dd"));
+    }
   }
 
-  return false;
+  if (dayOfCycle <= lengthOfCycle) {
+    nextCycleStart = addDays(
+      startOfDay(new Date(cycles[0].startDate)),
+      lengthOfCycle,
+    );
+  } else {
+    nextCycleStart = nowDate;
+  }
+  addForecastDates(nextCycleStart);
+
+  const cycleCount = 6;
+  for (let i = 0; i < cycleCount; ++i) {
+    nextCycleStart = addDays(nextCycleStart, lengthOfCycle);
+    addForecastDates(nextCycleStart);
+  }
+
+  return forecastDates;
 }
 
 export function isPeriodToday(cycles: Cycle[]) {
