@@ -388,6 +388,9 @@ export function getForecastPeriodDays(cycles: Cycle[]) {
     nextCycleStart = nowDate;
   }
   addForecastDates(nextCycleStart);
+  if (cycles.length === 1) {
+    return forecastDates;
+  }
 
   const cycleCount = 6;
   for (let i = 0; i < cycleCount; ++i) {
@@ -439,7 +442,7 @@ export function getOvulationDays(cycles: Cycle[]) {
     let finishOfCycle;
     if (cycle.cycleLength === 0) {
       if (dayOfCycle > averageCycle) {
-        finishOfCycle = addDays(startOfCycle, dayOfCycle - 16);
+        finishOfCycle = addDays(startOfCycle, dayOfCycle - 17);
       } else {
         finishOfCycle = addDays(startOfCycle, averageCycle - 16);
       }
