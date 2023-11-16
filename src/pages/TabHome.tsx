@@ -14,7 +14,7 @@ import {
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
-import { parseISO } from "date-fns";
+import { parseISO, startOfToday, format } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
@@ -89,7 +89,11 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
   return (
     <IonDatetime
-      className="view-calendar"
+      className={
+        ovulationDays.includes(format(startOfToday(), "yyyy-MM-dd"))
+          ? "view-calendar-ovulation"
+          : "view-calendar"
+      }
       color="light"
       presentation="date"
       locale={getCurrentTranslation()}
