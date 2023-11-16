@@ -32,6 +32,7 @@ import {
   isPeriodToday,
   isMarkedFutureDays,
   getForecastPeriodDays,
+  getOvulationDays,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 
@@ -84,6 +85,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
   const lastPeriodDays = getLastPeriodDays(cycles);
   const forecastPeriodDays = getForecastPeriodDays(cycles);
+  const ovulationDays = getOvulationDays(cycles);
 
   return (
     <IonDatetime
@@ -106,6 +108,12 @@ const ViewCalendar = (props: SelectCalendarProps) => {
           return {
             textColor: "#43348d",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.8)",
+          };
+        } else if (ovulationDays.includes(isoDateString)) {
+          return {
+            textColor: "var(--ion-color-ovulation)",
+            backgroundColor: "var(--ion-color-light)",
+            fontWeight: "bold",
           };
         }
 
