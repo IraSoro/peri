@@ -456,5 +456,43 @@ export function getOvulationDays(cycles: Cycle[]) {
     }
   }
 
+  return ovulationDates.concat(getFutureOvulationDays(cycles));
+}
+
+export function getFutureOvulationDays(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return [];
+  }
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const dayOfCycle = getDayOfCycle(cycles);
+  const nowDate = startOfToday();
+
+  let nextCycleStart;
+  const ovulationDates: string[] = [];
+
+  function addOvulationDates(startDate: Date) {
+    for (let i = 0; i < 4; ++i) {
+      ovulationDates.push(
+        format(addDays(startDate, lengthOfCycle - 16 + i), "yyyy-MM-dd"),
+      );
+    }
+  }
+
+  if (dayOfCycle <= lengthOfCycle) {
+    nextCycleStart = addDays(
+      startOfDay(new Date(cycles[0].startDate)),
+      lengthOfCycle,
+    );
+  } else {
+    nextCycleStart = nowDate;
+  }
+  addOvulationDates(nextCycleStart);
+
+  const cycleCount = 5;
+  for (let i = 0; i < cycleCount; ++i) {
+    nextCycleStart = addDays(nextCycleStart, lengthOfCycle);
+    addOvulationDates(nextCycleStart);
+  }
+
   return ovulationDates;
 }
