@@ -7,6 +7,9 @@
   <p align="center">
     <a href="https://irasoro.github.io/peri/">View Demo</a>
   </p>
+  <p align="center">
+    <a href="https://github.com/IraSoro/peri/releases/latest">Download .apk file</a>
+  </p>
 </p>
 
 ### About the project
