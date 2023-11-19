@@ -91,7 +91,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
     <IonDatetime
       className={
         ovulationDays.includes(format(startOfToday(), "yyyy-MM-dd"))
-          ? "view-calendar-ovulation"
+          ? "view-calendar-today-ovulation"
           : "view-calendar"
       }
       color="light"
