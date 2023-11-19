@@ -93,6 +93,10 @@ function _todayPeriod(countOfCycles: number): Promise<void> {
     });
   }
 
+  if (countOfCycles > 1) {
+    cycles[0].cycleLength = 0;
+  }
+
   return storage.set.cycles(cycles);
 }
 
@@ -107,6 +111,10 @@ function _todayOvulation(countOfCycles: number): Promise<void> {
       periodLength: 6,
       startDate: date.toString(),
     });
+  }
+
+  if (countOfCycles > 1) {
+    cycles[0].cycleLength = 0;
   }
 
   return storage.set.cycles(cycles);
@@ -125,6 +133,10 @@ function _tomorrowOvulation(countOfCycles: number): Promise<void> {
     });
   }
 
+  if (countOfCycles > 1) {
+    cycles[0].cycleLength = 0;
+  }
+
   return storage.set.cycles(cycles);
 }
 
@@ -139,6 +151,10 @@ function _menstrualPhase(countOfCycles: number): Promise<void> {
       periodLength: 6,
       startDate: date.toString(),
     });
+  }
+
+  if (countOfCycles > 1) {
+    cycles[0].cycleLength = 0;
   }
 
   return storage.set.cycles(cycles);
@@ -157,6 +173,10 @@ function _follicularPhase(countOfCycles: number): Promise<void> {
     });
   }
 
+  if (countOfCycles > 1) {
+    cycles[0].cycleLength = 0;
+  }
+
   return storage.set.cycles(cycles);
 }
 
@@ -173,6 +193,10 @@ function _lutealPhase(countOfCycles: number): Promise<void> {
     });
   }
 
+  if (countOfCycles > 1) {
+    cycles[0].cycleLength = 0;
+  }
+
   return storage.set.cycles(cycles);
 }
 
@@ -187,6 +211,10 @@ function _delayOfCycle(countOfCycles: number): Promise<void> {
       periodLength: 6,
       startDate: date.toString(),
     });
+  }
+
+  if (countOfCycles > 1) {
+    cycles[0].cycleLength = 0;
   }
 
   return storage.set.cycles(cycles);
@@ -212,8 +240,11 @@ function _randomMenstrualPhase(countOfCycles: number): Promise<void> {
     });
   }
 
-  const averagePeriod = getAverageLengthOfPeriod(cycles);
-  cycles[0].periodLength = averagePeriod;
+  if (countOfCycles > 1) {
+    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    cycles[0].periodLength = averagePeriod;
+    cycles[0].cycleLength = 0;
+  }
 
   return storage.set.cycles(cycles);
 }
@@ -232,8 +263,11 @@ function _randomFollicularPhase(countOfCycles: number): Promise<void> {
     });
   }
 
-  const averagePeriod = getAverageLengthOfPeriod(cycles);
-  cycles[0].periodLength = averagePeriod;
+  if (countOfCycles > 1) {
+    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    cycles[0].periodLength = averagePeriod;
+    cycles[0].cycleLength = 0;
+  }
 
   return storage.set.cycles(cycles);
 }
@@ -252,8 +286,11 @@ function _randomLutealPhase(countOfCycles: number): Promise<void> {
     });
   }
 
-  const averagePeriod = getAverageLengthOfPeriod(cycles);
-  cycles[0].periodLength = averagePeriod;
+  if (countOfCycles > 1) {
+    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    cycles[0].periodLength = averagePeriod;
+    cycles[0].cycleLength = 0;
+  }
 
   return storage.set.cycles(cycles);
 }
@@ -272,8 +309,11 @@ function _randomDelayOfCycle(countOfCycles: number): Promise<void> {
     });
   }
 
-  const averagePeriod = getAverageLengthOfPeriod(cycles);
-  cycles[0].periodLength = averagePeriod;
+  if (countOfCycles > 1) {
+    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    cycles[0].periodLength = averagePeriod;
+    cycles[0].cycleLength = 0;
+  }
 
   return storage.set.cycles(cycles);
 }

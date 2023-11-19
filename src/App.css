@@ -126,7 +126,14 @@ ion-datetime.edit-calendar::part(calendar-day active):focus {
 }
 
 ion-datetime.view-calendar::part(calendar-day active),
-ion-datetime.view-calendar::part(calendar-day active):focus {
+ion-datetime.view-calendar::part(calendar-day active):focus,
+ion-datetime.view-calendar-today-ovulation::part(calendar-day active),
+ion-datetime.view-calendar-today-ovulation::part(calendar-day active):focus {
   background-color: var(--ion-color-light);
   color: var(--ion-color-dark);
+}
+
+ion-datetime.view-calendar-today-ovulation::part(calendar-day today) {
+  color: var(--ion-color-ovulation);
+  border-color: var(--ion-color-ovulation);
 }

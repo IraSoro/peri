@@ -26,6 +26,7 @@ import {
   getLengthOfLastPeriod,
   isMarkedFutureDays,
   getForecastPeriodDays,
+  getOvulationDays,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -1069,5 +1070,81 @@ describe("getForecastPeriodDays", () => {
     }
 
     expect(getForecastPeriodDays(cycles)).toEqual(forecastDays);
+  });
+});
+
+describe("getOvulationDays", () => {
+  test("cycles array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    expect(getOvulationDays([])).toEqual([]);
+  });
+
+  test("cycles array has 1 item", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const cycles: Cycle[] = [];
+    let date = addDays(startOfToday(), 20);
+
+    date = subDays(date, 28);
+    cycles.push({
+      cycleLength: 0,
+      periodLength: 6,
+      startDate: date.toString(),
+    });
+
+    expect(getOvulationDays(cycles)).toEqual([]);
+  });
+
+  test("cycles array has a 6 items", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const cycles: Cycle[] = [];
+    let date = addDays(startOfToday(), 20);
+
+    for (let i = 0; i < 6; ++i) {
+      date = subDays(date, 28);
+      cycles.push({
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: date.toString(),
+      });
+    }
+    cycles[0].cycleLength = 0;
+
+    const ovulationDays = [];
+    for (const cycle of cycles) {
+      const startOfCycle = startOfDay(new Date(cycle.startDate));
+      let finishOfCycle;
+      if (cycle.cycleLength === 0) {
+        finishOfCycle = addDays(startOfCycle, 28 - 16);
+      } else {
+        finishOfCycle = addDays(startOfCycle, cycle.cycleLength - 16);
+      }
+
+      for (let i = 0; i < 4; ++i) {
+        const newDate = addDays(finishOfCycle, i);
+        ovulationDays.push(format(newDate, "yyyy-MM-dd"));
+      }
+    }
+
+    let nextCycleStart = addDays(startOfDay(new Date(cycles[0].startDate)), 28);
+    for (let i = 0; i < 4; ++i) {
+      ovulationDays.push(
+        format(addDays(nextCycleStart, 28 - 16 + i), "yyyy-MM-dd"),
+      );
+    }
+    for (let i = 0; i < 5; ++i) {
+      nextCycleStart = addDays(nextCycleStart, 28);
+      for (let i = 0; i < 4; ++i) {
+        ovulationDays.push(
+          format(addDays(nextCycleStart, 28 - 16 + i), "yyyy-MM-dd"),
+        );
+      }
+    }
+
+    expect(getOvulationDays(cycles)).toEqual(ovulationDays);
   });
 });

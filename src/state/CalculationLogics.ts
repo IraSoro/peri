@@ -388,6 +388,9 @@ export function getForecastPeriodDays(cycles: Cycle[]) {
     nextCycleStart = nowDate;
   }
   addForecastDates(nextCycleStart);
+  if (cycles.length === 1) {
+    return forecastDates;
+  }
 
   const cycleCount = 6;
   for (let i = 0; i < cycleCount; ++i) {
@@ -424,4 +427,72 @@ export function isMarkedFutureDays(periodDays: string[]) {
   return periodDays.some((date) => {
     return startOfDay(new Date(date)) > today;
   });
+}
+
+export function getOvulationDays(cycles: Cycle[]) {
+  if (cycles.length < 2) {
+    return [];
+  }
+  const averageCycle = getAverageLengthOfCycle(cycles);
+  const dayOfCycle = getDayOfCycle(cycles);
+  const ovulationDates = [];
+
+  for (const cycle of cycles) {
+    const startOfCycle = startOfDay(new Date(cycle.startDate));
+    let finishOfCycle;
+    if (cycle.cycleLength === 0) {
+      if (dayOfCycle > averageCycle) {
+        finishOfCycle = addDays(startOfCycle, dayOfCycle - 17);
+      } else {
+        finishOfCycle = addDays(startOfCycle, averageCycle - 16);
+      }
+    } else {
+      finishOfCycle = addDays(startOfCycle, cycle.cycleLength - 16);
+    }
+
+    for (let i = 0; i < 4; ++i) {
+      const newDate = addDays(finishOfCycle, i);
+      ovulationDates.push(format(newDate, "yyyy-MM-dd"));
+    }
+  }
+
+  return ovulationDates.concat(getFutureOvulationDays(cycles));
+}
+
+export function getFutureOvulationDays(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return [];
+  }
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const dayOfCycle = getDayOfCycle(cycles);
+  const nowDate = startOfToday();
+
+  let nextCycleStart;
+  const ovulationDates: string[] = [];
+
+  function addOvulationDates(startDate: Date) {
+    for (let i = 0; i < 4; ++i) {
+      ovulationDates.push(
+        format(addDays(startDate, lengthOfCycle - 16 + i), "yyyy-MM-dd"),
+      );
+    }
+  }
+
+  if (dayOfCycle <= lengthOfCycle) {
+    nextCycleStart = addDays(
+      startOfDay(new Date(cycles[0].startDate)),
+      lengthOfCycle,
+    );
+  } else {
+    nextCycleStart = nowDate;
+  }
+  addOvulationDates(nextCycleStart);
+
+  const cycleCount = 5;
+  for (let i = 0; i < cycleCount; ++i) {
+    nextCycleStart = addDays(nextCycleStart, lengthOfCycle);
+    addOvulationDates(nextCycleStart);
+  }
+
+  return ovulationDates;
 }

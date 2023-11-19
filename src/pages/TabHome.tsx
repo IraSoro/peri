@@ -14,7 +14,7 @@ import {
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
-import { parseISO } from "date-fns";
+import { parseISO, startOfToday, format } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
@@ -32,6 +32,7 @@ import {
   isPeriodToday,
   isMarkedFutureDays,
   getForecastPeriodDays,
+  getOvulationDays,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 
@@ -84,10 +85,15 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
   const lastPeriodDays = getLastPeriodDays(cycles);
   const forecastPeriodDays = getForecastPeriodDays(cycles);
+  const ovulationDays = getOvulationDays(cycles);
 
   return (
     <IonDatetime
-      className="view-calendar"
+      className={
+        ovulationDays.includes(format(startOfToday(), "yyyy-MM-dd"))
+          ? "view-calendar-today-ovulation"
+          : "view-calendar"
+      }
       color="light"
       presentation="date"
       locale={getCurrentTranslation()}
@@ -106,6 +112,12 @@ const ViewCalendar = (props: SelectCalendarProps) => {
           return {
             textColor: "#43348d",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.8)",
+          };
+        } else if (ovulationDays.includes(isoDateString)) {
+          return {
+            textColor: "var(--ion-color-ovulation)",
+            backgroundColor: "var(--ion-color-light)",
+            fontWeight: "bold",
           };
         }
 
