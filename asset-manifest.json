@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/peri/static/css/main.ff7f9132.css",
-    "main.js": "/peri/static/js/main.ae73cd19.js",
+    "main.css": "/peri/static/css/main.d6f07cb0.css",
+    "main.js": "/peri/static/js/main.3469c272.js",
     "static/js/738.6b5449af.chunk.js": "/peri/static/js/738.6b5449af.chunk.js",
     "static/js/7372.78f75089.chunk.js": "/peri/static/js/7372.78f75089.chunk.js",
     "static/js/5856.fb269c93.chunk.js": "/peri/static/js/5856.fb269c93.chunk.js",
@@ -90,8 +90,8 @@
     "static/media/Roboto-Regular.ttf": "/peri/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
     "service-worker.js": "/peri/service-worker.js",
     "index.html": "/peri/index.html",
-    "main.ff7f9132.css.map": "/peri/static/css/main.ff7f9132.css.map",
-    "main.ae73cd19.js.map": "/peri/static/js/main.ae73cd19.js.map",
+    "main.d6f07cb0.css.map": "/peri/static/css/main.d6f07cb0.css.map",
+    "main.3469c272.js.map": "/peri/static/js/main.3469c272.js.map",
     "738.6b5449af.chunk.js.map": "/peri/static/js/738.6b5449af.chunk.js.map",
     "7372.78f75089.chunk.js.map": "/peri/static/js/7372.78f75089.chunk.js.map",
     "5856.fb269c93.chunk.js.map": "/peri/static/js/5856.fb269c93.chunk.js.map",
@@ -179,7 +179,7 @@
     "960.d74fb13e.chunk.js.map": "/peri/static/js/960.d74fb13e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ff7f9132.css",
-    "static/js/main.ae73cd19.js"
+    "static/css/main.d6f07cb0.css",
+    "static/js/main.3469c272.js"
   ]
 }
