@@ -94,7 +94,6 @@ const ViewCalendar = (props: SelectCalendarProps) => {
           ? "view-calendar-today-ovulation"
           : "view-calendar"
       }
-      color="light"
       presentation="date"
       locale={getCurrentTranslation()}
       size="cover"
@@ -157,7 +156,6 @@ const EditCalendar = (props: SelectCalendarProps) => {
   return (
     <IonDatetime
       className="edit-calendar"
-      color="light"
       ref={datetimeRef}
       presentation="date"
       locale={getCurrentTranslation()}
