@@ -14,7 +14,14 @@ import {
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
-import { parseISO, startOfToday, format } from "date-fns";
+import {
+  parseISO,
+  startOfToday,
+  format,
+  formatISO,
+  subMonths,
+  min,
+} from "date-fns";
 import { CyclesContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
@@ -87,6 +94,22 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const forecastPeriodDays = getForecastPeriodDays(cycles);
   const ovulationDays = getOvulationDays(cycles);
 
+  const firstPeriodDay = lastPeriodDays
+    .sort((left, right) => {
+      const leftDate = new Date(left);
+      const rightDate = new Date(right);
+      return leftDate.getTime() - rightDate.getTime();
+    })
+    .at(0);
+
+  const firstPeriodDayDate = firstPeriodDay
+    ? parseISO(firstPeriodDay)
+    : startOfToday();
+
+  const minDate = formatISO(
+    min([firstPeriodDayDate, subMonths(startOfToday(), 6)]),
+  );
+
   return (
     <IonDatetime
       className={
@@ -97,6 +120,8 @@ const ViewCalendar = (props: SelectCalendarProps) => {
       presentation="date"
       locale={getCurrentTranslation()}
       size="cover"
+      min={minDate}
+      max={formatISO(startOfToday())}
       firstDayOfWeek={1}
       highlightedDates={(isoDateString) => {
         if (cycles.length === 0) {
@@ -146,6 +171,22 @@ const EditCalendar = (props: SelectCalendarProps) => {
 
   const lastPeriodDays = getLastPeriodDays(cycles);
 
+  const firstPeriodDay = lastPeriodDays
+    .sort((left, right) => {
+      const leftDate = new Date(left);
+      const rightDate = new Date(right);
+      return leftDate.getTime() - rightDate.getTime();
+    })
+    .at(0);
+
+  const firstPeriodDayDate = firstPeriodDay
+    ? parseISO(firstPeriodDay)
+    : startOfToday();
+
+  const minDate = formatISO(
+    min([firstPeriodDayDate, subMonths(startOfToday(), 6)]),
+  );
+
   return (
     <IonDatetime
       className="edit-calendar"
@@ -153,6 +194,8 @@ const EditCalendar = (props: SelectCalendarProps) => {
       presentation="date"
       locale={getCurrentTranslation()}
       size="cover"
+      min={minDate}
+      max={formatISO(startOfToday())}
       multiple
       firstDayOfWeek={1}
       // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
