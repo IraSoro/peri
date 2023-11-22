@@ -144,14 +144,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
 
-  useEffect(() => {
-    if (!datetimeRef.current) return;
-    const lastPeriodDays = getLastPeriodDays(cycles);
-    if (!lastPeriodDays.length) {
-      return;
-    }
-    datetimeRef.current.value = lastPeriodDays;
-  }, [cycles]);
+  const lastPeriodDays = getLastPeriodDays(cycles);
 
   return (
     <IonDatetime
@@ -162,6 +155,8 @@ const EditCalendar = (props: SelectCalendarProps) => {
       size="cover"
       multiple
       firstDayOfWeek={1}
+      // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
+      value={lastPeriodDays.reverse()}
       isDateEnabled={(isoDateString) => {
         return getActiveDates(parseISO(isoDateString), cycles);
       }}
