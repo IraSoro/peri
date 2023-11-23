@@ -41,7 +41,6 @@ import {
   getActiveDates,
   getPastFuturePeriodDays,
   isPeriodToday,
-  isMarkedFutureDays,
   getForecastPeriodDays,
   getOvulationDays,
 } from "../state/CalculationLogics";
@@ -234,26 +233,16 @@ const EditCalendar = (props: SelectCalendarProps) => {
         <IonButton
           color="blackout-basic"
           onClick={() => {
+            // NOTE: `confirm` should be called to update values in `datetimeRef`
             datetimeRef.current?.confirm().catch((err) => console.error(err));
-            if (datetimeRef.current?.value) {
-              const periodDaysString = (
-                datetimeRef.current.value as string[]
-              ).map((isoDateString) => {
-                return parseISO(isoDateString).toString();
-              });
 
-              if (isMarkedFutureDays(periodDaysString)) {
-                datetimeRef.current.value = getLastPeriodDays(cycles);
+            const periodDaysString = (
+              (datetimeRef.current?.value as string[]) ?? []
+            ).map((isoDateString) => {
+              return parseISO(isoDateString).toString();
+            });
 
-                cannotSaveAlert({
-                  header: t("You can't mark future days"),
-                  buttons: ["OK"],
-                }).catch((err) => console.error(err));
-
-                return;
-              }
-              updateCycles(getNewCyclesHistory(periodDaysString));
-            }
+            updateCycles(getNewCyclesHistory(periodDaysString));
             props.setIsEditCalendar(false);
           }}
         >

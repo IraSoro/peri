@@ -24,7 +24,6 @@ import {
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
-  isMarkedFutureDays,
   getForecastPeriodDays,
   getOvulationDays,
 } from "../state/CalculationLogics";
@@ -984,51 +983,6 @@ describe("getLengthOfLastPeriod", () => {
     }
 
     expect(getLengthOfLastPeriod(cycles)).toEqual(cycles[0].periodLength);
-  });
-});
-
-describe("isMarkedFutureDays", () => {
-  test("nothing marked", () => {
-    expect(isMarkedFutureDays([])).toEqual(false);
-  });
-
-  test("past periods marked", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const dates: string[] = [];
-
-    for (let i = 5; i < 10; ++i) {
-      dates.push(subDays(startOfToday(), i).toString());
-    }
-
-    expect(isMarkedFutureDays(dates)).toEqual(false);
-  });
-
-  test("period now marked", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const dates: string[] = [];
-
-    for (let i = 0; i < 3; ++i) {
-      dates.push(subDays(startOfToday(), i).toString());
-    }
-    for (let i = 1; i < 3; ++i) {
-      dates.push(addDays(startOfToday(), i).toString());
-    }
-
-    expect(isMarkedFutureDays(dates)).toEqual(false);
-  });
-
-  test("future days are marked", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const dates: string[] = [];
-
-    for (let i = 1; i < 6; ++i) {
-      dates.push(addDays(startOfToday(), i).toString());
-    }
-
-    expect(isMarkedFutureDays(dates)).toEqual(true);
   });
 });
 
