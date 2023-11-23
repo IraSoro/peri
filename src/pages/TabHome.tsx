@@ -17,7 +17,6 @@ import { useTranslation } from "react-i18next";
 import {
   parseISO,
   startOfToday,
-  format,
   formatISO,
   subMonths,
   min,
@@ -45,6 +44,7 @@ import {
   getOvulationDays,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
+import { format } from "../utils/datetime";
 
 import { chevronForwardOutline } from "ionicons/icons";
 
@@ -235,9 +235,24 @@ const EditCalendar = (props: SelectCalendarProps) => {
             // NOTE: `confirm` should be called to update values in `datetimeRef`
             datetimeRef.current?.confirm().catch((err) => console.error(err));
 
-            const periodDaysString = (
-              (datetimeRef.current?.value as string[]) ?? []
-            ).map((isoDateString) => {
+            let markedDays = (datetimeRef.current?.value as string[]) ?? [];
+            const todayFormatted = format(startOfToday(), "yyyy-MM-dd");
+
+            // NOTE: If "lastPeriodDays" includes today, but the marked days don't,
+            //       it means that the user has unmarked the first day of a new period
+            //       that started today
+            //       In this case we thinking that user marked first day of cycle by error
+            //       and remove the last period from the cycles array
+            if (
+              lastPeriodDays.includes(todayFormatted) &&
+              !markedDays.includes(todayFormatted)
+            ) {
+              markedDays = markedDays.filter((isoDateString) => {
+                return !lastPeriodDays.includes(isoDateString);
+              });
+            }
+
+            const periodDaysString = markedDays.map((isoDateString) => {
               return parseISO(isoDateString).toString();
             });
 
