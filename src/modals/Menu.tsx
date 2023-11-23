@@ -63,6 +63,7 @@ const LanguageSwitcher = () => {
       <IonLabel color="dark">{t("Language")}</IonLabel>
       <IonSelect
         value={getCurrentTranslation()}
+        label="language"
         interface="popover"
         onIonChange={(event) => {
           changeLanguage(event.target.value as string).catch((err) => {
