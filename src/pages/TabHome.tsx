@@ -21,6 +21,10 @@ import {
   formatISO,
   subMonths,
   min,
+  startOfMonth,
+  endOfMonth,
+  addMonths,
+  max,
 } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
@@ -110,6 +114,22 @@ const ViewCalendar = (props: SelectCalendarProps) => {
     startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
   );
 
+  const lastForecastPeriodDay = forecastPeriodDays
+    .sort((left, right) => {
+      const leftDate = new Date(left);
+      const rightDate = new Date(right);
+      return leftDate.getTime() - rightDate.getTime();
+    })
+    .at(-1);
+
+  const lastForecastPeriodDayDate = lastForecastPeriodDay
+    ? endOfMonth(parseISO(lastForecastPeriodDay))
+    : endOfMonth(startOfToday());
+
+  const maxDate = formatISO(
+    endOfMonth(max([lastForecastPeriodDayDate, addMonths(startOfToday(), 6)])),
+  );
+
   return (
     <IonDatetime
       className={
@@ -121,7 +141,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
       locale={getCurrentTranslation()}
       size="cover"
       min={minDate}
-      max={formatISO(startOfToday())}
+      max={maxDate}
       firstDayOfWeek={1}
       highlightedDates={(isoDateString) => {
         if (cycles.length === 0) {
