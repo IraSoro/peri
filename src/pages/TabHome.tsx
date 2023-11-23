@@ -107,7 +107,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
     : startOfToday();
 
   const minDate = formatISO(
-    min([firstPeriodDayDate, subMonths(startOfToday(), 6)]),
+    startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
   );
 
   return (
@@ -184,7 +184,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
     : startOfToday();
 
   const minDate = formatISO(
-    min([firstPeriodDayDate, subMonths(startOfToday(), 6)]),
+    startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
   );
 
   return (

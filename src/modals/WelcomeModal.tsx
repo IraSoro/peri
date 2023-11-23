@@ -13,6 +13,7 @@ import {
   formatISO,
   parseISO,
   startOfDay,
+  startOfMonth,
   startOfToday,
   subMonths,
 } from "date-fns";
@@ -77,7 +78,7 @@ const Welcome = (props: PropsWelcomeModal) => {
             presentation="date"
             locale={getCurrentTranslation()}
             size="cover"
-            min={formatISO(subMonths(startOfToday(), 6))}
+            min={formatISO(startOfMonth(subMonths(startOfToday(), 6)))}
             max={formatISO(startOfToday())}
             multiple
             firstDayOfWeek={1}
