@@ -181,7 +181,6 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
 const EditCalendar = (props: SelectCalendarProps) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
-  const [cannotSaveAlert] = useIonAlert();
 
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);

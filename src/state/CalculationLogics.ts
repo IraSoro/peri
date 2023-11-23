@@ -5,7 +5,6 @@ import {
   parseISO,
   startOfDay,
   startOfToday,
-  differenceInMilliseconds,
 } from "date-fns";
 
 import { Cycle } from "../data/ClassCycle";
