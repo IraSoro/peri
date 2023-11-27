@@ -192,8 +192,14 @@ export const Menu = (props: MenuProps) => {
         )}
       </IonList>
       <IonItem>
-        <IonLabel color="medium">Peri - The Period Tracker App</IonLabel>
         <IonLabel
+          style={{ fontSize: "13px" }}
+          color="medium"
+        >
+          Peri - The Period Tracker App
+        </IonLabel>
+        <IonLabel
+          style={{ fontSize: "13px" }}
           color="medium"
           slot="end"
         >
