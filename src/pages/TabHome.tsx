@@ -110,9 +110,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
     ? parseISO(firstPeriodDay)
     : startOfToday();
 
-  const minDate = formatISO(
-    startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
-  );
+  const minDate = formatISO(startOfMonth(firstPeriodDayDate));
 
   const lastForecastPeriodDay = forecastPeriodDays
     .sort((left, right) => {
