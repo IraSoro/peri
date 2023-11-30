@@ -9,7 +9,14 @@ import {
   IonDatetime,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
-import { parseISO, startOfDay, startOfToday } from "date-fns";
+import {
+  formatISO,
+  parseISO,
+  startOfDay,
+  startOfMonth,
+  startOfToday,
+  subMonths,
+} from "date-fns";
 
 import { CyclesContext } from "../state/Context";
 import { getNewCyclesHistory } from "../state/CalculationLogics";
@@ -71,6 +78,8 @@ const Welcome = (props: PropsWelcomeModal) => {
             presentation="date"
             locale={getCurrentTranslation()}
             size="cover"
+            min={formatISO(startOfMonth(subMonths(startOfToday(), 6)))}
+            max={formatISO(startOfToday())}
             multiple
             firstDayOfWeek={1}
             isDateEnabled={(isoDateString) => {

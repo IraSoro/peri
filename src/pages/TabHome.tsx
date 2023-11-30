@@ -14,7 +14,18 @@ import {
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
-import { parseISO, startOfToday, format } from "date-fns";
+import {
+  parseISO,
+  startOfToday,
+  format,
+  formatISO,
+  subMonths,
+  min,
+  startOfMonth,
+  endOfMonth,
+  addMonths,
+  max,
+} from "date-fns";
 import { CyclesContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
@@ -87,6 +98,36 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const forecastPeriodDays = getForecastPeriodDays(cycles);
   const ovulationDays = getOvulationDays(cycles);
 
+  const firstPeriodDay = lastPeriodDays
+    .sort((left, right) => {
+      const leftDate = new Date(left);
+      const rightDate = new Date(right);
+      return leftDate.getTime() - rightDate.getTime();
+    })
+    .at(0);
+
+  const firstPeriodDayDate = firstPeriodDay
+    ? parseISO(firstPeriodDay)
+    : startOfToday();
+
+  const minDate = formatISO(startOfMonth(firstPeriodDayDate));
+
+  const lastForecastPeriodDay = forecastPeriodDays
+    .sort((left, right) => {
+      const leftDate = new Date(left);
+      const rightDate = new Date(right);
+      return leftDate.getTime() - rightDate.getTime();
+    })
+    .at(-1);
+
+  const lastForecastPeriodDayDate = lastForecastPeriodDay
+    ? endOfMonth(parseISO(lastForecastPeriodDay))
+    : endOfMonth(startOfToday());
+
+  const maxDate = formatISO(
+    endOfMonth(max([lastForecastPeriodDayDate, addMonths(startOfToday(), 6)])),
+  );
+
   return (
     <IonDatetime
       className={
@@ -97,6 +138,8 @@ const ViewCalendar = (props: SelectCalendarProps) => {
       presentation="date"
       locale={getCurrentTranslation()}
       size="cover"
+      min={minDate}
+      max={maxDate}
       firstDayOfWeek={1}
       highlightedDates={(isoDateString) => {
         if (cycles.length === 0) {
@@ -144,14 +187,23 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
 
-  useEffect(() => {
-    if (!datetimeRef.current) return;
-    const lastPeriodDays = getLastPeriodDays(cycles);
-    if (!lastPeriodDays.length) {
-      return;
-    }
-    datetimeRef.current.value = lastPeriodDays;
-  }, [cycles]);
+  const lastPeriodDays = getLastPeriodDays(cycles);
+
+  const firstPeriodDay = lastPeriodDays
+    .sort((left, right) => {
+      const leftDate = new Date(left);
+      const rightDate = new Date(right);
+      return leftDate.getTime() - rightDate.getTime();
+    })
+    .at(0);
+
+  const firstPeriodDayDate = firstPeriodDay
+    ? parseISO(firstPeriodDay)
+    : startOfToday();
+
+  const minDate = formatISO(
+    startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
+  );
 
   return (
     <IonDatetime
@@ -160,8 +212,12 @@ const EditCalendar = (props: SelectCalendarProps) => {
       presentation="date"
       locale={getCurrentTranslation()}
       size="cover"
+      min={minDate}
+      max={formatISO(startOfToday())}
       multiple
       firstDayOfWeek={1}
+      // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
+      value={lastPeriodDays.reverse()}
       isDateEnabled={(isoDateString) => {
         return getActiveDates(parseISO(isoDateString), cycles);
       }}
