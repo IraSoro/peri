@@ -304,7 +304,7 @@ export function getNewCyclesHistory(periodDays: string[]) {
   return newCycles;
 }
 
-export function getLastPeriodDays(cycles: Cycle[]) {
+export function getPeriodDays(cycles: Cycle[]) {
   const periodDays: string[] = [];
 
   for (const cycle of cycles) {
@@ -314,6 +314,20 @@ export function getLastPeriodDays(cycles: Cycle[]) {
       const newDate = addDays(startOfCycle, i);
       periodDays.push(format(newDate, "yyyy-MM-dd"));
     }
+  }
+  return periodDays;
+}
+
+export function getLastPeriodDays(cycles: Cycle[]) {
+  const periodDays: string[] = [];
+  const lastCycle = cycles.at(0);
+  if (!lastCycle) {
+    return periodDays;
+  }
+  const startOfCycle = startOfDay(new Date(lastCycle.startDate));
+  for (let i = 0; i < lastCycle.periodLength; i++) {
+    const newDate = addDays(startOfCycle, i);
+    periodDays.push(format(newDate, "yyyy-MM-dd"));
   }
   return periodDays;
 }
@@ -336,7 +350,7 @@ export function getActiveDates(date: Date, cycles: Cycle[]) {
 
 export function getPastFuturePeriodDays(cycles: Cycle[]) {
   const nowDate = startOfToday();
-  const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+  const periodDates = getPeriodDays(cycles).map((isoDateString) => {
     return parseISO(isoDateString).toString();
   });
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);

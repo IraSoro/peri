@@ -36,12 +36,13 @@ import {
   getPregnancyChance,
   getDaysBeforePeriod,
   getNewCyclesHistory,
-  getLastPeriodDays,
+  getPeriodDays,
   getActiveDates,
   getPastFuturePeriodDays,
   isPeriodToday,
   getForecastPeriodDays,
   getOvulationDays,
+  getLastPeriodDays,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 import { format } from "../utils/datetime";
@@ -93,11 +94,11 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles } = useContext(CyclesContext);
 
-  const lastPeriodDays = getLastPeriodDays(cycles);
+  const periodDays = getPeriodDays(cycles);
   const forecastPeriodDays = getForecastPeriodDays(cycles);
   const ovulationDays = getOvulationDays(cycles);
 
-  const firstPeriodDay = lastPeriodDays
+  const firstPeriodDay = periodDays
     .sort((left, right) => {
       const leftDate = new Date(left);
       const rightDate = new Date(right);
@@ -149,7 +150,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
             textColor: "var(--ion-color-dark-basic)",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
           };
-        } else if (lastPeriodDays.includes(isoDateString)) {
+        } else if (periodDays.includes(isoDateString)) {
           return {
             textColor: "#43348d",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.8)",
@@ -185,9 +186,10 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
 
+  const periodDays = getPeriodDays(cycles);
   const lastPeriodDays = getLastPeriodDays(cycles);
 
-  const firstPeriodDay = lastPeriodDays
+  const firstPeriodDay = periodDays
     .sort((left, right) => {
       const leftDate = new Date(left);
       const rightDate = new Date(right);
@@ -215,7 +217,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
       multiple
       firstDayOfWeek={1}
       // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
-      value={lastPeriodDays.reverse()}
+      value={periodDays.reverse()}
       isDateEnabled={(isoDateString) => {
         return getActiveDates(parseISO(isoDateString), cycles);
       }}
