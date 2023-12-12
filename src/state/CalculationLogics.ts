@@ -275,7 +275,7 @@ export function getNewCyclesHistory(periodDays: string[]) {
     return leftDate.getTime() - rightDate.getTime();
   });
 
-  const newCycles: Cycle[] = [
+  let newCycles: Cycle[] = [
     {
       cycleLength: 28,
       periodLength: 1,
@@ -300,6 +300,10 @@ export function getNewCyclesHistory(periodDays: string[]) {
       });
     }
   }
+
+  newCycles = newCycles.filter((cycle) => {
+    return startOfDay(new Date(cycle.startDate)) <= startOfToday();
+  });
 
   return newCycles;
 }

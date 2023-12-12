@@ -191,33 +191,28 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const periodDays = getPeriodDays(cycles);
   const lastPeriodDays = getLastPeriodDays(cycles);
 
-  const firstPeriodDay = periodDays
-    .sort((left, right) => {
-      const leftDate = new Date(left);
-      const rightDate = new Date(right);
-      return leftDate.getTime() - rightDate.getTime();
-    })
-    .at(0);
+  const sortedPeriodDays = periodDays.sort((left, right) => {
+    const leftDate = new Date(left);
+    const rightDate = new Date(right);
+    return leftDate.getTime() - rightDate.getTime();
+  });
+
+  const firstPeriodDay = sortedPeriodDays.at(0);
+  const lastPeriodDay = sortedPeriodDays.at(-1);
 
   const firstPeriodDayDate = firstPeriodDay
     ? parseISO(firstPeriodDay)
+    : startOfToday();
+
+  const lastPeriodDayDate = lastPeriodDay
+    ? parseISO(lastPeriodDay)
     : startOfToday();
 
   const minDate = formatISO(
     startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
   );
 
-  const maxDate = formatISO(
-    cycles[0]
-      ? max([
-          startOfToday(),
-          addDays(
-            startOfDay(new Date(cycles[0].startDate)),
-            cycles[0].periodLength - 1,
-          ),
-        ])
-      : startOfToday(),
-  );
+  const maxDate = formatISO(max([startOfToday(), lastPeriodDayDate]));
 
   return (
     <IonDatetime
