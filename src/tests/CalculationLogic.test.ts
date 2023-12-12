@@ -20,13 +20,13 @@ import {
   getPhase,
   getNewCyclesHistory,
   getActiveDates,
-  getLastPeriodDays,
+  getPeriodDays,
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
-  isMarkedFutureDays,
   getForecastPeriodDays,
   getOvulationDays,
+  getLastPeriodDays,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -684,11 +684,11 @@ describe("getNewCyclesHistory", () => {
   });
 });
 
-describe("getLastPeriodDays", () => {
+describe("getPeriodDays", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getLastPeriodDays([])).toEqual([]);
+    expect(getPeriodDays([])).toEqual([]);
   });
 
   test("cycles array has a few items", () => {
@@ -732,7 +732,49 @@ describe("getLastPeriodDays", () => {
       "2023-06-13",
     ];
 
-    expect(getLastPeriodDays(cycles)).toEqual(periodDays);
+    expect(getPeriodDays(cycles)).toEqual(periodDays);
+  });
+});
+
+describe("getLastPeriodDays", () => {
+  test("cycles array is empty", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    expect(getLastPeriodDays([])).toEqual([]);
+  });
+
+  test("cycles array has a few items", () => {
+    // @ts-expect-error mocked `t` method
+    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+
+    const cycles: Cycle[] = [
+      {
+        cycleLength: 0,
+        periodLength: 6,
+        startDate: "2023-08-05",
+      },
+      {
+        cycleLength: 28,
+        periodLength: 6,
+        startDate: "2023-07-08",
+      },
+      {
+        cycleLength: 26,
+        periodLength: 4,
+        startDate: "2023-06-10",
+      },
+    ];
+
+    const lastPeriodDays = [
+      "2023-08-05",
+      "2023-08-06",
+      "2023-08-07",
+      "2023-08-08",
+      "2023-08-09",
+      "2023-08-10",
+    ];
+
+    expect(getLastPeriodDays(cycles)).toEqual(lastPeriodDays);
   });
 });
 
@@ -895,7 +937,7 @@ describe("getPastFuturePeriodDays", () => {
       });
     }
 
-    const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+    const periodDates = getPeriodDays(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
     });
     const nowDate = startOfToday();
@@ -923,7 +965,7 @@ describe("getPastFuturePeriodDays", () => {
       });
     }
 
-    const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+    const periodDates = getPeriodDays(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
     });
     const nowDate = startOfToday();
@@ -984,51 +1026,6 @@ describe("getLengthOfLastPeriod", () => {
     }
 
     expect(getLengthOfLastPeriod(cycles)).toEqual(cycles[0].periodLength);
-  });
-});
-
-describe("isMarkedFutureDays", () => {
-  test("nothing marked", () => {
-    expect(isMarkedFutureDays([])).toEqual(false);
-  });
-
-  test("past periods marked", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const dates: string[] = [];
-
-    for (let i = 5; i < 10; ++i) {
-      dates.push(subDays(startOfToday(), i).toString());
-    }
-
-    expect(isMarkedFutureDays(dates)).toEqual(false);
-  });
-
-  test("period now marked", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const dates: string[] = [];
-
-    for (let i = 0; i < 3; ++i) {
-      dates.push(subDays(startOfToday(), i).toString());
-    }
-    for (let i = 1; i < 3; ++i) {
-      dates.push(addDays(startOfToday(), i).toString());
-    }
-
-    expect(isMarkedFutureDays(dates)).toEqual(false);
-  });
-
-  test("future days are marked", () => {
-    // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    const dates: string[] = [];
-
-    for (let i = 1; i < 6; ++i) {
-      dates.push(addDays(startOfToday(), i).toString());
-    }
-
-    expect(isMarkedFutureDays(dates)).toEqual(true);
   });
 });
 

@@ -17,7 +17,6 @@ import { useTranslation } from "react-i18next";
 import {
   parseISO,
   startOfToday,
-  format,
   formatISO,
   subMonths,
   min,
@@ -37,15 +36,16 @@ import {
   getPregnancyChance,
   getDaysBeforePeriod,
   getNewCyclesHistory,
-  getLastPeriodDays,
+  getPeriodDays,
   getActiveDates,
   getPastFuturePeriodDays,
   isPeriodToday,
-  isMarkedFutureDays,
   getForecastPeriodDays,
   getOvulationDays,
+  getLastPeriodDays,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
+import { format } from "../utils/datetime";
 
 import { chevronForwardOutline } from "ionicons/icons";
 
@@ -94,11 +94,11 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles } = useContext(CyclesContext);
 
-  const lastPeriodDays = getLastPeriodDays(cycles);
+  const periodDays = getPeriodDays(cycles);
   const forecastPeriodDays = getForecastPeriodDays(cycles);
   const ovulationDays = getOvulationDays(cycles);
 
-  const firstPeriodDay = lastPeriodDays
+  const firstPeriodDay = periodDays
     .sort((left, right) => {
       const leftDate = new Date(left);
       const rightDate = new Date(right);
@@ -150,7 +150,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
             textColor: "var(--ion-color-dark-basic)",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
           };
-        } else if (lastPeriodDays.includes(isoDateString)) {
+        } else if (periodDays.includes(isoDateString)) {
           return {
             textColor: "#43348d",
             backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.8)",
@@ -182,28 +182,35 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
 const EditCalendar = (props: SelectCalendarProps) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
-  const [cannotSaveAlert] = useIonAlert();
 
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
 
+  const periodDays = getPeriodDays(cycles);
   const lastPeriodDays = getLastPeriodDays(cycles);
 
-  const firstPeriodDay = lastPeriodDays
-    .sort((left, right) => {
-      const leftDate = new Date(left);
-      const rightDate = new Date(right);
-      return leftDate.getTime() - rightDate.getTime();
-    })
-    .at(0);
+  const sortedPeriodDays = periodDays.sort((left, right) => {
+    const leftDate = new Date(left);
+    const rightDate = new Date(right);
+    return leftDate.getTime() - rightDate.getTime();
+  });
+
+  const firstPeriodDay = sortedPeriodDays.at(0);
+  const lastPeriodDay = sortedPeriodDays.at(-1);
 
   const firstPeriodDayDate = firstPeriodDay
     ? parseISO(firstPeriodDay)
     : startOfToday();
 
+  const lastPeriodDayDate = lastPeriodDay
+    ? parseISO(lastPeriodDay)
+    : startOfToday();
+
   const minDate = formatISO(
     startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
   );
+
+  const maxDate = formatISO(max([startOfToday(), lastPeriodDayDate]));
 
   return (
     <IonDatetime
@@ -213,11 +220,11 @@ const EditCalendar = (props: SelectCalendarProps) => {
       locale={getCurrentTranslation()}
       size="cover"
       min={minDate}
-      max={formatISO(startOfToday())}
+      max={maxDate}
       multiple
       firstDayOfWeek={1}
       // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
-      value={lastPeriodDays.reverse()}
+      value={periodDays.reverse()}
       isDateEnabled={(isoDateString) => {
         return getActiveDates(parseISO(isoDateString), cycles);
       }}
@@ -234,26 +241,31 @@ const EditCalendar = (props: SelectCalendarProps) => {
         <IonButton
           color="blackout-basic"
           onClick={() => {
+            // NOTE: `confirm` should be called to update values in `datetimeRef`
             datetimeRef.current?.confirm().catch((err) => console.error(err));
-            if (datetimeRef.current?.value) {
-              const periodDaysString = (
-                datetimeRef.current.value as string[]
-              ).map((isoDateString) => {
-                return parseISO(isoDateString).toString();
+
+            let markedDays = (datetimeRef.current?.value as string[]) ?? [];
+            const todayFormatted = format(startOfToday(), "yyyy-MM-dd");
+
+            // NOTE: If "lastPeriodDays" includes today, but the marked days don't,
+            //       it means that the user has unmarked the first day of a new period
+            //       that started today
+            //       In this case we thinking that user marked first day of cycle by error
+            //       and remove the last period from the cycles array
+            if (
+              lastPeriodDays.includes(todayFormatted) &&
+              !markedDays.includes(todayFormatted)
+            ) {
+              markedDays = markedDays.filter((isoDateString) => {
+                return !lastPeriodDays.includes(isoDateString);
               });
-
-              if (isMarkedFutureDays(periodDaysString)) {
-                datetimeRef.current.value = getLastPeriodDays(cycles);
-
-                cannotSaveAlert({
-                  header: t("You can't mark future days"),
-                  buttons: ["OK"],
-                }).catch((err) => console.error(err));
-
-                return;
-              }
-              updateCycles(getNewCyclesHistory(periodDaysString));
             }
+
+            const periodDaysString = markedDays.map((isoDateString) => {
+              return parseISO(isoDateString).toString();
+            });
+
+            updateCycles(getNewCyclesHistory(periodDaysString));
             props.setIsEditCalendar(false);
           }}
         >

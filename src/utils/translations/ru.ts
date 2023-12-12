@@ -18,7 +18,6 @@ const ru = {
   High: "Высокая",
   Low: "Низкая",
   "Period today": "Месячные сегодня",
-  "You can't mark future days": "Вы не можете отметить будущие дни",
   edit: "редактировать",
   save: "сохранить",
   "Period is": "Месячные",

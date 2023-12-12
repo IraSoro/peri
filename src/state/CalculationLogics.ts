@@ -5,7 +5,6 @@ import {
   parseISO,
   startOfDay,
   startOfToday,
-  differenceInMilliseconds,
 } from "date-fns";
 
 import { Cycle } from "../data/ClassCycle";
@@ -276,7 +275,7 @@ export function getNewCyclesHistory(periodDays: string[]) {
     return leftDate.getTime() - rightDate.getTime();
   });
 
-  const newCycles: Cycle[] = [
+  let newCycles: Cycle[] = [
     {
       cycleLength: 28,
       periodLength: 1,
@@ -302,10 +301,14 @@ export function getNewCyclesHistory(periodDays: string[]) {
     }
   }
 
+  newCycles = newCycles.filter((cycle) => {
+    return startOfDay(new Date(cycle.startDate)) <= startOfToday();
+  });
+
   return newCycles;
 }
 
-export function getLastPeriodDays(cycles: Cycle[]) {
+export function getPeriodDays(cycles: Cycle[]) {
   const periodDays: string[] = [];
 
   for (const cycle of cycles) {
@@ -315,6 +318,20 @@ export function getLastPeriodDays(cycles: Cycle[]) {
       const newDate = addDays(startOfCycle, i);
       periodDays.push(format(newDate, "yyyy-MM-dd"));
     }
+  }
+  return periodDays;
+}
+
+export function getLastPeriodDays(cycles: Cycle[]) {
+  const periodDays: string[] = [];
+  const lastCycle = cycles.at(0);
+  if (!lastCycle) {
+    return periodDays;
+  }
+  const startOfCycle = startOfDay(new Date(lastCycle.startDate));
+  for (let i = 0; i < lastCycle.periodLength; i++) {
+    const newDate = addDays(startOfCycle, i);
+    periodDays.push(format(newDate, "yyyy-MM-dd"));
   }
   return periodDays;
 }
@@ -337,7 +354,7 @@ export function getActiveDates(date: Date, cycles: Cycle[]) {
 
 export function getPastFuturePeriodDays(cycles: Cycle[]) {
   const nowDate = startOfToday();
-  const periodDates = getLastPeriodDays(cycles).map((isoDateString) => {
+  const periodDates = getPeriodDays(cycles).map((isoDateString) => {
     return parseISO(isoDateString).toString();
   });
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
@@ -409,24 +426,6 @@ export function isPeriodToday(cycles: Cycle[]) {
   const dayOfCycle = getDayOfCycle(cycles);
 
   return dayOfCycle <= cycles[0].periodLength;
-}
-
-export function isMarkedFutureDays(periodDays: string[]) {
-  periodDays.sort((left, right) => {
-    const leftDate = startOfDay(new Date(left));
-    const rightDate = startOfDay(new Date(right));
-    return differenceInMilliseconds(leftDate, rightDate);
-  });
-
-  const today = startOfToday();
-
-  if (periodDays.includes(today.toString())) {
-    return false;
-  }
-
-  return periodDays.some((date) => {
-    return startOfDay(new Date(date)) > today;
-  });
 }
 
 export function getOvulationDays(cycles: Cycle[]) {
