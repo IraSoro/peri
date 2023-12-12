@@ -24,8 +24,6 @@ import {
   endOfMonth,
   addMonths,
   max,
-  addDays,
-  startOfDay,
 } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
