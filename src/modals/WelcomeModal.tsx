@@ -74,6 +74,7 @@ const Welcome = (props: PropsWelcomeModal) => {
         </div>
         <div style={{ marginBottom: "20px" }}>
           <IonDatetime
+            className="welcome-calendar"
             ref={datetimeRef}
             presentation="date"
             locale={getCurrentTranslation()}
