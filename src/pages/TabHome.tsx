@@ -24,6 +24,8 @@ import {
   endOfMonth,
   addMonths,
   max,
+  addDays,
+  startOfDay,
 } from "date-fns";
 import { CyclesContext } from "../state/Context";
 
@@ -205,6 +207,18 @@ const EditCalendar = (props: SelectCalendarProps) => {
     startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
   );
 
+  const maxDate = formatISO(
+    cycles[0]
+      ? max([
+          startOfToday(),
+          addDays(
+            startOfDay(new Date(cycles[0].startDate)),
+            cycles[0].periodLength - 1,
+          ),
+        ])
+      : startOfToday(),
+  );
+
   return (
     <IonDatetime
       className="edit-calendar"
@@ -213,7 +227,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
       locale={getCurrentTranslation()}
       size="cover"
       min={minDate}
-      max={formatISO(startOfToday())}
+      max={maxDate}
       multiple
       firstDayOfWeek={1}
       // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
