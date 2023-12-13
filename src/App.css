@@ -136,7 +136,8 @@ ion-datetime.view-calendar-today-ovulation::part(calendar-day today) {
   color: var(--ion-color-ovulation);
   border-color: var(--ion-color-ovulation);
 }
-ion-datetime.view-calendar::part(month-year-button) {
+ion-datetime.view-calendar::part(month-year-button),
+ion-datetime.view-calendar-today-ovulation::part(month-year-button) {
   pointer-events: none;
 }
 
@@ -146,6 +147,7 @@ ion-datetime.view-calendar-today-ovulation::part(calendar-day):focus {
   background-color: #fff;
   box-shadow: 0px 0px 0px 0px #fff;
 }
-ion-datetime.view-calendar::part(calendar-day) {
+ion-datetime.view-calendar::part(calendar-day),
+ion-datetime.view-calendar-today-ovulation::part(calendar-day) {
   pointer-events: none;
 }
