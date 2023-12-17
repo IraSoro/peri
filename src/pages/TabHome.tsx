@@ -9,7 +9,6 @@ import {
   IonCol,
   IonIcon,
   IonButtons,
-  useIonAlert,
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -285,7 +284,6 @@ const TabHome = (props: HomeProps) => {
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isEditCalendar, setIsEditCalendar] = useState(false);
-  const [periodTodayAlert] = useIonAlert();
 
   const router = useIonRouter();
 
@@ -373,14 +371,8 @@ const TabHome = (props: HomeProps) => {
               <IonButton
                 className="main"
                 color="dark-basic"
+                disabled={isPeriodToday(cycles)}
                 onClick={() => {
-                  if (isPeriodToday(cycles)) {
-                    periodTodayAlert({
-                      header: t("Period today"),
-                      buttons: ["OK"],
-                    }).catch((err) => console.log(err));
-                    return;
-                  }
                   const newCycles = getNewCyclesHistory(
                     getPastFuturePeriodDays(cycles),
                   );
