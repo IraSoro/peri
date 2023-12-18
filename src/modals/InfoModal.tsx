@@ -35,7 +35,7 @@ const InfoModal = (props: PropsInfoModal) => {
     >
       <IonContent
         className="ion-padding"
-        color="background"
+        color="background-basic"
       >
         <p
           style={{

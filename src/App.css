@@ -138,8 +138,8 @@ ion-datetime.edit-calendar::part(month-year-button) {
 }
 
 ion-datetime.view-calendar-today-ovulation::part(calendar-day today) {
-  color: var(--ion-color-ovulation);
-  border-color: var(--ion-color-ovulation);
+  color: var(--ion-color-ovulation-basic);
+  border-color: var(--ion-color-ovulation-basic);
 }
 ion-datetime.view-calendar::part(month-year-button),
 ion-datetime.view-calendar-today-ovulation::part(month-year-button) {
