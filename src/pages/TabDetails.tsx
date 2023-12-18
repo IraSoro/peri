@@ -160,10 +160,8 @@ const ListProgress = () => {
   };
 
   const list = cycles
-    .filter((_value, idx) => {
-      // NOTE: 6 is the number of cycles we display in details. We store a maximum of 7 cycles (in case the last cycle is accidentally deleted)
-      return idx > 0 && idx < 6;
-    })
+    // NOTE: 6 is the number of cycles we display in details. We store a maximum of 7 cycles (in case the last cycle is accidentally deleted)
+    .slice(1, 6)
     .map((_item, idx) => {
       return (
         <ItemProgress
