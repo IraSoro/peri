@@ -111,10 +111,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                     {
                       text: t("cancel"),
                       role: "cancel",
+                      cssClass: "alert-button",
                     },
                     {
                       text: "OK",
                       role: "confirm",
+                      cssClass: "alert-button",
                       handler: () => {
                         props.setIsOpen(false);
                       },
