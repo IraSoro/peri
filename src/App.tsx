@@ -140,7 +140,7 @@ const App: React.FC = () => {
               <IonRouterOutlet>
                 <Route
                   exact
-                  path="/home"
+                  path="/peri/"
                 >
                   <TabHome
                     isLanguageModal={isLanguageModal}
@@ -150,7 +150,7 @@ const App: React.FC = () => {
 
                 <Route
                   exact
-                  path="/details"
+                  path="/peri-details/"
                 >
                   <TabDetails />
                 </Route>
@@ -159,14 +159,7 @@ const App: React.FC = () => {
                   exact
                   path="/"
                 >
-                  <Redirect to="/home" />
-                </Route>
-
-                <Route
-                  exact
-                  path="/peri/"
-                >
-                  <Redirect to="/home" />
+                  <Redirect to="/peri/" />
                 </Route>
               </IonRouterOutlet>
 
@@ -190,14 +183,14 @@ const App: React.FC = () => {
 
                 <IonTabButton
                   tab="home"
-                  href="/home"
+                  href="/peri/"
                   className="home-tab"
                 >
                   <IonLabel>{t("Home")}</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   tab="details"
-                  href="/details"
+                  href="/peri-details/"
                   className="details-tab"
                 >
                   <IonLabel>{t("Details")}</IonLabel>
