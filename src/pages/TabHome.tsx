@@ -350,6 +350,13 @@ const TabHome = (props: HomeProps) => {
                           color: "var(--ion-color-dark-basic)",
                           marginBottom: "30px",
                         }
+                      : getDaysBeforePeriod(cycles).title === "Delay"
+                      ? {
+                          fontWeight: "bold",
+                          fontSize: "40px",
+                          color: "#686868",
+                          marginBottom: "30px",
+                        }
                       : {
                           fontWeight: "bold",
                           fontSize: "40px",
