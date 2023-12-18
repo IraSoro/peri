@@ -81,7 +81,7 @@ const App: React.FC = () => {
   );
 
   function updateCycles(newCycles: Cycle[]) {
-    const maxOfCycles = 6;
+    const maxOfCycles = 7;
     if (newCycles.length > maxOfCycles) {
       newCycles.splice(maxOfCycles);
     }
