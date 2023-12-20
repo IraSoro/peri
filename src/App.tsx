@@ -57,7 +57,7 @@ const Badge = () => {
         position: "fixed",
         left: 42,
         top: 0,
-        backgroundColor: "var(--ion-color-opposite)",
+        backgroundColor: "var(--ion-color-opposite-basic)",
         minWidth: 10,
         minHeight: 10,
         borderRadius: 10,
@@ -124,14 +124,14 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonHeader
             class="ion-no-border"
-            style={{ backgroundColor: "var(--ion-color-background)" }}
+            style={{ backgroundColor: "var(--ion-color-background-basic)" }}
           >
             <div id="top-space" />
           </IonHeader>
 
           <IonContent
             id="main-content"
-            color="background"
+            color="background-basic"
           >
             <IonTabs>
               <IonRouterOutlet>

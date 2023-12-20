@@ -205,7 +205,7 @@ const TabDetails = () => {
   };
 
   return (
-    <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
+    <IonPage style={{ backgroundColor: "var(--ion-color-background-basic)" }}>
       <div id="wide-screen">
         <IonContent
           className="ion-padding"

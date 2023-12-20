@@ -184,10 +184,12 @@ export const Menu = (props: MenuProps) => {
           >
             <IonIcon
               slot="start"
-              color="opposite"
+              color="opposite-basic"
               icon={arrowDownOutline}
             />
-            <IonLabel color="opposite">{t("Download latest version")}</IonLabel>
+            <IonLabel color="opposite-basic">
+              {t("Download latest version")}
+            </IonLabel>
           </IonItem>
         )}
       </IonList>

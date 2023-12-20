@@ -156,7 +156,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
           };
         } else if (ovulationDays.includes(isoDateString)) {
           return {
-            textColor: "var(--ion-color-ovulation)",
+            textColor: "var(--ion-color-ovulation-basic)",
             backgroundColor: "var(--ion-color-light)",
             fontWeight: "bold",
           };
@@ -319,7 +319,7 @@ const TabHome = (props: HomeProps) => {
   const { cycles, updateCycles } = useContext(CyclesContext);
 
   return (
-    <IonPage style={{ backgroundColor: "var(--ion-color-background)" }}>
+    <IonPage style={{ backgroundColor: "var(--ion-color-background-basic)" }}>
       <div id="wide-screen">
         <IonContent
           className="ion-padding"
