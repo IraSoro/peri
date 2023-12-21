@@ -14,6 +14,7 @@ import {
   cloudDownloadOutline,
   cloudUploadOutline,
   globeOutline,
+  colorFilterOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -23,7 +24,7 @@ import {
   downloadLatestRelease,
   isNewVersionAvailable,
 } from "../data/AppVersion";
-import { CyclesContext } from "../state/Context";
+import { CyclesContext, ThemeContext } from "../state/Context";
 import {
   changeTranslation,
   getCurrentTranslation,
@@ -72,6 +73,42 @@ const LanguageSwitcher = () => {
         }}
       >
         {languages}
+      </IonSelect>
+    </IonItem>
+  );
+};
+
+const ThemeSwitcher = () => {
+  const { t } = useTranslation();
+  const { theme, updateTheme } = useContext(ThemeContext);
+
+  const themesList = [];
+  for (const item of ["basic", "pink"]) {
+    themesList.push(
+      <IonSelectOption
+        key={item}
+        value={item}
+      >
+        {item}
+      </IonSelectOption>,
+    );
+  }
+
+  return (
+    <IonItem>
+      <IonIcon
+        slot="start"
+        color={"dark-" + theme}
+        icon={colorFilterOutline}
+      />
+
+      <IonLabel color={"dark-" + theme}>{t("Theme")}</IonLabel>
+      <IonSelect
+        value={theme}
+        interface="popover"
+        onIonChange={(event) => updateTheme(event.target.value as string)}
+      >
+        {themesList}
       </IonSelect>
     </IonItem>
   );
@@ -169,6 +206,7 @@ export const Menu = (props: MenuProps) => {
           <IonLabel color="dark-basic">{t("Preferences")}</IonLabel>
         </IonItem>
         <LanguageSwitcher />
+        <ThemeSwitcher />
         <IonItem lines="full">
           <IonLabel color="dark-basic">{t("Edit")}</IonLabel>
         </IonItem>
