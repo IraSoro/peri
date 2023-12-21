@@ -6,6 +6,7 @@ import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
 export interface Context {
   cycles: Cycle[];
   language: string;
+  theme: string;
 }
 
 const storageImpl = new Storage({
@@ -44,18 +45,33 @@ async function getLanguage(safe: boolean): Promise<string> {
   return value;
 }
 
+function setTheme(theme: string): Promise<void> {
+  return storageImpl.set("theme", theme) as Promise<void>;
+}
+
+async function getTheme(safe: boolean): Promise<string> {
+  const value = (await storageImpl.get("theme")) as string;
+  if (safe && !value) {
+    throw new Error("Can't find `theme` in storage");
+  }
+  return value;
+}
+
 export const storage = {
   set: {
     cycles: setCycles,
     language: setLanguage,
+    theme: setTheme,
   },
   get: {
     cycles: () => getCycles(true),
     language: () => getLanguage(true),
+    theme: () => getTheme(true),
   },
   getUnsafe: {
     cycles: () => getCycles(false),
     language: () => getLanguage(false),
+    theme: () => getTheme(false),
   },
 };
 

@@ -121,7 +121,8 @@ const Exporter = () => {
   const onExportClick = async () => {
     const cycles = await storage.get.cycles();
     const language = await storage.get.language();
-    await exportConfig({ cycles, language });
+    const theme = await storage.get.theme();
+    await exportConfig({ cycles, language, theme });
   };
 
   return (

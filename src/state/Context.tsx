@@ -11,4 +11,15 @@ const cyclesInit: CyclesContextI = {
   updateCycles: (_newCycles) => {},
 };
 
+interface ThemeContextI {
+  theme: string;
+  updateTheme: (newTheme: string) => void;
+}
+
+const themeInit: ThemeContextI = {
+  theme: "basic",
+  updateTheme: (_newTheme) => {},
+};
+
 export const CyclesContext = React.createContext<CyclesContextI>(cyclesInit);
+export const ThemeContext = React.createContext<ThemeContextI>(themeInit);
