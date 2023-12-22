@@ -79,6 +79,7 @@ const ru = {
   Preferences: "Настройки",
   Edit: "Редактирование",
   Language: "Язык",
+  Theme: "Тема",
   "Import config": "Импортировать данные",
   "Export config": "Экспортировать данные",
   "Configuration has been imported": "Данные были успешно импортированы",
