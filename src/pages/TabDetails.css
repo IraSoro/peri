@@ -42,7 +42,8 @@ ion-progress-bar::part(stream) {
 }
 
 ion-progress-bar.current-progress-basic,
-ion-progress-bar.current-progress-pink {
+ion-progress-bar.current-progress-pink,
+ion-progress-bar.current-progress-blue {
   height: 8px;
   border-radius: 20px;
 }
@@ -79,4 +80,21 @@ ion-progress-bar.pink::part(track) {
 ion-progress-bar.current-progress-pink::part(track) {
   border-radius: 20px;
   background: var(--ion-color-transparent-pink);
+}
+
+/* blue group */
+ion-progress-bar.blue::part(progress),
+ion-progress-bar.current-progress-blue::part(progress) {
+  border-radius: 20px;
+  background: var(--ion-color-dark-blue);
+}
+
+ion-progress-bar.blue::part(track) {
+  border-radius: 20px;
+  background: var(--ion-color-light-blue);
+}
+
+ion-progress-bar.current-progress-blue::part(track) {
+  border-radius: 20px;
+  background: var(--ion-color-transparent-blue);
 }

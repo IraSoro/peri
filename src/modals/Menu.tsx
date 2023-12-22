@@ -82,7 +82,7 @@ const ThemeSwitcher = () => {
   const { theme, updateTheme } = useContext(ThemeContext);
 
   const themesList = [];
-  for (const item of ["basic", "pink"]) {
+  for (const item of ["basic", "pink", "blue"]) {
     themesList.push(
       <IonSelectOption
         key={item}

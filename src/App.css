@@ -232,3 +232,89 @@ ion-datetime.view-calendar-today-ovulation-pink::part(calendar-day) {
 button.alert-button.pink {
   color: var(--ion-color-dark-pink);
 }
+
+/* blue group */
+ion-tab-button.blue {
+  background: var(--ion-color-light);
+  color: var(--ion-color-dark-blue);
+  border: 1px var(--ion-color-light) solid;
+  border-radius: 10px;
+  max-width: 100px;
+  font-size: 13px;
+  height: 25px;
+
+  --color-selected: var(--ion-color-dark-blue);
+}
+
+ion-tab-button.tab-selected.blue {
+  background: var(--ion-color-dark-blue);
+  color: var(--ion-color-light);
+  border: 1px var(--ion-color-dark-blue) solid;
+  border-radius: 10px;
+  max-width: 100px;
+  font-size: 14px;
+  height: 25px;
+
+  --color-selected: var(--ion-color-light);
+}
+
+ion-datetime.blue::part(calendar-day active),
+ion-datetime.blue::part(calendar-day active):focus {
+  background-color: rgba(var(--ion-color-light-blue-rgb), 0.7);
+  color: var(--ion-color-dark-blue);
+}
+
+ion-datetime.welcome-calendar-blue::part(calendar-day today),
+ion-datetime.edit-calendar-blue::part(calendar-day today) {
+  color: var(--ion-color-blackout-blue);
+  border: 2px solid var(--ion-color-blackout-blue);
+  background-color: var(--ion-color-light);
+  font-weight: bold;
+}
+
+ion-datetime.view-calendar-blue::part(calendar-day today),
+ion-datetime.view-calendar-today-ovulation-blue::part(calendar-day today) {
+  color: var(--ion-color-dark-blue);
+  border: 2px solid var(--ion-color-dark-blue);
+  background-color: var(--ion-color-light);
+  font-weight: bold;
+}
+
+ion-datetime.edit-calendar-blue::part(calendar-day active),
+ion-datetime.welcome-calendar-blue::part(calendar-day active),
+ion-datetime.edit-calendar-blue::part(calendar-day active):focus,
+ion-datetime.welcome-calendar-blue::part(calendar-day active):focus {
+  color: var(--ion-color-blackout-blue);
+  border: 2px dotted var(--ion-color-blackout-blue);
+  background-color: var(--ion-color-light);
+}
+
+ion-datetime.welcome-calendar-blue::part(month-year-button),
+ion-datetime.edit-calendar-blue::part(month-year-button) {
+  pointer-events: none;
+}
+
+ion-datetime.view-calendar-today-ovulation-blue::part(calendar-day today) {
+  color: var(--ion-color-ovulation-blue);
+  border-color: var(--ion-color-ovulation-blue);
+}
+ion-datetime.view-calendar-blue::part(month-year-button),
+ion-datetime.view-calendar-today-ovulation-blue::part(month-year-button) {
+  pointer-events: none;
+}
+
+ion-datetime.view-calendar-blue::part(calendar-day):focus,
+ion-datetime.edit-calendar-blue::part(calendar-day):focus,
+ion-datetime.welcome-calendar-blue::part(calendar-day):focus,
+ion-datetime.view-calendar-today-ovulation-blue::part(calendar-day):focus {
+  background-color: #fff;
+  box-shadow: 0px 0px 0px 0px #fff;
+}
+ion-datetime.view-calendar-blue::part(calendar-day),
+ion-datetime.view-calendar-today-ovulation-blue::part(calendar-day) {
+  pointer-events: none;
+}
+
+button.alert-button.blue {
+  color: var(--ion-color-dark-blue);
+}
