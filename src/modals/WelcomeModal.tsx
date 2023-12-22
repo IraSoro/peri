@@ -18,7 +18,7 @@ import {
   subMonths,
 } from "date-fns";
 
-import { CyclesContext } from "../state/Context";
+import { CyclesContext, ThemeContext } from "../state/Context";
 import { getNewCyclesHistory } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 
@@ -34,6 +34,7 @@ const Welcome = (props: PropsWelcomeModal) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
   const [confirmAlert] = useIonAlert();
   const updateCycles = useContext(CyclesContext).updateCycles;
+  const theme = useContext(ThemeContext).theme;
 
   const { t } = useTranslation();
 
@@ -44,13 +45,13 @@ const Welcome = (props: PropsWelcomeModal) => {
     >
       <IonContent
         className="ion-padding"
-        color="transparent-basic"
+        color={`transparent-${theme}`}
       >
         <div
           style={{ marginTop: "20px", textAlign: "center", fontWeight: "bold" }}
         >
           <IonLabel
-            color="dark-basic"
+            color={`dark-${theme}`}
             style={{ fontSize: "30px", marginTop: "20px" }}
           >
             {t("Welcome to Peri")}
@@ -74,7 +75,7 @@ const Welcome = (props: PropsWelcomeModal) => {
         </div>
         <div style={{ marginBottom: "20px" }}>
           <IonDatetime
-            className="welcome-calendar"
+            className={`welcome-calendar-${theme}`}
             ref={datetimeRef}
             presentation="date"
             locale={getCurrentTranslation()}
@@ -91,7 +92,7 @@ const Welcome = (props: PropsWelcomeModal) => {
         <IonCol>
           <IonButton
             className="main"
-            color="dark-basic"
+            color={`dark-${theme}`}
             onClick={() => {
               if (datetimeRef.current?.value) {
                 const periodDaysString = (
@@ -111,12 +112,12 @@ const Welcome = (props: PropsWelcomeModal) => {
                     {
                       text: t("cancel"),
                       role: "cancel",
-                      cssClass: "alert-button",
+                      cssClass: `${theme}`,
                     },
                     {
                       text: "OK",
                       role: "confirm",
-                      cssClass: "alert-button",
+                      cssClass: `${theme}`,
                       handler: () => {
                         props.setIsOpen(false);
                       },

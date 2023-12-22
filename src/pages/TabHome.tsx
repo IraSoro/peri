@@ -24,7 +24,7 @@ import {
   addMonths,
   max,
 } from "date-fns";
-import { CyclesContext } from "../state/Context";
+import { CyclesContext, ThemeContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
 
@@ -92,6 +92,7 @@ interface SelectCalendarProps {
 const ViewCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles } = useContext(CyclesContext);
+  const theme = useContext(ThemeContext).theme;
 
   const periodDays = getPeriodDays(cycles);
   const forecastPeriodDays = getForecastPeriodDays(cycles);
@@ -131,8 +132,8 @@ const ViewCalendar = (props: SelectCalendarProps) => {
     <IonDatetime
       className={
         ovulationDays.includes(format(startOfToday(), "yyyy-MM-dd"))
-          ? "view-calendar-today-ovulation"
-          : "view-calendar"
+          ? `view-calendar-today-ovulation-${theme}`
+          : `view-calendar-${theme}`
       }
       presentation="date"
       locale={getCurrentTranslation()}
@@ -146,17 +147,17 @@ const ViewCalendar = (props: SelectCalendarProps) => {
         }
         if (forecastPeriodDays.includes(isoDateString)) {
           return {
-            textColor: "var(--ion-color-dark-basic)",
-            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.3)",
+            textColor: `var(--ion-color-dark-${theme})`,
+            backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.3)`,
           };
         } else if (periodDays.includes(isoDateString)) {
           return {
-            textColor: "#43348d",
-            backgroundColor: "rgba(var(--ion-color-light-basic-rgb), 0.8)",
+            textColor: "#000000",
+            backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.8)`,
           };
         } else if (ovulationDays.includes(isoDateString)) {
           return {
-            textColor: "var(--ion-color-ovulation-basic)",
+            textColor: `var(--ion-color-ovulation-${theme})`,
             backgroundColor: "var(--ion-color-light)",
             fontWeight: "bold",
           };
@@ -167,7 +168,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
     >
       <IonButtons slot="buttons">
         <IonButton
-          color="dark-basic"
+          color={`dark-${theme}`}
           onClick={() => {
             props.setIsEditCalendar(true);
           }}
@@ -184,6 +185,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
 
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
+  const theme = useContext(ThemeContext).theme;
 
   const periodDays = getPeriodDays(cycles);
   const lastPeriodDays = getLastPeriodDays(cycles);
@@ -213,7 +215,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
 
   return (
     <IonDatetime
-      className="edit-calendar"
+      className={`edit-calendar-${theme}`}
       ref={datetimeRef}
       presentation="date"
       locale={getCurrentTranslation()}
@@ -230,7 +232,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
     >
       <IonButtons slot="buttons">
         <IonButton
-          color="blackout-basic"
+          color={`blackout-${theme}`}
           onClick={() => {
             props.setIsEditCalendar(false);
           }}
@@ -238,7 +240,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
           {t("cancel")}
         </IonButton>
         <IonButton
-          color="blackout-basic"
+          color={`blackout-${theme}`}
           onClick={() => {
             // NOTE: `confirm` should be called to update values in `datetimeRef`
             datetimeRef.current?.confirm().catch((err) => console.error(err));
@@ -281,6 +283,8 @@ interface HomeProps {
 }
 
 const TabHome = (props: HomeProps) => {
+  const theme = useContext(ThemeContext).theme;
+
   const [isInfoModal, setIsInfoModal] = useState(false);
   const [isWelcomeModal, setIsWelcomeModal] = useState(false);
   const [isEditCalendar, setIsEditCalendar] = useState(false);
@@ -319,11 +323,13 @@ const TabHome = (props: HomeProps) => {
   const { cycles, updateCycles } = useContext(CyclesContext);
 
   return (
-    <IonPage style={{ backgroundColor: "var(--ion-color-background-basic)" }}>
+    <IonPage
+      style={{ backgroundColor: `var(--ion-color-background-${theme})` }}
+    >
       <div id="wide-screen">
         <IonContent
           className="ion-padding"
-          color="transparent-basic"
+          color={`transparent-${theme}`}
         >
           <Welcome
             isOpen={isWelcomeModal}
@@ -347,13 +353,13 @@ const TabHome = (props: HomeProps) => {
                       ? {
                           fontWeight: "bold",
                           fontSize: "35px",
-                          color: "var(--ion-color-dark-basic)",
+                          color: `var(--ion-color-dark-${theme})`,
                           marginBottom: "30px",
                         }
                       : {
                           fontWeight: "bold",
                           fontSize: "40px",
-                          color: "var(--ion-color-dark-basic)",
+                          color: `var(--ion-color-dark-${theme})`,
                           marginBottom: "30px",
                         }
                   }
@@ -370,7 +376,7 @@ const TabHome = (props: HomeProps) => {
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
                 className="main"
-                color="dark-basic"
+                color={`dark-${theme}`}
                 disabled={isPeriodToday(cycles)}
                 onClick={() => {
                   const newCycles = getNewCyclesHistory(

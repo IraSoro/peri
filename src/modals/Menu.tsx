@@ -98,11 +98,10 @@ const ThemeSwitcher = () => {
     <IonItem>
       <IonIcon
         slot="start"
-        color={"dark-" + theme}
         icon={colorFilterOutline}
       />
 
-      <IonLabel color={"dark-" + theme}>{t("Theme")}</IonLabel>
+      <IonLabel>{t("Theme")}</IonLabel>
       <IonSelect
         value={theme}
         interface="popover"
@@ -184,6 +183,7 @@ interface MenuProps {
 
 export const Menu = (props: MenuProps) => {
   const { t } = useTranslation();
+  const theme = useContext(ThemeContext).theme;
   const [needUpdate, setNeedUpdate] = useState(false);
 
   useEffect(() => {
@@ -203,12 +203,12 @@ export const Menu = (props: MenuProps) => {
     <IonMenu contentId={props.contentId}>
       <IonList lines="none">
         <IonItem lines="full">
-          <IonLabel color="dark-basic">{t("Preferences")}</IonLabel>
+          <IonLabel color={`dark-${theme}`}>{t("Preferences")}</IonLabel>
         </IonItem>
         <LanguageSwitcher />
         <ThemeSwitcher />
         <IonItem lines="full">
-          <IonLabel color="dark-basic">{t("Edit")}</IonLabel>
+          <IonLabel color={`dark-${theme}`}>{t("Edit")}</IonLabel>
         </IonItem>
         <Importer />
         <Exporter />
@@ -223,10 +223,10 @@ export const Menu = (props: MenuProps) => {
           >
             <IonIcon
               slot="start"
-              color="opposite-basic"
+              color={`opposite-${theme}`}
               icon={arrowDownOutline}
             />
-            <IonLabel color="opposite-basic">
+            <IonLabel color={`opposite-${theme}`}>
               {t("Download latest version")}
             </IonLabel>
           </IonItem>

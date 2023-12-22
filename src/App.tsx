@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -49,6 +49,7 @@ import { isNewVersionAvailable } from "./data/AppVersion";
 setupIonicReact();
 
 const Badge = () => {
+  const theme = useContext(ThemeContext).theme;
   // NOTE: Ionic's badge can't be empty and need some text in it,
   //       that's why I decided to write my own badge component
   return (
@@ -57,7 +58,7 @@ const Badge = () => {
         position: "fixed",
         left: 42,
         top: 0,
-        backgroundColor: "var(--ion-color-opposite-basic)",
+        backgroundColor: `var(--ion-color-opposite-${theme})`,
         minWidth: 10,
         minHeight: 10,
         borderRadius: 10,
@@ -138,14 +139,21 @@ const App: React.FC = () => {
           <IonReactRouter>
             <IonHeader
               class="ion-no-border"
-              style={{ backgroundColor: "var(--ion-color-background-basic)" }}
+              style={{
+                backgroundColor: `var(--ion-color-background-${theme})`,
+              }}
             >
-              <div id="top-space" />
+              <div
+                id="top-space"
+                style={{
+                  background: `var(--ion-color-transparent-${theme})`,
+                }}
+              />
             </IonHeader>
 
             <IonContent
               id="main-content"
-              color="background-basic"
+              color={`background-${theme}`}
             >
               <IonTabs>
                 <IonRouterOutlet>
@@ -176,15 +184,20 @@ const App: React.FC = () => {
 
                 <IonTabBar
                   slot="top"
-                  color="transparent-basic"
+                  color={`transparent-${theme}`}
                 >
                   <IonTabButton
                     tab="menu"
-                    className="menu-tab"
+                    style={{
+                      background: `var(--ion-color-transparent-${theme})`,
+                      border: `var(--ion-color-transparent-${theme})`,
+                      maxWidth: "30px",
+                      marginLeft: "15px",
+                    }}
                   >
                     <IonMenuButton>
                       <IonIcon
-                        color="dark-basic"
+                        color={`dark-${theme}`}
                         icon={menuOutline}
                         size="large"
                       />
@@ -195,14 +208,16 @@ const App: React.FC = () => {
                   <IonTabButton
                     tab="home"
                     href="/peri/"
-                    className="home-tab"
+                    className={theme}
+                    style={{ marginLeft: "auto" }}
                   >
                     <IonLabel>{t("Home")}</IonLabel>
                   </IonTabButton>
                   <IonTabButton
                     tab="details"
                     href="/peri-details/"
-                    className="details-tab"
+                    className={theme}
+                    style={{ marginLeft: "15px", marginRight: "20px" }}
                   >
                     <IonLabel>{t("Details")}</IonLabel>
                   </IonTabButton>

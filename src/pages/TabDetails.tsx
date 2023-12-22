@@ -16,7 +16,7 @@ import {
   getDayOfCycle,
   getLastStartDate,
 } from "../state/CalculationLogics";
-import { CyclesContext } from "../state/Context";
+import { CyclesContext, ThemeContext } from "../state/Context";
 import { format } from "../utils/datetime";
 
 import "./TabDetails.css";
@@ -85,6 +85,8 @@ function setProgressBar(value: number, maxLength: number) {
 
 const CurrentCycle = () => {
   const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
+
   const { t } = useTranslation();
   const dayOfCycle = getDayOfCycle(cycles);
   const title = `${dayOfCycle} ${t("Days", {
@@ -106,7 +108,7 @@ const CurrentCycle = () => {
           <p style={lenCycleStyle}>{title}</p>
         </IonLabel>
         <IonProgressBar
-          class="current-progress"
+          className={`current-progress-${theme}`}
           style={progressBarStyle}
           value={setProgressBar(
             lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
@@ -128,6 +130,7 @@ interface IdxProps {
 
 const ListProgress = () => {
   const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
   const dayOfCycle = getDayOfCycle(cycles);
 
   const maxLength = cycles.reduce((max: number, item) => {
@@ -147,6 +150,7 @@ const ListProgress = () => {
             <p style={lenCycleStyle}>{info.lengthOfCycleString}</p>
           </IonLabel>
           <IonProgressBar
+            className={theme}
             style={progressBarStyle}
             value={setProgressBar(info.lengthOfPeriod, maxLength)}
             buffer={setProgressBar(info.lengthOfCycleNumber, maxLength)}
@@ -177,6 +181,7 @@ const ListProgress = () => {
 const TabDetails = () => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
 
   const averageLengthOfCycle = getAverageLengthOfCycle(cycles);
   const averageLengthOfPeriod = getAverageLengthOfPeriod(cycles);
@@ -205,20 +210,30 @@ const TabDetails = () => {
   };
 
   return (
-    <IonPage style={{ backgroundColor: "var(--ion-color-background-basic)" }}>
+    <IonPage
+      style={{ backgroundColor: `var(--ion-color-background-${theme})` }}
+    >
       <div id="wide-screen">
         <IonContent
           className="ion-padding"
-          color="transparent-basic"
+          color={`transparent-${theme}`}
         >
           <div id="context-size">
             <IonCol>
               <div
                 id="average-length"
-                style={{ marginBottom: "15px" }}
+                style={{
+                  marginBottom: "15px",
+                  background: `var(--ion-color-less-dark-${theme})`,
+                }}
               >
                 <IonCol>
-                  <div id="inline-block">
+                  <div
+                    id="inline-block"
+                    style={{
+                      background: `var(--ion-color-less-dark-${theme})`,
+                    }}
+                  >
                     <IonLabel style={{ marginBottom: "10px" }}>
                       <p style={p_style}>{t("Cycle length")}</p>
                       <p style={h_style}>
