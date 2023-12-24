@@ -79,7 +79,7 @@ ion-progress-bar.current-progress-dark::part(progress) {
 
 ion-progress-bar.dark::part(track) {
   border-radius: 20px;
-  background: var(--ion-color-light-dark);
+  background: rgba(var(--ion-color-light-dark-rgb), 0.4);
 }
 
 ion-progress-bar.current-progress-dark::part(track) {
