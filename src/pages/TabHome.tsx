@@ -54,7 +54,10 @@ interface InfoButtonProps {
 
 const InfoButton = (props: InfoButtonProps) => {
   const { t } = useTranslation();
+
   const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
+
   const pregnancyChance = getPregnancyChance(cycles);
   if (cycles.length === 0) {
     return <></>;
@@ -71,7 +74,7 @@ const InfoButton = (props: InfoButtonProps) => {
           marginBottom: "20px",
         }}
       >
-        <span style={{ color: "var(--ion-color-dark)" }}>
+        <span style={{ color: `var(--ion-color-text-${theme})` }}>
           {pregnancyChance}
         </span>{" "}
         - {t("chance of getting pregnant")}
@@ -146,6 +149,12 @@ const ViewCalendar = (props: SelectCalendarProps) => {
           return undefined;
         }
         if (forecastPeriodDays.includes(isoDateString)) {
+          if (theme === "dark") {
+            return {
+              textColor: `#ffffff`,
+              backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.3)`,
+            };
+          }
           return {
             textColor: `var(--ion-color-dark-${theme})`,
             backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.3)`,
@@ -158,7 +167,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
         } else if (ovulationDays.includes(isoDateString)) {
           return {
             textColor: `var(--ion-color-ovulation-${theme})`,
-            backgroundColor: "var(--ion-color-light)",
+            backgroundColor: `var(--ion-color-calendar-${theme})`,
             fontWeight: "bold",
           };
         }
@@ -340,7 +349,12 @@ const TabHome = (props: HomeProps) => {
           <div id="context-size">
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>
               <IonLabel>
-                <p style={{ fontSize: "35px", color: "var(--ion-color-dark)" }}>
+                <p
+                  style={{
+                    fontSize: "35px",
+                    color: `var(--ion-color-text-${theme})`,
+                  }}
+                >
                   {getDaysBeforePeriod(cycles).title}
                 </p>
               </IonLabel>

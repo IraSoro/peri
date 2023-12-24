@@ -59,13 +59,18 @@ const Welcome = (props: PropsWelcomeModal) => {
         </div>
         <div style={{ marginTop: "20px", marginBottom: "25px" }}>
           <IonLabel style={{ textAlign: "center" }}>
-            <p style={{ fontSize: "15px", color: "var(--ion-color-dark)" }}>
+            <p
+              style={{
+                fontSize: "15px",
+                color: `var(--ion-color-text-${theme})`,
+              }}
+            >
               {t("Mark the days of your")}
             </p>
             <p
               style={{
                 fontSize: "15px",
-                color: "var(--ion-color-dark)",
+                color: `var(--ion-color-text-${theme})`,
                 fontWeight: "600",
               }}
             >

@@ -1,7 +1,6 @@
 #progress-block {
   width: 300px;
   height: 70px;
-  background: var(--ion-color-light);
   border-radius: 20px;
 
   display: flex;
@@ -36,19 +35,19 @@ ion-progress-bar {
   border-radius: 20px;
 }
 
-ion-progress-bar::part(stream) {
-  border-radius: 20px;
-  background: #ffffff;
-}
-
 ion-progress-bar.current-progress-basic,
-ion-progress-bar.current-progress-pink,
-ion-progress-bar.current-progress-blue {
+ion-progress-bar.current-progress-dark {
   height: 8px;
   border-radius: 20px;
 }
 
 /* basic group */
+ion-progress-bar.basic::part(stream),
+ion-progress-bar.current-progress-basic::part(stream) {
+  border-radius: 20px;
+  background: #ffffff;
+}
+
 ion-progress-bar.basic::part(progress),
 ion-progress-bar.current-progress-basic::part(progress) {
   border-radius: 20px;
@@ -65,36 +64,25 @@ ion-progress-bar.current-progress-basic::part(track) {
   background: var(--ion-color-transparent-basic);
 }
 
-/* pink group */
-ion-progress-bar.pink::part(progress),
-ion-progress-bar.current-progress-pink::part(progress) {
+/* dark group */
+ion-progress-bar.dark::part(stream),
+ion-progress-bar.current-progress-dark::part(stream) {
   border-radius: 20px;
-  background: var(--ion-color-dark-pink);
+  background: var(--ion-color-calendar-dark);
 }
 
-ion-progress-bar.pink::part(track) {
+ion-progress-bar.dark::part(progress),
+ion-progress-bar.current-progress-dark::part(progress) {
   border-radius: 20px;
-  background: var(--ion-color-light-pink);
+  background: var(--ion-color-dark-dark);
 }
 
-ion-progress-bar.current-progress-pink::part(track) {
+ion-progress-bar.dark::part(track) {
   border-radius: 20px;
-  background: var(--ion-color-transparent-pink);
+  background: var(--ion-color-light-dark);
 }
 
-/* blue group */
-ion-progress-bar.blue::part(progress),
-ion-progress-bar.current-progress-blue::part(progress) {
+ion-progress-bar.current-progress-dark::part(track) {
   border-radius: 20px;
-  background: var(--ion-color-dark-blue);
-}
-
-ion-progress-bar.blue::part(track) {
-  border-radius: 20px;
-  background: var(--ion-color-light-blue);
-}
-
-ion-progress-bar.current-progress-blue::part(track) {
-  border-radius: 20px;
-  background: var(--ion-color-transparent-blue);
+  background: rgba(var(--ion-color-light-dark-rgb), 0.3);
 }

@@ -34,6 +34,7 @@ import { changeDateTimeLocale } from "../utils/datetime";
 
 const LanguageSwitcher = () => {
   const { t } = useTranslation();
+  const theme = useContext(ThemeContext).theme;
 
   const changeLanguage = async (language: string) => {
     await changeTranslation(language);
@@ -60,9 +61,11 @@ const LanguageSwitcher = () => {
       <IonIcon
         slot="start"
         icon={globeOutline}
+        color={`text-${theme}`}
       />
-      <IonLabel>{t("Language")}</IonLabel>
+      <IonLabel color={`text-${theme}`}>{t("Language")}</IonLabel>
       <IonSelect
+        className={theme}
         value={getCurrentTranslation()}
         interface="popover"
         onIonChange={(event) => {
@@ -82,7 +85,7 @@ const ThemeSwitcher = () => {
   const { theme, updateTheme } = useContext(ThemeContext);
 
   const themesList = [];
-  for (const item of ["basic", "pink", "blue"]) {
+  for (const item of ["basic", "dark"]) {
     themesList.push(
       <IonSelectOption
         key={item}
@@ -98,10 +101,12 @@ const ThemeSwitcher = () => {
       <IonIcon
         slot="start"
         icon={colorFilterOutline}
+        color={`text-${theme}`}
       />
 
-      <IonLabel>{t("Theme")}</IonLabel>
+      <IonLabel color={`text-${theme}`}>{t("Theme")}</IonLabel>
       <IonSelect
+        className={theme}
         value={theme}
         interface="popover"
         onIonChange={(event) => updateTheme(event.target.value as string)}
@@ -115,7 +120,9 @@ const ThemeSwitcher = () => {
 const Importer = () => {
   const { t } = useTranslation();
   const [confirmAlert] = useIonAlert();
+
   const updateCycles = useContext(CyclesContext).updateCycles;
+  const theme = useContext(ThemeContext).theme;
 
   const onImportClick = async () => {
     console.log("Import config");
@@ -144,14 +151,16 @@ const Importer = () => {
       <IonIcon
         slot="start"
         icon={cloudDownloadOutline}
+        color={`text-${theme}`}
       />
-      <IonLabel>{t("Import config")}</IonLabel>
+      <IonLabel color={`text-${theme}`}>{t("Import config")}</IonLabel>
     </IonItem>
   );
 };
 
 const Exporter = () => {
   const { t } = useTranslation();
+  const theme = useContext(ThemeContext).theme;
 
   const onExportClick = async () => {
     const cycles = await storage.get.cycles();
@@ -170,8 +179,9 @@ const Exporter = () => {
       <IonIcon
         slot="start"
         icon={cloudUploadOutline}
+        color={`text-${theme}`}
       />
-      <IonLabel>{t("Export config")}</IonLabel>
+      <IonLabel color={`text-${theme}`}>{t("Export config")}</IonLabel>
     </IonItem>
   );
 };
@@ -199,7 +209,10 @@ export const Menu = (props: MenuProps) => {
   }, []);
 
   return (
-    <IonMenu contentId={props.contentId}>
+    <IonMenu
+      contentId={props.contentId}
+      className={theme}
+    >
       <IonList lines="none">
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Preferences")}</IonLabel>
@@ -231,7 +244,7 @@ export const Menu = (props: MenuProps) => {
           </IonItem>
         )}
       </IonList>
-      <IonItem>
+      <IonItem color="none">
         <IonLabel
           style={{ fontSize: "13px" }}
           color="medium"

@@ -102,7 +102,10 @@ const CurrentCycle = () => {
   }, dayOfCycle);
 
   return (
-    <div id="progress-block">
+    <div
+      id="progress-block"
+      style={{ background: `var(--ion-color-calendar-${theme})` }}
+    >
       <div style={{ marginLeft: "15px" }}>
         <IonLabel>
           <p style={lenCycleStyle}>{title}</p>
@@ -143,7 +146,10 @@ const ListProgress = () => {
     return (
       <div
         id="progress-block"
-        style={{ marginTop: "15px" }}
+        style={{
+          marginTop: "15px",
+          background: `var(--ion-color-calendar-${theme})`,
+        }}
       >
         <div style={{ marginLeft: "15px" }}>
           <IonLabel>

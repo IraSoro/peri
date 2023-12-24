@@ -62,7 +62,7 @@ const InfoModal = (props: PropsInfoModal) => {
           <li
             style={{
               fontSize: "16px",
-              color: "var(--ion-color-dark)",
+              color: `var(--ion-color-text-${theme})`,
               marginBottom: "20px",
             }}
           >
@@ -79,7 +79,7 @@ const InfoModal = (props: PropsInfoModal) => {
           <li
             style={{
               fontSize: "16px",
-              color: "var(--ion-color-dark)",
+              color: `var(--ion-color-text-${theme})`,
               marginBottom: "20px",
             }}
           >
@@ -96,7 +96,7 @@ const InfoModal = (props: PropsInfoModal) => {
           <li
             style={{
               fontSize: "16px",
-              color: "var(--ion-color-dark)",
+              color: `var(--ion-color-text-${theme})`,
               marginBottom: "20px",
             }}
           >
@@ -126,7 +126,7 @@ const InfoModal = (props: PropsInfoModal) => {
             <li
               style={{
                 fontSize: "16px",
-                color: "var(--ion-color-dark)",
+                color: `var(--ion-color-text-${theme})`,
                 marginBottom: "20px",
               }}
               key={idx}
