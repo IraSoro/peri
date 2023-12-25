@@ -173,7 +173,7 @@ ion-tab-button.dark {
 
 ion-tab-button.tab-selected.dark {
   background: var(--ion-color-dark-dark);
-  color: var(--ion-color-light);
+  color: #000000;
   border: 1px var(--ion-color-dark-dark) solid;
   border-radius: 10px;
   max-width: 100px;
