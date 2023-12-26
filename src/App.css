@@ -5,9 +5,6 @@ ion-tab-bar {
   width: 100%;
   max-width: 594px;
   margin: 0 auto;
-
-  border-right: 3px solid rgba(209, 208, 208, 0.4);
-  border-left: 3px solid rgba(209, 208, 208, 0.4);
 }
 
 ion-col {
@@ -30,18 +27,14 @@ ion-col {
 
   margin-left: auto;
   margin-right: auto;
-
-  border-right: 3px solid rgba(209, 208, 208, 0.4);
-  border-left: 3px solid rgba(209, 208, 208, 0.4);
 }
 
 #top-space {
   height: 15px;
   max-width: 600px;
+
   margin-left: auto;
   margin-right: auto;
-  border-right: 3px solid rgba(209, 208, 208, 0.4);
-  border-left: 3px solid rgba(209, 208, 208, 0.4);
 }
 
 ion-button {
@@ -58,12 +51,18 @@ ion-list {
   --ion-item-background: transparent;
 }
 
-/* ion-datetime {
+ion-datetime {
   border-radius: 20px;
-  --background: #2a2a2a;
-} */
+}
 
 /* basic group */
+ion-tab-bar.basic,
+#wide-screen.basic,
+#top-space.basic {
+  border-right: 3px solid var(--ion-color-transparent-basic);
+  border-left: 3px solid var(--ion-color-transparent-basic);
+}
+
 ion-tab-button.basic {
   background: var(--ion-color-light);
   color: var(--ion-color-dark-basic);
@@ -95,13 +94,6 @@ ion-menu.basic::part(container) {
 ion-select.basic::part(text),
 ion-select.basic::part(icon) {
   color: var(--ion-color-text-basic);
-}
-
-ion-datetime.welcome-calendar-basic,
-ion-datetime.edit-calendar-basic,
-ion-datetime.view-calendar-basic,
-ion-datetime.view-calendar-today-ovulation-basic {
-  border-radius: 20px;
 }
 
 ion-datetime.welcome-calendar-basic::part(calendar-day today),
@@ -159,6 +151,13 @@ button.alert-button.basic {
 }
 
 /* dark group */
+ion-tab-bar.dark,
+#wide-screen.dark,
+#top-space.dark {
+  border-right: 3px solid var(--ion-color-transparent-dark);
+  border-left: 3px solid var(--ion-color-transparent-dark);
+}
+
 ion-tab-button.dark {
   background: var(--ion-color-calendar-dark);
   color: var(--ion-color-dark-dark);
@@ -196,7 +195,6 @@ ion-datetime.welcome-calendar-dark,
 ion-datetime.edit-calendar-dark,
 ion-datetime.view-calendar-dark,
 ion-datetime.view-calendar-today-ovulation-dark {
-  border-radius: 20px;
   --background: var(--ion-color-calendar-dark);
 }
 

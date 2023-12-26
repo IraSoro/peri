@@ -145,6 +145,7 @@ const App: React.FC = () => {
             >
               <div
                 id="top-space"
+                className={theme}
                 style={{
                   background: `var(--ion-color-transparent-${theme})`,
                 }}
@@ -183,6 +184,7 @@ const App: React.FC = () => {
                 </IonRouterOutlet>
 
                 <IonTabBar
+                  className={theme}
                   slot="top"
                   color={`transparent-${theme}`}
                 >
