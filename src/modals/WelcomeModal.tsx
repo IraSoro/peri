@@ -111,7 +111,7 @@ const Welcome = (props: PropsWelcomeModal) => {
               } else {
                 confirmAlert({
                   header: `${t("Continue")}?`,
-                  cssClass: "header-color",
+                  cssClass: `${theme}`,
                   message: t("Forecast will not be generated."),
                   buttons: [
                     {
