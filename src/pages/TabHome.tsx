@@ -286,12 +286,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
   );
 };
 
-interface HomeProps {
-  isLanguageModal: boolean;
-  setIsLanguageModal: (newIsOpen: boolean) => void;
-}
-
-const TabHome = (props: HomeProps) => {
+const TabHome = () => {
   const theme = useContext(ThemeContext).theme;
 
   const [isInfoModal, setIsInfoModal] = useState(false);
@@ -309,9 +304,8 @@ const TabHome = (props: HomeProps) => {
 
   useEffect(() => {
     const backButtonHandler = () => {
-      if (isInfoModal || props.isLanguageModal) {
+      if (isInfoModal) {
         setIsInfoModal(false);
-        props.setIsLanguageModal(false);
         router.push("/home");
         return;
       }
@@ -326,7 +320,7 @@ const TabHome = (props: HomeProps) => {
     return () => {
       document.removeEventListener("ionBackButton", backButtonHandler);
     };
-  }, [router, isInfoModal, props]);
+  }, [router, isInfoModal]);
 
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
@@ -346,8 +340,6 @@ const TabHome = (props: HomeProps) => {
           <Welcome
             isOpen={isWelcomeModal}
             setIsOpen={setIsWelcomeModal}
-            isLanguageModal={props.isLanguageModal}
-            setIsLanguageModal={props.setIsLanguageModal}
           />
           <div id="context-size">
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>

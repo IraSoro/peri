@@ -70,7 +70,6 @@ const Badge = () => {
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [theme, setTheme] = useState("basic");
-  const [isLanguageModal, setIsLanguageModal] = useState(false);
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
@@ -162,10 +161,7 @@ const App: React.FC = () => {
                     exact
                     path="/peri/"
                   >
-                    <TabHome
-                      isLanguageModal={isLanguageModal}
-                      setIsLanguageModal={setIsLanguageModal}
-                    />
+                    <TabHome />
                   </Route>
 
                   <Route

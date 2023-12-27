@@ -25,9 +25,6 @@ import { getCurrentTranslation } from "../utils/translation";
 interface PropsWelcomeModal {
   isOpen: boolean;
   setIsOpen: (newIsOpen: boolean) => void;
-
-  isLanguageModal: boolean;
-  setIsLanguageModal: (newIsOpen: boolean) => void;
 }
 
 const Welcome = (props: PropsWelcomeModal) => {
