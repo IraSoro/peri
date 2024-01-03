@@ -119,16 +119,17 @@ const App: React.FC = () => {
         changeLanguage(res);
       })
       .catch((err) =>
-        console.error(`Can't get cycles ${(err as Error).message}`),
+        console.error(`Can't get language ${(err as Error).message}`),
       );
 
     storage.get
       .theme()
       .then(setTheme)
-      .catch((err) =>
-        console.error(`Can't get cycles ${(err as Error).message}`),
-      );
-  }, [changeLanguage]);
+      .catch((err) => {
+        console.error(`Can't get theme ${(err as Error).message}`);
+        storage.set.theme(theme).catch((err) => console.error(err));
+      });
+  }, [changeLanguage, theme]);
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
