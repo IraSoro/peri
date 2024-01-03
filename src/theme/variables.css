@@ -205,12 +205,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-dark-dark-shade: #6a52db;
   --ion-color-dark-dark-tint: #866dfa;
 
-  --ion-color-blackout-dark: #777797;
-  --ion-color-blackout-dark-rgb: 119, 119, 151;
+  --ion-color-blackout-dark: #a1a1d6;
+  --ion-color-blackout-dark-rgb: 161, 161, 214;
   --ion-color-blackout-dark-contrast: #000000;
   --ion-color-blackout-dark-contrast-rgb: 0, 0, 0;
-  --ion-color-blackout-dark-shade: #696985;
-  --ion-color-blackout-dark-tint: #8585a1;
+  --ion-color-blackout-dark-shade: #8e8ebc;
+  --ion-color-blackout-dark-tint: #aaaada;
 
   --ion-color-ovulation-dark: #3c9b9e;
   --ion-color-ovulation-dark-rgb: 60, 155, 158;
