@@ -88,6 +88,9 @@ const App: React.FC = () => {
   }
 
   function updateTheme(newTheme: string) {
+    if (newTheme === "dark (beta)") {
+      newTheme = "dark";
+    }
     setTheme(newTheme);
     storage.set.theme(newTheme).catch((err) => console.error(err));
   }

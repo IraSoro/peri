@@ -1,25 +1,25 @@
 import React from "react";
 import type { Cycle } from "../data/ClassCycle";
 
-interface CyclesContextI {
+interface ICyclesContext {
   cycles: Cycle[];
   updateCycles: (newCycles: Cycle[]) => void;
 }
 
-const cyclesInit: CyclesContextI = {
+const cyclesInit: ICyclesContext = {
   cycles: [],
   updateCycles: (_newCycles) => {},
 };
 
-interface ThemeContextI {
+interface IThemeContext {
   theme: string;
   updateTheme: (newTheme: string) => void;
 }
 
-const themeInit: ThemeContextI = {
+const themeInit: IThemeContext = {
   theme: "basic",
   updateTheme: (_newTheme) => {},
 };
 
-export const CyclesContext = React.createContext<CyclesContextI>(cyclesInit);
-export const ThemeContext = React.createContext<ThemeContextI>(themeInit);
+export const CyclesContext = React.createContext<ICyclesContext>(cyclesInit);
+export const ThemeContext = React.createContext<IThemeContext>(themeInit);
