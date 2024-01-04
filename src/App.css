@@ -5,50 +5,6 @@ ion-tab-bar {
   width: 100%;
   max-width: 594px;
   margin: 0 auto;
-
-  border-right: 3px solid rgb(192, 182, 242, 0.4);
-  border-left: 3px solid rgb(192, 182, 242, 0.4);
-}
-
-ion-tab-button {
-  background: var(--ion-color-light);
-  color: var(--ion-color-dark-basic);
-  border: 1px var(--ion-color-light) solid;
-  border-radius: 10px;
-  max-width: 100px;
-  font-size: 13px;
-  height: 25px;
-
-  --color-selected: var(--ion-color-dark-basic);
-}
-
-ion-tab-button.tab-selected {
-  background: var(--ion-color-dark-basic);
-  color: var(--ion-color-light);
-  border: 1px var(--ion-color-dark-basic) solid;
-  border-radius: 10px;
-  max-width: 100px;
-  font-size: 14px;
-  height: 25px;
-
-  --color-selected: var(--ion-color-light);
-}
-
-ion-tab-button.menu-tab {
-  background: var(--ion-color-transparent-basic);
-  border: var(--ion-color-transparent-basic);
-  max-width: 30px;
-
-  margin-left: 15px;
-}
-
-ion-tab-button.home-tab {
-  margin-left: auto;
-}
-
-ion-tab-button.details-tab {
-  margin-left: 15px;
-  margin-right: 20px;
 }
 
 ion-col {
@@ -71,19 +27,14 @@ ion-col {
 
   margin-left: auto;
   margin-right: auto;
-
-  border-right: 3px solid rgb(192, 182, 242, 0.4);
-  border-left: 3px solid rgb(192, 182, 242, 0.4);
 }
 
 #top-space {
   height: 15px;
   max-width: 600px;
+
   margin-left: auto;
   margin-right: auto;
-  background: var(--ion-color-transparent-basic);
-  border-right: 3px solid rgb(192, 182, 242, 0.4);
-  border-left: 3px solid rgb(192, 182, 242, 0.4);
 }
 
 ion-button {
@@ -104,60 +55,214 @@ ion-datetime {
   border-radius: 20px;
 }
 
-ion-datetime::part(calendar-day today) {
-  color: var(--ion-color-dark-basic);
-  border-color: var(--ion-color-dark-basic);
-  background-color: #fff;
-  border-width: 2px;
-  font-weight: bold;
+/* basic group */
+ion-tab-bar.basic,
+#wide-screen.basic,
+#top-space.basic {
+  border-right: 3px solid var(--ion-color-transparent-basic);
+  border-left: 3px solid var(--ion-color-transparent-basic);
 }
 
-ion-datetime::part(calendar-day active),
-ion-datetime::part(calendar-day active):focus {
-  background-color: rgba(var(--ion-color-light-basic-rgb), 0.7);
+ion-tab-button.basic {
+  background: var(--ion-color-light);
   color: var(--ion-color-dark-basic);
+  border: 1px var(--ion-color-light) solid;
+  border-radius: 10px;
+  max-width: 100px;
+  font-size: 13px;
+  height: 25px;
+
+  --color-selected: var(--ion-color-dark-basic);
 }
 
-ion-datetime.welcome-calendar::part(calendar-day today),
-ion-datetime.edit-calendar::part(calendar-day today) {
+ion-tab-button.tab-selected.basic {
+  background: var(--ion-color-dark-basic);
+  color: var(--ion-color-light);
+  border: 1px var(--ion-color-dark-basic) solid;
+  border-radius: 10px;
+  max-width: 100px;
+  font-size: 14px;
+  height: 25px;
+
+  --color-selected: var(--ion-color-light);
+}
+
+ion-menu.basic::part(container) {
+  background-color: var(--ion-color-light);
+}
+
+ion-select.basic::part(text),
+ion-select.basic::part(icon) {
+  color: var(--ion-color-text-basic);
+}
+
+ion-datetime.welcome-calendar-basic::part(calendar-day today),
+ion-datetime.edit-calendar-basic::part(calendar-day today) {
   color: var(--ion-color-blackout-basic);
   border: 2px solid var(--ion-color-blackout-basic);
   background-color: var(--ion-color-light);
+  font-weight: bold;
 }
-ion-datetime.edit-calendar::part(calendar-day active),
-ion-datetime.welcome-calendar::part(calendar-day active),
-ion-datetime.edit-calendar::part(calendar-day active):focus,
-ion-datetime.welcome-calendar::part(calendar-day active):focus {
+
+ion-datetime.view-calendar-basic::part(calendar-day today),
+ion-datetime.view-calendar-today-ovulation-basic::part(calendar-day today) {
+  color: var(--ion-color-dark-basic);
+  border: 2px solid var(--ion-color-dark-basic);
+  background-color: var(--ion-color-light);
+  font-weight: bold;
+}
+
+ion-datetime.edit-calendar-basic::part(calendar-day active),
+ion-datetime.welcome-calendar-basic::part(calendar-day active),
+ion-datetime.edit-calendar-basic::part(calendar-day active):focus,
+ion-datetime.welcome-calendar-basic::part(calendar-day active):focus {
   color: var(--ion-color-blackout-basic);
   border: 2px dotted var(--ion-color-blackout-basic);
   background-color: var(--ion-color-light);
 }
-ion-datetime.welcome-calendar::part(month-year-button),
-ion-datetime.edit-calendar::part(month-year-button) {
+ion-datetime.welcome-calendar-basic::part(month-year-button),
+ion-datetime.edit-calendar-basic::part(month-year-button) {
   pointer-events: none;
 }
 
-ion-datetime.view-calendar-today-ovulation::part(calendar-day today) {
+ion-datetime.view-calendar-today-ovulation-basic::part(calendar-day today) {
   color: var(--ion-color-ovulation-basic);
   border-color: var(--ion-color-ovulation-basic);
 }
-ion-datetime.view-calendar::part(month-year-button),
-ion-datetime.view-calendar-today-ovulation::part(month-year-button) {
+ion-datetime.view-calendar-basic::part(month-year-button),
+ion-datetime.view-calendar-today-ovulation-basic::part(month-year-button) {
   pointer-events: none;
 }
 
-ion-datetime.view-calendar::part(calendar-day):focus,
-ion-datetime.edit-calendar::part(calendar-day):focus,
-ion-datetime.welcome-calendar::part(calendar-day):focus,
-ion-datetime.view-calendar-today-ovulation::part(calendar-day):focus {
+ion-datetime.view-calendar-basic::part(calendar-day):focus,
+ion-datetime.edit-calendar-basic::part(calendar-day):focus,
+ion-datetime.welcome-calendar-basic::part(calendar-day):focus,
+ion-datetime.view-calendar-today-ovulation-basic::part(calendar-day):focus {
   background-color: #fff;
   box-shadow: 0px 0px 0px 0px #fff;
 }
-ion-datetime.view-calendar::part(calendar-day),
-ion-datetime.view-calendar-today-ovulation::part(calendar-day) {
+ion-datetime.view-calendar-basic::part(calendar-day),
+ion-datetime.view-calendar-today-ovulation-basic::part(calendar-day) {
   pointer-events: none;
 }
 
-button.alert-button.alert-button {
+button.alert-button.basic {
   color: var(--ion-color-dark-basic);
+}
+
+/* dark group */
+ion-tab-bar.dark,
+#wide-screen.dark,
+#top-space.dark {
+  border-right: 3px solid var(--ion-color-transparent-dark);
+  border-left: 3px solid var(--ion-color-transparent-dark);
+}
+
+ion-tab-button.dark {
+  background: var(--ion-color-calendar-dark);
+  color: var(--ion-color-dark-dark);
+  border: 1px var(--ion-color-calendar-dark) solid;
+  border-radius: 10px;
+  max-width: 100px;
+  font-size: 13px;
+  height: 25px;
+
+  --color-selected: var(--ion-color-dark-dark);
+}
+
+ion-tab-button.tab-selected.dark {
+  background: var(--ion-color-dark-dark);
+  color: #000000;
+  border: 1px var(--ion-color-dark-dark) solid;
+  border-radius: 10px;
+  max-width: 100px;
+  font-size: 14px;
+  height: 25px;
+
+  --color-selected: var(--ion-color-light);
+}
+
+ion-menu.dark::part(container) {
+  background-color: var(--ion-color-calendar-dark);
+}
+
+ion-select.dark::part(text),
+ion-select.dark::part(icon) {
+  color: var(--ion-color-text-dark);
+}
+
+ion-datetime.welcome-calendar-dark,
+ion-datetime.edit-calendar-dark,
+ion-datetime.view-calendar-dark,
+ion-datetime.view-calendar-today-ovulation-dark {
+  --background: var(--ion-color-calendar-dark);
+}
+
+ion-datetime.welcome-calendar-dark::part(calendar-day today),
+ion-datetime.edit-calendar-dark::part(calendar-day today) {
+  color: var(--ion-color-blackout-dark);
+  border: 2px solid var(--ion-color-blackout-dark);
+  background-color: var(--ion-color-calendar-dark);
+  font-weight: bold;
+}
+
+ion-datetime.view-calendar-dark::part(calendar-day today),
+ion-datetime.view-calendar-today-ovulation-dark::part(calendar-day today) {
+  color: var(--ion-color-dark-dark);
+  border: 2px solid var(--ion-color-dark-dark);
+  background-color: var(--ion-color-calendar-dark);
+  font-weight: bold;
+}
+
+ion-datetime.edit-calendar-dark::part(calendar-day active),
+ion-datetime.welcome-calendar-dark::part(calendar-day active),
+ion-datetime.edit-calendar-dark::part(calendar-day active):focus,
+ion-datetime.welcome-calendar-dark::part(calendar-day active):focus {
+  color: var(--ion-color-blackout-dark);
+  border: 2px dotted var(--ion-color-blackout-dark);
+  background-color: var(--ion-color-calendar-dark);
+}
+
+ion-datetime.welcome-calendar-dark::part(month-year-button),
+ion-datetime.edit-calendar-dark::part(month-year-button) {
+  pointer-events: none;
+}
+
+ion-datetime.view-calendar-today-ovulation-dark::part(calendar-day today) {
+  color: var(--ion-color-ovulation-dark);
+  border-color: var(--ion-color-ovulation-dark);
+}
+
+ion-datetime.view-calendar-dark::part(month-year-button),
+ion-datetime.view-calendar-today-ovulation-dark::part(month-year-button) {
+  pointer-events: none;
+}
+
+ion-datetime.view-calendar-dark::part(calendar-day):focus,
+ion-datetime.edit-calendar-dark::part(calendar-day):focus,
+ion-datetime.welcome-calendar-dark::part(calendar-day):focus,
+ion-datetime.view-calendar-today-ovulation-dark::part(calendar-day):focus {
+  background-color: var(--ion-color-calendar-dark);
+  box-shadow: 0px 0px 0px 0px #fff;
+}
+
+ion-datetime.view-calendar-dark::part(calendar-day),
+ion-datetime.view-calendar-today-ovulation-dark::part(calendar-day) {
+  pointer-events: none;
+}
+
+ion-alert.dark .alert-wrapper {
+  --background: #434246;
+
+  .alert-head {
+    h2 {
+      color: var(--ion-color-light);
+    }
+  }
+  .alert-message {
+    color: #aca9b5;
+  }
+  .alert-button {
+    color: var(--ion-color-dark-dark);
+  }
 }

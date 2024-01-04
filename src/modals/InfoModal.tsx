@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { IonContent, IonModal, IonButton, IonCol } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 
-import { CyclesContext } from "../state/Context";
+import { CyclesContext, ThemeContext } from "../state/Context";
 import {
   getAverageLengthOfCycle,
   getDayOfCycle,
@@ -19,6 +19,7 @@ interface PropsInfoModal {
 const InfoModal = (props: PropsInfoModal) => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
 
   const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const currentDay = getDayOfCycle(cycles);
@@ -35,13 +36,13 @@ const InfoModal = (props: PropsInfoModal) => {
     >
       <IonContent
         className="ion-padding"
-        color="background-basic"
+        color={`transparent-${theme}`}
       >
         <p
           style={{
             fontWeight: "bold",
             fontSize: "25px",
-            color: "var(--ion-color-dark-basic)",
+            color: `var(--ion-color-dark-${theme})`,
             marginBottom: "24px",
           }}
         >
@@ -61,13 +62,13 @@ const InfoModal = (props: PropsInfoModal) => {
           <li
             style={{
               fontSize: "16px",
-              color: "var(--ion-color-dark)",
+              color: `var(--ion-color-text-${theme})`,
               marginBottom: "20px",
             }}
           >
             <span
               style={{
-                color: "var(--ion-color-less-dark-basic)",
+                color: `var(--ion-color-less-dark-${theme})`,
                 fontWeight: "bold",
               }}
             >
@@ -78,14 +79,14 @@ const InfoModal = (props: PropsInfoModal) => {
           <li
             style={{
               fontSize: "16px",
-              color: "var(--ion-color-dark)",
+              color: `var(--ion-color-text-${theme})`,
               marginBottom: "20px",
             }}
           >
             <span>{t("Ovulation")}</span>
             <span
               style={{
-                color: "var(--ion-color-less-dark-basic)",
+                color: `var(--ion-color-less-dark-${theme})`,
                 fontWeight: "bold",
               }}
             >
@@ -95,13 +96,13 @@ const InfoModal = (props: PropsInfoModal) => {
           <li
             style={{
               fontSize: "16px",
-              color: "var(--ion-color-dark)",
+              color: `var(--ion-color-text-${theme})`,
               marginBottom: "20px",
             }}
           >
             <span
               style={{
-                color: "var(--ion-color-less-dark-basic)",
+                color: `var(--ion-color-less-dark-${theme})`,
                 fontWeight: "bold",
               }}
             >
@@ -114,7 +115,7 @@ const InfoModal = (props: PropsInfoModal) => {
           style={{
             fontWeight: "bold",
             fontSize: "25px",
-            color: "var(--ion-color-dark-basic)",
+            color: `var(--ion-color-dark-${theme})`,
             marginBottom: "24px",
           }}
         >
@@ -125,7 +126,7 @@ const InfoModal = (props: PropsInfoModal) => {
             <li
               style={{
                 fontSize: "16px",
-                color: "var(--ion-color-dark)",
+                color: `var(--ion-color-text-${theme})`,
                 marginBottom: "20px",
               }}
               key={idx}
@@ -137,7 +138,7 @@ const InfoModal = (props: PropsInfoModal) => {
         <IonCol>
           <IonButton
             className="main"
-            color="dark-basic"
+            color={`dark-${theme}`}
             onClick={() => props.setIsOpen(false)}
           >
             OK

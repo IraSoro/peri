@@ -102,6 +102,7 @@ describe("exportConfig", () => {
         },
       ],
       language: "en",
+      theme: "basic",
     } satisfies Context);
 
     expect(mockedCapacitorFilesystem.Filesystem.writeFile).toHaveBeenCalled();
@@ -137,6 +138,7 @@ describe("exportConfig", () => {
         },
       ],
       language: "en",
+      theme: "basic",
     } satisfies Context);
 
     expect(URL.createObjectURL).toHaveBeenCalled();

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -42,13 +42,14 @@ import "./theme/variables.css";
 import { storage } from "./data/Storage";
 
 import type { Cycle } from "./data/ClassCycle";
-import { CyclesContext } from "./state/Context";
+import { CyclesContext, ThemeContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 
 setupIonicReact();
 
 const Badge = () => {
+  const theme = useContext(ThemeContext).theme;
   // NOTE: Ionic's badge can't be empty and need some text in it,
   //       that's why I decided to write my own badge component
   return (
@@ -57,7 +58,7 @@ const Badge = () => {
         position: "fixed",
         left: 42,
         top: 0,
-        backgroundColor: "var(--ion-color-opposite-basic)",
+        backgroundColor: `var(--ion-color-opposite-${theme})`,
         minWidth: 10,
         minHeight: 10,
         borderRadius: 10,
@@ -68,7 +69,7 @@ const Badge = () => {
 
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
-  const [isLanguageModal, setIsLanguageModal] = useState(false);
+  const [theme, setTheme] = useState("basic");
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
@@ -84,6 +85,14 @@ const App: React.FC = () => {
     const maxOfCycles = 7;
     setCycles(newCycles.slice(0, maxOfCycles));
     storage.set.cycles(newCycles).catch((err) => console.error(err));
+  }
+
+  function updateTheme(newTheme: string) {
+    if (newTheme === "dark (beta)") {
+      newTheme = "dark";
+    }
+    setTheme(newTheme);
+    storage.set.theme(newTheme).catch((err) => console.error(err));
   }
 
   useEffect(() => {
@@ -113,90 +122,113 @@ const App: React.FC = () => {
         changeLanguage(res);
       })
       .catch((err) =>
-        console.error(`Can't get cycles ${(err as Error).message}`),
+        console.error(`Can't get language ${(err as Error).message}`),
       );
-  }, [changeLanguage]);
+
+    storage.get
+      .theme()
+      .then(setTheme)
+      .catch((err) => {
+        console.error(`Can't get theme ${(err as Error).message}`);
+        storage.set.theme(theme).catch((err) => console.error(err));
+      });
+  }, [changeLanguage, theme]);
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
-      <IonApp>
-        <Menu contentId="main-content" />
-        <IonReactRouter>
-          <IonHeader
-            class="ion-no-border"
-            style={{ backgroundColor: "var(--ion-color-background-basic)" }}
-          >
-            <div id="top-space" />
-          </IonHeader>
+      <ThemeContext.Provider value={{ theme, updateTheme }}>
+        <IonApp>
+          <Menu contentId="main-content" />
+          <IonReactRouter>
+            <IonHeader
+              class="ion-no-border"
+              style={{
+                backgroundColor: `var(--ion-color-background-${theme})`,
+              }}
+            >
+              <div
+                id="top-space"
+                className={theme}
+                style={{
+                  background: `var(--ion-color-transparent-${theme})`,
+                }}
+              />
+            </IonHeader>
 
-          <IonContent
-            id="main-content"
-            color="background-basic"
-          >
-            <IonTabs>
-              <IonRouterOutlet>
-                <Route
-                  exact
-                  path="/peri/"
-                >
-                  <TabHome
-                    isLanguageModal={isLanguageModal}
-                    setIsLanguageModal={setIsLanguageModal}
-                  />
-                </Route>
+            <IonContent
+              id="main-content"
+              color={`background-${theme}`}
+            >
+              <IonTabs>
+                <IonRouterOutlet>
+                  <Route
+                    exact
+                    path="/peri/"
+                  >
+                    <TabHome />
+                  </Route>
 
-                <Route
-                  exact
-                  path="/peri-details/"
-                >
-                  <TabDetails />
-                </Route>
+                  <Route
+                    exact
+                    path="/peri-details/"
+                  >
+                    <TabDetails />
+                  </Route>
 
-                <Route
-                  exact
-                  path="/"
-                >
-                  <Redirect to="/peri/" />
-                </Route>
-              </IonRouterOutlet>
+                  <Route
+                    exact
+                    path="/"
+                  >
+                    <Redirect to="/peri/" />
+                  </Route>
+                </IonRouterOutlet>
 
-              <IonTabBar
-                slot="top"
-                color="transparent-basic"
-              >
-                <IonTabButton
-                  tab="menu"
-                  className="menu-tab"
+                <IonTabBar
+                  className={theme}
+                  slot="top"
+                  color={`transparent-${theme}`}
                 >
-                  <IonMenuButton>
-                    <IonIcon
-                      color="dark-basic"
-                      icon={menuOutline}
-                      size="large"
-                    />
-                    {needUpdate && <Badge />}
-                  </IonMenuButton>
-                </IonTabButton>
+                  <IonTabButton
+                    tab="menu"
+                    style={{
+                      background: `var(--ion-color-transparent-${theme})`,
+                      border: `var(--ion-color-transparent-${theme})`,
+                      maxWidth: "30px",
+                      marginLeft: "15px",
+                    }}
+                  >
+                    <IonMenuButton>
+                      <IonIcon
+                        color={`dark-${theme}`}
+                        icon={menuOutline}
+                        size="large"
+                      />
+                      {needUpdate && <Badge />}
+                    </IonMenuButton>
+                  </IonTabButton>
 
-                <IonTabButton
-                  tab="home"
-                  href="/peri/"
-                  className="home-tab"
-                >
-                  <IonLabel>{t("Home")}</IonLabel>
-                </IonTabButton>
-                <IonTabButton
-                  tab="details"
-                  href="/peri-details/"
-                  className="details-tab"
-                >
-                  <IonLabel>{t("Details")}</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          </IonContent>
-        </IonReactRouter>
-      </IonApp>
+                  <IonTabButton
+                    tab="home"
+                    href="/peri/"
+                    className={theme}
+                    style={{ marginLeft: "auto" }}
+                  >
+                    <IonLabel>{t("Home")}</IonLabel>
+                  </IonTabButton>
+                  <IonTabButton
+                    tab="details"
+                    href="/peri-details/"
+                    className={theme}
+                    style={{ marginLeft: "15px", marginRight: "20px" }}
+                  >
+                    <IonLabel>{t("Details")}</IonLabel>
+                  </IonTabButton>
+                </IonTabBar>
+              </IonTabs>
+            </IonContent>
+          </IonReactRouter>
+        </IonApp>
+      </ThemeContext.Provider>
     </CyclesContext.Provider>
   );
 };
