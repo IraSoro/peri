@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { IonContent, IonModal, IonButton, IonCol } from "@ionic/react";
+import { IonContent, IonModal, IonButton, IonCol, IonImg } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -44,85 +44,89 @@ const InfoModal = (props: PropsInfoModal) => {
       <IonContent color={`transparent-${theme}`}>
         <Swiper
           modules={[Navigation, Scrollbar, A11y]}
-          navigation={true} // NOTE: for tests
+          // navigation={true} // NOTE: for web tests
           scrollbar={true}
         >
           <SwiperSlide>
-            <p
-              style={{
-                fontWeight: "bold",
-                fontSize: "25px",
-                color: `var(--ion-color-dark-${theme})`,
-                marginBottom: "24px",
-              }}
-            >
-              {`${t("Days", {
-                postProcess: "interval",
-                count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
-              })} `}
-              {cycles.length === 1 ? (
-                currentDay
-              ) : (
-                <>
-                  {currentDay}/{lengthOfCycle}
-                </>
-              )}
-            </p>
-          </SwiperSlide>
-          <SwiperSlide>
-            <ul>
-              <li
+            <div>
+              <p
                 style={{
-                  fontSize: "16px",
-                  color: `var(--ion-color-text-${theme})`,
-                  marginBottom: "20px",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  color: `var(--ion-color-dark-${theme})`,
+                  marginBottom: "24px",
                 }}
               >
-                <span
+                {`${t("Days", {
+                  postProcess: "interval",
+                  count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
+                })} `}
+                {cycles.length === 1 ? (
+                  currentDay
+                ) : (
+                  <>
+                    {currentDay}/{lengthOfCycle}
+                  </>
+                )}
+              </p>
+              <ul>
+                <li
                   style={{
-                    color: `var(--ion-color-less-dark-${theme})`,
-                    fontWeight: "bold",
+                    fontSize: "16px",
+                    color: `var(--ion-color-text-${theme})`,
+                    marginBottom: "20px",
                   }}
                 >
-                  {phase.title}
-                </span>
-                <span> {t("is current phase of cycle")}</span>
-              </li>
-              <li
-                style={{
-                  fontSize: "16px",
-                  color: `var(--ion-color-text-${theme})`,
-                  marginBottom: "20px",
-                }}
-              >
-                <span>{t("Ovulation")}</span>
-                <span
+                  <span
+                    style={{
+                      color: `var(--ion-color-less-dark-${theme})`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {phase.title}
+                  </span>
+                  <span> {t("is current phase of cycle")}</span>
+                </li>
+                <li
                   style={{
-                    color: `var(--ion-color-less-dark-${theme})`,
-                    fontWeight: "bold",
+                    fontSize: "16px",
+                    color: `var(--ion-color-text-${theme})`,
+                    marginBottom: "20px",
                   }}
                 >
-                  {` ${ovulationStatus}`}
-                </span>
-              </li>
-              <li
-                style={{
-                  fontSize: "16px",
-                  color: `var(--ion-color-text-${theme})`,
-                  marginBottom: "20px",
-                }}
-              >
-                <span
+                  <span>{t("Ovulation")}</span>
+                  <span
+                    style={{
+                      color: `var(--ion-color-less-dark-${theme})`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {` ${ovulationStatus}`}
+                  </span>
+                </li>
+                <li
                   style={{
-                    color: `var(--ion-color-less-dark-${theme})`,
-                    fontWeight: "bold",
+                    fontSize: "16px",
+                    color: `var(--ion-color-text-${theme})`,
+                    marginBottom: "20px",
                   }}
                 >
-                  {pregnancyChance}
-                </span>
-                <span> {t("chance of getting pregnant")}</span>
-              </li>
-            </ul>
+                  <span
+                    style={{
+                      color: `var(--ion-color-less-dark-${theme})`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {pregnancyChance}
+                  </span>
+                  <span> {t("chance of getting pregnant")}</span>
+                </li>
+              </ul>
+              <IonImg
+                className="cycleImg"
+                src={`../../assets/info/${theme}Cycle.png`}
+              />
+            </div>
           </SwiperSlide>
           <SwiperSlide>
             <div>
