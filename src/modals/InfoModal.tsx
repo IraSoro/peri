@@ -122,10 +122,21 @@ const InfoModal = (props: PropsInfoModal) => {
                   <span> {t("chance of getting pregnant")}</span>
                 </li>
               </ul>
-              <IonImg
-                className="cycleImg"
-                src={`../../assets/info/${theme}Cycle.png`}
-              />
+              <div className="container">
+                <IonImg
+                  className="cycleImg"
+                  src={`../../assets/info/${theme}Cycle.png`}
+                />
+                <IonImg
+                  className="pointerImg"
+                  src={`../../assets/info/pointer.png`}
+                  style={{
+                    transform: `rotate(${
+                      (360 / lengthOfCycle) * currentDay
+                    }deg)`,
+                  }}
+                />
+              </div>
             </div>
           </SwiperSlide>
           <SwiperSlide>

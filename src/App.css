@@ -55,9 +55,23 @@ ion-datetime {
   border-radius: 20px;
 }
 
-ion-img.cycleImg {
+.container {
+  position: relative; 
   max-width: 350px;
   max-height: 350px;
+}
+
+ion-img.cycleImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+ion-img.pointerImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
 }
 
 .swiper {
