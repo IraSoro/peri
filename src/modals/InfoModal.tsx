@@ -138,6 +138,30 @@ const InfoModal = (props: PropsInfoModal) => {
                   marginBottom: "24px",
                 }}
               >
+                {t("Hormone levels")}
+              </p>
+              <ul style={{ listStyleType: "none" }}>
+                <li
+                  style={{
+                    fontSize: "16px",
+                    color: `var(--ion-color-text-${theme})`,
+                    marginBottom: "20px",
+                    lineHeight: "1.8",
+                    maxWidth: "300px",
+                    textAlign: "justify",
+                  }}
+                >
+                  {` ${phase.description}`}
+                </li>
+              </ul>
+              <p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  color: `var(--ion-color-dark-${theme})`,
+                  marginBottom: "24px",
+                }}
+              >
                 {t("Frequent symptoms")}
               </p>
               <ul>
@@ -147,6 +171,7 @@ const InfoModal = (props: PropsInfoModal) => {
                       fontSize: "16px",
                       color: `var(--ion-color-text-${theme})`,
                       marginBottom: "20px",
+                      maxWidth: "300px",
                     }}
                     key={idx}
                   >
