@@ -67,9 +67,13 @@ const Badge = () => {
   );
 };
 
-const App: React.FC = () => {
+interface AppProps {
+  theme?: string;
+}
+
+const App = (props: AppProps) => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
-  const [theme, setTheme] = useState("basic");
+  const [theme, setTheme] = useState(props.theme ?? "basic");
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
