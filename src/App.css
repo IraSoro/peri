@@ -146,11 +146,6 @@ ion-datetime.view-calendar-today-ovulation-basic::part(calendar-day) {
   pointer-events: none;
 }
 
-ion-datetime.view-calendar-basic::part(calendar-day today)
-ion-datetime.view-calendar-today-ovulation-basic::part(calendar-day today) {
-  color: var(-ion-color-dark-basic);
-}
-
 button.alert-button.basic {
   color: var(--ion-color-dark-basic);
 }
