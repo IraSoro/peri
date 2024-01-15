@@ -160,10 +160,15 @@ const ViewCalendar = (props: SelectCalendarProps) => {
             backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.3)`,
           };
         } else if (periodDays.includes(isoDateString)) {
-          return {
-            textColor: "#000000",
-            backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.8)`,
-          };
+          return theme === "dark"
+            ? {
+                textColor: `#ffffff`,
+                backgroundColor: `var(--ion-color-dark-${theme})`,
+              }
+            : {
+                textColor: `var(--ion-color-dark-${theme})`,
+                backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.8)`,
+              };
         } else if (ovulationDays.includes(isoDateString)) {
           return {
             textColor: `var(--ion-color-ovulation-${theme})`,
