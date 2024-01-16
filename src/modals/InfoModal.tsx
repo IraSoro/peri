@@ -18,6 +18,29 @@ import {
   getPregnancyChance,
 } from "../state/CalculationLogics";
 
+function useRotate() {
+  const cycles = useContext(CyclesContext).cycles;
+
+  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const currentDay = getDayOfCycle(cycles);
+  const phase = getPhase(cycles).title;
+
+  switch (phase) {
+    case "Menstrual phase":
+      return (90 / cycles[0].periodLength) * (currentDay - 1);
+    case "Follicular phase":
+      return 105;
+    case "Ovulation phase":
+      return 155;
+    case "Luteal phase":
+      if (currentDay <= lengthOfCycle) {
+        return 190 + (170 / (lengthOfCycle - 12)) * (currentDay - 12 - 1);
+      } else return 345;
+    default:
+      return 0;
+  }
+}
+
 interface PropsInfoModal {
   isOpen: boolean;
   setIsOpen: (newIsOpen: boolean) => void;
@@ -34,6 +57,8 @@ const InfoModal = (props: PropsInfoModal) => {
   const pregnancyChance = getPregnancyChance(cycles);
 
   const phase = getPhase(cycles);
+
+  const rotate = useRotate();
 
   return (
     <IonModal
@@ -69,7 +94,7 @@ const InfoModal = (props: PropsInfoModal) => {
                   </>
                 )}
               </p>
-              <ul>
+              <ul style={{ listStyleType: "none" }}>
                 <li
                   style={{
                     fontSize: "16px",
@@ -131,9 +156,7 @@ const InfoModal = (props: PropsInfoModal) => {
                   className="pointerImg"
                   src={`../../assets/info/pointer.png`}
                   style={{
-                    transform: `rotate(${
-                      (360 / lengthOfCycle) * currentDay
-                    }deg)`,
+                    transform: `rotate(${rotate}deg)`,
                   }}
                 />
               </div>
@@ -175,7 +198,7 @@ const InfoModal = (props: PropsInfoModal) => {
               >
                 {t("Frequent symptoms")}
               </p>
-              <ul>
+              <ul style={{ listStyleType: "none" }}>
                 {phase.symptoms.map((item, idx) => (
                   <li
                     style={{
