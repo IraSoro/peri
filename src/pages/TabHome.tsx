@@ -163,7 +163,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
           return theme === "dark"
             ? {
                 textColor: `#ffffff`,
-                backgroundColor: `var(--ion-color-dark-${theme})`,
+                backgroundColor: `rgba(var(--ion-color-dark-${theme}-rgb), 0.6)`,
               }
             : {
                 textColor: `var(--ion-color-dark-${theme})`,
