@@ -68,9 +68,6 @@ const LanguageSwitcher = () => {
         className={theme}
         value={getCurrentTranslation()}
         interface="popover"
-        interfaceOptions={{
-          cssClass: theme,
-        }}
         onIonChange={(event) => {
           changeLanguage(event.target.value as string).catch((err) => {
             console.error(err);
@@ -112,9 +109,6 @@ const ThemeSwitcher = () => {
         className={theme}
         value={theme === "dark" ? "dark (beta)" : theme}
         interface="popover"
-        interfaceOptions={{
-          cssClass: theme,
-        }}
         onIonChange={(event) => updateTheme(event.target.value as string)}
       >
         {themesList}
