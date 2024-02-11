@@ -190,6 +190,15 @@ ion-select.dark::part(text),
 ion-select.dark::part(icon) {
   color: var(--ion-color-text-dark);
 }
+ion-popover.dark {
+  --background: var(--ion-color-transparent-dark);
+}
+ion-popover.dark * {
+  color: white;
+}
+ion-popover.dark .item-radio-checked {
+  background-color: var(--ion-color-dark-dark);
+}
 
 ion-datetime.welcome-calendar-dark,
 ion-datetime.edit-calendar-dark,
