@@ -95,6 +95,9 @@ const App = (props: AppProps) => {
     if (newTheme === "dark (beta)") {
       newTheme = "dark";
     }
+    if (newTheme === "light") {
+      newTheme = "basic";
+    }
     setTheme(newTheme);
     storage.set.theme(newTheme).catch((err) => console.error(err));
   }
