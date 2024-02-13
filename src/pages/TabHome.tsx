@@ -60,13 +60,10 @@ const InfoButton = (props: InfoButtonProps) => {
 
   const pregnancyChance = getPregnancyChance(cycles);
   if (cycles.length === 0) {
-    return <></>;
+    return <p style={{ marginBottom: "20px", height: "20px" }}></p>;
   }
   return (
-    <IonLabel
-      class="info-button"
-      onClick={() => props.setIsInfoModal(true)}
-    >
+    <IonLabel onClick={() => props.setIsInfoModal(true)}>
       <p
         style={{
           fontSize: "14px",
