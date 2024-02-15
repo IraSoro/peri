@@ -51,6 +51,19 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
   </tr>
  </table>
 
+### Themes
+
+<table>
+    <tr>
+    <td><img width="300" src="./demonstration/home.jpg" alt="lightTheme"></td>
+    <td><img width="300" src="./demonstration/darkTheme.jpg" alt="darkTheme"></td>
+  </tr>
+  <tr>
+    <td align="center">Light Theme</td>
+    <td align="center">Dark Theme</td>
+  </tr>
+ </table>
+
 ### How to build
 
 You can find the full instruction about the project building in [BUILDING.md](https://github.com/IraSoro/peri/blob/master/BUILDING.md) file.
