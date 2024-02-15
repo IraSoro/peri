@@ -291,18 +291,21 @@ const EditCalendar = (props: SelectCalendarProps) => {
 };
 
 const DemoAlert = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <IonModal
-      id="example-modal"
+      id="alert-demo-modal"
       isOpen={isOpen}
     >
       <div className="wrapper">
-        <h1>This is just a demo</h1>
+        <h1>{t("This is just a demo")}</h1>
         <p>
-          <span>You can download the application </span>
-          <a href="https://github.com/IraSoro/peri/releases/latest">here</a>
+          <span>{t("You can download the application ")}</span>
+          <a href="https://github.com/IraSoro/peri/releases/latest">
+            {t("here")}
+          </a>
         </p>
         <IonCol>
           <IonToolbar>

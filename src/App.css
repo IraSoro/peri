@@ -284,7 +284,7 @@ ion-alert.dark .alert-wrapper {
   }
 }
 
-ion-modal#example-modal {
+ion-modal#alert-demo-modal {
   --width: fit-content;
   --min-width: 250px;
   --height: fit-content;
@@ -292,6 +292,6 @@ ion-modal#example-modal {
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
 
-ion-modal#example-modal .wrapper {
+ion-modal#alert-demo-modal .wrapper {
   margin: 10px 20px 10px 10px;
 }
