@@ -291,7 +291,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
 };
 
 const DemoAlert = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { t } = useTranslation();
 
   return (
@@ -367,7 +367,7 @@ const TabHome = () => {
     <IonPage
       style={{ backgroundColor: `var(--ion-color-background-${theme})` }}
     >
-      <DemoAlert />
+      {false && <DemoAlert />}
       <div
         id="wide-screen"
         className={theme}
