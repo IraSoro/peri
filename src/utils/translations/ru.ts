@@ -76,6 +76,7 @@ const ru = {
   "diarrhea or constipation": "диарея или запоры",
   "irritability and depressed mood":
     "раздражительность и подавленное настроение",
+  // Menu
   Preferences: "Настройки",
   Edit: "Редактирование",
   Language: "Язык",
@@ -84,6 +85,10 @@ const ru = {
   "Export config": "Экспортировать данные",
   "Configuration has been imported": "Данные были успешно импортированы",
   "Download latest version": "Загрузить новую версию",
+  // Alert Demo
+  "This is just a demo": "Это только demo",
+  "You can download the application ": "Загрузить приложение можно ",
+  here: "тут",
 };
 
 export default ru;

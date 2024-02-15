@@ -9,6 +9,8 @@ import {
   IonCol,
   IonIcon,
   IonButtons,
+  IonModal,
+  IonToolbar,
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -288,6 +290,40 @@ const EditCalendar = (props: SelectCalendarProps) => {
   );
 };
 
+const DemoAlert = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const { t } = useTranslation();
+
+  return (
+    <IonModal
+      id="alert-demo-modal"
+      isOpen={isOpen}
+    >
+      <div className="wrapper">
+        <h1>{t("This is just a demo")}</h1>
+        <p>
+          <span>{t("You can download the application ")}</span>
+          <a href="https://github.com/IraSoro/peri/releases/latest">
+            {t("here")}
+          </a>
+        </p>
+        <IonCol>
+          <IonToolbar>
+            <IonButtons slot="primary">
+              <IonButton
+                onClick={() => setIsOpen(false)}
+                color="dark-basic"
+              >
+                OK
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonCol>
+      </div>
+    </IonModal>
+  );
+};
+
 const TabHome = () => {
   const theme = useContext(ThemeContext).theme;
 
@@ -331,6 +367,7 @@ const TabHome = () => {
     <IonPage
       style={{ backgroundColor: `var(--ion-color-background-${theme})` }}
     >
+      {false && <DemoAlert />}
       <div
         id="wide-screen"
         className={theme}
