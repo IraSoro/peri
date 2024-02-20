@@ -11,7 +11,7 @@ import { storage } from "../data/Storage";
 export const supportedLanguages = new Map([
   ["en", "english"],
   ["ru", "русский"],
-  ["es", "español"]
+  ["es", "español"],
 ]);
 
 const defaultLanguageCode = "en";
