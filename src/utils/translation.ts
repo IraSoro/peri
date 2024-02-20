@@ -4,11 +4,14 @@ import intervalPlural from "i18next-intervalplural-postprocessor";
 
 import en from "./translations/en";
 import ru from "./translations/ru";
+import es from "./translations/es";
+
 import { storage } from "../data/Storage";
 
 export const supportedLanguages = new Map([
   ["en", "english"],
   ["ru", "русский"],
+  ["es", "español"]
 ]);
 
 const defaultLanguageCode = "en";
@@ -25,6 +28,9 @@ export async function init() {
         },
         ru: {
           translation: ru,
+        },
+        es: {
+          translation: es,
         },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
