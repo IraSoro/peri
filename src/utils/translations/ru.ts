@@ -39,6 +39,7 @@ const ru = {
   or: "или",
   // Info Modal
   "Frequent symptoms": "Частые симптомы",
+  "Hormone levels": "Уровень гормонов",
   "is current phase of cycle": "- текущая фаза цикла",
   // Phases info
   "Menstrual phase": "Менструация",

@@ -55,6 +55,35 @@ ion-datetime {
   border-radius: 20px;
 }
 
+.container {
+  position: relative;
+  max-width: 350px;
+  max-height: 350px;
+}
+
+ion-img.cycleImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+ion-img.pointerImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
 /* basic group */
 ion-tab-bar.basic,
 #wide-screen.basic,
