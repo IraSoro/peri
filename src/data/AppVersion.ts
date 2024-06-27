@@ -1,6 +1,6 @@
 import { isPlatform } from "@ionic/core";
 
-export const appVersion = "v2.3.9";
+export const appVersion = "v2.3.10";
 
 export interface GithubReleaseAsset {
   content_type: string;
