@@ -64,6 +64,12 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
   </tr>
  </table>
 
+### Supported languages
+
+- English
+- Russian
+- Spanish
+
 ### How to build
 
 You can find the full instruction about the project building in [BUILDING.md](https://github.com/IraSoro/peri/blob/master/BUILDING.md) file.
