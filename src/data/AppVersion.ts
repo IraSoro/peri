@@ -1,7 +1,7 @@
 import { isPlatform } from "@ionic/core";
 import semver from "semver";
 
-export const appVersion = "v2.3.11";
+export const appVersion = "v2.4.0";
 
 export interface GithubReleaseAsset {
   content_type: string;
