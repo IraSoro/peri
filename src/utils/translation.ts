@@ -36,6 +36,7 @@ export async function init() {
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
         ru: ["ru"],
+        es: ["es"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);

@@ -28,7 +28,7 @@ We welcome contributions for translating our application into various languages.
    ]);
    ```
 
-6. Added language to resources like this:
+6. Added language to `resources` like this:
 
    ```ts
    resources: {
@@ -41,7 +41,16 @@ We welcome contributions for translating our application into various languages.
    },
    ```
 
-7. Open the file `./src/utils/datetime.ts`. Add the locale to the `locales` variable like this:
+7. Added language to `fallbackLng` like this:
+
+   ```ts
+   fallbackLng: {
+        ru: ["ru"],
+        default: [defaultLanguageCode],
+      },
+   ```
+
+8. Open the file `./src/utils/datetime.ts`. Add the locale to the `locales` variable like this:
 
    ```ts
    const locales = new Map([
@@ -50,7 +59,7 @@ We welcome contributions for translating our application into various languages.
    ]);
    ```
 
-8. Make a Pull Request with the translated file.
+9. Make a Pull Request with the translated file.
 
 ### Guidelines
 
