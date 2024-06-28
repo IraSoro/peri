@@ -1,6 +1,7 @@
 import { isPlatform } from "@ionic/core";
+import semver from "semver";
 
-export const appVersion = "v2.3.10";
+export const appVersion = "v2.3.11";
 
 export interface GithubReleaseAsset {
   content_type: string;
@@ -59,7 +60,7 @@ export async function isNewVersionAvailable(): Promise<boolean> {
     return false;
   }
 
-  return (await getLatestReleaseInfo()).version > appVersion;
+  return semver.gt((await getLatestReleaseInfo()).version, appVersion);
 }
 
 export async function downloadLatestRelease() {
