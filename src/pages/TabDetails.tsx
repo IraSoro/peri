@@ -221,16 +221,26 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
 
   return (
     <div
-      id="average-length"
       style={{
         marginBottom: "15px",
+        borderRadius: "14px",
         width: "300px",
+        height: "90px",
         background: `var(--ion-color-less-dark-${theme})`,
       }}
     >
+      <IonLabel
+        className="average-values-title"
+        style={{
+          fontSize: "17px",
+          color: "var(--ion-color-light)",
+        }}
+      >
+        Average values
+      </IonLabel>
       <IonCol>
         <div id="inline-block">
-          <IonLabel>
+          <IonLabel className="average-value">
             <p style={h_style}>
               {averageLengthOfCycle && cycles.length > 1
                 ? lengthOfCycle
@@ -240,7 +250,7 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
           </IonLabel>
         </div>
         <div id="inline-block">
-          <IonLabel>
+          <IonLabel className="average-value">
             <p style={h_style}>
               {averageLengthOfPeriod ? lengthOfPeriod : "---"}
             </p>
