@@ -17,6 +17,7 @@ import {
   getLastStartDate,
 } from "../state/CalculationLogics";
 import { CyclesContext, ThemeContext } from "../state/Context";
+import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
 import "./TabDetails.css";
@@ -184,9 +185,12 @@ const ListProgress = () => {
   return <>{list}</>;
 };
 
-const TabDetails = () => {
+interface AverageValuesProps {
+  cycles: Cycle[];
+}
+
+const AverageValues = ({ cycles }: AverageValuesProps) => {
   const { t } = useTranslation();
-  const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
 
   const averageLengthOfCycle = getAverageLengthOfCycle(cycles);
@@ -216,6 +220,44 @@ const TabDetails = () => {
   };
 
   return (
+    <div
+      id="average-length"
+      style={{
+        marginBottom: "15px",
+        width: "300px",
+        background: `var(--ion-color-less-dark-${theme})`,
+      }}
+    >
+      <IonCol>
+        <div id="inline-block">
+          <IonLabel>
+            <p style={h_style}>
+              {averageLengthOfCycle && cycles.length > 1
+                ? lengthOfCycle
+                : "---"}
+            </p>
+            <p style={p_style}>{t("Cycle")}</p>
+          </IonLabel>
+        </div>
+        <div id="inline-block">
+          <IonLabel>
+            <p style={h_style}>
+              {averageLengthOfPeriod ? lengthOfPeriod : "---"}
+            </p>
+            <p style={p_style}>{t("Menstruation")}</p>
+          </IonLabel>
+        </div>
+      </IonCol>
+    </div>
+  );
+};
+
+const TabDetails = () => {
+  const { t } = useTranslation();
+  const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
+
+  return (
     <IonPage
       style={{ backgroundColor: `var(--ion-color-background-${theme})` }}
     >
@@ -227,42 +269,9 @@ const TabDetails = () => {
           className="ion-padding"
           color={`transparent-${theme}`}
         >
-          <div id="context-size">
+          <div>
             <IonCol>
-              <div
-                id="average-length"
-                style={{
-                  marginBottom: "15px",
-                  background: `var(--ion-color-less-dark-${theme})`,
-                }}
-              >
-                <IonCol>
-                  <div
-                    id="inline-block"
-                    style={{
-                      background: `var(--ion-color-less-dark-${theme})`,
-                    }}
-                  >
-                    <IonLabel style={{ marginBottom: "10px" }}>
-                      <p style={p_style}>{t("Cycle length")}</p>
-                      <p style={h_style}>
-                        {averageLengthOfCycle && cycles.length > 1
-                          ? lengthOfCycle
-                          : "---"}
-                      </p>
-                    </IonLabel>
-                  </div>
-                  <div id="vertical-line" />
-                  <div id="inline-block">
-                    <IonLabel>
-                      <p style={p_style}>{t("Period length")}</p>
-                      <p style={h_style}>
-                        {averageLengthOfPeriod ? lengthOfPeriod : "---"}
-                      </p>
-                    </IonLabel>
-                  </div>
-                </IonCol>
-              </div>
+              <AverageValues cycles={cycles} />
             </IonCol>
             <IonCol>
               {cycles.length > 0 ? (
