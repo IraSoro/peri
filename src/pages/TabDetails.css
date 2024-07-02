@@ -1,3 +1,17 @@
+#width-details-screen{
+  max-width: 320px;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#general-block {
+  margin-bottom: 15px;
+  border-radius: 15px;
+  height: 90px;
+  width: 100%;
+}
+
 #inline-block {
   width: 150px;
 
@@ -19,7 +33,10 @@ ion-label.average-value {
   flex-direction: column;
 }
 
-ion-label.average-values-title{
+ion-label.average-values-title {
+  font-size: 17px;
+  color: var(--ion-color-light);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,18 +48,26 @@ ion-label.average-values-title{
 }
 
 #progress-block {
-  max-width: 320px;
   width: 100%;
   border-radius: 15px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 ion-progress-bar {
   height: 8px;
   border-radius: 20px;
+}
+
+p.p_style {
+  font-size: 12px;
+  color: var(--ion-color-light);
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+p.h_style {
+  font-size: 20px;
+  color: var(--ion-color-light);
+  text-align: left;
 }
 
 ion-progress-bar.current-progress-basic,

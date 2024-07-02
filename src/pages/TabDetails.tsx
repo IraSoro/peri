@@ -195,55 +195,30 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
     count: averageLengthOfPeriod,
   })}`;
 
-  const p_style = {
-    fontSize: "12px" as const,
-    color: "var(--ion-color-light)" as const,
-    textAlign: "left" as const,
-    marginBottom: "5px" as const,
-  };
-
-  const h_style = {
-    fontSize: "20px" as const,
-    color: "var(--ion-color-light)" as const,
-    textAlign: "left" as const,
-  };
-
   return (
     <div
-      style={{
-        marginBottom: "15px",
-        borderRadius: "15px",
-        height: "90px",
-        background: `var(--ion-color-less-dark-${theme})`,
-      }}
+      id="general-block"
+      style={{ background: `var(--ion-color-less-dark-${theme})` }}
     >
-      <IonLabel
-        className="average-values-title"
-        style={{
-          fontSize: "17px",
-          color: "var(--ion-color-light)",
-        }}
-      >
-        Average values
-      </IonLabel>
+      <IonLabel className="average-values-title">Average values</IonLabel>
       <IonCol>
         <div id="inline-block">
           <IonLabel className="average-value">
-            <p style={h_style}>
+            <p className="h_style">
               {averageLengthOfCycle && cycles.length > 1
                 ? lengthOfCycle
                 : "---"}
             </p>
-            <p style={p_style}>{t("Cycle")}</p>
+            <p className="p_style">{t("Cycle")}</p>
           </IonLabel>
         </div>
         <div id="vertical-line" />
         <div id="inline-block">
           <IonLabel className="average-value">
-            <p style={h_style}>
+            <p className="h_style">
               {averageLengthOfPeriod ? lengthOfPeriod : "---"}
             </p>
-            <p style={p_style}>{t("Menstruation")}</p>
+            <p className="p_style">{t("Menstruation")}</p>
           </IonLabel>
         </div>
       </IonCol>
@@ -268,29 +243,25 @@ const TabDetails = () => {
           className="ion-padding"
           color={`transparent-${theme}`}
         >
-          <div>
-            <IonCol>
-              <AverageValues cycles={cycles} />
-            </IonCol>
-            <IonCol>
-              <div
-                id="progress-block"
-                style={{ background: `var(--ion-color-calendar-${theme})` }}
-              >
-                {cycles.length > 0 ? (
-                  <IonList>
-                    <CurrentCycle />
-                    {cycles.length > 1 && <ListProgress />}
-                  </IonList>
-                ) : (
-                  <div id="progress-block">
-                    <p style={{ fontSize: "13px" }}>
-                      {t("You haven't marked any periods yet")}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </IonCol>
+          <div id="width-details-screen">
+            <AverageValues cycles={cycles} />
+            <div
+              id="progress-block"
+              style={{ background: `var(--ion-color-calendar-${theme})` }}
+            >
+              {cycles.length > 0 ? (
+                <IonList>
+                  <CurrentCycle />
+                  {cycles.length > 1 && <ListProgress />}
+                </IonList>
+              ) : (
+                <div id="progress-block">
+                  <p style={{ fontSize: "13px" }}>
+                    {t("You haven't marked any periods yet")}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </IonContent>
       </div>
