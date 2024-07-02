@@ -7,6 +7,12 @@
   align-items: center;
 }
 
+#vertical-line {
+  width: 2px;
+  height: 40px;
+  background: var(--ion-color-light);
+}
+
 ion-label.average-value {
   align-items: center;
   display: flex;
@@ -15,6 +21,9 @@ ion-label.average-value {
 
 ion-label.average-values-title{
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   padding-left: 10px;
   padding-top: 5px;
