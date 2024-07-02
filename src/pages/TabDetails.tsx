@@ -103,27 +103,22 @@ const CurrentCycle = () => {
   }, dayOfCycle);
 
   return (
-    <div
-      id="progress-block"
-      style={{ background: `var(--ion-color-calendar-${theme})` }}
-    >
-      <div style={{ marginLeft: "15px" }}>
-        <IonLabel>
-          <p style={lenCycleStyle}>{title}</p>
-        </IonLabel>
-        <IonProgressBar
-          className={`current-progress-${theme}`}
-          style={progressBarStyle}
-          value={setProgressBar(
-            lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
-            maxLength,
-          )}
-          buffer={setProgressBar(dayOfCycle, maxLength)}
-        />
-        <IonLabel>
-          <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
-        </IonLabel>
-      </div>
+    <div style={{ marginLeft: "15px" }}>
+      <IonLabel>
+        <p style={lenCycleStyle}>{title}</p>
+      </IonLabel>
+      <IonProgressBar
+        className={`current-progress-${theme}`}
+        style={progressBarStyle}
+        value={setProgressBar(
+          lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
+          maxLength,
+        )}
+        buffer={setProgressBar(dayOfCycle, maxLength)}
+      />
+      <IonLabel>
+        <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
+      </IonLabel>
     </div>
   );
 };
@@ -145,13 +140,7 @@ const ListProgress = () => {
     const info = useInfoForOneCycle(props.idx + 1);
 
     return (
-      <div
-        id="progress-block"
-        style={{
-          marginTop: "15px",
-          background: `var(--ion-color-calendar-${theme})`,
-        }}
-      >
+      <div style={{ marginTop: "15px" }}>
         <div style={{ marginLeft: "15px" }}>
           <IonLabel>
             <p style={lenCycleStyle}>{info.lengthOfCycleString}</p>
@@ -223,8 +212,7 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
     <div
       style={{
         marginBottom: "15px",
-        borderRadius: "14px",
-        width: "320px",
+        borderRadius: "15px",
         height: "90px",
         background: `var(--ion-color-less-dark-${theme})`,
       }}
@@ -285,18 +273,23 @@ const TabDetails = () => {
               <AverageValues cycles={cycles} />
             </IonCol>
             <IonCol>
-              {cycles.length > 0 ? (
-                <IonList>
-                  <CurrentCycle />
-                  {cycles.length > 1 && <ListProgress />}
-                </IonList>
-              ) : (
-                <div id="progress-block">
-                  <p style={{ fontSize: "13px" }}>
-                    {t("You haven't marked any periods yet")}
-                  </p>
-                </div>
-              )}
+              <div
+                id="progress-block"
+                style={{ background: `var(--ion-color-calendar-${theme})` }}
+              >
+                {cycles.length > 0 ? (
+                  <IonList>
+                    <CurrentCycle />
+                    {cycles.length > 1 && <ListProgress />}
+                  </IonList>
+                ) : (
+                  <div id="progress-block">
+                    <p style={{ fontSize: "13px" }}>
+                      {t("You haven't marked any periods yet")}
+                    </p>
+                  </div>
+                )}
+              </div>
             </IonCol>
           </div>
         </IonContent>
