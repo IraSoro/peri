@@ -140,7 +140,7 @@ const ListProgress = () => {
     const info = useInfoForOneCycle(props.idx + 1);
 
     return (
-      <div style={{ marginTop: "15px" }}>
+      <div style={{ marginTop: "20px" }}>
         <div style={{ marginLeft: "15px" }}>
           <IonLabel>
             <p style={lenCycleStyle}>{info.lengthOfCycleString}</p>

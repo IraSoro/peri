@@ -50,6 +50,9 @@ ion-label.average-values-title {
 #progress-block {
   width: 100%;
   border-radius: 15px;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 ion-progress-bar {
