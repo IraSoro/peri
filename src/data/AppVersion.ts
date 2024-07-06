@@ -2,7 +2,7 @@ import { isPlatform } from "@ionic/core";
 import { Browser } from "@capacitor/browser";
 import semver from "semver";
 
-export const appVersion = "v2.3.9";
+export const appVersion = "v2.4.0";
 
 export interface GithubReleaseAsset {
   content_type: string;
