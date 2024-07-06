@@ -6,14 +6,15 @@
     "url": "https://github.com/IraSoro"
   },
   "dependencies": {
-    "@capacitor/android": "5.0.5",
-    "@capacitor/app": "5.0.3",
-    "@capacitor/core": "5.0.5",
-    "@capacitor/filesystem": "^5.0.4",
-    "@capacitor/haptics": "5.0.4",
-    "@capacitor/keyboard": "5.0.4",
-    "@capacitor/share": "^5.0.4",
-    "@capacitor/status-bar": "5.0.4",
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/browser": "^6.0.1",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/filesystem": "^6.0.0",
+    "@capacitor/haptics": "^6.0.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/share": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0",
     "@ionic/core": "^8.2.5",
     "@ionic/react": "^8.2.5",
     "@ionic/react-router": "^8.2.5",
@@ -81,7 +82,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "5.0.5",
+    "@capacitor/cli": "^6.0.0",
     "@ionic/lab": "3.2.15",
     "gh-pages": "^5.0.0"
   },
