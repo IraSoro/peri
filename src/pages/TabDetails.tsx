@@ -200,7 +200,6 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
       id="general-block"
       style={{ background: `var(--ion-color-less-dark-${theme})` }}
     >
-      <IonLabel className="average-values-title">Average values</IonLabel>
       <IonCol>
         <div id="inline-block">
           <IonLabel className="average-value">
@@ -209,7 +208,7 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
                 ? lengthOfCycle
                 : "---"}
             </p>
-            <p className="p_style">{t("Cycle")}</p>
+            <p className="p_style">{t("Cycle length")}</p>
           </IonLabel>
         </div>
         <div id="vertical-line" />
@@ -218,7 +217,7 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
             <p className="h_style">
               {averageLengthOfPeriod ? lengthOfPeriod : "---"}
             </p>
-            <p className="p_style">{t("Menstruation")}</p>
+            <p className="p_style">{t("Period length")}</p>
           </IonLabel>
         </div>
       </IonCol>
