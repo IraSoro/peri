@@ -254,11 +254,9 @@ const TabDetails = () => {
                   {cycles.length > 1 && <ListProgress />}
                 </IonList>
               ) : (
-                <div id="progress-block">
-                  <p style={{ fontSize: "13px" }}>
-                    {t("You haven't marked any periods yet")}
-                  </p>
-                </div>
+                <p className="no-periods">
+                  {t("You haven't marked any periods yet")}
+                </p>
               )}
             </div>
           </div>

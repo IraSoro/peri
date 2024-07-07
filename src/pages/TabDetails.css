@@ -38,6 +38,11 @@ p.p_style {
   margin-top: 5px;
 }
 
+p.no-periods {
+  font-size: 13px;
+  text-align: center;
+}
+
 #vertical-line-basic {
   width: 2px;
   height: 70px;
