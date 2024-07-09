@@ -24,7 +24,7 @@ ionic cap build android # generates Android project
 
 An `android` directory will be generated and you can open it with `Android Studio` and build the project based on this instruction <https://capacitorjs.com/docs/android>
 
-You can also create a development version of native `peri` using the `Docker` image. To to this you should run the following command:
+You can also create a development version of native `peri` using the `Docker` image. To do this you should run the following command:
 
 ```shell
 docker build -f docker/Dockerfile -t peri-android-env:latest .
