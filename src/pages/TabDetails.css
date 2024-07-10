@@ -1,33 +1,68 @@
-#progress-block {
-  width: 300px;
-  height: 70px;
-  border-radius: 20px;
+#width-details-screen {
+  max-width: 320px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-#average-length {
-  width: 300px;
-  height: 75px;
-  border-radius: 20px;
-
-  display: flex;
+#general-block {
+  margin-top: 10px;
+  margin-bottom: 25px;
+  border-radius: 15px;
+  height: 90px;
+  width: 100%;
 }
 
 #inline-block {
-  width: 149px;
-  border-radius: 20px;
-
-  margin-left: 15px;
-  margin-right: 15px;
+  width: 150px;
+  height: 70px;
 }
 
-#vertical-line {
+p.h_style-basic {
+  font-size: 22px;
+  color: var(--ion-color-dark-basic);
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+p.h_style-dark {
+  font-size: 22px;
+  color: var(--ion-color-dark-dark);
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+p.p_style {
+  font-size: 13px;
+  color: var(--ion-color-medium);
+  margin-top: 5px;
+}
+
+p.no-periods {
+  font-size: 13px;
+  text-align: center;
+}
+
+#vertical-line-basic {
   width: 2px;
-  height: 55px;
-  background: var(--ion-color-light);
+  height: 70px;
+  margin-top: 5px;
+  background: #e2e3e7;
+}
+
+#vertical-line-dark {
+  width: 2px;
+  height: 70px;
+  margin-top: 5px;
+  background: #717274;
+}
+
+#progress-block {
+  width: 100%;
+  border-radius: 15px;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 ion-progress-bar {

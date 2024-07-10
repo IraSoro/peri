@@ -17,6 +17,7 @@ import {
   getLastStartDate,
 } from "../state/CalculationLogics";
 import { CyclesContext, ThemeContext } from "../state/Context";
+import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
 import "./TabDetails.css";
@@ -102,27 +103,22 @@ const CurrentCycle = () => {
   }, dayOfCycle);
 
   return (
-    <div
-      id="progress-block"
-      style={{ background: `var(--ion-color-calendar-${theme})` }}
-    >
-      <div style={{ marginLeft: "15px" }}>
-        <IonLabel>
-          <p style={lenCycleStyle}>{title}</p>
-        </IonLabel>
-        <IonProgressBar
-          className={`current-progress-${theme}`}
-          style={progressBarStyle}
-          value={setProgressBar(
-            lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
-            maxLength,
-          )}
-          buffer={setProgressBar(dayOfCycle, maxLength)}
-        />
-        <IonLabel>
-          <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
-        </IonLabel>
-      </div>
+    <div style={{ marginLeft: "15px" }}>
+      <IonLabel>
+        <p style={lenCycleStyle}>{title}</p>
+      </IonLabel>
+      <IonProgressBar
+        className={`current-progress-${theme}`}
+        style={progressBarStyle}
+        value={setProgressBar(
+          lengthOfPeriod > dayOfCycle ? dayOfCycle : lengthOfPeriod,
+          maxLength,
+        )}
+        buffer={setProgressBar(dayOfCycle, maxLength)}
+      />
+      <IonLabel>
+        <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
+      </IonLabel>
     </div>
   );
 };
@@ -144,13 +140,7 @@ const ListProgress = () => {
     const info = useInfoForOneCycle(props.idx + 1);
 
     return (
-      <div
-        id="progress-block"
-        style={{
-          marginTop: "15px",
-          background: `var(--ion-color-calendar-${theme})`,
-        }}
-      >
+      <div style={{ marginTop: "20px" }}>
         <div style={{ marginLeft: "15px" }}>
           <IonLabel>
             <p style={lenCycleStyle}>{info.lengthOfCycleString}</p>
@@ -184,9 +174,12 @@ const ListProgress = () => {
   return <>{list}</>;
 };
 
-const TabDetails = () => {
+interface AverageValuesProps {
+  cycles: Cycle[];
+}
+
+const AverageValues = ({ cycles }: AverageValuesProps) => {
   const { t } = useTranslation();
-  const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
 
   const averageLengthOfCycle = getAverageLengthOfCycle(cycles);
@@ -202,18 +195,40 @@ const TabDetails = () => {
     count: averageLengthOfPeriod,
   })}`;
 
-  const p_style = {
-    fontSize: "12px" as const,
-    color: "var(--ion-color-light)" as const,
-    textAlign: "left" as const,
-    marginBottom: "5px" as const,
-  };
+  return (
+    <div
+      id="general-block"
+      style={{ background: `var(--ion-color-calendar-${theme})` }}
+    >
+      <IonCol>
+        <div id="inline-block">
+          <IonLabel className="average-value">
+            <p className={`h_style-${theme}`}>
+              {averageLengthOfCycle && cycles.length > 1
+                ? lengthOfCycle
+                : "---"}
+            </p>
+            <p className="p_style">{t("Cycle length")}</p>
+          </IonLabel>
+        </div>
+        <div id={`vertical-line-${theme}`} />
+        <div id="inline-block">
+          <IonLabel className="average-value">
+            <p className={`h_style-${theme}`}>
+              {averageLengthOfPeriod ? lengthOfPeriod : "---"}
+            </p>
+            <p className="p_style">{t("Period length")}</p>
+          </IonLabel>
+        </div>
+      </IonCol>
+    </div>
+  );
+};
 
-  const h_style = {
-    fontSize: "20px" as const,
-    color: "var(--ion-color-light)" as const,
-    textAlign: "left" as const,
-  };
+const TabDetails = () => {
+  const { t } = useTranslation();
+  const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
 
   return (
     <IonPage
@@ -227,57 +242,23 @@ const TabDetails = () => {
           className="ion-padding"
           color={`transparent-${theme}`}
         >
-          <div id="context-size">
-            <IonCol>
-              <div
-                id="average-length"
-                style={{
-                  marginBottom: "15px",
-                  background: `var(--ion-color-less-dark-${theme})`,
-                }}
-              >
-                <IonCol>
-                  <div
-                    id="inline-block"
-                    style={{
-                      background: `var(--ion-color-less-dark-${theme})`,
-                    }}
-                  >
-                    <IonLabel style={{ marginBottom: "10px" }}>
-                      <p style={p_style}>{t("Cycle length")}</p>
-                      <p style={h_style}>
-                        {averageLengthOfCycle && cycles.length > 1
-                          ? lengthOfCycle
-                          : "---"}
-                      </p>
-                    </IonLabel>
-                  </div>
-                  <div id="vertical-line" />
-                  <div id="inline-block">
-                    <IonLabel>
-                      <p style={p_style}>{t("Period length")}</p>
-                      <p style={h_style}>
-                        {averageLengthOfPeriod ? lengthOfPeriod : "---"}
-                      </p>
-                    </IonLabel>
-                  </div>
-                </IonCol>
-              </div>
-            </IonCol>
-            <IonCol>
+          <div id="width-details-screen">
+            <AverageValues cycles={cycles} />
+            <div
+              id="progress-block"
+              style={{ background: `var(--ion-color-calendar-${theme})` }}
+            >
               {cycles.length > 0 ? (
                 <IonList>
                   <CurrentCycle />
                   {cycles.length > 1 && <ListProgress />}
                 </IonList>
               ) : (
-                <div id="progress-block">
-                  <p style={{ fontSize: "13px" }}>
-                    {t("You haven't marked any periods yet")}
-                  </p>
-                </div>
+                <p className="no-periods">
+                  {t("You haven't marked any periods yet")}
+                </p>
               )}
-            </IonCol>
+            </div>
           </div>
         </IonContent>
       </div>
