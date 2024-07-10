@@ -259,7 +259,10 @@ export const Menu = (props: MenuProps) => {
           </IonItem>
         )}
       </IonList>
-      <IonItem color="none">
+      <IonItem
+        color="none"
+        lines="none"
+      >
         <IonLabel
           style={{ fontSize: "13px" }}
           color="medium"
