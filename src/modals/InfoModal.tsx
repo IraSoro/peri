@@ -11,6 +11,8 @@ import {
   getPregnancyChance,
 } from "../state/CalculationLogics";
 
+import "./InfoModal.css";
+
 interface PropsInfoModal {
   isOpen: boolean;
   setIsOpen: (newIsOpen: boolean) => void;
@@ -38,27 +40,34 @@ const InfoModal = (props: PropsInfoModal) => {
         className="ion-padding"
         color={`transparent-${theme}`}
       >
-        <p
+        <div
           style={{
-            fontWeight: "bold",
-            fontSize: "25px",
-            color: `var(--ion-color-dark-${theme})`,
-            marginBottom: "24px",
+            maxWidth: "400px",
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
-          {`${t("Days", {
-            postProcess: "interval",
-            count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
-          })} `}
-          {cycles.length === 1 ? (
-            currentDay
-          ) : (
-            <>
-              {currentDay}/{lengthOfCycle}
-            </>
-          )}
-        </p>
-        <ul>
+          <p
+            className="info-title"
+            style={{
+              fontWeight: "bold",
+              fontSize: "25px",
+              color: `var(--ion-color-dark-${theme})`,
+              marginBottom: "24px",
+            }}
+          >
+            {`${t("Days", {
+              postProcess: "interval",
+              count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
+            })} `}
+            {cycles.length === 1 ? (
+              currentDay
+            ) : (
+              <>
+                {currentDay}/{lengthOfCycle}
+              </>
+            )}
+          </p>
           <li
             style={{
               fontSize: "16px",
@@ -110,18 +119,17 @@ const InfoModal = (props: PropsInfoModal) => {
             </span>
             <span> {t("chance of getting pregnant")}</span>
           </li>
-        </ul>
-        <p
-          style={{
-            fontWeight: "bold",
-            fontSize: "25px",
-            color: `var(--ion-color-dark-${theme})`,
-            marginBottom: "24px",
-          }}
-        >
-          {t("Frequent symptoms")}
-        </p>
-        <ul>
+          <p
+            className="info-title"
+            style={{
+              fontWeight: "bold",
+              fontSize: "25px",
+              color: `var(--ion-color-dark-${theme})`,
+              marginBottom: "24px",
+            }}
+          >
+            {t("Frequent symptoms")}
+          </p>
           {phase.symptoms.map((item, idx) => (
             <li
               style={{
@@ -134,16 +142,16 @@ const InfoModal = (props: PropsInfoModal) => {
               {item}
             </li>
           ))}
-        </ul>
-        <IonCol>
-          <IonButton
-            className="main"
-            color={`dark-${theme}`}
-            onClick={() => props.setIsOpen(false)}
-          >
-            OK
-          </IonButton>
-        </IonCol>
+          <IonCol>
+            <IonButton
+              className="main"
+              color={`dark-${theme}`}
+              onClick={() => props.setIsOpen(false)}
+            >
+              OK
+            </IonButton>
+          </IonCol>
+        </div>
       </IonContent>
     </IonModal>
   );
