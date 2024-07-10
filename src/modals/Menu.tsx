@@ -7,6 +7,7 @@ import {
   IonMenu,
   IonSelect,
   IonSelectOption,
+  IonText,
   useIonAlert,
 } from "@ionic/react";
 import {
@@ -63,10 +64,10 @@ const LanguageSwitcher = () => {
         icon={globeOutline}
         color={`text-${theme}`}
       />
-      <IonLabel color={`text-${theme}`}>{t("Language")}</IonLabel>
       <IonSelect
         className={theme}
         value={getCurrentTranslation()}
+        justify="space-between"
         interface="popover"
         interfaceOptions={{
           cssClass: theme,
@@ -77,6 +78,9 @@ const LanguageSwitcher = () => {
           });
         }}
       >
+        <div slot="label">
+          <IonText color={`text-${theme}`}>{t("Language")}</IonText>
+        </div>
         {languages}
       </IonSelect>
     </IonItem>
@@ -107,18 +111,21 @@ const ThemeSwitcher = () => {
         color={`text-${theme}`}
       />
 
-      <IonLabel color={`text-${theme}`}>{t("Theme")}</IonLabel>
       <IonSelect
         className={theme}
         value={
           theme === "dark" ? "dark (beta)" : theme === "basic" ? "light" : theme
         }
         interface="popover"
+        justify="space-between"
         interfaceOptions={{
           cssClass: theme,
         }}
         onIonChange={(event) => updateTheme(event.target.value as string)}
       >
+        <div slot="label">
+          <IonText color={`text-${theme}`}>{t("Theme")}</IonText>
+        </div>
         {themesList}
       </IonSelect>
     </IonItem>
