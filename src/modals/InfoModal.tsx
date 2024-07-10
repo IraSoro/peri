@@ -68,7 +68,7 @@ const InfoModal = (props: PropsInfoModal) => {
               </>
             )}
           </p>
-          <li
+          <p
             style={{
               fontSize: "16px",
               color: `var(--ion-color-text-${theme})`,
@@ -84,8 +84,8 @@ const InfoModal = (props: PropsInfoModal) => {
               {phase.title}
             </span>
             <span> {t("is current phase of cycle")}</span>
-          </li>
-          <li
+          </p>
+          <p
             style={{
               fontSize: "16px",
               color: `var(--ion-color-text-${theme})`,
@@ -101,8 +101,8 @@ const InfoModal = (props: PropsInfoModal) => {
             >
               {` ${ovulationStatus}`}
             </span>
-          </li>
-          <li
+          </p>
+          <p
             style={{
               fontSize: "16px",
               color: `var(--ion-color-text-${theme})`,
@@ -118,7 +118,7 @@ const InfoModal = (props: PropsInfoModal) => {
               {pregnancyChance}
             </span>
             <span> {t("chance of getting pregnant")}</span>
-          </li>
+          </p>
           <p
             className="info-title"
             style={{
@@ -131,7 +131,7 @@ const InfoModal = (props: PropsInfoModal) => {
             {t("Frequent symptoms")}
           </p>
           {phase.symptoms.map((item, idx) => (
-            <li
+            <p
               style={{
                 fontSize: "16px",
                 color: `var(--ion-color-text-${theme})`,
@@ -140,7 +140,7 @@ const InfoModal = (props: PropsInfoModal) => {
               key={idx}
             >
               {item}
-            </li>
+            </p>
           ))}
           <IonCol>
             <IonButton
