@@ -40,22 +40,8 @@ const InfoModal = (props: PropsInfoModal) => {
         className="ion-padding"
         color={`transparent-${theme}`}
       >
-        <div
-          style={{
-            maxWidth: "400px",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <p
-            className="info-title"
-            style={{
-              fontWeight: "bold",
-              fontSize: "25px",
-              color: `var(--ion-color-dark-${theme})`,
-              marginBottom: "24px",
-            }}
-          >
+        <div className="info-screen">
+          <p className={`info-title-${theme}`}>
             {`${t("Days", {
               postProcess: "interval",
               count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
@@ -68,75 +54,24 @@ const InfoModal = (props: PropsInfoModal) => {
               </>
             )}
           </p>
-          <p
-            style={{
-              fontSize: "16px",
-              color: `var(--ion-color-text-${theme})`,
-              marginBottom: "20px",
-            }}
-          >
-            <span
-              style={{
-                color: `var(--ion-color-less-dark-${theme})`,
-                fontWeight: "bold",
-              }}
-            >
-              {phase.title}
-            </span>
+          <p className={`info-item-${theme}`}>
+            <span className={`info-item-${theme}`}>{phase.title}</span>
             <span> {t("is current phase of cycle")}</span>
           </p>
-          <p
-            style={{
-              fontSize: "16px",
-              color: `var(--ion-color-text-${theme})`,
-              marginBottom: "20px",
-            }}
-          >
+          <p className={`info-item-${theme}`}>
             <span>{t("Ovulation")}</span>
-            <span
-              style={{
-                color: `var(--ion-color-less-dark-${theme})`,
-                fontWeight: "bold",
-              }}
-            >
+            <span className={`info-item-${theme}`}>
               {` ${ovulationStatus}`}
             </span>
           </p>
-          <p
-            style={{
-              fontSize: "16px",
-              color: `var(--ion-color-text-${theme})`,
-              marginBottom: "20px",
-            }}
-          >
-            <span
-              style={{
-                color: `var(--ion-color-less-dark-${theme})`,
-                fontWeight: "bold",
-              }}
-            >
-              {pregnancyChance}
-            </span>
+          <p className={`info-item-${theme}`}>
+            <span className={`info-item-${theme}`}>{pregnancyChance}</span>
             <span> {t("chance of getting pregnant")}</span>
           </p>
-          <p
-            className="info-title"
-            style={{
-              fontWeight: "bold",
-              fontSize: "25px",
-              color: `var(--ion-color-dark-${theme})`,
-              marginBottom: "24px",
-            }}
-          >
-            {t("Frequent symptoms")}
-          </p>
+          <p className={`info-title-${theme}`}>{t("Frequent symptoms")}</p>
           {phase.symptoms.map((item, idx) => (
             <p
-              style={{
-                fontSize: "16px",
-                color: `var(--ion-color-text-${theme})`,
-                marginBottom: "20px",
-              }}
+              className={`info-item-${theme}`}
               key={idx}
             >
               {item}
