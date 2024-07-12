@@ -10,14 +10,16 @@ p.info-title-basic {
   font-size: 25px;
   margin-bottom: 24px;
   color: var(--ion-color-dark-basic);
-
-  text-align: center;
 }
 
-p.info-item-basic {
+li.info-item-basic {
   font-size: 16px;
   margin-bottom: 20px;
   color: var(--ion-color-text-basic);
+}
+
+li.info-item-basic::marker {
+  color: var(--ion-color-dark-basic);
 }
 
 span.info-item-basic {
@@ -31,14 +33,16 @@ p.info-title-dark {
   font-size: 25px;
   margin-bottom: 24px;
   color: var(--ion-color-dark-dark);
-
-  text-align: center;
 }
 
-p.info-item-dark {
+li.info-item-dark {
   font-size: 16px;
   margin-bottom: 20px;
   color: var(--ion-color-text-dark);
+}
+
+li.info-item-dark::marker {
+  color: var(--ion-color-dark-dark);
 }
 
 span.info-item-dark {

@@ -54,29 +54,33 @@ const InfoModal = (props: PropsInfoModal) => {
               </>
             )}
           </p>
-          <p className={`info-item-${theme}`}>
-            <span className={`info-item-${theme}`}>{phase.title}</span>
-            <span> {t("is current phase of cycle")}</span>
-          </p>
-          <p className={`info-item-${theme}`}>
-            <span>{t("Ovulation")}</span>
-            <span className={`info-item-${theme}`}>
-              {` ${ovulationStatus}`}
-            </span>
-          </p>
-          <p className={`info-item-${theme}`}>
-            <span className={`info-item-${theme}`}>{pregnancyChance}</span>
-            <span> {t("chance of getting pregnant")}</span>
-          </p>
+          <ul>
+            <li className={`info-item-${theme}`}>
+              <span className={`info-item-${theme}`}>{phase.title}</span>
+              <span> {t("is current phase of cycle")}</span>
+            </li>
+            <li className={`info-item-${theme}`}>
+              <span>{t("Ovulation")}</span>
+              <span className={`info-item-${theme}`}>
+                {` ${ovulationStatus}`}
+              </span>
+            </li>
+            <li className={`info-item-${theme}`}>
+              <span className={`info-item-${theme}`}>{pregnancyChance}</span>
+              <span> {t("chance of getting pregnant")}</span>
+            </li>
+          </ul>
           <p className={`info-title-${theme}`}>{t("Frequent symptoms")}</p>
-          {phase.symptoms.map((item, idx) => (
-            <p
-              className={`info-item-${theme}`}
-              key={idx}
-            >
-              {item}
-            </p>
-          ))}
+          <ul>
+            {phase.symptoms.map((item, idx) => (
+              <li
+                className={`info-item-${theme}`}
+                key={idx}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
           <IonCol>
             <IonButton
               className="main"
