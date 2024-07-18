@@ -1,5 +1,4 @@
 import * as mockedIonicCore from "@ionic/core";
-import * as mockedCapacitorBrowser from "@capacitor/browser";
 import {
   GithubReleaseAsset,
   GithubReleaseInfo,
@@ -7,8 +6,6 @@ import {
   downloadLatestRelease,
   isNewVersionAvailable,
 } from "../data/AppVersion";
-
-jest.mock("@capacitor/browser");
 
 describe("Get information about latest release", () => {
   test("There are no new version", async () => {
@@ -21,7 +18,6 @@ describe("Get information about latest release", () => {
 
     globalThis.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({
-        html_url: "https://some-html-url.com",
         tag_name: appVersion,
         draft: false,
         assets: [
@@ -45,7 +41,6 @@ describe("Get information about latest release", () => {
 
     globalThis.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({
-        html_url: "https://some-html-url.com",
         tag_name: "v999.999.999",
         draft: false,
         assets: [
@@ -111,7 +106,6 @@ describe("Get information about latest release", () => {
 
     globalThis.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({
-        html_url: "https://some-html-url.com",
         tag_name: appVersion,
         draft: false,
         assets: [] satisfies GithubReleaseAsset[],
@@ -132,11 +126,8 @@ test("Download latest release", async () => {
   // android
   jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-  mockedCapacitorBrowser.Browser.open = jest.fn().mockResolvedValueOnce(true);
-
   globalThis.fetch = jest.fn().mockResolvedValue({
     json: jest.fn().mockResolvedValue({
-      html_url: "https://some-html-url.com",
       tag_name: "v999.999.999",
       draft: false,
       assets: [
@@ -148,8 +139,24 @@ test("Download latest release", async () => {
     } satisfies GithubReleaseInfo),
   });
 
+  // @ts-expect-error We don't want to implement all methods for `HTMLElement` mock
+  const mockedAnchorElement = {
+    click: jest.fn(),
+  } as HTMLAnchorElement;
+
+  const createElementSpy = jest
+    .spyOn(document, "createElement")
+    .mockReturnValue(mockedAnchorElement);
+
+  const bodyAppendSpy = jest.spyOn(document.body, "append");
+
+  const bodyRemoveChildSpy = jest
+    .spyOn(document.body, "removeChild")
+    .mockReturnValue({} as HTMLAnchorElement);
+
   await expect(downloadLatestRelease()).resolves.not.toThrow();
-  expect(mockedCapacitorBrowser.Browser.open).toHaveBeenCalledWith({
-    url: "https://some-html-url.com",
-  });
+  expect(createElementSpy).toHaveBeenCalledWith("a");
+  expect(bodyAppendSpy).toHaveBeenCalledWith(mockedAnchorElement);
+  expect(mockedAnchorElement.click).toHaveBeenCalled();
+  expect(bodyRemoveChildSpy).toHaveBeenCalledWith(mockedAnchorElement);
 });

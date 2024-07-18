@@ -1,5 +1,4 @@
 import { isPlatform } from "@ionic/core";
-import { Browser } from "@capacitor/browser";
 import semver from "semver";
 
 export const appVersion = "v2.4.0";
@@ -13,7 +12,6 @@ export interface GithubReleaseAsset {
 }
 
 export interface GithubReleaseInfo {
-  html_url: string;
   tag_name: string;
   draft: boolean;
   assets: GithubReleaseAsset[];
@@ -24,13 +22,13 @@ export interface GithubReleaseInfo {
 
 export interface LatestReleaseInfo {
   version: string;
-  htmlUrl: string;
+  androidApkUrl: string;
 }
 
 async function getLatestReleaseInfo(): Promise<LatestReleaseInfo> {
   const newVersionInfo = {
     version: appVersion,
-    htmlUrl: "",
+    androidApkUrl: "",
   } satisfies LatestReleaseInfo;
 
   const response = await fetch(
@@ -48,7 +46,7 @@ async function getLatestReleaseInfo(): Promise<LatestReleaseInfo> {
   }
 
   newVersionInfo.version = githubReleaseInfo.tag_name;
-  newVersionInfo.htmlUrl = githubReleaseInfo.html_url;
+  newVersionInfo.androidApkUrl = apkUrls[0].browser_download_url;
 
   return newVersionInfo;
 }
@@ -67,7 +65,16 @@ export async function isNewVersionAvailable(): Promise<boolean> {
 
 export async function downloadLatestRelease() {
   const latestRelease = await getLatestReleaseInfo();
-  await Browser.open({
-    url: latestRelease.htmlUrl,
-  });
+
+  const anchorElement: HTMLAnchorElement = document.createElement("a");
+  anchorElement.download = `peri-${latestRelease.version}.apk`;
+  anchorElement.href = "#";
+  anchorElement.onclick = () => {
+    window.open(latestRelease.androidApkUrl, "_system", "location=yes");
+    return false;
+  };
+
+  document.body.append(anchorElement);
+  anchorElement.click();
+  document.body.removeChild(anchorElement);
 }
