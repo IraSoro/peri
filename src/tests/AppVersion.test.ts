@@ -1,5 +1,4 @@
 import * as mockedIonicCore from "@ionic/core";
-import * as mockedCapacitorBrowser from "@capacitor/browser";
 import {
   GithubReleaseAsset,
   GithubReleaseInfo,
@@ -7,8 +6,6 @@ import {
   downloadLatestRelease,
   isNewVersionAvailable,
 } from "../data/AppVersion";
-
-jest.mock("@capacitor/browser");
 
 describe("Get information about latest release", () => {
   test("There are no new version", async () => {
@@ -132,7 +129,7 @@ test("Download latest release", async () => {
   // android
   jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-  mockedCapacitorBrowser.Browser.open = jest.fn().mockResolvedValueOnce(true);
+  const mockedWindowOpen = jest.spyOn(window, "open");
 
   globalThis.fetch = jest.fn().mockResolvedValue({
     json: jest.fn().mockResolvedValue({
@@ -149,7 +146,10 @@ test("Download latest release", async () => {
   });
 
   await expect(downloadLatestRelease()).resolves.not.toThrow();
-  expect(mockedCapacitorBrowser.Browser.open).toHaveBeenCalledWith({
-    url: "https://some-html-url.com",
-  });
+  expect(mockedWindowOpen).toHaveBeenNthCalledWith(
+    1,
+    "https://some-html-url.com",
+    "_system",
+    "location=yes",
+  );
 });

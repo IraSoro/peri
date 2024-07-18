@@ -24,10 +24,38 @@ ionic cap build android # generates Android project
 
 An `android` directory will be generated and you can open it with `Android Studio` and build the project based on this instruction <https://capacitorjs.com/docs/android>
 
-You can also create a development version of native `peri` using the `Docker` image. To do this you should run the following command:
+You can also create a development version of native `peri` using the following `Dockerfile`, just create it in the root of the `peri` project:
+
+```dockerfile
+FROM node:latest
+
+WORKDIR /home/
+
+RUN apt-get update && \
+  apt-get install -y android-sdk openjdk-17-jdk && \
+  wget -q https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.2.1.20/android-studio-2022.2.1.20-linux.tar.gz && \
+  tar -C /usr/local -xzf android-studio-2022.2.1.20-linux.tar.gz && \
+  rm android-studio-2022.2.1.20-linux.tar.gz && \
+  wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip && \
+  unzip -q commandlinetools-linux-9477386_latest.zip && \
+  mkdir -p /usr/lib/android-sdk/cmdline-tools/latest && \
+  mv cmdline-tools/* /usr/lib/android-sdk/cmdline-tools/latest/ && \
+  rm commandlinetools-linux-9477386_latest.zip && \
+  yes | /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses && \
+  npm -g install @ionic/cli@7.1.1
+
+ENV ANDROID_HOME=/usr/lib/android-sdk/
+ENV PATH=$PATH:${ANDROID_HOME}tools/:${ANDROID_HOME}platform-tools/
+
+WORKDIR /home/app
+
+ENTRYPOINT [ "bash" ]
+```
+
+And run:
 
 ```shell
-docker build -f docker/Dockerfile -t peri-android-env:latest .
+docker build -t peri-android-env:latest .
 ```
 
 After that, you can start the container with:

@@ -1,5 +1,4 @@
 import { isPlatform } from "@ionic/core";
-import { Browser } from "@capacitor/browser";
 import semver from "semver";
 
 export const appVersion = "v2.4.0";
@@ -67,7 +66,5 @@ export async function isNewVersionAvailable(): Promise<boolean> {
 
 export async function downloadLatestRelease() {
   const latestRelease = await getLatestReleaseInfo();
-  await Browser.open({
-    url: latestRelease.htmlUrl,
-  });
+  window.open(latestRelease.htmlUrl, "_system", "location=yes");
 }
