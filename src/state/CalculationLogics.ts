@@ -10,6 +10,8 @@ import {
 import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
+export const maxOfCycles = 8;
+
 export function getLastStartDate(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return "";

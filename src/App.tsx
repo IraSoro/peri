@@ -42,6 +42,7 @@ import "./theme/variables.css";
 import { storage } from "./data/Storage";
 
 import type { Cycle } from "./data/ClassCycle";
+import { maxOfCycles } from "./state/CalculationLogics";
 import { CyclesContext, ThemeContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
@@ -86,7 +87,6 @@ const App = (props: AppProps) => {
   );
 
   function updateCycles(newCycles: Cycle[]) {
-    const maxOfCycles = 7;
     setCycles(newCycles.slice(0, maxOfCycles));
     storage.set.cycles(newCycles).catch((err) => console.error(err));
   }

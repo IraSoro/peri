@@ -79,17 +79,17 @@ export const storage = {
 //       for use just uncomment one of the following lines:
 
 // _emptyArrayOfCycles().catch((err) => console.error(err));
-// _todayPeriod(7).catch((err) => console.error(err));
-// _todayOvulation(7).catch((err) => console.error(err));
-// _tomorrowOvulation(7).catch((err) => console.error(err));
-// _menstrualPhase(7).catch((err) => console.error(err));
-// _follicularPhase(7).catch((err) => console.error(err));
-// _lutealPhase(7).catch((err) => console.error(err));
-// _delayOfCycle(7).catch((err) => console.error(err));
-// _randomMenstrualPhase(7).catch((err) => console.error(err));
-// _randomFollicularPhase(7).catch((err) => console.error(err));
-// _randomLutealPhase(7).catch((err) => console.error(err));
-// _randomDelayOfCycle(7).catch((err) => console.error(err));
+// _todayPeriod(8).catch((err) => console.error(err));
+// _todayOvulation(8).catch((err) => console.error(err));
+// _tomorrowOvulation(8).catch((err) => console.error(err));
+// _menstrualPhase(8).catch((err) => console.error(err));
+// _follicularPhase(8).catch((err) => console.error(err));
+// _lutealPhase(8).catch((err) => console.error(err));
+// _delayOfCycle(8).catch((err) => console.error(err));
+// _randomMenstrualPhase(8).catch((err) => console.error(err));
+// _randomFollicularPhase(8).catch((err) => console.error(err));
+// _randomLutealPhase(8).catch((err) => console.error(err));
+// _randomDelayOfCycle(8).catch((err) => console.error(err));
 
 function _emptyArrayOfCycles(): Promise<void> {
   return storageImpl.remove("cycles") as Promise<void>;
