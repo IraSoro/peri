@@ -11,7 +11,7 @@ import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
 export const maxOfCycles = 8;
-const maxDisplayedCycles = 5;
+const maxDisplayedCycles = 6;
 
 export function getLastStartDate(cycles: Cycle[]) {
   if (cycles.length === 0) {
@@ -242,7 +242,7 @@ export function getAverageLengthOfCycle(cycles: Cycle[]) {
     0,
   );
 
-  return Math.round(sum / length - 1); //NOTE: We subtract 1 because the length of the current cycle (with index 0) is 0 and we don't need to take it into account in the calculation.
+  return Math.round(sum / (length - 1)); //NOTE: We subtract 1 because the length of the current cycle (with index 0) is 0 and we don't need to take it into account in the calculation.
 }
 
 export function getAverageLengthOfPeriod(cycles: Cycle[]) {
