@@ -87,8 +87,9 @@ const App = (props: AppProps) => {
   );
 
   function updateCycles(newCycles: Cycle[]) {
-    setCycles(newCycles.slice(0, maxOfCycles));
-    storage.set.cycles(newCycles).catch((err) => console.error(err));
+    const slicedCycles = newCycles.slice(0, maxOfCycles);
+    setCycles(slicedCycles);
+    storage.set.cycles(slicedCycles).catch((err) => console.error(err));
   }
 
   function updateTheme(newTheme: string) {
