@@ -306,9 +306,10 @@ export function getNewCyclesHistory(periodDays: string[]) {
 }
 
 export function getPeriodDays(cycles: Cycle[]) {
+  const maxCountCycles = cycles.slice(0, maxDisplayedCycles);
   const periodDays: string[] = [];
 
-  for (const cycle of cycles) {
+  for (const cycle of maxCountCycles) {
     const startOfCycle = startOfDay(new Date(cycle.startDate));
 
     for (let i = 0; i < cycle.periodLength; i++) {
