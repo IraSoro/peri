@@ -49,6 +49,8 @@ describe("getOvulationStatus", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
+
     expect(getOvulationStatus(cycles)).toEqual(
       `${i18n.t("in")} 9 ${i18n.t("Days", {
         postProcess: "interval",
@@ -72,6 +74,8 @@ describe("getOvulationStatus", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
+
     expect(getOvulationStatus(cycles)).toEqual("tomorrow");
   });
 
@@ -90,6 +94,8 @@ describe("getOvulationStatus", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
+
     expect(getOvulationStatus(cycles)).toEqual("today");
   });
 
@@ -108,6 +114,8 @@ describe("getOvulationStatus", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
+
     expect(getOvulationStatus(cycles)).toEqual("possible");
   });
 
@@ -126,6 +134,8 @@ describe("getOvulationStatus", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
+
     expect(getOvulationStatus(cycles)).toEqual("finished");
   });
 });
@@ -150,6 +160,8 @@ describe("getPregnancyChance", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
+
     expect(getPregnancyChance(cycles)).toEqual("High");
   });
 
@@ -167,6 +179,8 @@ describe("getPregnancyChance", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
+
     expect(getPregnancyChance(cycles)).toEqual("Low");
   });
 });
@@ -311,6 +325,7 @@ describe("getDaysBeforePeriod", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
@@ -336,6 +351,7 @@ describe("getDaysBeforePeriod", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period in"),
@@ -362,6 +378,7 @@ describe("getDaysBeforePeriod", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period"),
@@ -382,6 +399,7 @@ describe("getDaysBeforePeriod", () => {
         startDate: subDays(date, 28).toString(),
       },
     ];
+    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period is"),
@@ -404,6 +422,7 @@ describe("getDaysBeforePeriod", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
@@ -429,6 +448,7 @@ describe("getDaysBeforePeriod", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Delay"),
@@ -558,6 +578,7 @@ describe("getPhase", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getPhase(cycles)).toEqual(phases.menstrual);
   });
@@ -577,6 +598,7 @@ describe("getPhase", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getPhase(cycles)).toEqual(phases.follicular);
   });
@@ -596,6 +618,7 @@ describe("getPhase", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getPhase(cycles)).toEqual(phases.ovulation);
   });
@@ -615,6 +638,7 @@ describe("getPhase", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getPhase(cycles)).toEqual(phases.luteal);
   });
@@ -1051,6 +1075,7 @@ describe("getForecastPeriodDays", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const forecastDays = [];
     let nextCycleStart = addDays(startOfDay(new Date(cycles[0].startDate)), 28);
