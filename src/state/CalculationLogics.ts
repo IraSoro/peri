@@ -242,7 +242,7 @@ export function getAverageLengthOfCycle(cycles: Cycle[]) {
     0,
   );
 
-  return Math.round(sum / (length - 1)); //NOTE: We subtract 1 because the length of the current cycle (with index 0) is 0 and we don't need to take it into account in the calculation.
+  return Math.round(sum / (length - 1)); //NOTE: We subtract 1 because the length of the current cycle is 0 (i.e. cycles[0].cycleLength = 0) and we don't need to take it into account in the calculation.
 }
 
 export function getAverageLengthOfPeriod(cycles: Cycle[]) {
