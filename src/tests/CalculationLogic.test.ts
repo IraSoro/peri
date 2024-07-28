@@ -206,6 +206,7 @@ describe("getDayOfCycle", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getDayOfCycle(cycles)).toEqual(14);
   });
@@ -399,7 +400,6 @@ describe("getDaysBeforePeriod", () => {
         startDate: subDays(date, 28).toString(),
       },
     ];
-    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period is"),
@@ -493,6 +493,7 @@ describe("getDaysBeforePeriod", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getDaysBeforePeriod(cycles)).toEqual({
       title: i18n.t("Period"),
@@ -825,6 +826,7 @@ describe("getActiveDates", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 1);
     expect(getActiveDates(dateCheck, cycles)).toEqual(true);
@@ -845,6 +847,7 @@ describe("getActiveDates", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
     expect(getActiveDates(dateCheck, cycles)).toEqual(false);
@@ -865,6 +868,7 @@ describe("getActiveDates", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 7);
     expect(getActiveDates(dateCheck, cycles)).toEqual(true);
@@ -885,6 +889,7 @@ describe("getActiveDates", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 15);
     expect(getActiveDates(dateCheck, cycles)).toEqual(false);
@@ -905,6 +910,7 @@ describe("getActiveDates", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 10);
     expect(getActiveDates(dateCheck, cycles)).toEqual(true);
@@ -925,6 +931,7 @@ describe("getActiveDates", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const dateCheck = addDays(startOfDay(new Date(cycles[0].startDate)), 40);
     expect(getActiveDates(dateCheck, cycles)).toEqual(false);
@@ -960,6 +967,7 @@ describe("getPastFuturePeriodDays", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const periodDates = getPeriodDays(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
@@ -988,6 +996,7 @@ describe("getPastFuturePeriodDays", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     const periodDates = getPeriodDays(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
@@ -1023,6 +1032,7 @@ describe("getLastStartDate", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getLastStartDate(cycles)).toEqual(cycles[0].startDate);
   });
@@ -1048,6 +1058,7 @@ describe("getLengthOfLastPeriod", () => {
         startDate: date.toString(),
       });
     }
+    cycles[0].cycleLength = 0;
 
     expect(getLengthOfLastPeriod(cycles)).toEqual(cycles[0].periodLength);
   });
