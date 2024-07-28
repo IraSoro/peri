@@ -234,7 +234,8 @@ export function getAverageLengthOfCycle(cycles: Cycle[]) {
   const length = displayedCycles.length;
 
   if (length <= 1) {
-    return length === 0 ? 0 : displayedCycles[0].cycleLength; // NOTE: If there is only one cycle in history (the current one), then its length is at least 28 or more
+    // NOTE: If there is only one cycle in history (the current one), then its length is at least 28 or more
+    return length === 0 ? 0 : displayedCycles[0].cycleLength;
   }
 
   const sum = displayedCycles.reduce(
@@ -242,7 +243,8 @@ export function getAverageLengthOfCycle(cycles: Cycle[]) {
     0,
   );
 
-  return Math.round(sum / (length - 1)); //NOTE: We subtract 1 because the length of the current cycle is 0 (i.e. cycles[0].cycleLength = 0) and we don't need to take it into account in the calculation.
+  //NOTE: We subtract 1 because the length of the current cycle is 0 (i.e. cycles[0].cycleLength = 0) and we don't need to take it into account in the calculation.
+  return Math.round(sum / (length - 1));
 }
 
 export function getAverageLengthOfPeriod(cycles: Cycle[]) {
