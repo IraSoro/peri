@@ -10,6 +10,9 @@ import {
 import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
+export const maxOfCycles = 8;
+const maxDisplayedCycles = 6;
+
 export function getLastStartDate(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return "";
@@ -227,41 +230,37 @@ export function getPhase(cycles: Cycle[]) {
 }
 
 export function getAverageLengthOfCycle(cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return 0;
+  const displayedCycles = cycles.slice(0, maxDisplayedCycles);
+  const length = displayedCycles.length;
+
+  if (length <= 1) {
+    // NOTE: If there is only one cycle in history (the current one), then its length is at least 28 or more
+    return length === 0 ? 0 : displayedCycles[0].cycleLength;
   }
 
-  if (cycles.length === 1) {
-    return cycles[0].cycleLength;
-  }
+  const sum = displayedCycles.reduce(
+    (prev, current) => prev + current.cycleLength,
+    0,
+  );
 
-  const sum = cycles.reduce((prev, current, idx) => {
-    if (idx > 0) {
-      return prev + current.cycleLength;
-    }
-    return 0;
-  }, 0);
-
-  return Math.round(sum / (cycles.length - 1));
+  //NOTE: We subtract 1 because the length of the current cycle is 0 (i.e. cycles[0].cycleLength = 0) and we don't need to take it into account in the calculation.
+  return Math.round(sum / (length - 1));
 }
 
 export function getAverageLengthOfPeriod(cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return 0;
+  const displayedCycles = cycles.slice(0, maxDisplayedCycles);
+  const length = displayedCycles.length;
+
+  if (length <= 1) {
+    return length === 0 ? 0 : displayedCycles[0].periodLength;
   }
 
-  if (cycles.length === 1) {
-    return cycles[0].periodLength;
-  }
+  const sum = displayedCycles.reduce(
+    (prev, current) => prev + current.periodLength,
+    0,
+  );
 
-  const sum = cycles.reduce((prev, current, idx) => {
-    if (idx > 0) {
-      return prev + current.periodLength;
-    }
-    return 0;
-  }, 0);
-
-  return Math.round(sum / (cycles.length - 1));
+  return Math.round(sum / length);
 }
 
 export function getNewCyclesHistory(periodDays: string[]) {
@@ -309,9 +308,10 @@ export function getNewCyclesHistory(periodDays: string[]) {
 }
 
 export function getPeriodDays(cycles: Cycle[]) {
+  const maxCountCycles = cycles.slice(0, maxDisplayedCycles);
   const periodDays: string[] = [];
 
-  for (const cycle of cycles) {
+  for (const cycle of maxCountCycles) {
     const startOfCycle = startOfDay(new Date(cycle.startDate));
 
     for (let i = 0; i < cycle.periodLength; i++) {
