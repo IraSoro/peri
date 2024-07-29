@@ -26,36 +26,44 @@ export function getLengthOfLastPeriod(cycles: Cycle[]) {
     return 0;
   }
 
-  return Number(cycles[0].periodLength);
+  return cycles[0].periodLength;
 }
 
+// NOTE: Detailed description of ovulation calculation: https://github.com/IraSoro/peri/blob/master/info/CALCULATION.md#ovulation-day
 export function getOvulationStatus(cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return "";
-  }
+  if (cycles.length === 0) return "";
 
   const cycleLength = getAverageLengthOfCycle(cycles);
   const dayOfCycle = getDayOfCycle(cycles);
 
+  // Length of the luteal phase in days (fixed value)
   const lutealPhaseLength = 14;
+  // Calculate what day ovulation should occur based on cycle length
+  // For example, if the cycle length is 30, then ovulation should occur on 30-14=16 day
   const ovulationDay = cycleLength - lutealPhaseLength;
+  // Calculate the difference between the current day of the cycle and the day of ovulation
   const diffDay = ovulationDay - dayOfCycle;
-  if (diffDay < -2) {
-    return i18n.t("finished");
+
+  // If the day of ovulation has already passed by more than 2 days, return the status "completed"
+  // NOTE: 2 is the error value (margin of error)
+  if (diffDay < -2) return i18n.t("finished");
+
+  switch (diffDay) {
+    case -2:
+      return i18n.t("possible");
+    case -1:
+      return i18n.t("possible");
+    // If the day of ovulation and the day of the cycle are the same (dayOfCycle = 16 and ovulationDay = 16), then ovulation is today
+    case 0:
+      return i18n.t("today");
+    case 1:
+      return i18n.t("tomorrow");
+    default:
+      return `${i18n.t("in")} ${diffDay} ${i18n.t("Days", {
+        postProcess: "interval",
+        count: diffDay,
+      })}`;
   }
-  if (diffDay < 0) {
-    return i18n.t("possible");
-  }
-  if (diffDay === 0) {
-    return i18n.t("today");
-  }
-  if (diffDay === 1) {
-    return i18n.t("tomorrow");
-  }
-  return `${i18n.t("in")} ${diffDay} ${i18n.t("Days", {
-    postProcess: "interval",
-    count: diffDay,
-  })}`;
 }
 
 export function getPregnancyChance(cycles: Cycle[]) {
