@@ -67,20 +67,17 @@ export function getOvulationStatus(cycles: Cycle[]) {
 }
 
 export function getPregnancyChance(cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return "";
-  }
+  if (cycles.length === 0) return "";
 
-  const dayOfCycle = getDayOfCycle(cycles);
-  const cycleLength = getAverageLengthOfCycle(cycles);
-
-  const lutealPhaseLength = 14;
-  const ovulationDay = cycleLength - lutealPhaseLength;
-  const diffDay = ovulationDay - dayOfCycle;
-
-  if (diffDay >= -2 && diffDay <= 1) {
+  const ovulationStatus = getOvulationStatus(cycles);
+  if (
+    ["tomorrow", "today", "possible"].some((status) =>
+      ovulationStatus.includes(i18n.t(status)),
+    )
+  ) {
     return i18n.t("High");
   }
+
   return i18n.t("Low");
 }
 
