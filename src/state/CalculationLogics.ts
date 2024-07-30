@@ -29,6 +29,17 @@ export function getLengthOfLastPeriod(cycles: Cycle[]) {
   return cycles[0].periodLength;
 }
 
+export function getDayOfCycle(cycles: Cycle[]) {
+  if (cycles.length === 0) {
+    return 0;
+  }
+
+  const start = startOfDay(new Date(cycles[0].startDate));
+  const currentDate = startOfToday();
+
+  return differenceInDays(currentDate, start) + 1;
+}
+
 // NOTE: Detailed description of ovulation calculation: https://github.com/IraSoro/peri/blob/master/info/CALCULATION.md#ovulation-day
 export function getOvulationStatus(cycles: Cycle[]) {
   if (cycles.length === 0) return "";
@@ -146,17 +157,6 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
       count: Math.abs(dayBefore),
     })}`,
   };
-}
-
-export function getDayOfCycle(cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return 0;
-  }
-
-  const start = startOfDay(new Date(cycles[0].startDate));
-  const currentDate = startOfToday();
-
-  return differenceInDays(currentDate, start) + 1;
 }
 
 export function getPhase(cycles: Cycle[]) {
