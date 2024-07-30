@@ -228,12 +228,12 @@ export function getPhase(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return phases.non;
   }
-
-  const ovulationDay = lengthOfCycle - lutealPhaseLength;
-
   if (currentDay <= lengthOfPeriod) {
     return phases.menstrual;
   }
+
+  const ovulationDay = lengthOfCycle - lutealPhaseLength;
+
   if (currentDay <= ovulationDay - ovulationOnError) {
     return phases.follicular;
   }
