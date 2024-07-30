@@ -89,9 +89,18 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
     };
   }
 
-  const periodLength = cycles[0].periodLength;
-  const dayOfCycle = Number(getDayOfCycle(cycles));
+  // NOTE: 28 is the default cycle length. If there is only one cycle in the array, its length will be 28. But since this is the first cycle, we do not know its exact length, it may be longer. Therefore, in this case, we do not display the "Delay", but display the "possible today"
+  if (cycles.length === 1 && cycles[0].cycleLength >= 28) {
+    return {
+      title: i18n.t("Period is"),
+      days: i18n.t("possible today"),
+    };
+  }
 
+  const periodLength = cycles[0].periodLength;
+  const dayOfCycle = getDayOfCycle(cycles);
+
+  // The cycle starts with period, so if the current day of the cycle is, for example, 3 (dayOfCycle = 3), and period lasts 6 days (periodLength = 6), then the result is "Period 3rd day"
   if (dayOfCycle <= periodLength) {
     return {
       title: i18n.t("Period"),
@@ -102,11 +111,15 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
     };
   }
 
+  // We know the start date of the cycle
   const startDate = cycles[0].startDate;
+  // We know the length of the cycle (the average of all cycles)
   const cycleLength = getAverageLengthOfCycle(cycles);
 
+  // So we can calculate the end date of the cycle
   const dateOfFinish = addDays(startOfDay(new Date(startDate)), cycleLength);
   const now = startOfToday();
+  // We calculate how many days are left until the end of the cycle
   const dayBefore = differenceInDays(dateOfFinish, now);
 
   if (dayBefore > 0) {
@@ -118,18 +131,14 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
       })}`,
     };
   }
-  if (cycles.length === 1) {
-    return {
-      title: i18n.t("Period is"),
-      days: i18n.t("possible today"),
-    };
-  }
+
   if (dayBefore === 0) {
     return {
       title: i18n.t("Period"),
       days: i18n.t("today"),
     };
   }
+
   return {
     title: i18n.t("Delay"),
     days: `${Math.abs(dayBefore)} ${i18n.t("Days", {
