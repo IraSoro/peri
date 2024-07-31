@@ -277,6 +277,8 @@ export function getAverageLengthOfPeriod(cycles: Cycle[]) {
   return Math.round(sum / length);
 }
 
+// This function creates a new "cycles" array.
+// The "periodDays" parameter is an array of marked dates in the calendar (i.e. all marked dates of the period)
 export function getNewCyclesHistory(periodDays: string[]) {
   if (periodDays.length === 0) {
     return [];
@@ -290,20 +292,21 @@ export function getNewCyclesHistory(periodDays: string[]) {
 
   let newCycles: Cycle[] = [
     {
+      // If there is only one cycle in the array, length of this cycle will be 28 (default length)
       cycleLength: 28,
       periodLength: 1,
       startDate: periodDays[0],
     },
   ];
+
+  // In this we form a new "cycles" array
   for (let i = 1; i < periodDays.length; i++) {
     const date = startOfDay(new Date(periodDays[i]));
     const prevDate = startOfDay(new Date(periodDays[i - 1]));
     const diffInDays = differenceInDays(date, prevDate);
 
-    if (diffInDays <= 1) {
-      newCycles[0].periodLength++;
-    } else if (diffInDays <= 2) {
-      newCycles[0].periodLength += 2;
+    if (diffInDays <= 2) {
+      newCycles[0].periodLength += diffInDays === 1 ? 1 : 2;
     } else {
       newCycles[0].cycleLength = diffInDays + newCycles[0].periodLength - 1;
       newCycles.unshift({
@@ -314,6 +317,7 @@ export function getNewCyclesHistory(periodDays: string[]) {
     }
   }
 
+  // Additional verification. As a result, newCycles will contain only those cycles that have already started at the current time.
   newCycles = newCycles.filter((cycle) => {
     return startOfDay(new Date(cycle.startDate)) <= startOfToday();
   });
