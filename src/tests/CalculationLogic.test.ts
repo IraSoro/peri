@@ -21,7 +21,7 @@ import {
   getNewCyclesHistory,
   getActiveDates,
   getPeriodDates,
-  getPastFuturePeriodDays,
+  getPeriodDatesWithNewElement,
   getLastStartDate,
   getLengthOfLastPeriod,
   getForecastPeriodDays,
@@ -949,7 +949,7 @@ describe("getPastFuturePeriodDays", () => {
       const periodDay = addDays(nowDate, day);
       periodDates.push(periodDay.toString());
     }
-    expect(getPastFuturePeriodDays([])).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement([])).toEqual(periodDates);
   });
 
   test("cycles array has a few items", () => {
@@ -978,7 +978,7 @@ describe("getPastFuturePeriodDays", () => {
       periodDates.push(periodDay.toString());
     }
 
-    expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement(cycles)).toEqual(periodDates);
   });
 
   test("delay a few days", () => {
@@ -1008,7 +1008,7 @@ describe("getPastFuturePeriodDays", () => {
       periodDates.push(periodDay.toString());
     }
 
-    expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement(cycles)).toEqual(periodDates);
   });
 });
 

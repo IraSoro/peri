@@ -39,7 +39,7 @@ import {
   getNewCyclesHistory,
   getPeriodDates,
   getActiveDates,
-  getPastFuturePeriodDays,
+  getPeriodDatesWithNewElement,
   isPeriodToday,
   getForecastPeriodDays,
   getOvulationDays,
@@ -428,7 +428,7 @@ const TabHome = () => {
                 disabled={isPeriodToday(cycles)}
                 onClick={() => {
                   const newCycles = getNewCyclesHistory(
-                    getPastFuturePeriodDays(cycles),
+                    getPeriodDatesWithNewElement(cycles),
                   );
                   updateCycles(newCycles);
                 }}

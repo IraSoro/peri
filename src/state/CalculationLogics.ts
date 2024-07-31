@@ -354,6 +354,7 @@ export function getPeriodDatesOfLastCycle(cycles: Cycle[]) {
   );
 }
 
+// Checking if a date can be edited in calendar editing mode
 export function getActiveDates(date: Date, cycles: Cycle[]) {
   const maybeActiveDate = startOfDay(date);
   const now = startOfToday();
@@ -370,29 +371,38 @@ export function getActiveDates(date: Date, cycles: Cycle[]) {
   return maybeActiveDate <= endPeriod || maybeActiveDate <= now;
 }
 
-export function getPastFuturePeriodDays(cycles: Cycle[]) {
+// The function returns the dates of all previous cycles, and adds the dates for the current cycle, starting from today and for several days after
+export function getPeriodDatesWithNewElement(cycles: Cycle[]) {
   const nowDate = startOfToday();
-  const periodDates = getPeriodDates(cycles).map((isoDateString) => {
-    return parseISO(isoDateString).toString();
-  });
-  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  // Forming an array of dates based on cycles
+  // getPeriodDates(cycles) returns an array of strings with dates in ISO format
+  // Using map , these strings are converted to Date objects, and then back to strings, but in the format returned by Date.prototype.toString()
+  const periodDates = getPeriodDates(cycles).map((isoDateString) =>
+    parseISO(isoDateString).toString(),
+  );
+  // Gets the average length of the period based on the given cycles
+  // If the average length is not defined, it defaults to 5 days (for the case when the array is empty)
+  const lengthOfPeriod = getAverageLengthOfPeriod(cycles) || 5;
 
-  if (cycles.length !== 0) {
+  // Checking for completion of current period
+  if (cycles.length > 0) {
+    // It calculates the end date of the last period (period of current cycle)
     const endOfCurrentCycle = addDays(
       startOfDay(new Date(cycles[0].startDate)),
       cycles[0].periodLength,
     );
+    // If the period has not yet completed, the function returns an empty array, since there is no need to add new dates
     if (endOfCurrentCycle >= nowDate) {
       return [];
     }
   }
 
-  for (let day = 0; day < (lengthOfPeriod || 5); day++) {
-    const periodDay = addDays(nowDate, day);
-    periodDates.push(periodDay.toString());
-  }
+  // Create additional dates that start from today and continue for several days (it's a new cycle, a new future element of the array)
+  const additionalDays = Array.from({ length: lengthOfPeriod }, (_, i) =>
+    addDays(nowDate, i).toString(),
+  );
 
-  return periodDates;
+  return periodDates.concat(additionalDays);
 }
 
 export function getForecastPeriodDays(cycles: Cycle[]) {
