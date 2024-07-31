@@ -343,18 +343,15 @@ export function getPeriodDates(cycles: Cycle[]) {
   return periodDays;
 }
 
-export function getLastPeriodDays(cycles: Cycle[]) {
-  const periodDays: string[] = [];
-  const lastCycle = cycles.at(0);
-  if (!lastCycle) {
-    return periodDays;
-  }
+export function getPeriodDatesOfLastCycle(cycles: Cycle[]) {
+  if (cycles.length === 0) return [];
+
+  const lastCycle = cycles[0];
   const startOfCycle = startOfDay(new Date(lastCycle.startDate));
-  for (let i = 0; i < lastCycle.periodLength; i++) {
-    const newDate = addDays(startOfCycle, i);
-    periodDays.push(format(newDate, "yyyy-MM-dd"));
-  }
-  return periodDays;
+
+  return Array.from({ length: lastCycle.periodLength }, (_, i) =>
+    format(addDays(startOfCycle, i), "yyyy-MM-dd"),
+  );
 }
 
 export function getActiveDates(date: Date, cycles: Cycle[]) {

@@ -43,7 +43,7 @@ import {
   isPeriodToday,
   getForecastPeriodDays,
   getOvulationDays,
-  getLastPeriodDays,
+  getPeriodDatesOfLastCycle,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 import { format } from "../utils/datetime";
@@ -201,7 +201,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const theme = useContext(ThemeContext).theme;
 
   const periodDays = getPeriodDates(cycles);
-  const lastPeriodDays = getLastPeriodDays(cycles);
+  const lastPeriodDays = getPeriodDatesOfLastCycle(cycles);
 
   const sortedPeriodDays = periodDays.sort((left, right) => {
     const leftDate = new Date(left);
