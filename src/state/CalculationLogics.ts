@@ -325,18 +325,21 @@ export function getNewCyclesHistory(periodDays: string[]) {
   return newCycles;
 }
 
-export function getPeriodDays(cycles: Cycle[]) {
-  const maxCountCycles = cycles.slice(0, maxDisplayedCycles);
+// The function returns an array of generated dates
+export function getPeriodDates(cycles: Cycle[]) {
   const periodDays: string[] = [];
 
-  for (const cycle of maxCountCycles) {
+  // NOTE: Not all cycles are included in the calculations, that's why we make a slice
+  cycles.slice(0, maxDisplayedCycles).forEach((cycle) => {
     const startOfCycle = startOfDay(new Date(cycle.startDate));
 
-    for (let i = 0; i < cycle.periodLength; i++) {
-      const newDate = addDays(startOfCycle, i);
-      periodDays.push(format(newDate, "yyyy-MM-dd"));
-    }
-  }
+    const days = Array.from({ length: cycle.periodLength }, (_, i) =>
+      format(addDays(startOfCycle, i), "yyyy-MM-dd"),
+    );
+
+    periodDays.push(...days);
+  });
+
   return periodDays;
 }
 
@@ -372,7 +375,7 @@ export function getActiveDates(date: Date, cycles: Cycle[]) {
 
 export function getPastFuturePeriodDays(cycles: Cycle[]) {
   const nowDate = startOfToday();
-  const periodDates = getPeriodDays(cycles).map((isoDateString) => {
+  const periodDates = getPeriodDates(cycles).map((isoDateString) => {
     return parseISO(isoDateString).toString();
   });
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);

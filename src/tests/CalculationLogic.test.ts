@@ -20,7 +20,7 @@ import {
   getPhase,
   getNewCyclesHistory,
   getActiveDates,
-  getPeriodDays,
+  getPeriodDates,
   getPastFuturePeriodDays,
   getLastStartDate,
   getLengthOfLastPeriod,
@@ -713,7 +713,7 @@ describe("getPeriodDays", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPeriodDays([])).toEqual([]);
+    expect(getPeriodDates([])).toEqual([]);
   });
 
   test("cycles array has a few items", () => {
@@ -757,7 +757,7 @@ describe("getPeriodDays", () => {
       "2023-06-13",
     ];
 
-    expect(getPeriodDays(cycles)).toEqual(periodDays);
+    expect(getPeriodDates(cycles)).toEqual(periodDays);
   });
 });
 
@@ -969,7 +969,7 @@ describe("getPastFuturePeriodDays", () => {
     }
     cycles[0].cycleLength = 0;
 
-    const periodDates = getPeriodDays(cycles).map((isoDateString) => {
+    const periodDates = getPeriodDates(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
     });
     const nowDate = startOfToday();
@@ -998,7 +998,7 @@ describe("getPastFuturePeriodDays", () => {
     }
     cycles[0].cycleLength = 0;
 
-    const periodDates = getPeriodDays(cycles).map((isoDateString) => {
+    const periodDates = getPeriodDates(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
     });
     const nowDate = startOfToday();

@@ -37,7 +37,7 @@ import {
   getPregnancyChance,
   getDaysBeforePeriod,
   getNewCyclesHistory,
-  getPeriodDays,
+  getPeriodDates,
   getActiveDates,
   getPastFuturePeriodDays,
   isPeriodToday,
@@ -96,7 +96,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const { cycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
 
-  const periodDays = getPeriodDays(cycles);
+  const periodDays = getPeriodDates(cycles);
   const forecastPeriodDays = getForecastPeriodDays(cycles);
   const ovulationDays = getOvulationDays(cycles);
 
@@ -200,7 +200,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { cycles, updateCycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
 
-  const periodDays = getPeriodDays(cycles);
+  const periodDays = getPeriodDates(cycles);
   const lastPeriodDays = getLastPeriodDays(cycles);
 
   const sortedPeriodDays = periodDays.sort((left, right) => {
