@@ -41,7 +41,7 @@ import {
   getActiveDates,
   getPeriodDatesWithNewElement,
   isPeriodToday,
-  getForecastPeriodDays,
+  getForecastPeriodDates,
   getOvulationDays,
   getPeriodDatesOfLastCycle,
 } from "../state/CalculationLogics";
@@ -97,7 +97,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const theme = useContext(ThemeContext).theme;
 
   const periodDays = getPeriodDates(cycles);
-  const forecastPeriodDays = getForecastPeriodDays(cycles);
+  const forecastPeriodDates = getForecastPeriodDates(cycles);
   const ovulationDays = getOvulationDays(cycles);
 
   const firstPeriodDay = periodDays
@@ -114,7 +114,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
   const minDate = formatISO(startOfMonth(firstPeriodDayDate));
 
-  const lastForecastPeriodDay = forecastPeriodDays
+  const lastForecastPeriodDay = forecastPeriodDates
     .sort((left, right) => {
       const leftDate = new Date(left);
       const rightDate = new Date(right);
@@ -147,7 +147,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
         if (cycles.length === 0) {
           return undefined;
         }
-        if (forecastPeriodDays.includes(isoDateString)) {
+        if (forecastPeriodDates.includes(isoDateString)) {
           if (theme === "dark") {
             return {
               textColor: `#ffffff`,

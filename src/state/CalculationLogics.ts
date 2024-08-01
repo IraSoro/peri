@@ -405,43 +405,43 @@ export function getPeriodDatesWithNewElement(cycles: Cycle[]) {
   return periodDates.concat(additionalDays);
 }
 
-export function getForecastPeriodDays(cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return [];
-  }
+export function getForecastPeriodDates(cycles: Cycle[]) {
+  if (cycles.length === 0) return [];
 
   const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const nowDate = startOfToday();
-
-  let nextCycleStart;
   const forecastDates: string[] = [];
 
-  function addForecastDates(startDate: Date) {
-    for (let i = 0; i < lengthOfPeriod; ++i) {
-      forecastDates.push(format(addDays(startDate, i), "yyyy-MM-dd"));
-    }
-  }
+  // We determine the start date of the next nearest cycle
+  let nextCycleStart =
+    dayOfCycle <= lengthOfCycle
+      ? // This is for the case when the current calculation cycle has not yet ended
+        addDays(startOfDay(new Date(cycles[0].startDate)), lengthOfCycle)
+      : // This is for the case if there is a delay today. Then the beginning of the next cycle will be from today
+        nowDate;
 
-  if (dayOfCycle <= lengthOfCycle) {
-    nextCycleStart = addDays(
-      startOfDay(new Date(cycles[0].startDate)),
-      lengthOfCycle,
+  // Function to add dates to a "forecastDates" array
+  const addForecastDates = (startDate: Date) => {
+    forecastDates.push(
+      ...Array.from({ length: lengthOfPeriod }, (_, i) =>
+        format(addDays(startDate, i), "yyyy-MM-dd"),
+      ),
     );
-  } else {
-    nextCycleStart = nowDate;
-  }
-  addForecastDates(nextCycleStart);
-  if (cycles.length === 1) {
-    return forecastDates;
-  }
+  };
 
-  const cycleCount = 6;
-  for (let i = 0; i < cycleCount; ++i) {
+  addForecastDates(nextCycleStart);
+
+  // If there is only one cycle in the array we will not make a prediction more than one cycle. Because we don't know the exact length of the cycle
+  if (cycles.length === 1) return forecastDates;
+
+  // Add dates for the next 6 cycles
+  // NOTE: 6 - the number of cycles hat we count for the forecast
+  Array.from({ length: 6 }).forEach(() => {
     nextCycleStart = addDays(nextCycleStart, lengthOfCycle);
     addForecastDates(nextCycleStart);
-  }
+  });
 
   return forecastDates;
 }

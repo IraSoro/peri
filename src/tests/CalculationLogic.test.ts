@@ -24,7 +24,7 @@ import {
   getPeriodDatesWithNewElement,
   getLastStartDate,
   getLengthOfLastPeriod,
-  getForecastPeriodDays,
+  getForecastPeriodDates,
   getOvulationDays,
   getPeriodDatesOfLastCycle,
 } from "../state/CalculationLogics";
@@ -1064,11 +1064,11 @@ describe("getLengthOfLastPeriod", () => {
   });
 });
 
-describe("getForecastPeriodDays", () => {
+describe("getForecastPeriodDates", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getForecastPeriodDays([])).toEqual([]);
+    expect(getForecastPeriodDates([])).toEqual([]);
   });
 
   test("cycles array has a few items", () => {
@@ -1102,7 +1102,7 @@ describe("getForecastPeriodDays", () => {
       }
     }
 
-    expect(getForecastPeriodDays(cycles)).toEqual(forecastDays);
+    expect(getForecastPeriodDates(cycles)).toEqual(forecastDays);
   });
 });
 
