@@ -329,7 +329,6 @@ export function getNewCyclesHistory(periodDays: string[]) {
 export function getPeriodDates(cycles: Cycle[]) {
   const periodDays: string[] = [];
 
-  // NOTE: Not all cycles are included in the calculations, that's why we make a slice
   cycles.slice(0, maxOfCycles).forEach((cycle) => {
     const startOfCycle = startOfDay(new Date(cycle.startDate));
 
