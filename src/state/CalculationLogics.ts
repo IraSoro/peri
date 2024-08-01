@@ -446,6 +446,7 @@ export function getForecastPeriodDates(cycles: Cycle[]) {
   return forecastDates;
 }
 
+// NOTE: This Function is needed to block the Mark button if today is period
 export function isPeriodToday(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return false;
@@ -457,30 +458,37 @@ export function isPeriodToday(cycles: Cycle[]) {
 }
 
 export function getOvulationDays(cycles: Cycle[]) {
-  if (cycles.length < 2) {
-    return [];
-  }
+  if (cycles.length < 2) return [];
+
   const averageCycle = getAverageLengthOfCycle(cycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const ovulationDates = [];
 
   for (const cycle of cycles) {
     const startOfCycle = startOfDay(new Date(cycle.startDate));
-    let finishOfCycle;
-    if (cycle.cycleLength === 0) {
-      if (dayOfCycle > averageCycle) {
-        finishOfCycle = addDays(startOfCycle, dayOfCycle - 17);
-      } else {
-        finishOfCycle = addDays(startOfCycle, averageCycle - 16);
-      }
-    } else {
-      finishOfCycle = addDays(startOfCycle, cycle.cycleLength - 16);
-    }
 
-    for (let i = 0; i < 4; ++i) {
-      const newDate = addDays(finishOfCycle, i);
-      ovulationDates.push(format(newDate, "yyyy-MM-dd"));
-    }
+    // We determine the date of the beginning of ovulation
+    // NOTE: Ovulation is calculated as follows: if the cycle length is 32 days, then ovulation will be on day 32-14 = 18. But we add the probability of error, so instead of 14 we subtract 16.
+    // NOTE: Then the date of the beginning of ovulation will be: the date of the start of the cycle + (the length of the cycle - 16)
+    const ovulationStartDate = addDays(
+      startOfCycle,
+      cycle.cycleLength
+        ? // This case is for cycles that have already passed.
+          cycle.cycleLength - 16
+        : // This case is for the current cycle
+        dayOfCycle > averageCycle
+        ? // This is the case if there is a delay now
+          // TODO: Find out why 17 is subtracted and not 16
+          dayOfCycle - 17
+        : averageCycle - 16,
+    );
+
+    // Add another 4 days of ovulation
+    ovulationDates.push(
+      ...Array.from({ length: 4 }, (_, i) =>
+        format(addDays(ovulationStartDate, i), "yyyy-MM-dd"),
+      ),
+    );
   }
 
   return ovulationDates.concat(getFutureOvulationDays(cycles));
