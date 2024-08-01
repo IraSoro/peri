@@ -457,7 +457,7 @@ export function isPeriodToday(cycles: Cycle[]) {
   return dayOfCycle <= cycles[0].periodLength;
 }
 
-export function getOvulationDays(cycles: Cycle[]) {
+export function getOvulationDates(cycles: Cycle[]) {
   if (cycles.length < 2) return [];
 
   const averageCycle = getAverageLengthOfCycle(cycles);
@@ -491,43 +491,37 @@ export function getOvulationDays(cycles: Cycle[]) {
     );
   }
 
-  return ovulationDates.concat(getFutureOvulationDays(cycles));
+  return ovulationDates.concat(getFutureOvulationDates(cycles));
 }
 
-export function getFutureOvulationDays(cycles: Cycle[]) {
-  if (cycles.length === 0) {
-    return [];
-  }
+export function getFutureOvulationDates(cycles: Cycle[]) {
+  if (cycles.length < 2) return [];
+
   const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const nowDate = startOfToday();
-
-  let nextCycleStart;
   const ovulationDates: string[] = [];
 
-  function addOvulationDates(startDate: Date) {
-    for (let i = 0; i < 4; ++i) {
-      ovulationDates.push(
+  const addOvulationDates = (startDate: Date) => {
+    ovulationDates.push(
+      ...Array.from({ length: 4 }, (_, i) =>
         format(addDays(startDate, lengthOfCycle - 16 + i), "yyyy-MM-dd"),
-      );
-    }
-  }
-
-  if (dayOfCycle <= lengthOfCycle) {
-    nextCycleStart = addDays(
-      startOfDay(new Date(cycles[0].startDate)),
-      lengthOfCycle,
+      ),
     );
-  } else {
-    nextCycleStart = nowDate;
-  }
-  addOvulationDates(nextCycleStart);
+  };
 
-  const cycleCount = 5;
-  for (let i = 0; i < cycleCount; ++i) {
-    nextCycleStart = addDays(nextCycleStart, lengthOfCycle);
-    addOvulationDates(nextCycleStart);
-  }
+  let ovulationStartDate =
+    dayOfCycle <= lengthOfCycle
+      ? addDays(startOfDay(new Date(cycles[0].startDate)), lengthOfCycle)
+      : nowDate;
+
+  addOvulationDates(ovulationStartDate);
+
+  // 5 - the number of cycles for which we will calculate ovulation
+  Array.from({ length: 5 }).forEach(() => {
+    ovulationStartDate = addDays(ovulationStartDate, lengthOfCycle);
+    addOvulationDates(ovulationStartDate);
+  });
 
   return ovulationDates;
 }

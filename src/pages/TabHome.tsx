@@ -42,7 +42,7 @@ import {
   getPeriodDatesWithNewElement,
   isPeriodToday,
   getForecastPeriodDates,
-  getOvulationDays,
+  getOvulationDates,
   getPeriodDatesOfLastCycle,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
@@ -98,7 +98,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
 
   const periodDays = getPeriodDates(cycles);
   const forecastPeriodDates = getForecastPeriodDates(cycles);
-  const ovulationDays = getOvulationDays(cycles);
+  const ovulationDates = getOvulationDates(cycles);
 
   const firstPeriodDay = periodDays
     .sort((left, right) => {
@@ -133,7 +133,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   return (
     <IonDatetime
       className={
-        ovulationDays.includes(format(startOfToday(), "yyyy-MM-dd"))
+        ovulationDates.includes(format(startOfToday(), "yyyy-MM-dd"))
           ? `view-calendar-today-ovulation-${theme}`
           : `view-calendar-${theme}`
       }
@@ -168,7 +168,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
                 textColor: `var(--ion-color-dark-${theme})`,
                 backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.8)`,
               };
-        } else if (ovulationDays.includes(isoDateString)) {
+        } else if (ovulationDates.includes(isoDateString)) {
           return {
             textColor: `var(--ion-color-ovulation-${theme})`,
             backgroundColor: `var(--ion-color-calendar-${theme})`,

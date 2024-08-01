@@ -25,7 +25,7 @@ import {
   getLastStartDate,
   getLengthOfLastPeriod,
   getForecastPeriodDates,
-  getOvulationDays,
+  getOvulationDates,
   getPeriodDatesOfLastCycle,
 } from "../state/CalculationLogics";
 
@@ -1106,11 +1106,11 @@ describe("getForecastPeriodDates", () => {
   });
 });
 
-describe("getOvulationDays", () => {
+describe("getOvulationDates", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getOvulationDays([])).toEqual([]);
+    expect(getOvulationDates([])).toEqual([]);
   });
 
   test("cycles array has 1 item", () => {
@@ -1127,7 +1127,7 @@ describe("getOvulationDays", () => {
       startDate: date.toString(),
     });
 
-    expect(getOvulationDays(cycles)).toEqual([]);
+    expect(getOvulationDates(cycles)).toEqual([]);
   });
 
   test("cycles array has a 6 items", () => {
@@ -1178,6 +1178,6 @@ describe("getOvulationDays", () => {
       }
     }
 
-    expect(getOvulationDays(cycles)).toEqual(ovulationDays);
+    expect(getOvulationDates(cycles)).toEqual(ovulationDays);
   });
 });
