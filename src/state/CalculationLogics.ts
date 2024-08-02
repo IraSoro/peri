@@ -477,7 +477,9 @@ export function getOvulationDates(cycles: Cycle[]) {
         : // This case is for the current cycle
         dayOfCycle > averageCycle
         ? // This is the case if there is a delay now
-          // TODO: Find out why 17 is subtracted and not 16
+          // NOTE: About 17: since today is a delay, we mean that menstruation can start today, so it is marked in the calendar. Therefore, if menstruation can start today, then today will be the beginning of a new cycle.
+          // Then the length of the cycle, which we calculate, will be: "dayOfCycle - 17".
+          // Then the beginning of ovulation will be "dayOfCycle - 1 - 16 = dayOfCycle - 17"
           dayOfCycle - 17
         : averageCycle - 16,
     );
