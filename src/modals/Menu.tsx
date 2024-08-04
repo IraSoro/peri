@@ -19,9 +19,9 @@ import {
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
+import { configuration } from "../data/AppConfiguration";
 import { exportConfig, importConfig } from "../data/Config";
 import {
-  appVersion,
   downloadLatestRelease,
   isNewVersionAvailable,
 } from "../data/AppVersion";
@@ -211,6 +211,10 @@ export const Menu = (props: MenuProps) => {
   const [needUpdate, setNeedUpdate] = useState(false);
 
   useEffect(() => {
+    if (!configuration.features.useCustomVersionUpdate) {
+      return;
+    }
+
     isNewVersionAvailable()
       .then((newVersionAvailable) => {
         if (!newVersionAvailable) {
@@ -239,7 +243,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <Importer />
         <Exporter />
-        {needUpdate && (
+        {configuration.features.useCustomVersionUpdate && needUpdate && (
           <IonItem
             button
             onClick={() => {
@@ -274,7 +278,7 @@ export const Menu = (props: MenuProps) => {
           color="medium"
           slot="end"
         >
-          {appVersion}
+          {configuration.app.version}
         </IonLabel>
       </IonItem>
     </IonMenu>

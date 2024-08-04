@@ -46,6 +46,7 @@ import { maxOfCycles } from "./state/CalculationLogics";
 import { CyclesContext, ThemeContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
+import { configuration } from "./data/AppConfiguration";
 
 setupIonicReact();
 
@@ -104,6 +105,10 @@ const App = (props: AppProps) => {
   }
 
   useEffect(() => {
+    if (!configuration.features.useCustomVersionUpdate) {
+      return;
+    }
+
     isNewVersionAvailable()
       .then((newVersionAvailable) => {
         if (!newVersionAvailable) {
