@@ -310,8 +310,11 @@ export function getNewCyclesHistory(periodDays: string[]) {
     const prevDate = startOfDay(new Date(periodDays[i - 1]));
     const diffInDays = differenceInDays(date, prevDate);
 
+    // If "diffInDays" is 1, it means that the dates are consecutive. (The "diffInDays" is always >=0 because the array is sorted and "prevDate" is always less than "date")
+    // If "diffInDays" is 2, it means that there is one day between them.
+    // Our algorithm only works if the dates of the month are consecutive. Therefore, we "fill" the day between them.
     if (diffInDays <= 2) {
-      newCycles[0].periodLength += diffInDays === 1 ? 1 : 2;
+      newCycles[0].periodLength += diffInDays;
     } else {
       newCycles[0].cycleLength = diffInDays + newCycles[0].periodLength - 1;
       newCycles.unshift({
