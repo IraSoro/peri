@@ -137,13 +137,19 @@ const Importer = () => {
   const [confirmAlert] = useIonAlert();
 
   const updateCycles = useContext(CyclesContext).updateCycles;
+  const updateTheme = useContext(ThemeContext).updateTheme;
   const theme = useContext(ThemeContext).theme;
 
   const onImportClick = async () => {
     console.log("Import config");
     const config = await importConfig();
     await storage.set.cycles(config.cycles);
+    await storage.set.theme(config.theme);
+    await storage.set.language(config.language);
     updateCycles(config.cycles);
+    updateTheme(config.theme);
+    changeDateTimeLocale(config.language);
+    await changeTranslation(config.language);
     await confirmAlert({
       header: t("Configuration has been imported"),
       cssClass: "header-color",
