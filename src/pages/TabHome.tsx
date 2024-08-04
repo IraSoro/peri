@@ -96,11 +96,11 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const { cycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
 
-  const periodDays = getPeriodDates(cycles);
+  const periodDates = getPeriodDates(cycles);
   const forecastPeriodDates = getForecastPeriodDates(cycles);
   const ovulationDates = getOvulationDates(cycles);
 
-  const firstPeriodDay = periodDays
+  const firstPeriodDay = periodDates
     .sort((left, right) => {
       const leftDate = new Date(left);
       const rightDate = new Date(right);
@@ -158,7 +158,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
             textColor: `var(--ion-color-dark-${theme})`,
             backgroundColor: `rgba(var(--ion-color-light-${theme}-rgb), 0.3)`,
           };
-        } else if (periodDays.includes(isoDateString)) {
+        } else if (periodDates.includes(isoDateString)) {
           return theme === "dark"
             ? {
                 textColor: `#ffffff`,

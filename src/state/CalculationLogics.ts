@@ -42,7 +42,9 @@ export function getDayOfCycle(cycles: Cycle[]) {
 
 // NOTE: Detailed description of ovulation calculation: https://github.com/IraSoro/peri/blob/master/info/CALCULATION.md#ovulation-day
 export function getOvulationStatus(cycles: Cycle[]) {
-  if (cycles.length === 0) return "";
+  if (cycles.length === 0) {
+    return "";
+  }
 
   const cycleLength = getAverageLengthOfCycle(cycles);
   const dayOfCycle = getDayOfCycle(cycles);
@@ -57,11 +59,12 @@ export function getOvulationStatus(cycles: Cycle[]) {
 
   // If the day of ovulation has already passed by more than 2 days, return the status "completed"
   // NOTE: 2 is the error value (margin of error)
-  if (diffDay < -2) return i18n.t("finished");
+  if (diffDay < -2) {
+    return i18n.t("finished");
+  }
 
   switch (diffDay) {
     case -2:
-      return i18n.t("possible");
     case -1:
       return i18n.t("possible");
     // If the day of ovulation and the day of the cycle are the same (dayOfCycle = 16 and ovulationDay = 16), then ovulation is today
@@ -78,7 +81,9 @@ export function getOvulationStatus(cycles: Cycle[]) {
 }
 
 export function getPregnancyChance(cycles: Cycle[]) {
-  if (cycles.length === 0) return "";
+  if (cycles.length === 0) {
+    return "";
+  }
 
   const ovulationStatus = getOvulationStatus(cycles);
   if (
@@ -343,7 +348,9 @@ export function getPeriodDates(cycles: Cycle[]) {
 }
 
 export function getPeriodDatesOfLastCycle(cycles: Cycle[]) {
-  if (cycles.length === 0) return [];
+  if (cycles.length === 0) {
+    return [];
+  }
 
   const lastCycle = cycles[0];
   const startOfCycle = startOfDay(new Date(lastCycle.startDate));
@@ -405,7 +412,9 @@ export function getPeriodDatesWithNewElement(cycles: Cycle[]) {
 }
 
 export function getForecastPeriodDates(cycles: Cycle[]) {
-  if (cycles.length === 0) return [];
+  if (cycles.length === 0) {
+    return [];
+  }
 
   const lengthOfCycle = getAverageLengthOfCycle(cycles);
   const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
@@ -433,7 +442,9 @@ export function getForecastPeriodDates(cycles: Cycle[]) {
   addForecastDates(nextCycleStart);
 
   // If there is only one cycle in the array we will not make a prediction more than one cycle. Because we don't know the exact length of the cycle
-  if (cycles.length === 1) return forecastDates;
+  if (cycles.length === 1) {
+    return forecastDates;
+  }
 
   // Add dates for the next 6 cycles
   // NOTE: 6 - the number of cycles hat we count for the forecast
@@ -457,7 +468,9 @@ export function isPeriodToday(cycles: Cycle[]) {
 }
 
 export function getOvulationDates(cycles: Cycle[]) {
-  if (cycles.length < 2) return [];
+  if (cycles.length < 2) {
+    return [];
+  }
 
   const averageCycle = getAverageLengthOfCycle(cycles);
   const dayOfCycle = getDayOfCycle(cycles);
