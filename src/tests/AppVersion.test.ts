@@ -2,10 +2,10 @@ import * as mockedIonicCore from "@ionic/core";
 import {
   GithubReleaseAsset,
   GithubReleaseInfo,
-  appVersion,
   downloadLatestRelease,
   isNewVersionAvailable,
 } from "../data/AppVersion";
+import { configuration } from "../data/AppConfiguration";
 
 describe("Get information about latest release", () => {
   test("There are no new version", async () => {
@@ -19,7 +19,7 @@ describe("Get information about latest release", () => {
     globalThis.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({
         html_url: "https://some-html-url.com",
-        tag_name: appVersion,
+        tag_name: configuration.app.version,
         draft: false,
         assets: [
           {
@@ -109,7 +109,7 @@ describe("Get information about latest release", () => {
     globalThis.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({
         html_url: "https://some-html-url.com",
-        tag_name: appVersion,
+        tag_name: configuration.app.version,
         draft: false,
         assets: [] satisfies GithubReleaseAsset[],
       } satisfies GithubReleaseInfo),
