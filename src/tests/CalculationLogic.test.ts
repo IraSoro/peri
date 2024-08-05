@@ -20,13 +20,13 @@ import {
   getPhase,
   getNewCyclesHistory,
   getActiveDates,
-  getPeriodDays,
-  getPastFuturePeriodDays,
+  getPeriodDates,
+  getPeriodDatesWithNewElement,
   getLastStartDate,
   getLengthOfLastPeriod,
-  getForecastPeriodDays,
-  getOvulationDays,
-  getLastPeriodDays,
+  getForecastPeriodDates,
+  getOvulationDates,
+  getPeriodDatesOfLastCycle,
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
@@ -713,7 +713,7 @@ describe("getPeriodDays", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPeriodDays([])).toEqual([]);
+    expect(getPeriodDates([])).toEqual([]);
   });
 
   test("cycles array has a few items", () => {
@@ -757,7 +757,7 @@ describe("getPeriodDays", () => {
       "2023-06-13",
     ];
 
-    expect(getPeriodDays(cycles)).toEqual(periodDays);
+    expect(getPeriodDates(cycles)).toEqual(periodDays);
   });
 });
 
@@ -765,7 +765,7 @@ describe("getLastPeriodDays", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getLastPeriodDays([])).toEqual([]);
+    expect(getPeriodDatesOfLastCycle([])).toEqual([]);
   });
 
   test("cycles array has a few items", () => {
@@ -799,7 +799,7 @@ describe("getLastPeriodDays", () => {
       "2023-08-10",
     ];
 
-    expect(getLastPeriodDays(cycles)).toEqual(lastPeriodDays);
+    expect(getPeriodDatesOfLastCycle(cycles)).toEqual(lastPeriodDays);
   });
 });
 
@@ -949,7 +949,7 @@ describe("getPastFuturePeriodDays", () => {
       const periodDay = addDays(nowDate, day);
       periodDates.push(periodDay.toString());
     }
-    expect(getPastFuturePeriodDays([])).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement([])).toEqual(periodDates);
   });
 
   test("cycles array has a few items", () => {
@@ -969,7 +969,7 @@ describe("getPastFuturePeriodDays", () => {
     }
     cycles[0].cycleLength = 0;
 
-    const periodDates = getPeriodDays(cycles).map((isoDateString) => {
+    const periodDates = getPeriodDates(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
     });
     const nowDate = startOfToday();
@@ -978,7 +978,7 @@ describe("getPastFuturePeriodDays", () => {
       periodDates.push(periodDay.toString());
     }
 
-    expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement(cycles)).toEqual(periodDates);
   });
 
   test("delay a few days", () => {
@@ -998,7 +998,7 @@ describe("getPastFuturePeriodDays", () => {
     }
     cycles[0].cycleLength = 0;
 
-    const periodDates = getPeriodDays(cycles).map((isoDateString) => {
+    const periodDates = getPeriodDates(cycles).map((isoDateString) => {
       return parseISO(isoDateString).toString();
     });
     const nowDate = startOfToday();
@@ -1008,7 +1008,7 @@ describe("getPastFuturePeriodDays", () => {
       periodDates.push(periodDay.toString());
     }
 
-    expect(getPastFuturePeriodDays(cycles)).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement(cycles)).toEqual(periodDates);
   });
 });
 
@@ -1064,11 +1064,11 @@ describe("getLengthOfLastPeriod", () => {
   });
 });
 
-describe("getForecastPeriodDays", () => {
+describe("getForecastPeriodDates", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getForecastPeriodDays([])).toEqual([]);
+    expect(getForecastPeriodDates([])).toEqual([]);
   });
 
   test("cycles array has a few items", () => {
@@ -1102,15 +1102,15 @@ describe("getForecastPeriodDays", () => {
       }
     }
 
-    expect(getForecastPeriodDays(cycles)).toEqual(forecastDays);
+    expect(getForecastPeriodDates(cycles)).toEqual(forecastDays);
   });
 });
 
-describe("getOvulationDays", () => {
+describe("getOvulationDates", () => {
   test("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     jest.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getOvulationDays([])).toEqual([]);
+    expect(getOvulationDates([])).toEqual([]);
   });
 
   test("cycles array has 1 item", () => {
@@ -1127,7 +1127,7 @@ describe("getOvulationDays", () => {
       startDate: date.toString(),
     });
 
-    expect(getOvulationDays(cycles)).toEqual([]);
+    expect(getOvulationDates(cycles)).toEqual([]);
   });
 
   test("cycles array has a 6 items", () => {
@@ -1178,6 +1178,6 @@ describe("getOvulationDays", () => {
       }
     }
 
-    expect(getOvulationDays(cycles)).toEqual(ovulationDays);
+    expect(getOvulationDates(cycles)).toEqual(ovulationDays);
   });
 });
