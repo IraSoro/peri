@@ -29,6 +29,7 @@ import {
 import { CyclesContext, ThemeContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
+import { configuration } from "../data/AppConfiguration";
 
 import Welcome from "../modals/WelcomeModal";
 import InfoModal from "../modals/InfoModal";
@@ -367,7 +368,7 @@ const TabHome = () => {
     <IonPage
       style={{ backgroundColor: `var(--ion-color-background-${theme})` }}
     >
-      {false && <DemoAlert />}
+      {configuration.features.demoMode && <DemoAlert />}
       <div
         id="wide-screen"
         className={theme}

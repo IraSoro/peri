@@ -5,5 +5,6 @@ export const configuration = {
   features: {
     useCustomVersionUpdate:
       process.env.REACT_APP_FEATURE_USE_CUSTOM_VERSION_UPDATE === "true",
+    demoMode: process.env.REACT_APP_FEATURE_DEMO_MODE === "true",
   },
 };
