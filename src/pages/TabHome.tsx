@@ -63,24 +63,37 @@ const InfoButton = (props: InfoButtonProps) => {
 
   const pregnancyChance = getPregnancyChance(cycles);
   if (cycles.length === 0) {
-    return <p style={{ marginBottom: "20px", height: "20px" }}></p>;
+    return <p style={{ marginBottom: "20px", height: "22px" }}></p>;
   }
   return (
-    <IonLabel onClick={() => props.setIsInfoModal(true)}>
+    <IonLabel
+      onClick={() => props.setIsInfoModal(true)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
       <p
         style={{
           fontSize: "14px",
           color: "var(--ion-color-medium)",
           marginBottom: "20px",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        <span style={{ color: `var(--ion-color-text-${theme})` }}>
+        <span
+          style={{
+            color: `var(--ion-color-text-${theme})`,
+            marginRight: "3px",
+          }}
+        >
           {pregnancyChance}
-        </span>{" "}
+        </span>
         - {t("chance of getting pregnant")}
         <IonIcon
           color="medium"
-          slot="end"
+          style={{ fontSize: "22px", marginLeft: "5px" }}
           icon={chevronForwardOutline}
         />
       </p>
