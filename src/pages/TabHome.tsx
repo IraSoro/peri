@@ -92,7 +92,7 @@ const InfoButton = (props: InfoButtonProps) => {
         </span>
         - {t("chance of getting pregnant")}
         <IonIcon
-          color="medium"
+          color={`dark-${theme}`}
           style={{ fontSize: "22px", marginLeft: "5px" }}
           icon={chevronForwardOutline}
         />
