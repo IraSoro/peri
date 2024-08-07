@@ -152,7 +152,7 @@ const Importer = () => {
     await changeTranslation(config.language);
     await confirmAlert({
       header: t("Configuration has been imported"),
-      cssClass: "header-color",
+      cssClass: `${theme}`,
       buttons: [
         {
           text: "OK",
