@@ -94,9 +94,6 @@ const App = (props: AppProps) => {
   }
 
   function updateTheme(newTheme: string) {
-    if (newTheme === "dark (beta)") {
-      newTheme = "dark";
-    }
     if (newTheme === "light") {
       newTheme = "basic";
     }

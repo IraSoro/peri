@@ -15,7 +15,7 @@ import {
   cloudDownloadOutline,
   cloudUploadOutline,
   globeOutline,
-  colorFilterOutline,
+  colorFillOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -92,7 +92,7 @@ const ThemeSwitcher = () => {
   const { theme, updateTheme } = useContext(ThemeContext);
 
   const themesList = [];
-  for (const item of ["light", "dark (beta)"]) {
+  for (const item of ["light", "dark"]) {
     themesList.push(
       <IonSelectOption
         key={item}
@@ -107,15 +107,13 @@ const ThemeSwitcher = () => {
     <IonItem>
       <IonIcon
         slot="start"
-        icon={colorFilterOutline}
+        icon={colorFillOutline}
         color={`text-${theme}`}
       />
 
       <IonSelect
         className={theme}
-        value={
-          theme === "dark" ? "dark (beta)" : theme === "basic" ? "light" : theme
-        }
+        value={theme === "basic" ? "light" : theme}
         interface="popover"
         justify="space-between"
         interfaceOptions={{
@@ -152,7 +150,7 @@ const Importer = () => {
     await changeTranslation(config.language);
     await confirmAlert({
       header: t("Configuration has been imported"),
-      cssClass: "header-color",
+      cssClass: `${theme}`,
       buttons: [
         {
           text: "OK",
