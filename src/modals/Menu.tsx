@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  IonChip,
   IonIcon,
   IonItem,
   IonLabel,
@@ -16,6 +17,7 @@ import {
   cloudUploadOutline,
   globeOutline,
   colorFillOutline,
+  logoGithub,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -267,24 +269,37 @@ export const Menu = (props: MenuProps) => {
           </IonItem>
         )}
       </IonList>
-      <IonItem
-        color="none"
-        lines="none"
+      <IonList
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
-        <IonLabel
-          style={{ fontSize: "13px" }}
-          color="medium"
+        <IonChip outline>
+          <IonIcon icon={logoGithub}></IonIcon>
+          <IonLabel>We are on GitHub</IonLabel>
+        </IonChip>
+        <IonItem
+          color="none"
+          lines="none"
+          style={{ width: "100%" }}
         >
-          Peri - The Period Tracker App
-        </IonLabel>
-        <IonLabel
-          style={{ fontSize: "13px" }}
-          color="medium"
-          slot="end"
-        >
-          {configuration.app.version}
-        </IonLabel>
-      </IonItem>
+          <IonLabel
+            style={{ fontSize: "13px" }}
+            color="medium"
+          >
+            Peri - The Period Tracker App
+          </IonLabel>
+          <IonLabel
+            style={{ fontSize: "13px" }}
+            color="medium"
+            slot="end"
+          >
+            {configuration.app.version}
+          </IonLabel>
+        </IonItem>
+      </IonList>
     </IonMenu>
   );
 };
