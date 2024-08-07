@@ -92,7 +92,7 @@ const ThemeSwitcher = () => {
   const { theme, updateTheme } = useContext(ThemeContext);
 
   const themesList = [];
-  for (const item of ["light", "dark (beta)"]) {
+  for (const item of ["light", "dark"]) {
     themesList.push(
       <IonSelectOption
         key={item}
@@ -113,9 +113,7 @@ const ThemeSwitcher = () => {
 
       <IonSelect
         className={theme}
-        value={
-          theme === "dark" ? "dark (beta)" : theme === "basic" ? "light" : theme
-        }
+        value={theme === "basic" ? "light" : theme}
         interface="popover"
         justify="space-between"
         interfaceOptions={{
