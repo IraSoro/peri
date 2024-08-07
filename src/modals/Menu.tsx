@@ -286,7 +286,7 @@ export const Menu = (props: MenuProps) => {
             icon={logoGithub}
             color={`text-${theme}`}
           />
-          <IonLabel>We are on GitHub</IonLabel>
+          <IonLabel>{t("We are on GitHub")}</IonLabel>
         </IonChip>
         <IonItem
           color="none"

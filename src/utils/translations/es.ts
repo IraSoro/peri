@@ -91,6 +91,7 @@ const es = {
   "This is just a demo": "Esto es solo una demostración",
   "You can download the application ": "Puedes descargar la aplicación ",
   here: "Aquí",
+  "We are on GitHub": "Estamos en GitHub",
 };
 
 export default es;
