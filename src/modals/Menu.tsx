@@ -15,7 +15,7 @@ import {
   cloudDownloadOutline,
   cloudUploadOutline,
   globeOutline,
-  colorFilterOutline,
+  colorFillOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -107,7 +107,7 @@ const ThemeSwitcher = () => {
     <IonItem>
       <IonIcon
         slot="start"
-        icon={colorFilterOutline}
+        icon={colorFillOutline}
         color={`text-${theme}`}
       />
 
