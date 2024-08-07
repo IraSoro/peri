@@ -276,8 +276,14 @@ export const Menu = (props: MenuProps) => {
           alignItems: "center",
         }}
       >
-        <IonChip outline>
-          <IonIcon icon={logoGithub}></IonIcon>
+        <IonChip
+          outline
+          color={`text-${theme}`}
+        >
+          <IonIcon
+            icon={logoGithub}
+            color={`text-${theme}`}
+          />
           <IonLabel>We are on GitHub</IonLabel>
         </IonChip>
         <IonItem
