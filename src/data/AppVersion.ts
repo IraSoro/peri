@@ -70,3 +70,8 @@ export async function downloadLatestRelease() {
   const latestRelease = await getLatestReleaseInfo();
   window.open(latestRelease.htmlUrl, "_system", "location=yes");
 }
+
+const homepageURL = "https://github.com/IraSoro/peri";
+export function openGitHubPage() {
+  window.open(homepageURL, "_system", "location=yes");
+}

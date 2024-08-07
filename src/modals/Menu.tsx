@@ -26,6 +26,7 @@ import { exportConfig, importConfig } from "../data/Config";
 import {
   downloadLatestRelease,
   isNewVersionAvailable,
+  openGitHubPage,
 } from "../data/AppVersion";
 import { CyclesContext, ThemeContext } from "../state/Context";
 import {
@@ -279,6 +280,7 @@ export const Menu = (props: MenuProps) => {
         <IonChip
           outline
           color={`text-${theme}`}
+          onClick={() => openGitHubPage()}
         >
           <IonIcon
             icon={logoGithub}
