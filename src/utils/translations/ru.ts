@@ -89,6 +89,7 @@ const ru = {
   "This is just a demo": "Это только demo",
   "You can download the application ": "Загрузить приложение можно ",
   here: "тут",
+  "We are on GitHub": "Мы в GitHub",
 };
 
 export default ru;

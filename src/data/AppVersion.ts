@@ -70,3 +70,12 @@ export async function downloadLatestRelease() {
   const latestRelease = await getLatestReleaseInfo();
   window.open(latestRelease.htmlUrl, "_system", "location=yes");
 }
+
+export const homepageURL = "https://github.com/IraSoro/peri";
+export function openGitHubPage() {
+  if (isPlatform("desktop")) {
+    window.open(homepageURL, "_blank")?.focus();
+    return;
+  }
+  window.open(homepageURL, "_system", "location=yes");
+}
