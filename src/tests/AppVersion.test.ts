@@ -3,7 +3,9 @@ import {
   GithubReleaseAsset,
   GithubReleaseInfo,
   downloadLatestRelease,
+  homepageURL,
   isNewVersionAvailable,
+  openGitHubPage,
 } from "../data/AppVersion";
 import { configuration } from "../data/AppConfiguration";
 
@@ -149,6 +151,31 @@ test("Download latest release", async () => {
   expect(mockedWindowOpen).toHaveBeenNthCalledWith(
     1,
     "https://some-html-url.com",
+    "_system",
+    "location=yes",
+  );
+});
+
+test("Open Github page on desktop", () => {
+  jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+  // @ts-expect-error Mock
+  const mockedWindowOpen = jest.spyOn(window, "open").mockReturnValue({
+    focus: jest.fn().mockReturnValue(0),
+  });
+
+  openGitHubPage();
+  expect(mockedWindowOpen).toHaveBeenNthCalledWith(1, homepageURL, "_blank");
+});
+
+test("Open Github page on android", () => {
+  jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+  // @ts-expect-error Mock
+  const mockedWindowOpen = jest.spyOn(window, "open").mockReturnValue({});
+
+  openGitHubPage();
+  expect(mockedWindowOpen).toHaveBeenNthCalledWith(
+    1,
+    homepageURL,
     "_system",
     "location=yes",
   );

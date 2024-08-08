@@ -71,7 +71,7 @@ export async function downloadLatestRelease() {
   window.open(latestRelease.htmlUrl, "_system", "location=yes");
 }
 
-const homepageURL = "https://github.com/IraSoro/peri";
+export const homepageURL = "https://github.com/IraSoro/peri";
 export function openGitHubPage() {
   if (isPlatform("desktop")) {
     window.open(homepageURL, "_blank")?.focus();
