@@ -73,5 +73,9 @@ export async function downloadLatestRelease() {
 
 const homepageURL = "https://github.com/IraSoro/peri";
 export function openGitHubPage() {
+  if (isPlatform("desktop")) {
+    window.open(homepageURL, "_blank")?.focus();
+    return;
+  }
   window.open(homepageURL, "_system", "location=yes");
 }
