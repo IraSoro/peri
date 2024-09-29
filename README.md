@@ -79,9 +79,15 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 You can find the full instruction about the project building in [BUILDING.md](https://github.com/IraSoro/peri/blob/master/BUILDING.md) file.
 
-### Help with translation
+### Contribution
+
+#### Help with translation
 
 We welcome contributions to translate our application into different languages. If you want help with translations, you can find complete instructions in [CONTRIBUTING.md](https://github.com/IraSoro/peri/blob/master/CONTRIBUTING.md) file.
+
+#### Other
+
+We also welcome any other suggestions for improving the project. If you want to contribute to the project beyond translations, we would be glad to have you participate in our [discussions](https://github.com/IraSoro/peri/discussions).
 
 ### Algorithms and calculations
 
