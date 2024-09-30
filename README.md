@@ -4,12 +4,17 @@
   <p align="center">
     The Period Tracker App
   </p>
-  <p align="center">
-    <a href="https://irasoro.github.io/peri/">View Demo</a>
-  </p>
-  <p align="center">
-    <a href="https://github.com/IraSoro/peri/releases/latest">Download .apk file</a>
-  </p>
+  <h1 align="center">
+    <a href="https://irasoro.github.io/peri/" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/Demo-eae7ff?logo=&logoColor=grey&style=for-the-badge" alt="Demo">
+    </a>
+    <a href="https://github.com/IraSoro/peri/releases/latest" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/Download-4c3b9d?&style=for-the-badge" alt="Download">
+    </a>
+    <a href="https://irasoro.github.io/peri-website/" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/Website-c0b6f2?&style=for-the-badge" alt="Website">
+    </a>
+  </h1>
 </p>
 
 ### About the project
@@ -74,9 +79,15 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 You can find the full instruction about the project building in [BUILDING.md](https://github.com/IraSoro/peri/blob/master/BUILDING.md) file.
 
-### Help with translation
+### Contribution
+
+#### Help with translation
 
 We welcome contributions to translate our application into different languages. If you want help with translations, you can find complete instructions in [CONTRIBUTING.md](https://github.com/IraSoro/peri/blob/master/CONTRIBUTING.md) file.
+
+#### Other
+
+We also welcome any other suggestions for improving the project. If you want to contribute to the project beyond translations, we would be glad to have you participate in our [discussions](https://github.com/IraSoro/peri/discussions).
 
 ### Algorithms and calculations
 
