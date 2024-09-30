@@ -7,6 +7,7 @@ const locales = new Map([
   ["en", enUS],
   ["ru", ru],
   ["es", es],
+  ["hi", hi],
 ]);
 
 const defaultLocale = "en";
