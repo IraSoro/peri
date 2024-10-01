@@ -52,9 +52,9 @@ We welcome contributions for translating our application into various languages.
 
 8. Open the file `./src/utils/datetime.ts`. Import the locale from `date-fns/locale` as follows:
 
-   ```ts
-   import { enUS, ru } from "date-fns/locale";
-   ```
+    ```ts
+    import { enUS, ru } from "date-fns/locale";
+    ```
 
 9. And add the locale to the `locales` variable like this:
 
@@ -65,20 +65,16 @@ We welcome contributions for translating our application into various languages.
    ]);
    ```
 
-10. Check the work of the `formatter` and `linter`. To do this, use the following commands:
+10. Build the project (see instructions [here](https://github.com/IraSoro/peri/blob/master/BUILDING.md)).
 
-    ```bash
-    npm run lint
-    npm run fmt:check
-    ```
-
-    To automatically fix formatter errors, you can use the  command:
+11. Check the work of the `formatter` and `linter`. To do this, use the following commands:
 
     ```bash
     npm run fmt
+    npm run lint
     ```
 
-11. Make a Pull Request with the translated file.
+12. Make a Pull Request with the translated file.
 
 ### Guidelines
 
