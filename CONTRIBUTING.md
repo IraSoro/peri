@@ -50,7 +50,13 @@ We welcome contributions for translating our application into various languages.
       },
    ```
 
-8. Open the file `./src/utils/datetime.ts`. Add the locale to the `locales` variable like this:
+8. Open the file `./src/utils/datetime.ts`. Import the locale from `date-fns/locale` as follows:
+
+    ```ts
+    import { enUS, ru } from "date-fns/locale";
+    ```
+
+9. And add the locale to the `locales` variable like this:
 
    ```ts
    const locales = new Map([
@@ -59,7 +65,16 @@ We welcome contributions for translating our application into various languages.
    ]);
    ```
 
-9. Make a Pull Request with the translated file.
+10. Build the project (see instructions [here](https://github.com/IraSoro/peri/blob/master/BUILDING.md)).
+
+11. Check the work of the `formatter` and `linter`. To do this, use the following commands:
+
+    ```bash
+    npm run fmt
+    npm run lint
+    ```
+
+12. Make a Pull Request with the translated file.
 
 ### Guidelines
 
