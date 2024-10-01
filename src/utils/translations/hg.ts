@@ -75,8 +75,7 @@ const hi = {
   puffiness: "Sujan",
   "acne and skin rashes": "Acne aur skin rashes",
   "diarrhea or constipation": "Diarrhea ya constipation",
-  "irritability and depressed mood":
-    "Chidhchidhapan aur udasi",
+  "irritability and depressed mood": "Chidhchidhapan aur udasi",
 
   // Menu
   Preferences: "Preferences",
@@ -95,4 +94,3 @@ const hi = {
 };
 
 export default hi;
-

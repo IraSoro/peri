@@ -5,7 +5,7 @@ import intervalPlural from "i18next-intervalplural-postprocessor";
 import en from "./translations/en";
 import ru from "./translations/ru";
 import es from "./translations/es";
-import hg  from "./translations/hg";
+import hg from "./translations/hg";
 
 import { storage } from "../data/Storage";
 
@@ -34,9 +34,9 @@ export async function init() {
         es: {
           translation: es,
         },
-	hg: {
-		translation: hg,
-	},
+        hg: {
+          translation: hg,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
