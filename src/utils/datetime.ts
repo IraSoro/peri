@@ -1,5 +1,5 @@
 import { format as dateFnsFormat } from "date-fns";
-import { enUS, ru, es } from "date-fns/locale";
+import { enUS, ru, es, fr } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
 
