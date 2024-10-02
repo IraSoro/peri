@@ -81,6 +81,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@capacitor/cli": "5.0.5",
     "@ionic/lab": "3.2.15",
     "gh-pages": "^5.0.0"
