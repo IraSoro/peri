@@ -1,4 +1,4 @@
-const hi = {
+const hg = {
   // Home Tab
   Home: "Ghar",
   "Period in": "Period mein",
@@ -93,4 +93,4 @@ const hi = {
   "We are on GitHub": "Hum GitHub par hain",
 };
 
-export default hi;
+export default hg;
