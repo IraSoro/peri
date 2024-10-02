@@ -42,6 +42,7 @@ export async function init() {
       fallbackLng: {
         ru: ["ru"],
         es: ["es"],
+        hg: ["hg"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
