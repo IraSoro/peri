@@ -5,7 +5,7 @@ import intervalPlural from "i18next-intervalplural-postprocessor";
 import en from "./translations/en";
 import ru from "./translations/ru";
 import es from "./translations/es";
-import hi from "./translations/hi"
+import hi from "./translations/hi";
 import { storage } from "../data/Storage";
 
 export const supportedLanguages = new Map([
