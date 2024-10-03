@@ -6,7 +6,7 @@ import en from "./translations/en";
 import ru from "./translations/ru";
 import es from "./translations/es";
 import fr from "./translations/fr";
-import fr from "./translations/pt";
+import pt from "./translations/pt";
 
 import { storage } from "../data/Storage";
 
