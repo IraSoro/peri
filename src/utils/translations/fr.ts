@@ -8,9 +8,9 @@ const fr = {
   Delay: "Retard",
   Days: "(0)[Jours];(1)[Jour];(2-4)[Jours];(5-20)[Jours];(21)[Jour];(22-24)[Jours];(25-30)[Jours];(31)[Jour];(32-34)[Jours];(35-40)[Jours];",
   "Current cycle day": "Jour actuel du cycle",
-  day: "{{count}}-ème jour",
+  day: "{{count}} me jour",
   Ovulation: "Ovulation",
-  possible: "peut être aujourd'hui",
+  possible: "peut-être aujourd'hui",
   finished: "terminée",
   tomorrow: "demain",
   in: "dans",
@@ -52,7 +52,7 @@ const fr = {
 
   "Follicular phase": "Phase folliculaire",
   "The level of estrogen in this phase rises and reaches a maximum level.":
-    "Le niveau d'œstrogène dans cette phase augmente et atteint un niveau maximum.",
+    "Le niveau d'œstrogène dans cette phase augmente et atteint un niveau maximal.",
   "strength and vigor appear": "force et vigueur apparaissent",
   "endurance increases": "l'endurance augmente",
   "new ideas and plans appear": "de nouvelles idées et plans apparaissent",
