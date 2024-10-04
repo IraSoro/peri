@@ -7,6 +7,7 @@ import ru from "./translations/ru";
 import es from "./translations/es";
 import hg from "./translations/hg";
 import fr from "./translations/fr";
+import de from "./translations/de";
 
 import { storage } from "../data/Storage";
 
@@ -16,6 +17,7 @@ export const supportedLanguages = new Map([
   ["es", "español"],
   ["hg", "hinglish"],
   ["fr", "français"],
+  ["de", "Deutsch"],
 ]);
 
 const defaultLanguageCode = "en";
@@ -36,6 +38,9 @@ export async function init() {
         es: {
           translation: es,
         },
+        de: {
+          translation: de,
+        },
         hg: {
           translation: hg,
           fr: {
@@ -49,6 +54,7 @@ export async function init() {
         es: ["es"],
         hg: ["hg"],
         fr: ["fr"],
+        de: ["de"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
