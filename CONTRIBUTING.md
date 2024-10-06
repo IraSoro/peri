@@ -10,7 +10,15 @@ We welcome contributions for translating our application into various languages.
 
 2. Create a new file for the language by duplicating the `./src/utils/translations/ru.ts` file. Name it using the language code (e.g., `fr.ts` for French translations).
 
-3. Translate the keys into your language.
+3. Translate the keys into your language. Remember to also change the language code in first the line:
+
+   ```ts
+   const ru = {
+   ```
+   And at the end of the file:
+   ```ts
+   export default ru;
+   ```
 
 4. Import translation file in the `./src/utils/translations.ts`. Import the generated file like this:
 
@@ -28,7 +36,7 @@ We welcome contributions for translating our application into various languages.
    ]);
    ```
 
-6. Added language to `resources` like this:
+6. Add language to `resources` like this:
 
    ```ts
    resources: {
@@ -41,7 +49,7 @@ We welcome contributions for translating our application into various languages.
    },
    ```
 
-7. Added language to `fallbackLng` like this:
+7. Add language to `fallbackLng` like this:
 
    ```ts
    fallbackLng: {
