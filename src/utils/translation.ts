@@ -38,9 +38,9 @@ export async function init() {
         },
         hg: {
           translation: hg,
-          fr: {
-            translation: fr,
-          },
+        },
+        fr: {
+          translation: fr,
         },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
