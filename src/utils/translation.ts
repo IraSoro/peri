@@ -21,7 +21,7 @@ export const supportedLanguages = new Map([
   ["hg", "hinglish"],
   ["fr", "français"],
   ["fi", "suomi"],
-  ["id", "bahasa indonesia"]
+  ["id", "bahasa indonesia"],
 ]);
 
 const defaultLanguageCode = "en";
@@ -56,7 +56,7 @@ export async function init() {
         },
         id: {
           translation: id,
-        }
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
