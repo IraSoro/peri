@@ -7,7 +7,6 @@ import ru from "./translations/ru";
 import es from "./translations/es";
 import de from "./translations/de";
 
-
 import { storage } from "../data/Storage";
 
 export const supportedLanguages = new Map([
@@ -15,7 +14,6 @@ export const supportedLanguages = new Map([
   ["ru", "русский"],
   ["es", "español"],
   ["de", "deutsch"],
-  
 ]);
 
 const defaultLanguageCode = "en";
