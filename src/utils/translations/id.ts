@@ -6,7 +6,7 @@ const id = {
   Period: "Haid",
   today: "hari ini",
   Delay: "Terlambat",
-  Days: "(0)[Hari];(1)[Hari];(2-4)[Hari];(5-20)[Hari];(21)[Hari];(22-24)[Hari];(25-30)[Hari];(31)[Hari];(32-34)[Hari];(35-40)[Hari];",
+  Days: "(0-inf)[Hari]",
   "Current cycle day": "Hari siklus saat ini",
   day: "{{count}}-hari",
   Ovulation: "Ovulasi",
