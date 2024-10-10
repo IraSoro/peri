@@ -9,6 +9,7 @@ import hi from "./translations/hi";
 import hg from "./translations/hg";
 import fr from "./translations/fr";
 import fi from "./translations/fi";
+import id from "./translations/id";
 
 import { storage } from "../data/Storage";
 
@@ -20,6 +21,7 @@ export const supportedLanguages = new Map([
   ["hg", "hinglish"],
   ["fr", "français"],
   ["fi", "suomi"],
+  ["id", "bahasa indonesia"]
 ]);
 
 const defaultLanguageCode = "en";
@@ -52,6 +54,9 @@ export async function init() {
         fi: {
           translation: fi,
         },
+        id: {
+          translation: id,
+        }
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -61,6 +66,7 @@ export async function init() {
         hg: ["hg"],
         fr: ["fr"],
         fi: ["fi"],
+        id: ["id"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
