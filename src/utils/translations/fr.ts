@@ -6,7 +6,7 @@ const fr = {
   Period: "Règles",
   today: "aujourd'hui",
   Delay: "Retard",
-  Days: "(0)[Jours];(1)[Jour];(2-inf)[Jours];",
+  Days: "(0)[Jour];(1)[Jour];(2-inf)[Jours];",
   "Current cycle day": "Jour actuel du cycle",
   day_ordinal_one: "{{count}} r jour",
   day_ordinal_other: "{{count}} me jour",
