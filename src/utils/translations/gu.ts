@@ -1,16 +1,16 @@
 const gu = {
   // Home Tab
   Home: "ઘર",
-  "Period in": "માસિક ધારામાં",
+  "Period in": "માસિક ધારા",
   "no info": "માહિતી વિના",
   Period: "માસિક",
   today: "આજે",
   Delay: "વિલંબ",
-  Days: "(0-inf)[દિવસ];",
+  Days: "(0-inf)[દિવસમાં];",
   "Current cycle day": "વર્તમાન ચક્ર દિવસ",
   day: "દિવસ {{count}}",
-  Ovulation: "અંડોત્સર્જન ",
-  possible: "આજે શક્ય",
+  Ovulation: "અંડોત્સર્જન",
+  possible: "શક્ય",
   finished: "સમાપ્ત",
   tomorrow: "આવતીકાલે",
   in: "મા",
@@ -20,13 +20,14 @@ const gu = {
   "Period today": "આજે માસિક",
   edit: "ફેરફાર કરો",
   save: "સાચવો",
-  "Period is": "માસિક છે",
+  "Period is": "માસિક",
   "possible today": "આજે શક્ય છે",
   // Details Tab
   Details: "વિગતો",
   "Period length": "માસિક ધારાની લંબાઈ",
   "Cycle length": "માસિક ચક્રની લંબાઈ",
-  "You haven't marked any periods yet": "તમે હજુ સુધી કોઈ માસિક ધારા ચિહ્નિત કર્યા નથી",
+  "You haven't marked any periods yet":
+    "તમે હજુ સુધી કોઈ માસિક ધારા ચિહ્નિત કર્યા નથી",
   // Mark Modal
   mark: "ચિહ્નિત કરો",
   cancel: "રદ કરો",
@@ -42,7 +43,8 @@ const gu = {
   "is current phase of cycle": "માસિક ચક્રનો વર્તમાન તબક્કો છે",
   // Phases info
   "Menstrual phase": "માસિક તબક્કો",
-  "This cycle is accompanied by low hormone levels.": "આ ચક્રમાં હોર્મોન સ્તર ઓછું છે.",
+  "This cycle is accompanied by low hormone levels.":
+    "આ ચક્રમાં હોર્મોન સ્તર ઓછું છે.",
   "lack of energy and strength": "ઊર્જા અને શક્તિનો અભાવ",
   pain: "દર્દ",
   "weakness and irritability": "નબળાઇ અને ચીડિયાપણું",
@@ -63,7 +65,7 @@ const gu = {
   "optimistic mood": "આશાવાદી મનોભાવ",
   "mild fever": "થોડું તાવ",
   "lower abdominal pain": "પેટમાં દુખાવો",
-  "chest discomfort and bloating": "છાતીમાં અસ્વસ્થતા અને ફૂલાવું ",
+  "chest discomfort and bloating": "છાતીમાં અસ્વસ્થતા અને ફૂલાવું",
   "characteristic secretions": "લાક્ષણિક સ્ત્રાવ",
 
   "Luteal phase": "લ્યુટિયલ તબક્કો",
