@@ -6,6 +6,10 @@ import en from "./translations/en";
 import ru from "./translations/ru";
 import es from "./translations/es";
 import tl from "./translations/tl";
+import hi from "./translations/hi";
+import hg from "./translations/hg";
+import fr from "./translations/fr";
+import fi from "./translations/fi";
 
 import { storage } from "../data/Storage";
 
@@ -14,6 +18,10 @@ export const supportedLanguages = new Map([
   ["ru", "русский"],
   ["es", "español"],
   ["tl", "tagalog"],
+  ["hi", "हिन्दी"],
+  ["hg", "hinglish"],
+  ["fr", "français"],
+  ["fi", "suomi"],
 ]);
 
 const defaultLanguageCode = "en";
@@ -37,12 +45,28 @@ export async function init() {
         tl: {
           translation: tl,
         },
+        hi: {
+          translation: hi,
+        },
+        hg: {
+          translation: hg,
+        },
+        fr: {
+          translation: fr,
+        },
+        fi: {
+          translation: fi,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
         ru: ["ru"],
         es: ["es"],
         tl: ["tl"],
+        hi: ["hi"],
+        hg: ["hg"],
+        fr: ["fr"],
+        fi: ["fi"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
