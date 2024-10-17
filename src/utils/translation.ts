@@ -5,6 +5,7 @@ import intervalPlural from "i18next-intervalplural-postprocessor";
 import en from "./translations/en";
 import ru from "./translations/ru";
 import es from "./translations/es";
+import tl from "./translations/tl";
 import hi from "./translations/hi";
 import hg from "./translations/hg";
 import fr from "./translations/fr";
@@ -16,6 +17,7 @@ export const supportedLanguages = new Map([
   ["en", "english"],
   ["ru", "русский"],
   ["es", "español"],
+  ["tl", "tagalog"],
   ["hi", "हिन्दी"],
   ["hg", "hinglish"],
   ["fr", "français"],
@@ -40,6 +42,9 @@ export async function init() {
         es: {
           translation: es,
         },
+        tl: {
+          translation: tl,
+        },
         hi: {
           translation: hi,
         },
@@ -57,6 +62,7 @@ export async function init() {
       fallbackLng: {
         ru: ["ru"],
         es: ["es"],
+        tl: ["tl"],
         hi: ["hi"],
         hg: ["hg"],
         fr: ["fr"],
