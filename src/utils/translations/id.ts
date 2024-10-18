@@ -1,7 +1,7 @@
 const id = {
   // Home Tab
   Home: "Beranda",
-  "Period in": "Haid akan dimulai dalam",
+  "Period in": "Haid dalam",
   "no info": "tidak ada informasi",
   Period: "Haid",
   today: "hari ini",
