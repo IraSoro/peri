@@ -26,7 +26,8 @@ const de = {
   Details: "Details",
   "Period length": "Dauer der Monatsblutung",
   "Cycle length": "Zykluslänge",
-  "You haven't marked any periods yet": "Sie haben noch keine Tage der Monatsblutung markiert",
+  "You haven't marked any periods yet":
+    "Sie haben noch keine Tage der Monatsblutung markiert",
   // Mark Modal
   mark: "markieren",
   cancel: "Abbrechen",
@@ -74,8 +75,7 @@ const de = {
   puffiness: "Schwellung",
   "acne and skin rashes": "Akne und Hautausschläge",
   "diarrhea or constipation": "Durchfall oder Verstopfung",
-  "irritability and depressed mood":
-    "Reizbarkeit und gedrückte Stimmung",
+  "irritability and depressed mood": "Reizbarkeit und gedrückte Stimmung",
   // Menu
   Preferences: "Einstellungen",
   Edit: "Bearbeiten",
@@ -87,9 +87,10 @@ const de = {
   "Download latest version": "Neueste Version herunterladen",
   // Alert Demo
   "This is just a demo": "Das ist nur eine Demo",
-  "You can download the application ": "Die Anwendung kann heruntergeladen werden ",
+  "You can download the application ":
+    "Die Anwendung kann heruntergeladen werden ",
   here: "hier",
-  "We are on GitHub": "Wir sind auf GitHub"
+  "We are on GitHub": "Wir sind auf GitHub",
 };
 
 export default de;
