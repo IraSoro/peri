@@ -14,9 +14,9 @@ import fi from "./translations/fi";
 import id from "./translations/id";
 import gu from "./translations/gu";
 import vi from "./translations/vi";
+import ta from "./translations/ta";
 
 import { storage } from "../data/Storage";
-import ta from "./translations/ta";
 
 export const supportedLanguages = new Map([
   ["en", "english"],
@@ -43,9 +43,6 @@ export async function init() {
     .use(intervalPlural)
     .init({
       resources: {
-        ta:{
-          translation: ta,
-        },
         en: {
           translation: en,
         },
@@ -82,6 +79,9 @@ export async function init() {
         vi: {
           translation: vi,
         },
+        ta: {
+          translation: ta,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -96,7 +96,7 @@ export async function init() {
         id: ["id"],
         gu: ["gu"],
         vi: ["vi"],
-        ta:["ta"],
+        ta: ["ta"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
