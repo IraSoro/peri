@@ -16,6 +16,7 @@ import gu from "./translations/gu";
 import vi from "./translations/vi";
 
 import { storage } from "../data/Storage";
+import ta from "./translations/ta";
 
 export const supportedLanguages = new Map([
   ["en", "english"],
@@ -30,6 +31,7 @@ export const supportedLanguages = new Map([
   ["id", "bahasa indonesia"],
   ["gu", "ગુજરાતી"],
   ["vi", "tiếng Việt"],
+  ["ta", "தமிழ்"],
 ]);
 
 const defaultLanguageCode = "en";
@@ -41,6 +43,9 @@ export async function init() {
     .use(intervalPlural)
     .init({
       resources: {
+        ta:{
+          translation: ta,
+        },
         en: {
           translation: en,
         },
@@ -91,6 +96,7 @@ export async function init() {
         id: ["id"],
         gu: ["gu"],
         vi: ["vi"],
+        ta:["ta"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
