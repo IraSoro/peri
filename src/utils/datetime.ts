@@ -1,5 +1,5 @@
 import { format as dateFnsFormat } from "date-fns";
-import { enUS, ru, es, de, fr, hi, fi, id, gu, vi } from "date-fns/locale";
+import { enUS, ru, es, de, fr, hi, fi, id, gu, vi, ta } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
 
@@ -16,6 +16,7 @@ const locales = new Map([
   ["id", id],
   ["gu", gu],
   ["vi", vi],
+  ["ta", ta],
 ]);
 
 const defaultLocale = "en";

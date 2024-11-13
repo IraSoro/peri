@@ -14,6 +14,7 @@ import fi from "./translations/fi";
 import id from "./translations/id";
 import gu from "./translations/gu";
 import vi from "./translations/vi";
+import ta from "./translations/ta";
 
 import { storage } from "../data/Storage";
 
@@ -30,6 +31,7 @@ export const supportedLanguages = new Map([
   ["id", "bahasa indonesia"],
   ["gu", "ગુજરાતી"],
   ["vi", "tiếng Việt"],
+  ["ta", "தமிழ்"],
 ]);
 
 const defaultLanguageCode = "en";
@@ -77,6 +79,9 @@ export async function init() {
         vi: {
           translation: vi,
         },
+        ta: {
+          translation: ta,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -91,6 +96,7 @@ export async function init() {
         id: ["id"],
         gu: ["gu"],
         vi: ["vi"],
+        ta: ["ta"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
