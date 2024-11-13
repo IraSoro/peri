@@ -17,21 +17,26 @@ import vi from "./translations/vi";
 import ta from "./translations/ta";
 
 import { storage } from "../data/Storage";
+import { configuration } from "../data/AppConfiguration";
 
-export const supportedLanguages = new Map([
-  ["id", "bahasa indonesia"],
+export const supportedLanguages = new Map<string, string>([
   ["fr", "français"],
   ["de", "deutsch"],
   ["es", "español"],
   ["fi", "suomi"],
-  ["gu", "ગુજરાતી"],
   ["hi", "हिन्दी"],
-  ["hg", "hinglish"],
   ["en", "english"],
   ["ru", "русский"],
-  ["tl", "tagalog"],
-  ["ta", "தமிழ்"],
-  ["vi", "tiếng Việt"],
+  ...(configuration.features.moreLanguages
+    ? ([
+        ["id", "bahasa indonesia"],
+        ["gu", "ગુજરાતી"],
+        ["hg", "hinglish"],
+        ["tl", "tagalog"],
+        ["ta", "தமிழ்"],
+        ["vi", "tiếng Việt"],
+      ] as const)
+    : []),
 ]);
 
 const defaultLanguageCode = "en";
