@@ -19,19 +19,19 @@ import ta from "./translations/ta";
 import { storage } from "../data/Storage";
 
 export const supportedLanguages = new Map([
-  ["en", "english"],
-  ["ru", "русский"],
-  ["es", "español"],
-  ["tl", "tagalog"],
+  ["id", "bahasa indonesia"],
+  ["fr", "français"],
   ["de", "deutsch"],
+  ["es", "español"],
+  ["fi", "suomi"],
+  ["gu", "ગુજરાતી"],
   ["hi", "हिन्दी"],
   ["hg", "hinglish"],
-  ["fr", "français"],
-  ["fi", "suomi"],
-  ["id", "bahasa indonesia"],
-  ["gu", "ગુજરાતી"],
-  ["vi", "tiếng Việt"],
+  ["en", "english"],
+  ["ru", "русский"],
+  ["tl", "tagalog"],
   ["ta", "தமிழ்"],
+  ["vi", "tiếng Việt"],
 ]);
 
 const defaultLanguageCode = "en";
