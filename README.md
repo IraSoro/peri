@@ -74,15 +74,15 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 Our application supports the following languages:
 
 - Bahasa Indonesia (Bahasa Indonesia)
+- English (English)
+- Finnish (Suomi)
 - French (Français)
 - German (Deutsch)
-- Spanish (Español)
-- Finnish (Suomi)
 - Gujarati (ગુજરાતી)
 - Hindi (हिन्दी)
 - Hinglish (Hinglish)
-- English (English)
 - Russian (Русский)
+- Spanish (Español)
 - Tagalog (Tagalog)
 - Tamil (தமிழ்)
 - Vietnamese (Tiếng Việt)

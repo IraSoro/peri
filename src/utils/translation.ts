@@ -20,20 +20,20 @@ import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
 
 export const supportedLanguages = new Map<string, string>([
-  ["fr", "français"],
+  ["en", "english"],
   ["de", "deutsch"],
   ["es", "español"],
   ["fi", "suomi"],
+  ["fr", "français"],
   ["hi", "हिन्दी"],
-  ["en", "english"],
   ["ru", "русский"],
-  ...(configuration.features.moreLanguages
+  ...(configuration.features.betaLanguages
     ? ([
-        ["id", "bahasa indonesia"],
         ["gu", "ગુજરાતી"],
         ["hg", "hinglish"],
-        ["tl", "tagalog"],
+        ["id", "bahasa indonesia"],
         ["ta", "தமிழ்"],
+        ["tl", "tagalog"],
         ["vi", "tiếng Việt"],
       ] as const)
     : []),
