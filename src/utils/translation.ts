@@ -15,6 +15,7 @@ import id from "./translations/id";
 import gu from "./translations/gu";
 import vi from "./translations/vi";
 import ta from "./translations/ta";
+import fa from "./translations/fa";
 
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -27,6 +28,7 @@ export const supportedLanguages = new Map<string, string>([
   ["fr", "français"],
   ["hi", "हिन्दी"],
   ["ru", "русский"],
+  ["fa", "پارسی"],
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી"],
@@ -69,6 +71,9 @@ export async function init() {
         hg: {
           translation: hg,
         },
+        fa: {
+          translation: fa,
+        },
         fr: {
           translation: fr,
         },
@@ -96,6 +101,7 @@ export async function init() {
         de: ["de"],
         hi: ["hi"],
         hg: ["hg"],
+        fa: ["fa"],
         fr: ["fr"],
         fi: ["fi"],
         id: ["id"],
