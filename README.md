@@ -71,9 +71,23 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 ### Supported languages
 
-- English
-- Russian
-- Spanish
+Our application supports the following languages:
+
+- Bahasa Indonesia (Bahasa Indonesia)
+- English (English)
+- Finnish (Suomi)
+- French (Français)
+- German (Deutsch)
+- Gujarati (ગુજરાતી)
+- Hindi (हिन्दी)
+- Hinglish (Hinglish)
+- Russian (Русский)
+- Spanish (Español)
+- Tagalog (Tagalog)
+- Tamil (தமிழ்)
+- Vietnamese (Tiếng Việt)
+
+You can find the translations files in [this]((https://github.com/IraSoro/peri/tree/master/src/utils/translations)) folder.
 
 ### How to build
 
@@ -81,13 +95,7 @@ You can find the full instruction about the project building in [BUILDING.md](ht
 
 ### Contribution
 
-#### Help with translation
-
-We welcome contributions to translate our application into different languages. If you want help with translations, you can find complete instructions in [CONTRIBUTING.md](https://github.com/IraSoro/peri/blob/master/CONTRIBUTING.md) file.
-
-#### Other
-
-We also welcome any other suggestions for improving the project. If you want to contribute to the project beyond translations, we would be glad to have you participate in our [discussions](https://github.com/IraSoro/peri/discussions).
+We welcome contributions to translate our application into different languages. Also to edit existing translations. If you want help us, you can find complete instructions in [CONTRIBUTING.md](https://github.com/IraSoro/peri/blob/master/CONTRIBUTING.md) file or in [issues](https://github.com/IraSoro/peri/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
 
 ### Algorithms and calculations
 

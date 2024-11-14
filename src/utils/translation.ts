@@ -17,21 +17,26 @@ import vi from "./translations/vi";
 import ta from "./translations/ta";
 
 import { storage } from "../data/Storage";
+import { configuration } from "../data/AppConfiguration";
 
-export const supportedLanguages = new Map([
+export const supportedLanguages = new Map<string, string>([
   ["en", "english"],
-  ["ru", "русский"],
-  ["es", "español"],
-  ["tl", "tagalog"],
   ["de", "deutsch"],
-  ["hi", "हिन्दी"],
-  ["hg", "hinglish"],
-  ["fr", "français"],
+  ["es", "español"],
   ["fi", "suomi"],
-  ["id", "bahasa indonesia"],
-  ["gu", "ગુજરાતી"],
-  ["vi", "tiếng Việt"],
-  ["ta", "தமிழ்"],
+  ["fr", "français"],
+  ["hi", "हिन्दी"],
+  ["ru", "русский"],
+  ...(configuration.features.betaLanguages
+    ? ([
+        ["gu", "ગુજરાતી"],
+        ["hg", "hinglish"],
+        ["id", "bahasa indonesia"],
+        ["ta", "தமிழ்"],
+        ["tl", "tagalog"],
+        ["vi", "tiếng Việt"],
+      ] as const)
+    : []),
 ]);
 
 const defaultLanguageCode = "en";
