@@ -28,13 +28,13 @@ export const supportedLanguages = new Map<string, string>([
   ["fr", "français"],
   ["hi", "हिन्दी"],
   ["ru", "русский"],
-  ["fa", "پارسی"],
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી"],
         ["hg", "hinglish"],
         ["id", "bahasa indonesia"],
         ["ta", "தமிழ்"],
+        ["fa", "پارسی"],
         ["tl", "tagalog"],
         ["vi", "tiếng Việt"],
       ] as const)
