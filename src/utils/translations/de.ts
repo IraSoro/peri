@@ -23,7 +23,7 @@ const de = {
   "Period is": "Periode ist",
   "possible today": "heute möglich",
   // Details Tab
-  Details: "Einzelheiten",
+  Details: "Statistik",
   "Period length": "Periodenlänge",
   "Cycle length": "Zykluslänge",
   "You haven't marked any periods yet": "Sie haben noch keine Stunden markiert",

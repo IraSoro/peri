@@ -6,7 +6,7 @@ const es = {
   Period: "Menstruación",
   today: "Hoy",
   Delay: "Retraso",
-  Days: "(0)[Días];(1)[Día];(2-4)[Días];(5-20)[Días];(21)[Día];(22-24)[Días];(25-30)[Días];(31)[Día];(32-34)[Días];(35-40)[Días];",
+  Days: "(0)[Días];(1)[Día];(2-inf)[Días]",
   "Current cycle day": "Día actual del ciclo",
   day: "{{count}}º día",
   Ovulation: "Ovulación",
