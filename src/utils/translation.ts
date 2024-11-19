@@ -30,13 +30,13 @@ export const supportedLanguages = new Map<string, string>([
   ["ru", "русский"],
   ...(configuration.features.betaLanguages
     ? ([
-        ["gu", "ગુજરાતી"],
-        ["hg", "hinglish"],
-        ["id", "bahasa indonesia"],
-        ["ta", "தமிழ்"],
-        ["fa", "پارسی"],
-        ["tl", "tagalog"],
-        ["vi", "tiếng Việt"],
+        ["gu", "ગુજરાતી (β)"],
+        ["hg", "hinglish (β)"],
+        ["id", "bahasa indonesia (β)"],
+        ["ta", "தமிழ் (β)"],
+        ["fa", "پارسی (β)"],
+        ["tl", "tagalog (β)"],
+        ["vi", "tiếng Việt (β)"],
       ] as const)
     : []),
 ]);
