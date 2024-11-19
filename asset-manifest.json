@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/peri/static/css/main.de503f84.css",
-    "main.js": "/peri/static/js/main.e4c84415.js",
+    "main.js": "/peri/static/js/main.c2b0f09a.js",
     "static/js/3201.14a2a300.chunk.js": "/peri/static/js/3201.14a2a300.chunk.js",
     "static/js/3809.90df2497.chunk.js": "/peri/static/js/3809.90df2497.chunk.js",
     "static/js/2291.92527df0.chunk.js": "/peri/static/js/2291.92527df0.chunk.js",
@@ -91,7 +91,7 @@
     "service-worker.js": "/peri/service-worker.js",
     "index.html": "/peri/index.html",
     "main.de503f84.css.map": "/peri/static/css/main.de503f84.css.map",
-    "main.e4c84415.js.map": "/peri/static/js/main.e4c84415.js.map",
+    "main.c2b0f09a.js.map": "/peri/static/js/main.c2b0f09a.js.map",
     "3201.14a2a300.chunk.js.map": "/peri/static/js/3201.14a2a300.chunk.js.map",
     "3809.90df2497.chunk.js.map": "/peri/static/js/3809.90df2497.chunk.js.map",
     "2291.92527df0.chunk.js.map": "/peri/static/js/2291.92527df0.chunk.js.map",
@@ -180,6 +180,6 @@
   },
   "entrypoints": [
     "static/css/main.de503f84.css",
-    "static/js/main.e4c84415.js"
+    "static/js/main.c2b0f09a.js"
   ]
 }
