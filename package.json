@@ -86,6 +86,8 @@
   "devDependencies": {
     "@capacitor/cli": "^6.2.0",
     "@ionic/lab": "3.2.15",
+    "@types/semver": "^7.5.8",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
     "gh-pages": "^5.0.0"
   },
   "description": "The Period Tracker App"
