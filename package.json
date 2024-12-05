@@ -61,8 +61,9 @@
     "workbox-streams": "^7.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)\" --silent",
     "test:all": "react-scripts test --transformIgnorePatterns \"node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)\" --silent --watchAll=false",
     "eject": "react-scripts eject",
@@ -83,7 +84,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "5.0.5",
+    "@capacitor/cli": "^6.2.0",
     "@ionic/lab": "3.2.15",
     "gh-pages": "^5.0.0"
   },
