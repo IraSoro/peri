@@ -4,7 +4,7 @@ export const configuration = {
   },
   features: {
     useCustomVersionUpdate:
-    import.meta.env.VITE_FEATURE_USE_CUSTOM_VERSION_UPDATE === "true",
+      import.meta.env.VITE_FEATURE_USE_CUSTOM_VERSION_UPDATE === "true",
     demoMode: import.meta.env.VITE_FEATURE_DEMO_MODE === "true",
     betaLanguages: import.meta.env.VITE_FEATURE_BETA_LANGUAGES === "true",
   },

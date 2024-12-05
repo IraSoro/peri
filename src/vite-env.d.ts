@@ -1,6 +1,12 @@
 /// <reference types="vite/client" />
 
-VITE_APP_VERSION="v2.5.0"
-VITE_FEATURE_USE_CUSTOM_VERSION_UPDATE=true
-VITE_FEATURE_DEMO_MODE=false
-VITE_FEATURE_BETA_LANGUAGES=true
+interface ImportMetaEnv {
+  readonly VITE_APP_TITLE: string;
+  readonly VITE_FEATURE_USE_CUSTOM_VERSION_UPDATE: string;
+  readonly VITE_FEATURE_DEMO_MODE: string;
+  readonly VITE_FEATURE_BETA_LANGUAGES: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
