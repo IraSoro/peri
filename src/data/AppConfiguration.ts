@@ -1,6 +1,6 @@
 export const configuration = {
   app: {
-    version: (import.meta.env.VITE_APP_VERSION || "") as string,
+    version: import.meta.env.VITE_APP_VERSION || "",
   },
   features: {
     useCustomVersionUpdate:
