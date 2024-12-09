@@ -1,6 +1,7 @@
 {
   "name": "peri",
   "version": "2.5.0",
+  "type": "module",
   "author": {
     "name": "Irina Sorokina",
     "url": "https://github.com/IraSoro"
@@ -88,7 +89,8 @@
     "@ionic/lab": "3.2.15",
     "@types/semver": "^7.5.8",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^5.0.0",
+    "vitest": "^2.1.8"
   },
   "description": "The Period Tracker App"
 }
