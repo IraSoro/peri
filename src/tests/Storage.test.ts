@@ -1,10 +1,11 @@
 // import * as mockedIonicStorage from "@ionic/storage";
+import { it, expect } from "vitest";
 import { Storage } from "@ionic/storage";
 
 import { storage } from "../data/Storage";
 
-test("setCycles", async () => {
-  const storageSetSpy = jest
+it("setCycles", async () => {
+  const storageSetSpy = vi
     .spyOn(Storage.prototype, "set")
     .mockResolvedValueOnce({});
 
@@ -22,8 +23,8 @@ test("setCycles", async () => {
 });
 
 describe("getCycles", () => {
-  test("There are no cycles in storage", async () => {
-    const storageGetSpy = jest
+  it("There are no cycles in storage", async () => {
+    const storageGetSpy = vi
       .spyOn(Storage.prototype, "get")
       .mockResolvedValueOnce(undefined);
 
@@ -33,7 +34,7 @@ describe("getCycles", () => {
     expect(storageGetSpy).toHaveBeenCalledWith("cycles");
   });
 
-  test("Storage has cycles", async () => {
+  it("Storage has cycles", async () => {
     const cycles = [
       {
         cycleLength: 28,
@@ -42,7 +43,7 @@ describe("getCycles", () => {
       },
     ];
 
-    const storageGetSpy = jest
+    const storageGetSpy = vi
       .spyOn(Storage.prototype, "get")
       .mockResolvedValueOnce(cycles);
 
@@ -51,8 +52,8 @@ describe("getCycles", () => {
   });
 });
 
-test("getCyclesUnsafe", async () => {
-  const storageGetSpy = jest
+it("getCyclesUnsafe", async () => {
+  const storageGetSpy = vi
     .spyOn(Storage.prototype, "get")
     .mockResolvedValueOnce(undefined);
 
@@ -60,8 +61,8 @@ test("getCyclesUnsafe", async () => {
   expect(storageGetSpy).toHaveBeenCalledWith("cycles");
 });
 
-test("setLanguage", async () => {
-  const storageSetSpy = jest
+it("setLanguage", async () => {
+  const storageSetSpy = vi
     .spyOn(Storage.prototype, "set")
     .mockResolvedValueOnce({});
 
@@ -73,8 +74,8 @@ test("setLanguage", async () => {
 });
 
 describe("getLanguage", () => {
-  test("There are no language in storage", async () => {
-    const storageGetSpy = jest
+  it("There are no language in storage", async () => {
+    const storageGetSpy = vi
       .spyOn(Storage.prototype, "get")
       .mockResolvedValueOnce(undefined);
 
@@ -84,10 +85,10 @@ describe("getLanguage", () => {
     expect(storageGetSpy).toHaveBeenCalledWith("language");
   });
 
-  test("Storage has language", async () => {
+  it("Storage has language", async () => {
     const language = "en";
 
-    const storageGetSpy = jest
+    const storageGetSpy = vi
       .spyOn(Storage.prototype, "get")
       .mockResolvedValueOnce(language);
 
@@ -96,8 +97,8 @@ describe("getLanguage", () => {
   });
 });
 
-test("getLanguageUnsafe", async () => {
-  const storageGetSpy = jest
+it("getLanguageUnsafe", async () => {
+  const storageGetSpy = vi
     .spyOn(Storage.prototype, "get")
     .mockResolvedValueOnce(undefined);
 
