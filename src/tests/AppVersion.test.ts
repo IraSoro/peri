@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from "vitest";
 import * as mockedIonicCore from "@ionic/core";
 import {
   GithubReleaseAsset,
@@ -10,16 +11,16 @@ import {
 import { configuration } from "../data/AppConfiguration";
 
 describe("Get information about latest release", () => {
-  test("There are no new version", async () => {
+  it("There are no new version", async () => {
     // desktop
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // mobileweb
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // android
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-    globalThis.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue({
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      json: vi.fn().mockResolvedValue({
         html_url: "https://some-html-url.com",
         tag_name: configuration.app.version,
         draft: false,
@@ -34,16 +35,16 @@ describe("Get information about latest release", () => {
     await expect(isNewVersionAvailable()).resolves.toEqual(false);
   });
 
-  test("New version available", async () => {
+  it("New version available", async () => {
     // desktop
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // mobileweb
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // android
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-    globalThis.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue({
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      json: vi.fn().mockResolvedValue({
         html_url: "https://some-html-url.com",
         tag_name: "v999.999.999",
         draft: false,
@@ -58,58 +59,58 @@ describe("Get information about latest release", () => {
     await expect(isNewVersionAvailable()).resolves.toEqual(true);
   });
 
-  test("Web version", async () => {
+  it("Web version", async () => {
     // desktop
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // mobileweb
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
     // android
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
 
-    globalThis.fetch = jest.fn();
+    globalThis.fetch = vi.fn();
 
     await expect(isNewVersionAvailable()).resolves.toEqual(false);
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
-  test("Web version on Android", async () => {
+  it("Web version on Android", async () => {
     // desktop
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // mobileweb
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
     // android
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-    globalThis.fetch = jest.fn();
+    globalThis.fetch = vi.fn();
 
     await expect(isNewVersionAvailable()).resolves.toEqual(false);
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
-  test("Web version on Desktop", async () => {
+  it("Web version on Desktop", async () => {
     // desktop
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
     // mobileweb
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // android
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
 
-    globalThis.fetch = jest.fn();
+    globalThis.fetch = vi.fn();
 
     await expect(isNewVersionAvailable()).resolves.toEqual(false);
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
-  test("Empty assets list", async () => {
+  it("Empty assets list", async () => {
     // desktop
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // mobileweb
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
     // android
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-    globalThis.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue({
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      json: vi.fn().mockResolvedValue({
         html_url: "https://some-html-url.com",
         tag_name: configuration.app.version,
         draft: false,
@@ -123,18 +124,18 @@ describe("Get information about latest release", () => {
   });
 });
 
-test("Download latest release", async () => {
+it("Download latest release", async () => {
   // desktop
-  jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+  vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
   // mobileweb
-  jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+  vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
   // android
-  jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+  vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-  const mockedWindowOpen = jest.spyOn(window, "open");
+  const mockedWindowOpen = vi.spyOn(window, "open");
 
-  globalThis.fetch = jest.fn().mockResolvedValue({
-    json: jest.fn().mockResolvedValue({
+  globalThis.fetch = vi.fn().mockResolvedValue({
+    json: vi.fn().mockResolvedValue({
       html_url: "https://some-html-url.com",
       tag_name: "v999.999.999",
       draft: false,
@@ -156,21 +157,21 @@ test("Download latest release", async () => {
   );
 });
 
-test("Open Github page on desktop", () => {
-  jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+it("Open Github page on desktop", () => {
+  vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
   // @ts-expect-error Mock
-  const mockedWindowOpen = jest.spyOn(window, "open").mockReturnValue({
-    focus: jest.fn().mockReturnValue(0),
+  const mockedWindowOpen = vi.spyOn(window, "open").mockReturnValue({
+    focus: vi.fn().mockReturnValue(0),
   });
 
   openGitHubPage();
   expect(mockedWindowOpen).toHaveBeenNthCalledWith(1, homepageURL, "_blank");
 });
 
-test("Open Github page on android", () => {
-  jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+it("Open Github page on android", () => {
+  vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
   // @ts-expect-error Mock
-  const mockedWindowOpen = jest.spyOn(window, "open").mockReturnValue({});
+  const mockedWindowOpen = vi.spyOn(window, "open").mockReturnValue({});
 
   openGitHubPage();
   expect(mockedWindowOpen).toHaveBeenNthCalledWith(
