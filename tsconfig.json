@@ -24,6 +24,7 @@
     "src",
     "capacitor.config.ts",
     "vite.config.ts",
+    "tsconfig.json",
   ],
   "references": [
     {

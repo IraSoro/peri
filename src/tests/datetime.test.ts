@@ -1,8 +1,9 @@
+import { it, expect } from "vitest";
 import { format as dateFnsFormat } from "date-fns";
 import { changeDateTimeLocale, format } from "../utils/datetime";
 import { ru } from "date-fns/locale";
 
-test("Show day before month on specific language", () => {
+it("Show day before month on specific language", () => {
   changeDateTimeLocale("en");
 
   expect(format(new Date(), "MMMM d")).toEqual(

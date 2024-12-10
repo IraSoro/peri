@@ -1,7 +1,8 @@
+import { it, expect } from "vitest";
 import { render } from "@testing-library/react";
 import Welcome from "../modals/WelcomeModal";
 
-test("renders without crashing", () => {
+it("renders without crashing", () => {
   const { baseElement } = render(
     <Welcome
       isOpen
