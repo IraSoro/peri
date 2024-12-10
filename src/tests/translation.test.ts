@@ -1,4 +1,4 @@
-import { it, expect } from "vitest";
+import { it, expect, vi } from "vitest";
 import i18n from "i18next";
 import { changeTranslation, getCurrentTranslation } from "../utils/translation";
 
