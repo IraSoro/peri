@@ -64,7 +64,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest --watch",
     "coverage": "vitest run --coverage",
     "lint": "eslint --ext .js --ext .mjs --ext .ts --ext .tsx .",
     "fmt": "prettier --write .",
