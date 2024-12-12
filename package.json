@@ -37,6 +37,7 @@
     "i18next": "^23.16.8",
     "i18next-intervalplural-postprocessor": "^3.0.0",
     "ionicons": "^7.1.2",
+    "jsdom": "^25.0.1",
     "prettier": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -62,10 +63,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "vitest --watch",
-    "coverage": "vitest run --coverage",
+    "test": "vitest run --silent",
+    "test:watch": "vitest --watch --silent",
+    "test:coverage": "vitest run --coverage --silent",
     "lint": "eslint --ext .js --ext .mjs --ext .ts --ext .tsx .",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check ."
