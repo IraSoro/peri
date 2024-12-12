@@ -116,6 +116,16 @@ describe("exportConfig", () => {
     URL.createObjectURL = vi.fn().mockReturnValue("temporal-config-url");
     URL.revokeObjectURL = vi.fn();
 
+    vi.spyOn(
+      mockedCapacitorFilesystem.Filesystem,
+      "getUri",
+    ).mockResolvedValueOnce({
+      uri: "some-test-uri",
+    });
+
+    // android
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValue(false);
+
     // @ts-expect-error We don't want to implement all methods for `HTMLElement` mock
     const mockedAnchorElement = {
       click: vi.fn(),

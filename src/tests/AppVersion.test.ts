@@ -36,12 +36,13 @@ describe("Get information about latest release", () => {
   });
 
   it("New version available", async () => {
-    // desktop
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
-    // mobileweb
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
-    // android
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform")
+      // desktop
+      .mockReturnValueOnce(false)
+      // mobileweb
+      .mockReturnValueOnce(false)
+      // android
+      .mockReturnValueOnce(true);
 
     globalThis.fetch = vi.fn().mockResolvedValue({
       json: vi.fn().mockResolvedValue({
@@ -88,12 +89,13 @@ describe("Get information about latest release", () => {
   });
 
   it("Web version on Desktop", async () => {
-    // desktop
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
-    // mobileweb
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
-    // android
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
+    vi.spyOn(mockedIonicCore, "isPlatform")
+      // desktop
+      .mockReturnValueOnce(true)
+      // mobileweb
+      .mockReturnValueOnce(false)
+      // android
+      .mockReturnValueOnce(false);
 
     globalThis.fetch = vi.fn();
 
@@ -102,12 +104,13 @@ describe("Get information about latest release", () => {
   });
 
   it("Empty assets list", async () => {
-    // desktop
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
-    // mobileweb
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(false);
-    // android
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
+    vi.spyOn(mockedIonicCore, "isPlatform")
+      // desktop
+      .mockReturnValueOnce(false)
+      // mobileweb
+      .mockReturnValueOnce(false)
+      // android
+      .mockReturnValueOnce(true);
 
     globalThis.fetch = vi.fn().mockResolvedValue({
       json: vi.fn().mockResolvedValue({
