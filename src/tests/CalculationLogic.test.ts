@@ -1,3 +1,4 @@
+import { it, expect, vi, describe } from "vitest";
 import i18n from "i18next";
 import {
   addDays,
@@ -30,13 +31,13 @@ import {
 } from "../state/CalculationLogics";
 
 describe("getOvulationStatus", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     expect(getOvulationStatus([])).toEqual("");
   });
 
-  test("a few days before ovulation", () => {
+  it("a few days before ovulation", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [];
     let date = addDays(startOfToday(), 24);
@@ -59,9 +60,9 @@ describe("getOvulationStatus", () => {
     );
   });
 
-  test("ovulation is tomorrow", () => {
+  it("ovulation is tomorrow", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
+    vi.spyOn(i18n, "t").mockImplementationOnce((key) => key);
 
     const cycles: Cycle[] = [];
     let date = addDays(startOfToday(), 16);
@@ -79,9 +80,9 @@ describe("getOvulationStatus", () => {
     expect(getOvulationStatus(cycles)).toEqual("tomorrow");
   });
 
-  test("ovulation is today", () => {
+  it("ovulation is today", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
+    vi.spyOn(i18n, "t").mockImplementationOnce((key) => key);
 
     const cycles: Cycle[] = [];
     let date: Date = addDays(startOfToday(), 15);
@@ -99,9 +100,9 @@ describe("getOvulationStatus", () => {
     expect(getOvulationStatus(cycles)).toEqual("today");
   });
 
-  test("if ovulation is possible", () => {
+  it("if ovulation is possible", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
+    vi.spyOn(i18n, "t").mockImplementationOnce((key) => key);
 
     const cycles: Cycle[] = [];
     let date = addDays(startOfToday(), 14);
@@ -119,9 +120,9 @@ describe("getOvulationStatus", () => {
     expect(getOvulationStatus(cycles)).toEqual("possible");
   });
 
-  test("ovulation is finished", () => {
+  it("ovulation is finished", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementationOnce((key) => key);
+    vi.spyOn(i18n, "t").mockImplementationOnce((key) => key);
 
     const cycles: Cycle[] = [];
     let date = addDays(startOfToday(), 10);
@@ -141,13 +142,13 @@ describe("getOvulationStatus", () => {
 });
 
 describe("getPregnancyChance", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     expect(getPregnancyChance([])).toEqual("");
   });
 
-  test("pregnancy chance is high", () => {
+  it("pregnancy chance is high", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 15);
     const cycles: Cycle[] = [];
@@ -165,9 +166,9 @@ describe("getPregnancyChance", () => {
     expect(getPregnancyChance(cycles)).toEqual("High");
   });
 
-  test("pregnancy chance is low", () => {
+  it("pregnancy chance is low", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
     let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
 
@@ -186,13 +187,13 @@ describe("getPregnancyChance", () => {
 });
 
 describe("getDayOfCycle", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     expect(getDayOfCycle([])).toEqual(0);
   });
 
-  test("middle of the cycle", () => {
+  it("middle of the cycle", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 15);
 
@@ -213,13 +214,13 @@ describe("getDayOfCycle", () => {
 });
 
 describe("getAverageLengthOfCycle", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     expect(getAverageLengthOfCycle([])).toEqual(0);
   });
 
-  test("only one item in the cycles array", () => {
+  it("only one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [
       {
@@ -231,9 +232,9 @@ describe("getAverageLengthOfCycle", () => {
     expect(getAverageLengthOfCycle(cycles)).toEqual(28);
   });
 
-  test("more than one item in the cycles array", () => {
+  it("more than one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [
       {
@@ -257,13 +258,13 @@ describe("getAverageLengthOfCycle", () => {
 });
 
 describe("getAverageLengthOfPeriod", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     expect(getAverageLengthOfPeriod([])).toEqual(0);
   });
 
-  test("only one item in the cycles array", () => {
+  it("only one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [
       {
@@ -275,9 +276,9 @@ describe("getAverageLengthOfPeriod", () => {
     expect(getAverageLengthOfPeriod(cycles)).toEqual(5);
   });
 
-  test("more than one item in the cycles array", () => {
+  it("more than one item in the cycles array", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [
       {
@@ -301,9 +302,9 @@ describe("getAverageLengthOfPeriod", () => {
 });
 
 describe("getDaysBeforePeriod", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     expect(getDaysBeforePeriod([])).toEqual({
       title: i18n.t("Period in"),
@@ -311,9 +312,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("period in the few days", () => {
+  it("period in the few days", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 10);
     const cycles: Cycle[] = [];
@@ -337,9 +338,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("period in 1 Day", () => {
+  it("period in 1 Day", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = startOfTomorrow();
     const cycles: Cycle[] = [];
@@ -363,9 +364,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("period is today", () => {
+  it("period is today", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = startOfToday();
 
@@ -387,9 +388,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("cycles length is one and period is today", () => {
+  it("cycles length is one and period is today", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const date = startOfToday();
 
@@ -407,9 +408,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("delay 1 day", () => {
+  it("delay 1 day", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = startOfYesterday();
     const cycles: Cycle[] = [];
@@ -433,9 +434,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("delay a few days", () => {
+  it("delay a few days", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = subDays(startOfToday(), 10);
     const cycles: Cycle[] = [];
@@ -459,9 +460,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("cycles length is one and delay a few days", () => {
+  it("cycles length is one and delay a few days", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const date = subDays(startOfToday(), 10);
     const cycles: Cycle[] = [
@@ -478,9 +479,9 @@ describe("getDaysBeforePeriod", () => {
     });
   });
 
-  test("today is one of the days of period", () => {
+  it("today is one of the days of period", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 25);
     const cycles: Cycle[] = [];
@@ -558,15 +559,15 @@ const phases = {
 };
 
 describe("getPhase", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPhase([])).toEqual(phases.non);
   });
 
-  test("cycle phase is menstrual", () => {
+  it("cycle phase is menstrual", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 26);
     const cycles: Cycle[] = [];
@@ -584,9 +585,9 @@ describe("getPhase", () => {
     expect(getPhase(cycles)).toEqual(phases.menstrual);
   });
 
-  test("cycle phase is follicular", () => {
+  it("cycle phase is follicular", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
@@ -604,9 +605,9 @@ describe("getPhase", () => {
     expect(getPhase(cycles)).toEqual(phases.follicular);
   });
 
-  test("cycle phase is ovulation", () => {
+  it("cycle phase is ovulation", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 14);
     const cycles: Cycle[] = [];
@@ -624,9 +625,9 @@ describe("getPhase", () => {
     expect(getPhase(cycles)).toEqual(phases.ovulation);
   });
 
-  test("cycle phase is luteal", () => {
+  it("cycle phase is luteal", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
@@ -646,15 +647,15 @@ describe("getPhase", () => {
 });
 
 describe("getNewCyclesHistory", () => {
-  test("periodDays array is empty", () => {
+  it("periodDays array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getNewCyclesHistory([])).toEqual([]);
   });
 
-  test("periodDays array has a clear ranges", () => {
+  it("periodDays array has a clear ranges", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const periodDays = [
       "2023-08-04",
@@ -683,9 +684,9 @@ describe("getNewCyclesHistory", () => {
     ]);
   });
 
-  test("periodDays array has not a clear ranges", () => {
+  it("periodDays array has not a clear ranges", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const periodDays = [
       "2023-08-04",
@@ -710,15 +711,15 @@ describe("getNewCyclesHistory", () => {
 });
 
 describe("getPeriodDays", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPeriodDates([])).toEqual([]);
   });
 
-  test("cycles array has a few items", () => {
+  it("cycles array has a few items", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [
       {
@@ -762,15 +763,15 @@ describe("getPeriodDays", () => {
 });
 
 describe("getLastPeriodDays", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getPeriodDatesOfLastCycle([])).toEqual([]);
   });
 
-  test("cycles array has a few items", () => {
+  it("cycles array has a few items", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [
       {
@@ -804,16 +805,16 @@ describe("getLastPeriodDays", () => {
 });
 
 describe("getActiveDates", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     expect(getActiveDates(startOfToday(), [])).toEqual(true);
   });
 
-  test("now is menstrual phase items and checking 2th day of period", () => {
+  it("now is menstrual phase items and checking 2th day of period", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 26);
     const cycles: Cycle[] = [];
@@ -832,9 +833,9 @@ describe("getActiveDates", () => {
     expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
-  test("now is menstrual phase items and checking 8th day of cycle", () => {
+  it("now is menstrual phase items and checking 8th day of cycle", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 26);
     const cycles: Cycle[] = [];
@@ -853,9 +854,9 @@ describe("getActiveDates", () => {
     expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 
-  test("now is follicular phase items and checking not day of cycle less than now", () => {
+  it("now is follicular phase items and checking not day of cycle less than now", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
@@ -874,9 +875,9 @@ describe("getActiveDates", () => {
     expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
-  test("now is follicular phase items and checking not day of cycle more than now", () => {
+  it("now is follicular phase items and checking not day of cycle more than now", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 20);
     const cycles: Cycle[] = [];
@@ -895,9 +896,9 @@ describe("getActiveDates", () => {
     expect(getActiveDates(dateCheck, cycles)).toEqual(false);
   });
 
-  test("delay a few days and check date is less then the current date", () => {
+  it("delay a few days and check date is less then the current date", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = subDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
@@ -916,9 +917,9 @@ describe("getActiveDates", () => {
     expect(getActiveDates(dateCheck, cycles)).toEqual(true);
   });
 
-  test("delay a few days and check date is more then the current date", () => {
+  it("delay a few days and check date is more then the current date", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = subDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
@@ -939,9 +940,9 @@ describe("getActiveDates", () => {
 });
 
 describe("getPastFuturePeriodDays", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const periodDates: string[] = [];
     const nowDate = startOfToday();
@@ -952,9 +953,9 @@ describe("getPastFuturePeriodDays", () => {
     expect(getPeriodDatesWithNewElement([])).toEqual(periodDates);
   });
 
-  test("cycles array has a few items", () => {
+  it("cycles array has a few items", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 10);
     const cycles: Cycle[] = [];
@@ -981,9 +982,9 @@ describe("getPastFuturePeriodDays", () => {
     expect(getPeriodDatesWithNewElement(cycles)).toEqual(periodDates);
   });
 
-  test("delay a few days", () => {
+  it("delay a few days", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = subDays(startOfToday(), 5);
     const cycles: Cycle[] = [];
@@ -1013,13 +1014,13 @@ describe("getPastFuturePeriodDays", () => {
 });
 
 describe("getLastStartDate", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     expect(getLastStartDate([])).toEqual("");
   });
 
-  test("cycles array has a few items", () => {
+  it("cycles array has a few items", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 15);
     const cycles: Cycle[] = [];
@@ -1039,13 +1040,13 @@ describe("getLastStartDate", () => {
 });
 
 describe("getLengthOfLastPeriod", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     expect(getLengthOfLastPeriod([])).toEqual(0);
   });
 
-  test("cycles array has a few items", () => {
+  it("cycles array has a few items", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     let date = addDays(startOfToday(), 15);
     const cycles: Cycle[] = [];
@@ -1065,15 +1066,15 @@ describe("getLengthOfLastPeriod", () => {
 });
 
 describe("getForecastPeriodDates", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getForecastPeriodDates([])).toEqual([]);
   });
 
-  test("cycles array has a few items", () => {
+  it("cycles array has a few items", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [];
     let date = addDays(startOfToday(), 20);
@@ -1107,15 +1108,15 @@ describe("getForecastPeriodDates", () => {
 });
 
 describe("getOvulationDates", () => {
-  test("cycles array is empty", () => {
+  it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
     expect(getOvulationDates([])).toEqual([]);
   });
 
-  test("cycles array has 1 item", () => {
+  it("cycles array has 1 item", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [];
     let date = addDays(startOfToday(), 20);
@@ -1130,9 +1131,9 @@ describe("getOvulationDates", () => {
     expect(getOvulationDates(cycles)).toEqual([]);
   });
 
-  test("cycles array has a 6 items", () => {
+  it("cycles array has a 6 items", () => {
     // @ts-expect-error mocked `t` method
-    jest.spyOn(i18n, "t").mockImplementation((key) => key);
+    vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
     const cycles: Cycle[] = [];
     let date = addDays(startOfToday(), 20);

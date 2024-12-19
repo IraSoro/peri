@@ -19,7 +19,9 @@ After installing Android Studio, you need to run the following command:
 ```shell
 npm run build # this command builds production-optimized Peri's code
 npm install -g @ionic/cli@7.1.1 # this package will be installed globally to use capacitor
-ionic cap build android # generates Android project
+npx cap sync
+npx cap add android
+npx cap open android
 ```
 
 An `android` directory will be generated and you can open it with `Android Studio` and build the project based on this instruction <https://capacitorjs.com/docs/android>
@@ -68,9 +70,9 @@ This Docker image already has `@ionic/cli`, `Android Studio` and all necessary J
 
 ```shell
 npm run build # this command builds production-optimized Peri's code
-ionic cap build android # generates Android project
-cd android
-./gradlew assembleDebug
+npx cap sync
+npx cap add android # generates Android project
+./android/gradlew -p android/ assembleDebug # build debug apk file
 ```
 
 The `apk` file will be created at `peri/android/app/build/outputs/apk/debug/`. You can install it on your smartphone. During the installation phase, `Android` will show you a warning that you are trying to install a potentially harmful application, because your app is not signed. To get rid of this warning, you should build the application through `Android Studio` following the instructions above, the `Dockerfile`-based method is only suitable for building a test application so far.

@@ -23,7 +23,7 @@ export async function importConfig(): Promise<Config> {
         fileReader.result as string,
       ) as Config | null;
       if (!config) {
-        reject("User imported empty config");
+        reject(new Error("User imported empty config"));
       } else {
         resolve(config);
       }
@@ -32,13 +32,13 @@ export async function importConfig(): Promise<Config> {
     fileInputElement.addEventListener("change", (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (!file) {
-        reject("User didn't choose any file to import");
+        reject(new Error("User didn't choose any file to import"));
       } else {
         fileReader.readAsText(file);
       }
     });
     fileInputElement.addEventListener("cancel", () => {
-      reject("Config import has been canceled by user");
+      reject(new Error("Config import has been canceled by user"));
     });
 
     document.body.appendChild(fileInputElement);

@@ -2,6 +2,7 @@
 .vscode/
 android/
 build/
+coverage/
 demonstration/
 info/
 node_modules/
