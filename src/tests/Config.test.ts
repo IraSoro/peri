@@ -2,14 +2,16 @@ import * as mockedIonicCore from "@ionic/core";
 import * as mockedCapacitorFilesystem from "@capacitor/filesystem";
 import * as mockedCapacitorShare from "@capacitor/share";
 
+import { describe, it, expect, vi } from "vitest";
+
 import type { Context } from "../data/Storage";
 import { exportConfig, importConfig } from "../data/Config";
 
-test("importConfig", async () => {
+it("importConfig", async () => {
   // @ts-expect-error This is just a mocked `HTMLInputElement` and we don't need
   //                  to implement all methods
   const mockedInputElement = {
-    addEventListener: jest.fn().mockImplementationOnce((event, callback) => {
+    addEventListener: vi.fn().mockImplementationOnce((event, callback) => {
       if (event === "change") {
         // @ts-expect-error `HTMLInputElement` doesn't have `onChangeCallback` method
         //                  and we added it just for testing purposes
@@ -25,7 +27,7 @@ test("importConfig", async () => {
         return;
       }
     }),
-    click: jest.fn().mockImplementationOnce(() => {
+    click: vi.fn().mockImplementationOnce(() => {
       // @ts-expect-error Same reason as above
       // NOTE: eslint ignore with same reason as above
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -33,33 +35,31 @@ test("importConfig", async () => {
     }),
   } as HTMLInputElement;
 
-  const createElementSpy = jest
+  const createElementSpy = vi
     .spyOn(document, "createElement")
     .mockReturnValue(mockedInputElement);
-  const appendChildSpy = jest
+  const appendChildSpy = vi
     .spyOn(document.body, "appendChild")
-    .mockImplementation();
-  const removeChildSpy = jest
+    .mockReturnValue(mockedInputElement);
+  const removeChildSpy = vi
     .spyOn(document.body, "removeChild")
-    .mockImplementation();
+    .mockReturnValue(mockedInputElement);
 
   let fileReaderOnLoadCallback: EventListener | null = null;
-  jest
-    .spyOn(FileReader.prototype, "addEventListener")
-    .mockImplementationOnce(
-      (event, callback: EventListenerOrEventListenerObject) => {
-        if (event === "load") {
-          fileReaderOnLoadCallback = callback as EventListener;
-        }
-        console.log("FileReader addEventListener");
-      },
-    );
-  jest.spyOn(FileReader.prototype, "readAsText").mockImplementationOnce(() => {
+  vi.spyOn(FileReader.prototype, "addEventListener").mockImplementationOnce(
+    (event, callback: EventListenerOrEventListenerObject) => {
+      if (event === "load") {
+        fileReaderOnLoadCallback = callback as EventListener;
+      }
+      console.log("FileReader addEventListener");
+    },
+  );
+  vi.spyOn(FileReader.prototype, "readAsText").mockImplementationOnce(() => {
     fileReaderOnLoadCallback?.({} as Event);
   });
-  jest
-    .spyOn(FileReader.prototype, "result", "get")
-    .mockReturnValue(`{ "a": 1, "b": 2 }`);
+  vi.spyOn(FileReader.prototype, "result", "get").mockReturnValue(
+    `{ "a": 1, "b": 2 }`,
+  );
 
   await expect(importConfig()).resolves.toStrictEqual({
     a: 1,
@@ -73,22 +73,22 @@ test("importConfig", async () => {
 });
 
 describe("exportConfig", () => {
-  test("Android", async () => {
-    jest.spyOn(mockedIonicCore, "isPlatform").mockReturnValue(true);
+  it("Android", async () => {
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValue(true);
 
     // @ts-expect-error TS doesn't let me redefine readonly `Filesystem`
     mockedCapacitorFilesystem.Filesystem = {
-      writeFile: jest
+      writeFile: vi
         .fn()
         .mockResolvedValueOnce({} as mockedCapacitorFilesystem.WriteFileResult),
-      getUri: jest.fn().mockResolvedValueOnce({
+      getUri: vi.fn().mockResolvedValueOnce({
         uri: "temporal-uri-to-cache-file",
       } as mockedCapacitorFilesystem.GetUriResult),
     };
 
     // @ts-expect-error TS doesn't let me redefine readonly `Share`
     mockedCapacitorShare.Share = {
-      share: jest
+      share: vi
         .fn()
         .mockResolvedValueOnce({} as mockedCapacitorShare.ShareResult),
     };
@@ -112,20 +112,30 @@ describe("exportConfig", () => {
     });
   });
 
-  test("Web", async () => {
-    URL.createObjectURL = jest.fn().mockReturnValue("temporal-config-url");
-    URL.revokeObjectURL = jest.fn();
+  it("Web", async () => {
+    URL.createObjectURL = vi.fn().mockReturnValue("temporal-config-url");
+    URL.revokeObjectURL = vi.fn();
+
+    vi.spyOn(
+      mockedCapacitorFilesystem.Filesystem,
+      "getUri",
+    ).mockResolvedValueOnce({
+      uri: "some-test-uri",
+    });
+
+    // android
+    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValue(false);
 
     // @ts-expect-error We don't want to implement all methods for `HTMLElement` mock
     const mockedAnchorElement = {
-      click: jest.fn(),
+      click: vi.fn(),
     } as HTMLAnchorElement;
 
-    const createElementSpy = jest
+    const createElementSpy = vi
       .spyOn(document, "createElement")
       .mockReturnValue(mockedAnchorElement);
-    const bodyAppendSpy = jest.spyOn(document.body, "append");
-    const bodyRemoveChildSpy = jest
+    const bodyAppendSpy = vi.spyOn(document.body, "append");
+    const bodyRemoveChildSpy = vi
       .spyOn(document.body, "removeChild")
       .mockReturnValue({} as HTMLAnchorElement);
 
