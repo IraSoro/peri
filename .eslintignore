@@ -1,8 +1,9 @@
 .github/
 .vscode/
 android/
-dist/
+coverage/
 demonstration/
+dist/
 info/
 node_modules/
 public/
