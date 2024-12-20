@@ -67,6 +67,7 @@
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@vitest/coverage-v8": "^2.1.8",
     "gh-pages": "^5.0.0",
+    "vite-plugin-pwa": "^0.21.1",
     "vitest": "^2.1.8"
   }
 }
