@@ -1,17 +1,17 @@
 {
-  "short_name": "peri",
-  "name": "peri",
+  "short_name": "Peri",
+  "name": "Peri - The Period Tracker App",
   "icons": [
     {
       "src": "assets/icon/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "256x256",
       "type": "image/x-icon"
     },
     {
       "src": "assets/icon/icon.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ],
   "start_url": ".",
