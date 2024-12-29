@@ -3,19 +3,18 @@
   "name": "Peri - The Period Tracker App",
   "icons": [
     {
-      "src": "assets/icon/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "assets/icon/192-pwa.png",
+      "type": "image/png",
+      "sizes": "192x192"
     },
     {
       "src": "assets/icon/icon.png",
       "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "theme_color": "#eae7ff",
+  "background_color": "#f3f2ff"
 }
