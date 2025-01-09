@@ -214,6 +214,12 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { cycles, updateCycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
 
+  const [datesValue, setDatesValue] = useState([startOfToday().toISOString()]);
+
+  useEffect(() => {
+    setDatesValue(getPeriodDates(cycles));
+  }, [cycles]);
+
   const periodDays = getPeriodDates(cycles);
   const lastPeriodDays = getPeriodDatesOfLastCycle(cycles);
 
@@ -251,8 +257,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
       max={maxDate}
       multiple
       firstDayOfWeek={1}
-      // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
-      value={periodDays.reverse()}
+      value={datesValue}
       isDateEnabled={(isoDateString) => {
         return getActiveDates(parseISO(isoDateString), cycles);
       }}
