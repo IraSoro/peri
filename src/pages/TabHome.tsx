@@ -214,8 +214,13 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { cycles, updateCycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
 
+  // NOTE: This is a hack. I fixed the bug: when opening the editing calendar,
+  // a month not related to the specified dates opened (May 2021).
+  // I found several similar bugs (for example ionic-team/ionic-framework#29094)
+  // I fixed it like this: I specified one date at initialization (today)
   const [datesValue, setDatesValue] = useState([startOfToday().toISOString()]);
 
+  // and then in the useEffect I update this value to the required ones
   useEffect(() => {
     setDatesValue(getPeriodDates(cycles));
   }, [cycles]);
