@@ -1,3 +1,0 @@
-/*! For license information please see 5466.e9e67894.chunk.js.LICENSE.txt */
-"use strict";(self.webpackChunkperi=self.webpackChunkperi||[]).push([[5466],{5466:function(e,r,n){n.r(r),n.d(r,{w:function(){return t}});var t=function(e,r,n){if("undefined"!==typeof MutationObserver){var t=new MutationObserver((function(e){n(u(e,r))}));return t.observe(e,{childList:!0,subtree:!0}),t}},u=function(e,r){var n;return e.forEach((function(e){for(var t=0;t<e.addedNodes.length;t++)n=o(e.addedNodes[t],r)||n})),n},o=function(e,r){if(1===e.nodeType)return(e.tagName===r.toUpperCase()?[e]:Array.from(e.querySelectorAll(r))).find((function(r){return r.value===e.value}))}}}]);
-//# sourceMappingURL=5466.e9e67894.chunk.js.map

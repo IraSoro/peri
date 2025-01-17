@@ -1,3 +1,0 @@
-/*! For license information please see 2067.cc177cbe.chunk.js.LICENSE.txt */
-"use strict";(self.webpackChunkperi=self.webpackChunkperi||[]).push([[2067],{3711:function(e,r,n){n.r(r),n.d(r,{i:function(){return t}});var t=function(e){return e&&""!==e.dir?"rtl"===e.dir.toLowerCase():"rtl"===(null===document||void 0===document?void 0:document.dir.toLowerCase())}}}]);
-//# sourceMappingURL=2067.cc177cbe.chunk.js.map
