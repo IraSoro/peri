@@ -214,6 +214,17 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { cycles, updateCycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
 
+  // NOTE: This is a hack. I fixed the bug: when opening the editing calendar,
+  // a month not related to the specified dates opened (May 2021).
+  // I found several similar bugs (for example ionic-team/ionic-framework#29094)
+  // I fixed it like this: I specified one date at initialization (today)
+  const [datesValue, setDatesValue] = useState([startOfToday().toISOString()]);
+
+  // and then in the useEffect I update this value to the required ones
+  useEffect(() => {
+    setDatesValue(getPeriodDates(cycles));
+  }, [cycles]);
+
   const periodDays = getPeriodDates(cycles);
   const lastPeriodDays = getPeriodDatesOfLastCycle(cycles);
 
@@ -251,8 +262,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
       max={maxDate}
       multiple
       firstDayOfWeek={1}
-      // NOTE: Please don't remove `reverse` here, more info https://github.com/IraSoro/peri/issues/157
-      value={periodDays.reverse()}
+      value={datesValue}
       isDateEnabled={(isoDateString) => {
         return getActiveDates(parseISO(isoDateString), cycles);
       }}
