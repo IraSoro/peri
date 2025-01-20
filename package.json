@@ -16,7 +16,9 @@
     "test:coverage": "vitest run --coverage --silent",
     "lint": "eslint --ext .js --ext .mjs --ext .ts --ext .tsx .",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "fmt:check": "prettier --check .",
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@capacitor/android": "5.0.5",
