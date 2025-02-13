@@ -136,6 +136,35 @@ export const storage = {
   },
 };
 
+export async function migrateToTheNewStorage() {
+  if (!(await storageImplOld.length())) {
+    return;
+  }
+  if (!(await storage.getUnsafe.cycles())) {
+    const cycles = await storage.old.getUnsafe.cycles();
+    if (cycles.length) {
+      await storage.set.cycles(cycles);
+    }
+  }
+  if (!(await storage.getUnsafe.language())) {
+    const language = await storage.old.getUnsafe.language();
+    if (language.length) {
+      await storage.set.language(language);
+    }
+  }
+  if (!(await storage.getUnsafe.language())) {
+    const theme = await storage.old.getUnsafe.theme();
+    if (theme.length) {
+      await storage.set.language(theme);
+    }
+  }
+
+  await storageImplOld.clear();
+  console.log(
+    "Migration from '@ionic/storage' to '@capacitor/preferences' completed",
+  );
+}
+
 // NOTE: Predefined templates for test purpose
 //       for use just uncomment one of the following lines:
 
