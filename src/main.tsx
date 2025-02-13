@@ -5,9 +5,11 @@ import App from "./App";
 
 import { init as initTranslation } from "./utils/translation";
 import { init as initDateTimeLocale } from "./utils/datetime";
-import { storage } from "./data/Storage";
+import { migrateToTheNewStorage, storage } from "./data/Storage";
 
 async function init() {
+  await migrateToTheNewStorage();
+
   await initTranslation();
   await initDateTimeLocale();
 
