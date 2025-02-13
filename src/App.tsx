@@ -200,6 +200,7 @@ const App = (props: AppProps) => {
                 >
                   <IonTabButton
                     tab="menu"
+                    href="#"
                     style={{
                       background: `var(--ion-color-transparent-${theme})`,
                       border: `var(--ion-color-transparent-${theme})`,
