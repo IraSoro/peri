@@ -182,7 +182,9 @@ export async function migrateToTheNewStorage() {
 // _randomDelayOfCycle(8).catch((err) => console.error(err));
 
 function _emptyArrayOfCycles() {
-  return storageImplOld.remove("cycles") as Promise<void>;
+  return Preferences.remove({
+    key: StorageKey.Cycles,
+  });
 }
 
 function _todayPeriod(countOfCycles: number) {
