@@ -1,4 +1,5 @@
 import { Storage, Drivers } from "@ionic/storage";
+import { Preferences } from "@capacitor/preferences";
 import { addDays, startOfToday, subDays } from "date-fns";
 import type { Cycle } from "./ClassCycle";
 import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
@@ -9,71 +10,160 @@ export interface Context {
   theme: string;
 }
 
-const storageImpl = new Storage({
+export enum StorageKey {
+  Cycles = "cycles",
+  Language = "language",
+  Theme = "theme",
+}
+
+type StorageValueTypeMap = {
+  [StorageKey.Cycles]: Cycle[];
+  [StorageKey.Language]: string;
+  [StorageKey.Theme]: string;
+};
+
+type StorageValueType<K extends StorageKey> = StorageValueTypeMap[K];
+
+const storageImplOld = new Storage({
   name: "PeriodDB",
   driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
 });
 
-storageImpl
+storageImplOld
   .create()
   .then(() => console.log("Storage created"))
   .catch((err) =>
     console.error(`Can't create storage ${(err as Error).message}`),
   );
 
-function setCycles(cycles: Cycle[]): Promise<void> {
-  return storageImpl.set("cycles", cycles) as Promise<void>;
+function createStorageSetterOld<Key extends StorageKey>(storageKey: Key) {
+  return (value: StorageValueType<Key>) => {
+    return storageImplOld.set(storageKey, value) as Promise<void>;
+  };
 }
 
-async function getCycles(safe: boolean): Promise<Cycle[]> {
-  const value = (await storageImpl.get("cycles")) as Cycle[];
-  if (safe && !value) {
-    throw new Error("Can't find `cycles` in storage");
-  }
-  return value;
-}
-
-function setLanguage(language: string): Promise<void> {
-  return storageImpl.set("language", language) as Promise<void>;
-}
-
-async function getLanguage(safe: boolean): Promise<string> {
-  const value = (await storageImpl.get("language")) as string;
-  if (safe && !value) {
-    throw new Error("Can't find `language` in storage");
-  }
-  return value;
-}
-
-function setTheme(theme: string): Promise<void> {
-  return storageImpl.set("theme", theme) as Promise<void>;
-}
-
-async function getTheme(safe: boolean): Promise<string> {
-  const value = (await storageImpl.get("theme")) as string;
-  if (safe && !value) {
-    throw new Error("Can't find `theme` in storage");
-  }
-  return value;
+function createStorageGetterOld<Key extends StorageKey>(
+  storageKey: Key,
+  safe: boolean,
+) {
+  return async () => {
+    const value = (await storageImplOld.get(
+      storageKey,
+    )) as StorageValueType<Key>;
+    if (safe && !value) {
+      throw new Error(`Can't find '${storageKey}' in storage`);
+    }
+    return value;
+  };
 }
 
 export const storage = {
   set: {
-    cycles: setCycles,
-    language: setLanguage,
-    theme: setTheme,
+    cycles: (value: StorageValueType<StorageKey.Cycles>) => {
+      return Preferences.set({
+        key: StorageKey.Cycles,
+        value: JSON.stringify(value),
+      });
+    },
+    language: (value: StorageValueType<StorageKey.Language>) => {
+      return Preferences.set({
+        key: StorageKey.Language,
+        value: value,
+      });
+    },
+    theme: (value: StorageValueType<StorageKey.Theme>) => {
+      return Preferences.set({
+        key: StorageKey.Theme,
+        value: value,
+      });
+    },
   },
   get: {
-    cycles: () => getCycles(true),
-    language: () => getLanguage(true),
-    theme: () => getTheme(true),
+    cycles: async () => {
+      const { value } = await Preferences.get({ key: StorageKey.Cycles });
+      if (!value) {
+        throw new Error(`Can't find '${StorageKey.Cycles}' in storage`);
+      }
+      return JSON.parse(value) as StorageValueType<StorageKey.Cycles>;
+    },
+    language: async () => {
+      const { value } = await Preferences.get({ key: StorageKey.Language });
+      if (!value) {
+        throw new Error(`Can't find '${StorageKey.Language}' in storage`);
+      }
+      return value;
+    },
+    theme: async () => {
+      const { value } = await Preferences.get({ key: StorageKey.Theme });
+      if (!value) {
+        throw new Error(`Can't find '${StorageKey.Theme}' in storage`);
+      }
+      return value;
+    },
   },
   getUnsafe: {
-    cycles: () => getCycles(false),
-    language: () => getLanguage(false),
-    theme: () => getTheme(false),
+    cycles: async () => {
+      const { value } = await Preferences.get({ key: StorageKey.Cycles });
+      return value
+        ? (JSON.parse(value) as StorageValueType<StorageKey.Cycles>)
+        : null;
+    },
+    language: async () => {
+      const { value } = await Preferences.get({ key: StorageKey.Language });
+      return value;
+    },
+    theme: async () => {
+      const { value } = await Preferences.get({ key: StorageKey.Theme });
+      return value;
+    },
+  },
+  old: {
+    set: {
+      cycles: createStorageSetterOld(StorageKey.Cycles),
+      language: createStorageSetterOld(StorageKey.Language),
+      theme: createStorageSetterOld(StorageKey.Theme),
+    },
+    get: {
+      cycles: createStorageGetterOld(StorageKey.Cycles, true),
+      language: createStorageGetterOld(StorageKey.Language, true),
+      theme: createStorageGetterOld(StorageKey.Theme, true),
+    },
+    getUnsafe: {
+      cycles: createStorageGetterOld(StorageKey.Cycles, false),
+      language: createStorageGetterOld(StorageKey.Language, false),
+      theme: createStorageGetterOld(StorageKey.Theme, false),
+    },
   },
 };
+
+export async function migrateToTheNewStorage() {
+  if (!(await storageImplOld.length())) {
+    return;
+  }
+  if (!(await storage.getUnsafe.cycles())) {
+    const cycles = await storage.old.getUnsafe.cycles();
+    if (cycles.length) {
+      await storage.set.cycles(cycles);
+    }
+  }
+  if (!(await storage.getUnsafe.language())) {
+    const language = await storage.old.getUnsafe.language();
+    if (language.length) {
+      await storage.set.language(language);
+    }
+  }
+  if (!(await storage.getUnsafe.language())) {
+    const theme = await storage.old.getUnsafe.theme();
+    if (theme.length) {
+      await storage.set.language(theme);
+    }
+  }
+
+  await storageImplOld.clear();
+  console.log(
+    "Migration from '@ionic/storage' to '@capacitor/preferences' completed",
+  );
+}
 
 // NOTE: Predefined templates for test purpose
 //       for use just uncomment one of the following lines:
@@ -91,11 +181,13 @@ export const storage = {
 // _randomLutealPhase(8).catch((err) => console.error(err));
 // _randomDelayOfCycle(8).catch((err) => console.error(err));
 
-function _emptyArrayOfCycles(): Promise<void> {
-  return storageImpl.remove("cycles") as Promise<void>;
+function _emptyArrayOfCycles() {
+  return Preferences.remove({
+    key: StorageKey.Cycles,
+  });
 }
 
-function _todayPeriod(countOfCycles: number): Promise<void> {
+function _todayPeriod(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = startOfToday();
 
@@ -116,7 +208,7 @@ function _todayPeriod(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _todayOvulation(countOfCycles: number): Promise<void> {
+function _todayOvulation(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = addDays(startOfToday(), 15);
 
@@ -136,7 +228,7 @@ function _todayOvulation(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _tomorrowOvulation(countOfCycles: number): Promise<void> {
+function _tomorrowOvulation(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = addDays(startOfToday(), 16);
 
@@ -156,7 +248,7 @@ function _tomorrowOvulation(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _menstrualPhase(countOfCycles: number): Promise<void> {
+function _menstrualPhase(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = addDays(startOfToday(), 25);
 
@@ -176,7 +268,7 @@ function _menstrualPhase(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _follicularPhase(countOfCycles: number): Promise<void> {
+function _follicularPhase(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = addDays(startOfToday(), 20);
 
@@ -196,7 +288,7 @@ function _follicularPhase(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _lutealPhase(countOfCycles: number): Promise<void> {
+function _lutealPhase(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = addDays(startOfToday(), 10);
 
@@ -216,7 +308,7 @@ function _lutealPhase(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _delayOfCycle(countOfCycles: number): Promise<void> {
+function _delayOfCycle(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = subDays(startOfToday(), 5);
 
@@ -242,7 +334,7 @@ function random(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function _randomMenstrualPhase(countOfCycles: number): Promise<void> {
+function _randomMenstrualPhase(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date: Date = addDays(startOfToday(), 26);
 
@@ -265,7 +357,7 @@ function _randomMenstrualPhase(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _randomFollicularPhase(countOfCycles: number): Promise<void> {
+function _randomFollicularPhase(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = addDays(startOfToday(), 20);
 
@@ -288,7 +380,7 @@ function _randomFollicularPhase(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _randomLutealPhase(countOfCycles: number): Promise<void> {
+function _randomLutealPhase(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = addDays(startOfToday(), 10);
 
@@ -311,7 +403,7 @@ function _randomLutealPhase(countOfCycles: number): Promise<void> {
   return storage.set.cycles(cycles);
 }
 
-function _randomDelayOfCycle(countOfCycles: number): Promise<void> {
+function _randomDelayOfCycle(countOfCycles: number) {
   const cycles: Cycle[] = [];
   let date = subDays(startOfToday(), 5);
 
