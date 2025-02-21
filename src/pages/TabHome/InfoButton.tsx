@@ -55,4 +55,4 @@ const InfoButton = (props: InfoButtonProps) => {
   );
 };
 
-export default InfoButton
+export default InfoButton;
