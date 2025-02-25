@@ -74,7 +74,9 @@ it("importConfig", async () => {
 
 describe("exportConfig", () => {
   it("Android", async () => {
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValue(true);
+    vi.spyOn(mockedIonicCore, "isPlatform")
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(false);
 
     // @ts-expect-error TS doesn't let me redefine readonly `Filesystem`
     mockedCapacitorFilesystem.Filesystem = {
