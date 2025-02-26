@@ -94,7 +94,7 @@ export function exportConfig(ctx: Context): Promise<void> {
     ...ctx,
   } satisfies Config;
 
-  if (isPlatform("android")) {
+  if (isPlatform("android") && !isPlatform("pwa")) {
     return exportConfigAndroid(config);
   }
 
