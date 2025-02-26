@@ -152,10 +152,10 @@ export async function migrateToTheNewStorage() {
       await storage.set.language(language);
     }
   }
-  if (!(await storage.getUnsafe.language())) {
+  if (!(await storage.getUnsafe.theme())) {
     const theme = await storage.old.getUnsafe.theme();
     if (theme.length) {
-      await storage.set.language(theme);
+      await storage.set.theme(theme);
     }
   }
 
