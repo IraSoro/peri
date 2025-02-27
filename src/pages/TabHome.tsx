@@ -154,6 +154,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
       presentation="date"
       locale={getCurrentTranslation()}
       size="cover"
+      mode="md"
       min={minDate}
       max={maxDate}
       firstDayOfWeek={1}
@@ -257,6 +258,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
       ref={datetimeRef}
       presentation="date"
       locale={getCurrentTranslation()}
+      mode="md"
       size="cover"
       min={minDate}
       max={maxDate}
@@ -448,6 +450,7 @@ const TabHome = () => {
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
                 className="main"
+                mode="md"
                 color={`dark-${theme}`}
                 disabled={isPeriodToday(cycles)}
                 onClick={() => {
