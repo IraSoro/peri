@@ -62,7 +62,7 @@ const InfoButton = (props: InfoButtonProps) => {
   const theme = useContext(ThemeContext).theme;
 
   const pregnancyChance = getPregnancyChance(cycles);
-  if (cycles.length === 0) {
+  if (cycles.length <= 1) {
     return <p style={{ marginBottom: "20px", height: "22px" }}></p>;
   }
   return (
