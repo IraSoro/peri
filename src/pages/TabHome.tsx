@@ -408,7 +408,7 @@ const TabHome = () => {
           />
           <div id="context-size">
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>
-              <IonLabel>
+              <IonLabel mode="md">
                 <p
                   style={{
                     fontSize: "35px",
@@ -420,7 +420,7 @@ const TabHome = () => {
               </IonLabel>
             </div>
             <div>
-              <IonLabel>
+              <IonLabel mode="md">
                 <p
                   style={
                     cycles.length === 1
