@@ -168,7 +168,7 @@ export async function migrateToTheNewStorage() {
 // NOTE: Predefined templates for test purpose
 //       for use just uncomment one of the following lines:
 
-// _emptyArrayOfCycles().catch((err) => console.error(err));
+_emptyArrayOfCycles().catch((err) => console.error(err));
 // _todayPeriod(8).catch((err) => console.error(err));
 // _todayOvulation(8).catch((err) => console.error(err));
 // _tomorrowOvulation(8).catch((err) => console.error(err));
