@@ -51,6 +51,8 @@ import { format } from "../utils/datetime";
 
 import { chevronForwardOutline } from "ionicons/icons";
 
+import { LocalNotifications } from "@capacitor/local-notifications";
+
 interface InfoButtonProps {
   setIsInfoModal: (newIsOpen: boolean) => void;
 }
@@ -387,6 +389,32 @@ const TabHome = () => {
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
 
+  const getNextNotificationId = () => {
+    const lastId = localStorage.getItem("lastNotificationId");
+    const nextId = lastId ? parseInt(lastId) + 1 : 1;
+    localStorage.setItem("lastNotificationId", nextId.toString());
+    return nextId;
+  };
+
+  const scheduleNotification = async () => {
+    const id = getNextNotificationId();
+
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: id,
+          title: "Notification!",
+          body: "Time for something important",
+          schedule: { at: new Date(new Date().getTime() + 5000) },
+          sound: "default",
+          smallIcon: "ic_launcher",
+          largeIcon: "ic_launcher",
+        },
+      ],
+    });
+    console.log("Notification scheduled!");
+  };
+
   return (
     <IonPage
       style={{ backgroundColor: `var(--ion-color-background-${theme})` }}
@@ -459,6 +487,7 @@ const TabHome = () => {
               >
                 {t("mark")}
               </IonButton>
+              <IonButton onClick={scheduleNotification}>test</IonButton>
             </IonCol>
             <IonCol>
               {isEditCalendar ? (
