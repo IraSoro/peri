@@ -48,7 +48,22 @@ import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 import { configuration } from "./data/AppConfiguration";
 
+import { LocalNotifications } from "@capacitor/local-notifications";
+
 setupIonicReact();
+
+const useLocalNotifications = () => {
+  useEffect(() => {
+    const requestPermission = async () => {
+      const result = await LocalNotifications.requestPermissions();
+      if (result.display !== "granted") {
+        console.log("Notification permission not received");
+      }
+    };
+
+    requestPermission();
+  }, []);
+};
 
 const Badge = () => {
   const theme = useContext(ThemeContext).theme;
@@ -143,6 +158,8 @@ const App = (props: AppProps) => {
         storage.set.theme(theme).catch((err) => console.error(err));
       });
   }, [changeLanguage, theme]);
+
+  useLocalNotifications();
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
