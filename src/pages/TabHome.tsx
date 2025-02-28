@@ -68,6 +68,7 @@ const InfoButton = (props: InfoButtonProps) => {
   return (
     <IonLabel
       onClick={() => props.setIsInfoModal(true)}
+      mode="md"
       style={{
         display: "flex",
         alignItems: "center",
