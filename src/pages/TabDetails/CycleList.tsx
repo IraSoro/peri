@@ -1,12 +1,12 @@
-import { IonLabel, IonProgressBar } from "@ionic/react";
-import { datesStyle, lenCycleStyle, progressBarStyle } from "../styles";
 import { useContext } from "react";
-import { CyclesContext, ThemeContext } from "../../../state/Context";
+import { CyclesContext, ThemeContext } from "../../state/Context";
+import { getDayOfCycle } from "../../state/CalculationLogics";
 import { useTranslation } from "react-i18next";
 import { addDays, startOfDay } from "date-fns";
-import { format } from "../../../utils/datetime";
-import { getNormalizedProgress } from "../../../utils/progress-bar";
-
+import { format } from "../../utils/datetime";
+import { IonLabel, IonProgressBar } from "@ionic/react";
+import { datesStyle, lenCycleStyle, progressBarStyle } from "./styles";
+import { getNormalizedProgress } from "../../utils/progress-bar";
 interface CycleListItemProps {
   cycleIndex: number;
   maxLength: number;
@@ -57,4 +57,27 @@ const CycleListItem = (props: CycleListItemProps): JSX.Element => {
   );
 };
 
-export default CycleListItem;
+const CycleList = () => {
+  const cycles = useContext(CyclesContext).cycles;
+  const dayOfCycle = getDayOfCycle(cycles);
+  const maxLength = cycles.reduce((max: number, item) => {
+    return Math.max(max, item.cycleLength);
+  }, dayOfCycle);
+
+  const list = cycles
+    // NOTE: 6 is the number of cycles we display in details. We store a maximum of 7 cycles (in case the last cycle is accidentally deleted)
+    .slice(1, 6)
+    .map((_item, idx) => {
+      return (
+        <CycleListItem
+          key={idx}
+          cycleIndex={idx}
+          maxLength={maxLength}
+        />
+      );
+    });
+
+  return <>{list}</>;
+};
+
+export default CycleList;

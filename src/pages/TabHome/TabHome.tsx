@@ -6,6 +6,10 @@ import {
   useIonRouter,
   IonButton,
   IonCol,
+  IonIcon,
+  IonModal,
+  IonToolbar,
+  IonButtons,
 } from "@ionic/react";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -22,12 +26,95 @@ import {
   getDaysBeforePeriod,
   getNewCyclesHistory,
   getPeriodDatesWithNewElement,
+  getPregnancyChance,
   isPeriodToday,
 } from "../../state/CalculationLogics";
-import InfoButton from "./InfoButton";
-import ViewCalendar from "./Calendar/ViewCalendar";
-import EditCalendar from "./Calendar/EditCalendar";
-import DemoAlert from "./DemoAlert";
+import { chevronForwardOutline } from "ionicons/icons";
+import { EditCalendar, ViewCalendar } from "./Calendar";
+
+interface InfoButtonProps {
+  setIsInfoModal: (newIsOpen: boolean) => void;
+}
+
+const DemoAlert = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const { t } = useTranslation();
+
+  return (
+    <IonModal
+      id="alert-demo-modal"
+      isOpen={isOpen}
+    >
+      <div className="wrapper">
+        <h1>{t("This is just a demo")}</h1>
+        <p>
+          <span>{t("You can download the application ")}</span>
+          <a href="https://github.com/IraSoro/peri/releases/latest">
+            {t("here")}
+          </a>
+        </p>
+        <IonCol>
+          <IonToolbar>
+            <IonButtons slot="primary">
+              <IonButton
+                onClick={() => setIsOpen(false)}
+                color="dark-basic"
+              >
+                OK
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonCol>
+      </div>
+    </IonModal>
+  );
+};
+
+const InfoButton = (props: InfoButtonProps) => {
+  const { t } = useTranslation();
+
+  const cycles = useContext(CyclesContext).cycles;
+  const theme = useContext(ThemeContext).theme;
+
+  const pregnancyChance = getPregnancyChance(cycles);
+  if (cycles.length === 0) {
+    return <p style={{ marginBottom: "20px", height: "22px" }}></p>;
+  }
+  return (
+    <IonLabel
+      onClick={() => props.setIsInfoModal(true)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <p
+        style={{
+          fontSize: "14px",
+          color: "var(--ion-color-medium)",
+          marginBottom: "20px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <span
+          style={{
+            color: `var(--ion-color-text-${theme})`,
+            marginRight: "3px",
+          }}
+        >
+          {pregnancyChance}
+        </span>
+        - {t("chance of getting pregnant")}
+        <IonIcon
+          color={`dark-${theme}`}
+          style={{ fontSize: "22px", marginLeft: "5px" }}
+          icon={chevronForwardOutline}
+        />
+      </p>
+    </IonLabel>
+  );
+};
 
 const TabHome = () => {
   const theme = useContext(ThemeContext).theme;

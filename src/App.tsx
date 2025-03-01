@@ -16,8 +16,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import { menuOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
-import TabHome from "./pages/TabHome";
-import TabDetails from "./pages/TabDetails";
+
 import "./App.css";
 
 /* Core CSS required for Ionic components to work properly */
@@ -47,6 +46,8 @@ import { CyclesContext, ThemeContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 import { configuration } from "./data/AppConfiguration";
+import TabHome from "./pages/TabHome/TabHome";
+import TabDetails from "./pages/TabDetails/TabDetails";
 
 setupIonicReact();
 
