@@ -19,8 +19,8 @@ import { CyclesContext, ThemeContext } from "../../state/Context";
 import { storage } from "../../data/Storage";
 import { configuration } from "../../data/AppConfiguration";
 
-import Welcome from "../../modals/WelcomeModal";
-import InfoModal from "../../modals/InfoModal";
+import { WelcomeModal } from "../../modals/WelcomeModal";
+import { InfoModal } from "../../modals/InfoModal";
 
 import {
   getDaysBeforePeriod,
@@ -116,7 +116,7 @@ const InfoButton = (props: InfoButtonProps) => {
   );
 };
 
-const TabHome = () => {
+export const TabHome = () => {
   const theme = useContext(ThemeContext).theme;
 
   const [isInfoModal, setIsInfoModal] = useState(false);
@@ -168,7 +168,7 @@ const TabHome = () => {
           className="ion-padding"
           color={`transparent-${theme}`}
         >
-          <Welcome
+          <WelcomeModal
             isOpen={isWelcomeModal}
             setIsOpen={setIsWelcomeModal}
           />
@@ -241,5 +241,3 @@ const TabHome = () => {
     </IonPage>
   );
 };
-
-export default TabHome;

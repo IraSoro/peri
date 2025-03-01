@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import App from "./App";
+import { App } from "./App";
 
 import { init as initTranslation } from "./utils/translation";
 import { init as initDateTimeLocale } from "./utils/datetime";

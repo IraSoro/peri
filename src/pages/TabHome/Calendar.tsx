@@ -28,7 +28,7 @@ interface CalendarProps {
   setIsEditCalendar: (newIsOpen: boolean) => void;
 }
 
-const ViewCalendar = (props: CalendarProps) => {
+export const ViewCalendar = (props: CalendarProps) => {
   const { t } = useTranslation();
   const { cycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
@@ -130,7 +130,7 @@ const ViewCalendar = (props: CalendarProps) => {
   );
 };
 
-const EditCalendar = (props: CalendarProps) => {
+export const EditCalendar = (props: CalendarProps) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
 
   const { t } = useTranslation();
@@ -236,5 +236,3 @@ const EditCalendar = (props: CalendarProps) => {
     </IonDatetime>
   );
 };
-
-export { ViewCalendar, EditCalendar };

@@ -18,7 +18,7 @@ interface PropsInfoModal {
   setIsOpen: (newIsOpen: boolean) => void;
 }
 
-const InfoModal = (props: PropsInfoModal) => {
+export const InfoModal = (props: PropsInfoModal) => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
@@ -95,5 +95,3 @@ const InfoModal = (props: PropsInfoModal) => {
     </IonModal>
   );
 };
-
-export default InfoModal;

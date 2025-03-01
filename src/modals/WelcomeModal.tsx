@@ -27,7 +27,7 @@ interface PropsWelcomeModal {
   setIsOpen: (newIsOpen: boolean) => void;
 }
 
-const Welcome = (props: PropsWelcomeModal) => {
+export const WelcomeModal = (props: PropsWelcomeModal) => {
   const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
   const [confirmAlert] = useIonAlert();
   const updateCycles = useContext(CyclesContext).updateCycles;
@@ -136,5 +136,3 @@ const Welcome = (props: PropsWelcomeModal) => {
     </IonModal>
   );
 };
-
-export default Welcome;

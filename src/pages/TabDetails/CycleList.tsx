@@ -57,7 +57,7 @@ const CycleListItem = (props: CycleListItemProps): JSX.Element => {
   );
 };
 
-const CycleList = () => {
+export const CycleList = () => {
   const cycles = useContext(CyclesContext).cycles;
   const dayOfCycle = getDayOfCycle(cycles);
   const maxLength = cycles.reduce((max: number, item) => {
@@ -79,5 +79,3 @@ const CycleList = () => {
 
   return <>{list}</>;
 };
-
-export default CycleList;

@@ -22,7 +22,7 @@ import { Cycle } from "../../data/ClassCycle";
 import { datesStyle, lenCycleStyle, progressBarStyle } from "./styles";
 import { getNormalizedProgress } from "../../utils/progress-bar";
 import { format } from "../../utils/datetime";
-import CycleList from "./CycleList";
+import { CycleList } from "./CycleList";
 
 interface AverageValuesProps {
   cycles: Cycle[];
@@ -114,7 +114,7 @@ const CurrentCycle = () => {
   );
 };
 
-const TabDetails = () => {
+export const TabDetails = () => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
@@ -154,5 +154,3 @@ const TabDetails = () => {
     </IonPage>
   );
 };
-
-export default TabDetails;

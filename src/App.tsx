@@ -46,8 +46,8 @@ import { CyclesContext, ThemeContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 import { configuration } from "./data/AppConfiguration";
-import TabHome from "./pages/TabHome/TabHome";
-import TabDetails from "./pages/TabDetails/TabDetails";
+import { TabHome } from "./pages/TabHome/TabHome";
+import { TabDetails } from "./pages/TabDetails/TabDetails";
 
 setupIonicReact();
 
@@ -74,7 +74,7 @@ interface AppProps {
   theme?: string;
 }
 
-const App = (props: AppProps) => {
+export const App = (props: AppProps) => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [theme, setTheme] = useState(props.theme ?? "basic");
 
@@ -243,5 +243,3 @@ const App = (props: AppProps) => {
     </CyclesContext.Provider>
   );
 };
-
-export default App;
