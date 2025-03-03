@@ -71,7 +71,7 @@ export const CycleList = () => {
       return (
         <CycleListItem
           key={idx}
-          cycleIndex={idx}
+          cycleIndex={idx + 1}
           maxLength={maxLength}
         />
       );
