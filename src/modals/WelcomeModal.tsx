@@ -50,12 +50,16 @@ const Welcome = (props: PropsWelcomeModal) => {
           <IonLabel
             color={`dark-${theme}`}
             style={{ fontSize: "30px", marginTop: "20px" }}
+            mode="md"
           >
             {t("Welcome to Peri")}
           </IonLabel>
         </div>
         <div style={{ marginTop: "20px", marginBottom: "25px" }}>
-          <IonLabel style={{ textAlign: "center" }}>
+          <IonLabel
+            style={{ textAlign: "center" }}
+            mode="md"
+          >
             <p
               style={{
                 fontSize: "15px",
@@ -82,6 +86,7 @@ const Welcome = (props: PropsWelcomeModal) => {
             presentation="date"
             locale={getCurrentTranslation()}
             size="cover"
+            mode="md"
             min={formatISO(startOfMonth(subMonths(startOfToday(), 6)))}
             max={formatISO(startOfToday())}
             multiple
@@ -94,6 +99,7 @@ const Welcome = (props: PropsWelcomeModal) => {
         <IonCol>
           <IonButton
             className="main"
+            mode="md"
             color={`dark-${theme}`}
             onClick={() => {
               if (datetimeRef.current?.value) {

@@ -68,6 +68,7 @@ const InfoButton = (props: InfoButtonProps) => {
   return (
     <IonLabel
       onClick={() => props.setIsInfoModal(true)}
+      mode="md"
       style={{
         display: "flex",
         alignItems: "center",
@@ -154,6 +155,7 @@ const ViewCalendar = (props: SelectCalendarProps) => {
       presentation="date"
       locale={getCurrentTranslation()}
       size="cover"
+      mode="md"
       min={minDate}
       max={maxDate}
       firstDayOfWeek={1}
@@ -257,6 +259,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
       ref={datetimeRef}
       presentation="date"
       locale={getCurrentTranslation()}
+      mode="md"
       size="cover"
       min={minDate}
       max={maxDate}
@@ -406,7 +409,7 @@ const TabHome = () => {
           />
           <div id="context-size">
             <div style={{ marginTop: "30px", marginBottom: "30px" }}>
-              <IonLabel>
+              <IonLabel mode="md">
                 <p
                   style={{
                     fontSize: "35px",
@@ -418,7 +421,7 @@ const TabHome = () => {
               </IonLabel>
             </div>
             <div>
-              <IonLabel>
+              <IonLabel mode="md">
                 <p
                   style={
                     cycles.length === 1
@@ -448,6 +451,7 @@ const TabHome = () => {
             <IonCol style={{ marginBottom: "20px" }}>
               <IonButton
                 className="main"
+                mode="md"
                 color={`dark-${theme}`}
                 disabled={isPeriodToday(cycles)}
                 onClick={() => {

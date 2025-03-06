@@ -104,7 +104,7 @@ const CurrentCycle = () => {
 
   return (
     <div style={{ marginLeft: "15px" }}>
-      <IonLabel>
+      <IonLabel mode="md">
         <p style={lenCycleStyle}>{title}</p>
       </IonLabel>
       <IonProgressBar
@@ -116,7 +116,7 @@ const CurrentCycle = () => {
         )}
         buffer={setProgressBar(dayOfCycle, maxLength)}
       />
-      <IonLabel>
+      <IonLabel mode="md">
         <p style={datesStyle}>{format(startDate, "MMMM d")}</p>
       </IonLabel>
     </div>
@@ -142,16 +142,17 @@ const ListProgress = () => {
     return (
       <div style={{ marginTop: "20px" }}>
         <div style={{ marginLeft: "15px" }}>
-          <IonLabel>
+          <IonLabel mode="md">
             <p style={lenCycleStyle}>{info.lengthOfCycleString}</p>
           </IonLabel>
           <IonProgressBar
+            mode="md"
             className={theme}
             style={progressBarStyle}
             value={setProgressBar(info.lengthOfPeriod, maxLength)}
             buffer={setProgressBar(info.lengthOfCycleNumber, maxLength)}
           />
-          <IonLabel>
+          <IonLabel mode="md">
             <p style={datesStyle}>{info.dates}</p>
           </IonLabel>
         </div>
@@ -202,7 +203,10 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
     >
       <IonCol>
         <div id="inline-block">
-          <IonLabel className="average-value">
+          <IonLabel
+            className="average-value"
+            mode="md"
+          >
             <p className={`h_style-${theme}`}>
               {averageLengthOfCycle && cycles.length > 1
                 ? lengthOfCycle
@@ -213,7 +217,10 @@ const AverageValues = ({ cycles }: AverageValuesProps) => {
         </div>
         <div id={`vertical-line-${theme}`} />
         <div id="inline-block">
-          <IonLabel className="average-value">
+          <IonLabel
+            className="average-value"
+            mode="md"
+          >
             <p className={`h_style-${theme}`}>
               {averageLengthOfPeriod ? lengthOfPeriod : "---"}
             </p>
