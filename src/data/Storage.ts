@@ -178,7 +178,7 @@ export async function migrateToTheNewStorage() {
 // _delayOfCycle(8).catch((err) => console.error(err));
 // _randomMenstrualPhase(8).catch((err) => console.error(err));
 // _randomFollicularPhase(8).catch((err) => console.error(err));
-_randomLutealPhase(8).catch((err) => console.error(err));
+// _randomLutealPhase(8).catch((err) => console.error(err));
 // _randomDelayOfCycle(8).catch((err) => console.error(err));
 
 function _emptyArrayOfCycles() {
