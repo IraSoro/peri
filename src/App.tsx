@@ -52,19 +52,6 @@ import { LocalNotifications } from "@capacitor/local-notifications";
 
 setupIonicReact();
 
-const useLocalNotifications = () => {
-  useEffect(() => {
-    const requestPermission = async () => {
-      const result = await LocalNotifications.requestPermissions();
-      if (result.display !== "granted") {
-        console.log("Notification permission not received");
-      }
-    };
-
-    requestPermission();
-  }, []);
-};
-
 const Badge = () => {
   const theme = useContext(ThemeContext).theme;
   // NOTE: Ionic's badge can't be empty and need some text in it,
@@ -102,10 +89,41 @@ const App = (props: AppProps) => {
     [i18n],
   );
 
+  const scheduleNotification = () => {
+    LocalNotifications.removeAllDeliveredNotifications()
+      .then(() => {
+        console.log("Notifications removed");
+
+        const notificationId = Date.now();
+
+        return LocalNotifications.schedule({
+          notifications: [
+            {
+              id: notificationId,
+              title: "Notification!",
+              body: "Time for something important",
+              schedule: { at: new Date(Date.now() + 5000) },
+              sound: "default",
+              smallIcon: "ic_launcher",
+              largeIcon: "ic_launcher",
+            },
+          ],
+        });
+      })
+      .then(() => {
+        console.log("Notification scheduled");
+      })
+      .catch((error) => {
+        console.error("Error handling notifications:", error);
+      });
+  };
+
   function updateCycles(newCycles: Cycle[]) {
     const slicedCycles = newCycles.slice(0, maxOfCycles);
     setCycles(slicedCycles);
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
+
+    scheduleNotification();
   }
 
   function updateTheme(newTheme: string) {
@@ -159,7 +177,23 @@ const App = (props: AppProps) => {
       });
   }, [changeLanguage, theme]);
 
-  useLocalNotifications();
+  useEffect(() => {
+    const requestPermission = () => {
+      LocalNotifications.requestPermissions()
+        .then(({ display }) => {
+          if (display !== "granted") {
+            console.log("Notification permission not received");
+            return;
+          }
+          console.log("Notification permission granted");
+        })
+        .catch((err) => {
+          console.error("Error requesting notification permission:", err);
+        });
+    };
+
+    requestPermission();
+  }, []);
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
