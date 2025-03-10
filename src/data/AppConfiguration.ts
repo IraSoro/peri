@@ -7,5 +7,6 @@ export const configuration = {
       import.meta.env.VITE_FEATURE_USE_CUSTOM_VERSION_UPDATE === "true",
     demoMode: import.meta.env.VITE_FEATURE_DEMO_MODE === "true",
     betaLanguages: import.meta.env.VITE_FEATURE_BETA_LANGUAGES === "true",
+    notifications: import.meta.env.VITE_FEATURE_NOTIFICATIONS === "true",
   },
 };

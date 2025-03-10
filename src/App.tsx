@@ -92,7 +92,7 @@ const App = (props: AppProps) => {
   const scheduleNotification = () => {
     LocalNotifications.removeAllDeliveredNotifications()
       .then(() => {
-        console.log("Notifications removed");
+        console.log("Old notifications removed");
 
         const notificationId = Date.now();
 
@@ -123,7 +123,7 @@ const App = (props: AppProps) => {
     setCycles(slicedCycles);
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
 
-    scheduleNotification();
+    if (configuration.features.notifications) scheduleNotification();
   }
 
   function updateTheme(newTheme: string) {
@@ -192,7 +192,7 @@ const App = (props: AppProps) => {
         });
     };
 
-    requestPermission();
+    if (configuration.features.notifications) requestPermission();
   }, []);
 
   return (

@@ -275,7 +275,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <LanguageSwitcher />
         <ThemeSwitcher />
-        <NotificationToggle />
+        {configuration.features.notifications && <NotificationToggle />}
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Edit")}</IonLabel>
         </IonItem>
