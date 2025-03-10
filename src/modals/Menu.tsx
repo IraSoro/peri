@@ -9,6 +9,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonText,
+  IonToggle,
   useIonAlert,
 } from "@ionic/react";
 import {
@@ -18,6 +19,7 @@ import {
   globeOutline,
   colorFillOutline,
   logoGithub,
+  notificationsOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -129,6 +131,34 @@ const ThemeSwitcher = () => {
         </div>
         {themesList}
       </IonSelect>
+    </IonItem>
+  );
+};
+
+const NotificationToggle = () => {
+  const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
+
+  const switchNotification = () => {
+    console.log(`Application notification has been switched to ...`);
+  };
+
+  return (
+    <IonItem>
+      <IonIcon
+        slot="start"
+        icon={notificationsOutline}
+        color={`text-${theme}`}
+      />
+      <IonToggle
+        color={`dark-${theme}`}
+        checked={false}
+        onIonChange={(event) => {
+          console.log(event.target.value);
+        }}
+      >
+        <IonText color={`text-${theme}`}>{t("Notification (β)")}</IonText>
+      </IonToggle>
     </IonItem>
   );
 };
@@ -245,6 +275,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <LanguageSwitcher />
         <ThemeSwitcher />
+        <NotificationToggle />
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Edit")}</IonLabel>
         </IonItem>
