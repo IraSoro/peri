@@ -139,8 +139,28 @@ const NotificationToggle = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    storage.get
+      .notifications()
+      .then((res) => {
+        console.log("notifications = ", res);
+        setIsChecked(res);
+      })
+      .catch((err) => {
+        console.error(
+          `Can't get notifications status ${(err as Error).message}`,
+        );
+      });
+  }, []);
+
   const switchNotification = () => {
-    console.log(`Application notification has been switched to ...`);
+    console.log(
+      `Application notification has been switched to ${!isChecked ? "on" : "off"}`,
+    );
+    storage.set.notifications(!isChecked).catch((err) => console.error(err));
+    setIsChecked(!isChecked);
   };
 
   return (
@@ -152,10 +172,8 @@ const NotificationToggle = () => {
       />
       <IonToggle
         color={`dark-${theme}`}
-        checked={false}
-        onIonChange={(event) => {
-          console.log(event.target.value);
-        }}
+        checked={isChecked}
+        onIonChange={switchNotification}
       >
         <IonText color={`text-${theme}`}>{t("Notification (β)")}</IonText>
       </IonToggle>
@@ -218,7 +236,8 @@ const Exporter = () => {
     const cycles = await storage.get.cycles();
     const language = await storage.get.language();
     const theme = await storage.get.theme();
-    await exportConfig({ cycles, language, theme });
+    const notifications = await storage.get.notifications();
+    await exportConfig({ cycles, language, theme, notifications });
   };
 
   return (

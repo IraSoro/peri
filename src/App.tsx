@@ -175,9 +175,19 @@ const App = (props: AppProps) => {
         console.error(`Can't get theme ${(err as Error).message}`);
         storage.set.theme(theme).catch((err) => console.error(err));
       });
+
+    storage.get.notifications().catch((err) => {
+      console.error(`Can't get notifications status ${(err as Error).message}`);
+      // Notifications are off by default
+      storage.set.notifications(false).catch((err) => console.error(err));
+    });
   }, [changeLanguage, theme]);
 
   useEffect(() => {
+    if (!configuration.features.notifications) {
+      return;
+    }
+
     const requestPermission = () => {
       LocalNotifications.requestPermissions()
         .then(({ display }) => {
@@ -192,7 +202,7 @@ const App = (props: AppProps) => {
         });
     };
 
-    if (configuration.features.notifications) requestPermission();
+    requestPermission();
   }, []);
 
   return (
