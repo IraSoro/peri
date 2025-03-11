@@ -30,7 +30,11 @@ import {
   isNewVersionAvailable,
   openGitHubPage,
 } from "../data/AppVersion";
-import { CyclesContext, ThemeContext } from "../state/Context";
+import {
+  CyclesContext,
+  NotificationsContext,
+  ThemeContext,
+} from "../state/Context";
 import {
   changeTranslation,
   getCurrentTranslation,
@@ -138,30 +142,8 @@ const ThemeSwitcher = () => {
 const NotificationToggle = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
-
-  const [isChecked, setIsChecked] = useState(false);
-
-  useEffect(() => {
-    storage.get
-      .notifications()
-      .then((res) => {
-        console.log("notifications = ", res);
-        setIsChecked(res);
-      })
-      .catch((err) => {
-        console.error(
-          `Can't get notifications status ${(err as Error).message}`,
-        );
-      });
-  }, []);
-
-  const switchNotification = () => {
-    console.log(
-      `Application notification has been switched to ${!isChecked ? "on" : "off"}`,
-    );
-    storage.set.notifications(!isChecked).catch((err) => console.error(err));
-    setIsChecked(!isChecked);
-  };
+  const { notificationsStatus, updateNotificationsStatus } =
+    useContext(NotificationsContext);
 
   return (
     <IonItem>
@@ -172,8 +154,10 @@ const NotificationToggle = () => {
       />
       <IonToggle
         color={`dark-${theme}`}
-        checked={isChecked}
-        onIonChange={switchNotification}
+        checked={notificationsStatus}
+        onIonChange={() => {
+          updateNotificationsStatus(!notificationsStatus);
+        }}
       >
         <IonText color={`text-${theme}`}>{t("Notification (β)")}</IonText>
       </IonToggle>
