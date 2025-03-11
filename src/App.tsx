@@ -52,7 +52,12 @@ import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 import { configuration } from "./data/AppConfiguration";
 
-import { requestPermission, scheduleNotification } from "./utils/notifications";
+import {
+  requestPermission,
+  scheduleNotification,
+  removeNotifications,
+  createNotifications,
+} from "./utils/notifications";
 
 setupIonicReact();
 
@@ -119,6 +124,11 @@ const App = (props: AppProps) => {
         console.log(
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
+        if (newStatus) {
+          createNotifications();
+          return;
+        }
+        removeNotifications();
       })
       .catch((err) => console.error(err));
   }

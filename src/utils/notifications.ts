@@ -14,6 +14,40 @@ export const requestPermission = () => {
     });
 };
 
+export const removeNotifications = () => {
+  LocalNotifications.removeAllDeliveredNotifications()
+    .then(() => {
+      console.log("Old notifications removed");
+    })
+    .catch((error) => {
+      console.error("Error removing notifications:", error);
+    });
+};
+
+export const createNotifications = () => {
+  const notificationId = Date.now();
+
+  LocalNotifications.schedule({
+    notifications: [
+      {
+        id: notificationId,
+        title: "Notification!",
+        body: "Time for something important",
+        schedule: { at: new Date(Date.now() + 5000) },
+        sound: "default",
+        smallIcon: "ic_launcher",
+        largeIcon: "ic_launcher",
+      },
+    ],
+  })
+    .then(() => {
+      console.log("Notification scheduled");
+    })
+    .catch((error) => {
+      console.error("Error creating notifications:", error);
+    });
+};
+
 export const scheduleNotification = () => {
   LocalNotifications.removeAllDeliveredNotifications()
     .then(() => {
