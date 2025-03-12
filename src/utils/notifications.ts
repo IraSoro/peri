@@ -1,5 +1,8 @@
 import { LocalNotifications } from "@capacitor/local-notifications";
 
+import { getNotificationDates } from "../state/CalculationLogics";
+import { Cycle } from "../data/ClassCycle";
+
 export const requestPermission = () => {
   LocalNotifications.requestPermissions()
     .then(({ display }) => {
@@ -24,9 +27,11 @@ export const removeAllNotifications = () => {
     });
 };
 
-export const createNotifications = () => {
+export const createNotifications = (cycles: Cycle[]) => {
   const notificationsId = new Uint16Array(2);
   crypto.getRandomValues(notificationsId);
+
+  const dates = getNotificationDates(cycles);
 
   LocalNotifications.schedule({
     notifications: [
@@ -34,7 +39,7 @@ export const createNotifications = () => {
         id: notificationsId[0],
         title: "Period's coming soon",
         body: "Your period may start tomorrow",
-        schedule: { at: new Date(Date.now() + 5000) },
+        schedule: { at: dates[0] },
         sound: "default",
         smallIcon: "ic_launcher",
         largeIcon: "ic_launcher",
@@ -43,7 +48,7 @@ export const createNotifications = () => {
         id: notificationsId[1],
         title: "Period's coming soon",
         body: "Your period may start today",
-        schedule: { at: new Date(Date.now() + 7000) },
+        schedule: { at: dates[1] },
         sound: "default",
         smallIcon: "ic_launcher",
         largeIcon: "ic_launcher",

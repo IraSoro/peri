@@ -105,7 +105,7 @@ const App = (props: AppProps) => {
 
     if (configuration.features.notifications && notificationsStatus) {
       removeAllNotifications();
-      createNotifications();
+      createNotifications(newCycles);
     }
   }
 
@@ -126,7 +126,7 @@ const App = (props: AppProps) => {
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
         if (newStatus) {
-          createNotifications();
+          createNotifications(cycles);
           return;
         }
         removeAllNotifications();

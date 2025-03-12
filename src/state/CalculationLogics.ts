@@ -542,3 +542,17 @@ export function getFutureOvulationDates(cycles: Cycle[]) {
 
   return ovulationDates;
 }
+
+export function getNotificationDates(cycles: Cycle[]) {
+  const cycleLength = getAverageLengthOfCycle(cycles);
+  const dateOfPeriodTomorrow = addDays(
+    startOfDay(new Date(cycles[0].startDate)),
+    cycleLength - 1,
+  );
+  const dateOfPeriodToday = addDays(
+    startOfDay(new Date(cycles[0].startDate)),
+    cycleLength,
+  );
+
+  return [dateOfPeriodTomorrow, dateOfPeriodToday];
+}
