@@ -25,17 +25,25 @@ export const removeAllNotifications = () => {
 };
 
 export const createNotifications = () => {
-  const randomBuffer = new Uint16Array(1);
-  crypto.getRandomValues(randomBuffer);
-  const notificationId = randomBuffer[0];
+  const notificationsId = new Uint16Array(2);
+  crypto.getRandomValues(notificationsId);
 
   LocalNotifications.schedule({
     notifications: [
       {
-        id: notificationId,
-        title: "Notification!",
-        body: "Time for something important",
+        id: notificationsId[0],
+        title: "Period's coming soon",
+        body: "Your period may start tomorrow",
         schedule: { at: new Date(Date.now() + 5000) },
+        sound: "default",
+        smallIcon: "ic_launcher",
+        largeIcon: "ic_launcher",
+      },
+      {
+        id: notificationsId[1],
+        title: "Period's coming soon",
+        body: "Your period may start today",
+        schedule: { at: new Date(Date.now() + 7000) },
         sound: "default",
         smallIcon: "ic_launcher",
         largeIcon: "ic_launcher",
