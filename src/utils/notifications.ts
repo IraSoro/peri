@@ -25,8 +25,9 @@ export const removeAllNotifications = () => {
 };
 
 export const createNotifications = () => {
-  const notificationId =
-    Number(String(Date.now()).slice(-5)) + Math.floor(Math.random() * 100);
+  const randomBuffer = new Uint16Array(1);
+  crypto.getRandomValues(randomBuffer);
+  const notificationId = randomBuffer[0];
 
   LocalNotifications.schedule({
     notifications: [
