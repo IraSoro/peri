@@ -25,7 +25,8 @@ export const removeNotifications = () => {
 };
 
 export const createNotifications = () => {
-  const notificationId = Date.now();
+  const notificationId =
+    Number(String(Date.now()).slice(-5)) + Math.floor(Math.random() * 100);
 
   LocalNotifications.schedule({
     notifications: [
@@ -53,7 +54,8 @@ export const scheduleNotification = () => {
     .then(() => {
       console.log("Old notifications removed");
 
-      const notificationId = Date.now();
+      const notificationId =
+        Number(String(Date.now()).slice(-5)) + Math.floor(Math.random() * 100);
 
       return LocalNotifications.schedule({
         notifications: [
