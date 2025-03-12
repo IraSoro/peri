@@ -14,7 +14,7 @@ export const requestPermission = () => {
     });
 };
 
-export const removeNotifications = () => {
+export const removeAllNotifications = () => {
   LocalNotifications.removeAllDeliveredNotifications()
     .then(() => {
       console.log("Old notifications removed");
@@ -46,35 +46,5 @@ export const createNotifications = () => {
     })
     .catch((error) => {
       console.error("Error creating notifications:", error);
-    });
-};
-
-export const scheduleNotification = () => {
-  LocalNotifications.removeAllDeliveredNotifications()
-    .then(() => {
-      console.log("Old notifications removed");
-
-      const notificationId =
-        Number(String(Date.now()).slice(-5)) + Math.floor(Math.random() * 100);
-
-      return LocalNotifications.schedule({
-        notifications: [
-          {
-            id: notificationId,
-            title: "Notification!",
-            body: "Time for something important",
-            schedule: { at: new Date(Date.now() + 5000) },
-            sound: "default",
-            smallIcon: "ic_launcher",
-            largeIcon: "ic_launcher",
-          },
-        ],
-      });
-    })
-    .then(() => {
-      console.log("Notification scheduled");
-    })
-    .catch((error) => {
-      console.error("Error handling notifications:", error);
     });
 };

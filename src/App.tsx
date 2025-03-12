@@ -54,8 +54,7 @@ import { configuration } from "./data/AppConfiguration";
 
 import {
   requestPermission,
-  scheduleNotification,
-  removeNotifications,
+  removeAllNotifications,
   createNotifications,
 } from "./utils/notifications";
 
@@ -104,8 +103,10 @@ const App = (props: AppProps) => {
     setCycles(slicedCycles);
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
 
-    if (configuration.features.notifications && notificationsStatus)
-      scheduleNotification();
+    if (configuration.features.notifications && notificationsStatus) {
+      removeAllNotifications();
+      createNotifications();
+    }
   }
 
   function updateTheme(newTheme: string) {
@@ -128,7 +129,7 @@ const App = (props: AppProps) => {
           createNotifications();
           return;
         }
-        removeNotifications();
+        removeAllNotifications();
       })
       .catch((err) => console.error(err));
   }
