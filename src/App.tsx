@@ -104,8 +104,15 @@ const App = (props: AppProps) => {
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
 
     if (configuration.features.notifications && notificationsStatus) {
-      removeAllNotifications();
-      createNotifications(newCycles);
+      removeAllNotifications()
+        .then(() => {
+          createNotifications(cycles).catch((err) => {
+            console.error("Error creating notifications", err);
+          });
+        })
+        .catch((err) => {
+          console.error("Error removing notifications", err);
+        });
     }
   }
 
@@ -126,10 +133,14 @@ const App = (props: AppProps) => {
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
         if (newStatus) {
-          createNotifications(cycles);
+          createNotifications(cycles).catch((err) => {
+            console.error("Error creating notifications", err);
+          });
           return;
         }
-        removeAllNotifications();
+        removeAllNotifications().catch((err) => {
+          console.error("Error removing notifications", err);
+        });
       })
       .catch((err) => console.error(err));
   }
@@ -193,7 +204,9 @@ const App = (props: AppProps) => {
       return;
     }
 
-    requestPermission();
+    requestPermission().catch((err) => {
+      console.error("Error request permission notifications", err);
+    });
   }, [notificationsStatus]);
 
   return (

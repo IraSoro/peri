@@ -9,6 +9,7 @@ export interface Context {
   language: string;
   theme: string;
   notifications: boolean;
+  lastNotificationId: number;
 }
 
 export enum StorageKey {
@@ -16,6 +17,7 @@ export enum StorageKey {
   Language = "language",
   Theme = "theme",
   Notifications = "notifications",
+  LastNotificationId = "lastNotificationId",
 }
 
 type StorageValueTypeMap = {
@@ -23,6 +25,7 @@ type StorageValueTypeMap = {
   [StorageKey.Language]: string;
   [StorageKey.Theme]: string;
   [StorageKey.Notifications]: boolean;
+  [StorageKey.LastNotificationId]: number;
 };
 
 type StorageValueType<K extends StorageKey> = StorageValueTypeMap[K];
@@ -86,6 +89,14 @@ export const storage = {
         value: value.toString(),
       });
     },
+    lastNotificationId: (
+      value: StorageValueType<StorageKey.LastNotificationId>,
+    ) => {
+      return Preferences.set({
+        key: StorageKey.LastNotificationId,
+        value: value.toString(),
+      });
+    },
   },
   get: {
     cycles: async () => {
@@ -117,6 +128,17 @@ export const storage = {
         throw new Error(`Can't find '${StorageKey.Notifications}' in storage`);
       }
       return value === "true";
+    },
+    lastNotificationId: async () => {
+      const { value } = await Preferences.get({
+        key: StorageKey.LastNotificationId,
+      });
+      if (!value) {
+        throw new Error(
+          `Can't find '${StorageKey.LastNotificationId}' in storage`,
+        );
+      }
+      return Number(value);
     },
   },
   getUnsafe: {

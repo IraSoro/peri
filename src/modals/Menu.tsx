@@ -222,7 +222,14 @@ const Exporter = () => {
     const language = await storage.get.language();
     const theme = await storage.get.theme();
     const notifications = await storage.get.notifications();
-    await exportConfig({ cycles, language, theme, notifications });
+    const lastNotificationId = await storage.get.lastNotificationId();
+    await exportConfig({
+      cycles,
+      language,
+      theme,
+      notifications,
+      lastNotificationId,
+    });
   };
 
   return (
