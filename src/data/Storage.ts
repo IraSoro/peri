@@ -127,7 +127,7 @@ export const storage = {
       if (!value) {
         throw new Error(`Can't find '${StorageKey.Notifications}' in storage`);
       }
-      return value === "true";
+      return Boolean(value);
     },
     lastNotificationId: async () => {
       const { value } = await Preferences.get({
