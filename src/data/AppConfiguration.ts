@@ -1,3 +1,5 @@
+import { isPlatform } from "@ionic/core";
+
 export const configuration = {
   app: {
     version: import.meta.env.VITE_APP_VERSION || "",
@@ -7,6 +9,10 @@ export const configuration = {
       import.meta.env.VITE_FEATURE_USE_CUSTOM_VERSION_UPDATE === "true",
     demoMode: import.meta.env.VITE_FEATURE_DEMO_MODE === "true",
     betaLanguages: import.meta.env.VITE_FEATURE_BETA_LANGUAGES === "true",
-    notifications: import.meta.env.VITE_FEATURE_NOTIFICATIONS === "true",
+    notifications:
+      isPlatform("android") &&
+      !isPlatform("mobileweb") &&
+      isPlatform("mobile") &&
+      import.meta.env.VITE_FEATURE_NOTIFICATIONS === "true",
   },
 };
