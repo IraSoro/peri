@@ -51,7 +51,7 @@ export const createNotifications = async (cycles: Cycle[]) => {
       notifications: [
         {
           id: notificationsId[0],
-          title: "Period's coming soon",
+          title: "Period is coming soon",
           body: "Your period may start tomorrow",
           schedule: { at: dates[0] },
           sound: "default",
@@ -60,7 +60,7 @@ export const createNotifications = async (cycles: Cycle[]) => {
         },
         {
           id: notificationsId[1],
-          title: "Period's coming soon",
+          title: "Period is coming soon",
           body: "Your period may start today",
           schedule: { at: dates[1] },
           sound: "default",
