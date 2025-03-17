@@ -27,9 +27,18 @@ export const removeAllNotifications = () => {
     });
 };
 
+const getNextNotificationIds = () => {
+  const lastId = localStorage.getItem("lastNotificationId");
+  const nextId = lastId ? parseInt(lastId) + 1 : 1;
+  const secondNextId = nextId + 1;
+
+  localStorage.setItem("lastNotificationId", secondNextId.toString());
+
+  return [nextId, secondNextId];
+};
+
 export const createNotifications = (cycles: Cycle[]) => {
-  const notificationsId = new Uint16Array(2);
-  crypto.getRandomValues(notificationsId);
+  const notificationsId = getNextNotificationIds();
 
   const dates = getNotificationDates(cycles);
 
