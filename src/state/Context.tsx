@@ -33,6 +33,5 @@ const notificationsStatusInit: INotificationsContext = {
 
 export const CyclesContext = React.createContext<ICyclesContext>(cyclesInit);
 export const ThemeContext = React.createContext<IThemeContext>(themeInit);
-export const NotificationsContext = React.createContext<INotificationsContext>(
-  notificationsStatusInit,
-);
+export const NotificationEnabledContext =
+  React.createContext<INotificationsContext>(notificationsStatusInit);

@@ -46,7 +46,7 @@ import { maxOfCycles } from "./state/CalculationLogics";
 import {
   CyclesContext,
   ThemeContext,
-  NotificationsContext,
+  NotificationEnabledContext,
 } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
@@ -199,7 +199,7 @@ const App = (props: AppProps) => {
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
       <ThemeContext.Provider value={{ theme, updateTheme }}>
-        <NotificationsContext.Provider
+        <NotificationEnabledContext.Provider
           value={{ notificationsStatus, updateNotificationsStatus }}
         >
           <IonApp>
@@ -294,7 +294,7 @@ const App = (props: AppProps) => {
               </IonContent>
             </IonReactRouter>
           </IonApp>
-        </NotificationsContext.Provider>
+        </NotificationEnabledContext.Provider>
       </ThemeContext.Provider>
     </CyclesContext.Provider>
   );

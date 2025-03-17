@@ -32,7 +32,7 @@ import {
 } from "../data/AppVersion";
 import {
   CyclesContext,
-  NotificationsContext,
+  NotificationEnabledContext,
   ThemeContext,
 } from "../state/Context";
 import {
@@ -142,8 +142,9 @@ const ThemeSwitcher = () => {
 const NotificationToggle = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
-  const { notificationsStatus, updateNotificationsStatus } =
-    useContext(NotificationsContext);
+  const { notificationsStatus, updateNotificationsStatus } = useContext(
+    NotificationEnabledContext,
+  );
 
   return (
     <IonItem>
