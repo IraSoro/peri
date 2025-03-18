@@ -90,7 +90,7 @@ const CurrentCycle = () => {
 
   const { t } = useTranslation();
   const dayOfCycle = getDayOfCycle(cycles);
-  const title = `${dayOfCycle}. ${t("Days", {
+  const title = `${dayOfCycle} ${t("Days", {
     postProcess: "interval",
     count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
   })}`;

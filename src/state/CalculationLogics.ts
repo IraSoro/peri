@@ -144,7 +144,6 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
       days: `${dayBefore} ${i18n.t("Days", {
         postProcess: "interval",
         count: dayBefore,
-        context: "dative",
       })}`,
     };
   }
