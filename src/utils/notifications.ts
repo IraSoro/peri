@@ -20,7 +20,7 @@ export const requestPermission = async () => {
 export const removeAllNotifications = async () => {
   try {
     await LocalNotifications.removeAllDeliveredNotifications();
-    console.log("Old notifications removed");
+    console.log("All notifications removed");
   } catch (error) {
     console.error("Error removing notifications:", error);
   }
