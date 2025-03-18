@@ -1,6 +1,6 @@
 import { LocalNotifications } from "@capacitor/local-notifications";
 
-import { getNotificationDates } from "../state/CalculationLogics";
+import { getPeriodShiftInDays } from "../state/CalculationLogics";
 import { Cycle } from "../data/ClassCycle";
 import { storage } from "../data/Storage";
 
@@ -44,8 +44,8 @@ const getNextNotificationIds = async () => {
 export const createNotifications = async (cycles: Cycle[]) => {
   try {
     const notificationsId = await getNextNotificationIds();
-
-    const dates = getNotificationDates(cycles);
+    const dayBeforePeriod = getPeriodShiftInDays(cycles, -1);
+    const dayOfPeriod = getPeriodShiftInDays(cycles, 0);
 
     await LocalNotifications.schedule({
       notifications: [
@@ -53,7 +53,7 @@ export const createNotifications = async (cycles: Cycle[]) => {
           id: notificationsId[0],
           title: "Period is coming soon",
           body: "Your period may start tomorrow",
-          schedule: { at: dates[0] },
+          schedule: { at: dayBeforePeriod },
           sound: "default",
           smallIcon: "ic_launcher",
           largeIcon: "ic_launcher",
@@ -62,7 +62,7 @@ export const createNotifications = async (cycles: Cycle[]) => {
           id: notificationsId[1],
           title: "Period is coming soon",
           body: "Your period may start today",
-          schedule: { at: dates[1] },
+          schedule: { at: dayOfPeriod },
           sound: "default",
           smallIcon: "ic_launcher",
           largeIcon: "ic_launcher",
