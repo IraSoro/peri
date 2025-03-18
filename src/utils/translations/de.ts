@@ -7,7 +7,6 @@ const de = {
   today: "heute",
   Delay: "Verzögerung",
   Days: "(0)[Tage];(1)[Tag];(2-inf)[Tage];",
-  Days_dative: "(0)[Tagen];(1)[Tag];(2-inf)[Tagen];",
   "Current cycle day": "Aktueller Zyklustag",
   day: "{{count}}. Tag",
   Ovulation: "Ovulation",
