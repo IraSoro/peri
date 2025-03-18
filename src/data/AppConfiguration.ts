@@ -1,6 +1,6 @@
 import { isPlatform } from "@ionic/core";
 
-function isPlatformCheck() {
+function isPlatformAndroid() {
   return (
     isPlatform("android") &&
     isPlatform("mobile") &&
@@ -19,7 +19,7 @@ export const configuration = {
     demoMode: import.meta.env.VITE_FEATURE_DEMO_MODE === "true",
     betaLanguages: import.meta.env.VITE_FEATURE_BETA_LANGUAGES === "true",
     notifications:
-      isPlatformCheck() &&
+      isPlatformAndroid() &&
       import.meta.env.VITE_FEATURE_NOTIFICATIONS === "true",
   },
 };
