@@ -542,3 +542,15 @@ export function getFutureOvulationDates(cycles: Cycle[]) {
 
   return ovulationDates;
 }
+
+// NOTE: This function calculates the date for notification
+export function getPeriodShiftInDays(
+  cycles: Cycle[],
+  periodShiftInDays: number,
+) {
+  const cycleLength = getAverageLengthOfCycle(cycles);
+  return addDays(
+    startOfDay(new Date(cycles[0].startDate)),
+    cycleLength + periodShiftInDays,
+  );
+}

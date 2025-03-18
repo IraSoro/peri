@@ -9,6 +9,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonText,
+  IonToggle,
   useIonAlert,
 } from "@ionic/react";
 import {
@@ -18,6 +19,7 @@ import {
   globeOutline,
   colorFillOutline,
   logoGithub,
+  notificationsOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -28,7 +30,11 @@ import {
   isNewVersionAvailable,
   openGitHubPage,
 } from "../data/AppVersion";
-import { CyclesContext, ThemeContext } from "../state/Context";
+import {
+  CyclesContext,
+  NotificationEnabledContext,
+  ThemeContext,
+} from "../state/Context";
 import {
   changeTranslation,
   getCurrentTranslation,
@@ -133,6 +139,33 @@ const ThemeSwitcher = () => {
   );
 };
 
+const NotificationToggle = () => {
+  const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
+  const { notificationsStatus, updateNotificationsStatus } = useContext(
+    NotificationEnabledContext,
+  );
+
+  return (
+    <IonItem>
+      <IonIcon
+        slot="start"
+        icon={notificationsOutline}
+        color={`text-${theme}`}
+      />
+      <IonToggle
+        color={`dark-${theme}`}
+        checked={notificationsStatus}
+        onIonChange={() => {
+          updateNotificationsStatus(!notificationsStatus);
+        }}
+      >
+        <IonText color={`text-${theme}`}>{t("Notification (β)")}</IonText>
+      </IonToggle>
+    </IonItem>
+  );
+};
+
 const Importer = () => {
   const { t } = useTranslation();
   const [confirmAlert] = useIonAlert();
@@ -188,7 +221,15 @@ const Exporter = () => {
     const cycles = await storage.get.cycles();
     const language = await storage.get.language();
     const theme = await storage.get.theme();
-    await exportConfig({ cycles, language, theme });
+    const notifications = await storage.get.notifications();
+    const lastNotificationId = await storage.get.lastNotificationId();
+    await exportConfig({
+      cycles,
+      language,
+      theme,
+      notifications,
+      lastNotificationId,
+    });
   };
 
   return (
@@ -245,6 +286,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <LanguageSwitcher />
         <ThemeSwitcher />
+        {configuration.features.notifications && <NotificationToggle />}
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Edit")}</IonLabel>
         </IonItem>

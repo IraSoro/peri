@@ -43,10 +43,20 @@ import { storage } from "./data/Storage";
 
 import type { Cycle } from "./data/ClassCycle";
 import { maxOfCycles } from "./state/CalculationLogics";
-import { CyclesContext, ThemeContext } from "./state/Context";
+import {
+  CyclesContext,
+  ThemeContext,
+  NotificationEnabledContext,
+} from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 import { configuration } from "./data/AppConfiguration";
+
+import {
+  requestPermission,
+  removeAllNotifications,
+  createNotifications,
+} from "./utils/notifications";
 
 setupIonicReact();
 
@@ -79,6 +89,7 @@ const App = (props: AppProps) => {
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
+  const [notificationsStatus, setNotificationsStatus] = useState(false);
 
   const changeLanguage = useCallback(
     (lng: string) => {
@@ -91,6 +102,18 @@ const App = (props: AppProps) => {
     const slicedCycles = newCycles.slice(0, maxOfCycles);
     setCycles(slicedCycles);
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
+
+    if (configuration.features.notifications && notificationsStatus) {
+      removeAllNotifications()
+        .then(() => {
+          createNotifications(cycles).catch((err) => {
+            console.error("Error creating notifications", err);
+          });
+        })
+        .catch((err) => {
+          console.error("Error removing notifications", err);
+        });
+    }
   }
 
   function updateTheme(newTheme: string) {
@@ -99,6 +122,27 @@ const App = (props: AppProps) => {
     }
     setTheme(newTheme);
     storage.set.theme(newTheme).catch((err) => console.error(err));
+  }
+
+  function updateNotificationsStatus(newStatus: boolean) {
+    setNotificationsStatus(newStatus);
+    storage.set
+      .notifications(newStatus)
+      .then(() => {
+        console.log(
+          `Notification has been switched to ${newStatus ? "on" : "off"}`,
+        );
+        if (newStatus) {
+          createNotifications(cycles).catch((err) => {
+            console.error("Error creating notifications", err);
+          });
+          return;
+        }
+        removeAllNotifications().catch((err) => {
+          console.error("Error removing notifications", err);
+        });
+      })
+      .catch((err) => console.error(err));
   }
 
   useEffect(() => {
@@ -142,103 +186,128 @@ const App = (props: AppProps) => {
         console.error(`Can't get theme ${(err as Error).message}`);
         storage.set.theme(theme).catch((err) => console.error(err));
       });
+
+    storage.get
+      .notifications()
+      .then(setNotificationsStatus)
+      .catch((err) => {
+        console.error(
+          `Can't get notifications status ${(err as Error).message}`,
+        );
+        // Notifications are off by default
+        storage.set.notifications(false).catch((err) => console.error(err));
+      });
   }, [changeLanguage, theme]);
+
+  useEffect(() => {
+    if (!configuration.features.notifications || !notificationsStatus) {
+      return;
+    }
+
+    requestPermission().catch((err) => {
+      console.error("Error request permission notifications", err);
+    });
+  }, [notificationsStatus]);
 
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
       <ThemeContext.Provider value={{ theme, updateTheme }}>
-        <IonApp>
-          <Menu contentId="main-content" />
-          <IonReactRouter>
-            <IonHeader
-              class="ion-no-border"
-              style={{
-                backgroundColor: `var(--ion-color-background-${theme})`,
-              }}
-            >
-              <div
-                id="top-space"
-                className={theme}
+        <NotificationEnabledContext.Provider
+          value={{ notificationsStatus, updateNotificationsStatus }}
+        >
+          <IonApp>
+            <Menu contentId="main-content" />
+            <IonReactRouter>
+              <IonHeader
+                class="ion-no-border"
                 style={{
-                  background: `var(--ion-color-transparent-${theme})`,
+                  backgroundColor: `var(--ion-color-background-${theme})`,
                 }}
-              />
-            </IonHeader>
-
-            <IonContent
-              id="main-content"
-              color={`background-${theme}`}
-            >
-              <IonTabs>
-                <IonRouterOutlet>
-                  <Route
-                    exact
-                    path="/peri/"
-                  >
-                    <TabHome />
-                  </Route>
-
-                  <Route
-                    exact
-                    path="/peri-details/"
-                  >
-                    <TabDetails />
-                  </Route>
-
-                  <Route
-                    exact
-                    path="/"
-                  >
-                    <Redirect to="/peri/" />
-                  </Route>
-                </IonRouterOutlet>
-
-                <IonTabBar
+              >
+                <div
+                  id="top-space"
                   className={theme}
-                  slot="top"
-                  color={`transparent-${theme}`}
-                >
-                  <IonTabButton
-                    tab="menu"
-                    href="#"
-                    style={{
-                      background: `var(--ion-color-transparent-${theme})`,
-                      border: `var(--ion-color-transparent-${theme})`,
-                      maxWidth: "30px",
-                      marginLeft: "15px",
-                    }}
-                  >
-                    <IonMenuButton>
-                      <IonIcon
-                        color={`dark-${theme}`}
-                        icon={menuOutline}
-                        size="large"
-                      />
-                      {needUpdate && <Badge />}
-                    </IonMenuButton>
-                  </IonTabButton>
+                  style={{
+                    background: `var(--ion-color-transparent-${theme})`,
+                  }}
+                />
+              </IonHeader>
 
-                  <IonTabButton
-                    tab="home"
-                    href="/peri/"
+              <IonContent
+                id="main-content"
+                color={`background-${theme}`}
+              >
+                <IonTabs>
+                  <IonRouterOutlet>
+                    <Route
+                      exact
+                      path="/peri/"
+                    >
+                      <TabHome />
+                    </Route>
+
+                    <Route
+                      exact
+                      path="/peri-details/"
+                    >
+                      <TabDetails />
+                    </Route>
+
+                    <Route
+                      exact
+                      path="/"
+                    >
+                      <Redirect to="/peri/" />
+                    </Route>
+                  </IonRouterOutlet>
+
+                  <IonTabBar
                     className={theme}
-                    style={{ marginLeft: "auto" }}
+                    slot="top"
+                    color={`transparent-${theme}`}
                   >
-                    <IonLabel>{t("Home")}</IonLabel>
-                  </IonTabButton>
-                  <IonTabButton
-                    tab="details"
-                    href="/peri-details/"
-                    className={theme}
-                    style={{ marginLeft: "15px", marginRight: "20px" }}
-                  >
-                    <IonLabel>{t("Details")}</IonLabel>
-                  </IonTabButton>
-                </IonTabBar>
-              </IonTabs>
-            </IonContent>
-          </IonReactRouter>
-        </IonApp>
+                    <IonTabButton
+                      tab="menu"
+                      href="#"
+                      style={{
+                        background: `var(--ion-color-transparent-${theme})`,
+                        border: `var(--ion-color-transparent-${theme})`,
+                        maxWidth: "30px",
+                        marginLeft: "15px",
+                      }}
+                    >
+                      <IonMenuButton>
+                        <IonIcon
+                          color={`dark-${theme}`}
+                          icon={menuOutline}
+                          size="large"
+                        />
+                        {needUpdate && <Badge />}
+                      </IonMenuButton>
+                    </IonTabButton>
+
+                    <IonTabButton
+                      tab="home"
+                      href="/peri/"
+                      className={theme}
+                      style={{ marginLeft: "auto" }}
+                    >
+                      <IonLabel>{t("Home")}</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton
+                      tab="details"
+                      href="/peri-details/"
+                      className={theme}
+                      style={{ marginLeft: "15px", marginRight: "20px" }}
+                    >
+                      <IonLabel>{t("Details")}</IonLabel>
+                    </IonTabButton>
+                  </IonTabBar>
+                </IonTabs>
+              </IonContent>
+            </IonReactRouter>
+          </IonApp>
+        </NotificationEnabledContext.Provider>
       </ThemeContext.Provider>
     </CyclesContext.Provider>
   );

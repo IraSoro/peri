@@ -21,5 +21,17 @@ const themeInit: IThemeContext = {
   updateTheme: (_newTheme) => {},
 };
 
+interface INotificationsContext {
+  notificationsStatus: boolean;
+  updateNotificationsStatus: (newStatus: boolean) => void;
+}
+
+const notificationsStatusInit: INotificationsContext = {
+  notificationsStatus: false,
+  updateNotificationsStatus: (_newStatus) => {},
+};
+
 export const CyclesContext = React.createContext<ICyclesContext>(cyclesInit);
 export const ThemeContext = React.createContext<IThemeContext>(themeInit);
+export const NotificationEnabledContext =
+  React.createContext<INotificationsContext>(notificationsStatusInit);

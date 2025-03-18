@@ -8,18 +8,24 @@ export interface Context {
   cycles: Cycle[];
   language: string;
   theme: string;
+  notifications: boolean;
+  lastNotificationId: number;
 }
 
 export enum StorageKey {
   Cycles = "cycles",
   Language = "language",
   Theme = "theme",
+  Notifications = "notifications",
+  LastNotificationId = "lastNotificationId",
 }
 
 type StorageValueTypeMap = {
   [StorageKey.Cycles]: Cycle[];
   [StorageKey.Language]: string;
   [StorageKey.Theme]: string;
+  [StorageKey.Notifications]: boolean;
+  [StorageKey.LastNotificationId]: number;
 };
 
 type StorageValueType<K extends StorageKey> = StorageValueTypeMap[K];
@@ -77,6 +83,20 @@ export const storage = {
         value: value,
       });
     },
+    notifications: (value: StorageValueType<StorageKey.Notifications>) => {
+      return Preferences.set({
+        key: StorageKey.Notifications,
+        value: value.toString(),
+      });
+    },
+    lastNotificationId: (
+      value: StorageValueType<StorageKey.LastNotificationId>,
+    ) => {
+      return Preferences.set({
+        key: StorageKey.LastNotificationId,
+        value: value.toString(),
+      });
+    },
   },
   get: {
     cycles: async () => {
@@ -99,6 +119,26 @@ export const storage = {
         throw new Error(`Can't find '${StorageKey.Theme}' in storage`);
       }
       return value;
+    },
+    notifications: async () => {
+      const { value } = await Preferences.get({
+        key: StorageKey.Notifications,
+      });
+      if (!value) {
+        throw new Error(`Can't find '${StorageKey.Notifications}' in storage`);
+      }
+      return Boolean(value);
+    },
+    lastNotificationId: async () => {
+      const { value } = await Preferences.get({
+        key: StorageKey.LastNotificationId,
+      });
+      if (!value) {
+        throw new Error(
+          `Can't find '${StorageKey.LastNotificationId}' in storage`,
+        );
+      }
+      return Number(value);
     },
   },
   getUnsafe: {
