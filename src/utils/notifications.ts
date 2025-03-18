@@ -26,31 +26,31 @@ export const removeAllNotifications = async () => {
   }
 };
 
-const getNextNotificationIds = async () => {
+const getNextNotificationId = async () => {
   try {
-    const lastId = Number(await storage.get.lastNotificationId());
+    const lastId = await storage.get.lastNotificationId();
     const nextId = lastId + 1;
-    const secondNextId = nextId + 1;
 
-    await storage.set.lastNotificationId(secondNextId);
-    return [nextId, secondNextId];
+    await storage.set.lastNotificationId(nextId);
+    return nextId;
   } catch (err) {
     console.error(`Can't get lastNotificationId: ${(err as Error).message}`);
-    await storage.set.lastNotificationId(2);
-    return [1, 2];
+    await storage.set.lastNotificationId(1);
+    return 1;
   }
 };
 
 export const createNotifications = async (cycles: Cycle[]) => {
   try {
-    const notificationsId = await getNextNotificationIds();
+    const notificationsId1 = await getNextNotificationId();
+    const notificationsId2 = await getNextNotificationId();
     const dayBeforePeriod = getPeriodShiftInDays(cycles, -1);
     const dayOfPeriod = getPeriodShiftInDays(cycles, 0);
 
     await LocalNotifications.schedule({
       notifications: [
         {
-          id: notificationsId[0],
+          id: notificationsId1,
           title: "Period is coming soon",
           body: "Your period may start tomorrow",
           schedule: { at: dayBeforePeriod },
@@ -59,7 +59,7 @@ export const createNotifications = async (cycles: Cycle[]) => {
           largeIcon: "ic_launcher",
         },
         {
-          id: notificationsId[1],
+          id: notificationsId2,
           title: "Period is coming soon",
           body: "Your period may start today",
           schedule: { at: dayOfPeriod },
