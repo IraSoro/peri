@@ -1,5 +1,14 @@
 import { isPlatform } from "@ionic/core";
 
+function isPlatformCheck() {
+  return (
+    isPlatform("android") &&
+    isPlatform("mobile") &&
+    !isPlatform("mobileweb") &&
+    !isPlatform("pwa")
+  );
+}
+
 export const configuration = {
   app: {
     version: import.meta.env.VITE_APP_VERSION || "",
@@ -10,9 +19,7 @@ export const configuration = {
     demoMode: import.meta.env.VITE_FEATURE_DEMO_MODE === "true",
     betaLanguages: import.meta.env.VITE_FEATURE_BETA_LANGUAGES === "true",
     notifications:
-      isPlatform("android") &&
-      !isPlatform("mobileweb") &&
-      isPlatform("mobile") &&
+      isPlatformCheck() &&
       import.meta.env.VITE_FEATURE_NOTIFICATIONS === "true",
   },
 };
