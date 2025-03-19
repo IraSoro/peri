@@ -37,9 +37,9 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 <table>
   <tr>
-    <td><img width="300" src="https://zurmpzdmaurjkfnkcqaw.supabase.co/storage/v1/object/public/peri/welcome.jpg?t=2024-07-28T19%3A13%3A41.953Z" alt="Welcome"></td>
-    <td><img width="300" src="https://zurmpzdmaurjkfnkcqaw.supabase.co/storage/v1/object/public/peri/home.jpg?t=2024-07-28T19%3A15%3A11.635Z" alt="Home"></td>
-    <td><img width="300" src="https://zurmpzdmaurjkfnkcqaw.supabase.co/storage/v1/object/public/peri/details.jpg?t=2024-07-28T19%3A15%3A48.261Z" alt="Details"></td>
+    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//welcome.jpg" alt="Welcome"></td>
+    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//home.jpg" alt="Home"></td>
+    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//details.jpg" alt="Details"></td>
   </tr>
   <tr>
     <td align="center">Welcome page</td>
@@ -47,8 +47,8 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
     <td align="center">Details</td>
   </tr>
     <tr>
-    <td><img width="300" src="https://zurmpzdmaurjkfnkcqaw.supabase.co/storage/v1/object/public/peri/info.jpg?t=2024-07-28T19%3A16%3A12.886Z" alt="Info"></td>
-    <td><img width="300" src="https://zurmpzdmaurjkfnkcqaw.supabase.co/storage/v1/object/public/peri/menu.jpg?t=2024-07-28T19%3A16%3A27.404Z" alt="Menu"></td>
+    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//info.jpg" alt="Info"></td>
+    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//menu.jpg" alt="Menu"></td>
   </tr>
   <tr>
     <td align="center">Additional Info</td>
@@ -60,8 +60,8 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 <table>
     <tr>
-    <td><img width="300" src="https://zurmpzdmaurjkfnkcqaw.supabase.co/storage/v1/object/public/peri/home.jpg?t=2024-07-28T19%3A15%3A11.635Z" alt="lightTheme"></td>
-    <td><img width="300" src="https://zurmpzdmaurjkfnkcqaw.supabase.co/storage/v1/object/public/peri/darkTheme.jpg?t=2024-07-28T19%3A13%3A38.856Z" alt="darkTheme"></td>
+    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//home.jpg" alt="lightTheme"></td>
+    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//darkTheme.jpg" alt="darkTheme"></td>
   </tr>
   <tr>
     <td align="center">Light Theme</td>
