@@ -54,7 +54,8 @@ import { configuration } from "./data/AppConfiguration";
 
 import {
   requestPermission,
-  removeAllNotifications,
+  clearAllDeliveredNotifications,
+  removePendingNotifications,
   createNotifications,
 } from "./utils/notifications";
 
@@ -104,14 +105,17 @@ const App = (props: AppProps) => {
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
 
     if (configuration.features.notifications && notificationsStatus) {
-      removeAllNotifications()
+      clearAllDeliveredNotifications().catch((err) => {
+        console.error("Error removing delivered notifications", err);
+      });
+      removePendingNotifications()
         .then(() => {
           createNotifications(cycles).catch((err) => {
             console.error("Error creating notifications", err);
           });
         })
         .catch((err) => {
-          console.error("Error removing notifications", err);
+          console.error("Error removing pending notifications", err);
         });
     }
   }
@@ -138,8 +142,8 @@ const App = (props: AppProps) => {
           });
           return;
         }
-        removeAllNotifications().catch((err) => {
-          console.error("Error removing notifications", err);
+        removePendingNotifications().catch((err) => {
+          console.error("Error removing pending notifications", err);
         });
       })
       .catch((err) => console.error(err));
