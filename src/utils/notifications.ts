@@ -17,12 +17,31 @@ export const requestPermission = async () => {
   }
 };
 
-export const removeAllNotifications = async () => {
+export const clearAllDeliveredNotifications = async () => {
   try {
     await LocalNotifications.removeAllDeliveredNotifications();
-    console.log("All notifications removed");
+    console.log("All delivered notifications have been removed.");
   } catch (error) {
-    console.error("Error removing notifications:", error);
+    console.error("Error removing delivered notifications:", error);
+  }
+};
+
+export const removePendingNotifications = async () => {
+  try {
+    const pending = await LocalNotifications.getPending();
+
+    if (pending.notifications.length > 0) {
+      await LocalNotifications.cancel({
+        notifications: pending.notifications.map((notification) => ({
+          id: notification.id,
+        })),
+      });
+      console.log("All pending notifications removed");
+    } else {
+      console.log("No pending notifications");
+    }
+  } catch (err) {
+    console.error("Error removing pending notifications:", err);
   }
 };
 
