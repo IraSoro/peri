@@ -29,7 +29,6 @@ export const clearAllDeliveredNotifications = async () => {
 export const removePendingNotifications = async () => {
   try {
     const pending = await LocalNotifications.getPending();
-    console.log(pending);
 
     if (pending.notifications.length > 0) {
       await LocalNotifications.cancel({
