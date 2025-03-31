@@ -141,7 +141,7 @@ const ThemeSwitcher = () => {
   );
 };
 
-const CycleCountSwitcher = () => {
+const CycleCountSelector = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
 
@@ -371,7 +371,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <LanguageSwitcher />
         <ThemeSwitcher />
-        <CycleCountSwitcher />
+        <CycleCountSelector />
         {configuration.features.notifications && <NotificationToggle />}
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Edit")}</IonLabel>
