@@ -108,7 +108,7 @@ const App = (props: AppProps) => {
       });
       removePendingNotifications()
         .then(() => {
-          createNotifications(cycles).catch((err) => {
+          createNotifications(cycles, maxDisplayedCycles).catch((err) => {
             console.error("Error creating notifications", err);
           });
         })
@@ -153,7 +153,7 @@ const App = (props: AppProps) => {
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
         if (newStatus) {
-          createNotifications(cycles).catch((err) => {
+          createNotifications(cycles, maxDisplayedCycles).catch((err) => {
             console.error("Error creating notifications", err);
           });
           return;
