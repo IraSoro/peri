@@ -45,6 +45,7 @@ import {
   getForecastPeriodDates,
   getOvulationDates,
   getPeriodDatesOfLastCycle,
+  maxDisplayedCycles,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 import { format } from "../utils/datetime";
@@ -248,7 +249,9 @@ const EditCalendar = (props: SelectCalendarProps) => {
     : startOfToday();
 
   const minDate = formatISO(
-    startOfMonth(min([firstPeriodDayDate, subMonths(startOfToday(), 6)])),
+    startOfMonth(
+      min([firstPeriodDayDate, subMonths(startOfToday(), maxDisplayedCycles)]),
+    ),
   );
 
   const maxDate = formatISO(max([startOfToday(), lastPeriodDayDate]));

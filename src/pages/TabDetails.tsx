@@ -15,6 +15,7 @@ import {
   getAverageLengthOfPeriod,
   getDayOfCycle,
   getLastStartDate,
+  maxDisplayedCycles,
 } from "../state/CalculationLogics";
 import { CyclesContext, ThemeContext } from "../state/Context";
 import { Cycle } from "../data/ClassCycle";
@@ -160,17 +161,14 @@ const ListProgress = () => {
     );
   };
 
-  const list = cycles
-    // NOTE: 6 is the number of cycles we display in details. We store a maximum of 7 cycles (in case the last cycle is accidentally deleted)
-    .slice(1, 6)
-    .map((_item, idx) => {
-      return (
-        <ItemProgress
-          key={idx}
-          idx={idx}
-        />
-      );
-    });
+  const list = cycles.slice(1, maxDisplayedCycles).map((_item, idx) => {
+    return (
+      <ItemProgress
+        key={idx}
+        idx={idx}
+      />
+    );
+  });
 
   return <>{list}</>;
 };

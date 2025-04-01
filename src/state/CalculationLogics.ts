@@ -10,8 +10,9 @@ import {
 import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
+// NOTE: 6 is the number of cycles we display in details. We store a maximum of 8 cycles (in case the last cycle is accidentally deleted)
+export const maxDisplayedCycles = 6;
 export const maxOfCycles = 8;
-const maxDisplayedCycles = 6;
 
 export function getLastStartDate(cycles: Cycle[]) {
   if (cycles.length === 0) {
