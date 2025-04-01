@@ -42,7 +42,7 @@ import "./theme/variables.css";
 import { storage } from "./data/Storage";
 
 import type { Cycle } from "./data/ClassCycle";
-import { maxOfCycles } from "./state/CalculationLogics";
+import { getMaxStoredCountOfCycles } from "./state/CalculationLogics";
 import { CyclesContext, ThemeContext, SettingsContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
@@ -97,6 +97,7 @@ const App = (props: AppProps) => {
   );
 
   function updateCycles(newCycles: Cycle[]) {
+    const maxOfCycles = getMaxStoredCountOfCycles(maxDisplayedCycles);
     const slicedCycles = newCycles.slice(0, maxOfCycles);
     setCycles(slicedCycles);
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { IonContent, IonModal, IonButton, IonCol } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 
-import { CyclesContext, ThemeContext } from "../state/Context";
+import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import {
   getAverageLengthOfCycle,
   getDayOfCycle,
@@ -22,13 +22,14 @@ const InfoModal = (props: PropsInfoModal) => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
+  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
 
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const lengthOfCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
   const currentDay = getDayOfCycle(cycles);
-  const ovulationStatus = getOvulationStatus(cycles);
-  const pregnancyChance = getPregnancyChance(cycles);
+  const ovulationStatus = getOvulationStatus(cycles, maxDisplayedCycles);
+  const pregnancyChance = getPregnancyChance(cycles, maxDisplayedCycles);
 
-  const phase = getPhase(cycles);
+  const phase = getPhase(cycles, maxDisplayedCycles);
 
   return (
     <IonModal

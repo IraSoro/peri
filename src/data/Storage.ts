@@ -411,7 +411,7 @@ function _randomMenstrualPhase(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
@@ -434,7 +434,7 @@ function _randomFollicularPhase(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
@@ -457,7 +457,7 @@ function _randomLutealPhase(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
@@ -480,7 +480,7 @@ function _randomDelayOfCycle(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
