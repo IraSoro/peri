@@ -43,11 +43,7 @@ import { storage } from "./data/Storage";
 
 import type { Cycle } from "./data/ClassCycle";
 import { maxOfCycles } from "./state/CalculationLogics";
-import {
-  CyclesContext,
-  ThemeContext,
-  NotificationEnabledContext,
-} from "./state/Context";
+import { CyclesContext, ThemeContext, SettingsContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 import { configuration } from "./data/AppConfiguration";
@@ -91,6 +87,7 @@ const App = (props: AppProps) => {
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
   const [notificationsStatus, setNotificationsStatus] = useState(false);
+  const [maxDisplayedCycles, setMaxDisplayedCycles] = useState(6);
 
   const changeLanguage = useCallback(
     (lng: string) => {
@@ -167,6 +164,10 @@ const App = (props: AppProps) => {
       .catch((err) => console.error(err));
   }
 
+  function updateMaxDisplayedCycles(newValue: number) {
+    setMaxDisplayedCycles(newValue);
+  }
+
   useEffect(() => {
     if (!configuration.features.useCustomVersionUpdate) {
       return;
@@ -234,8 +235,13 @@ const App = (props: AppProps) => {
   return (
     <CyclesContext.Provider value={{ cycles, updateCycles }}>
       <ThemeContext.Provider value={{ theme, updateTheme }}>
-        <NotificationEnabledContext.Provider
-          value={{ notificationsStatus, updateNotificationsStatus }}
+        <SettingsContext.Provider
+          value={{
+            notificationsStatus,
+            updateNotificationsStatus,
+            maxDisplayedCycles,
+            updateMaxDisplayedCycles,
+          }}
         >
           <IonApp>
             <Menu contentId="main-content" />
@@ -329,7 +335,7 @@ const App = (props: AppProps) => {
               </IonContent>
             </IonReactRouter>
           </IonApp>
-        </NotificationEnabledContext.Provider>
+        </SettingsContext.Provider>
       </ThemeContext.Provider>
     </CyclesContext.Provider>
   );

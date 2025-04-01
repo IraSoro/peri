@@ -32,11 +32,7 @@ import {
   isNewVersionAvailable,
   openGitHubPage,
 } from "../data/AppVersion";
-import {
-  CyclesContext,
-  NotificationEnabledContext,
-  ThemeContext,
-} from "../state/Context";
+import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import {
   changeTranslation,
   getCurrentTranslation,
@@ -227,9 +223,8 @@ const CycleCountSelector = () => {
 const NotificationToggle = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
-  const { notificationsStatus, updateNotificationsStatus } = useContext(
-    NotificationEnabledContext,
-  );
+  const { notificationsStatus, updateNotificationsStatus } =
+    useContext(SettingsContext);
 
   return (
     <IonItem>
