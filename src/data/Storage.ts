@@ -10,6 +10,7 @@ export interface Context {
   theme: string;
   notifications: boolean;
   lastNotificationId: number;
+  maxDisplayedCycles: number;
 }
 
 export enum StorageKey {
@@ -18,6 +19,7 @@ export enum StorageKey {
   Theme = "theme",
   Notifications = "notifications",
   LastNotificationId = "lastNotificationId",
+  MaxDisplayedCycles = "maxDisplayedCycles",
 }
 
 type StorageValueTypeMap = {
@@ -26,6 +28,7 @@ type StorageValueTypeMap = {
   [StorageKey.Theme]: string;
   [StorageKey.Notifications]: boolean;
   [StorageKey.LastNotificationId]: number;
+  [StorageKey.MaxDisplayedCycles]: number;
 };
 
 type StorageValueType<K extends StorageKey> = StorageValueTypeMap[K];
@@ -97,6 +100,14 @@ export const storage = {
         value: value.toString(),
       });
     },
+    maxDisplayedCycles: (
+      value: StorageValueType<StorageKey.MaxDisplayedCycles>,
+    ) => {
+      return Preferences.set({
+        key: StorageKey.MaxDisplayedCycles,
+        value: value.toString(),
+      });
+    },
   },
   get: {
     cycles: async () => {
@@ -136,6 +147,17 @@ export const storage = {
       if (!value) {
         throw new Error(
           `Can't find '${StorageKey.LastNotificationId}' in storage`,
+        );
+      }
+      return Number(value);
+    },
+    maxDisplayedCycles: async () => {
+      const { value } = await Preferences.get({
+        key: StorageKey.MaxDisplayedCycles,
+      });
+      if (!value) {
+        throw new Error(
+          `Can't find '${StorageKey.MaxDisplayedCycles}' in storage`,
         );
       }
       return Number(value);

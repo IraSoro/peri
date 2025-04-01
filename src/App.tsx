@@ -166,6 +166,12 @@ const App = (props: AppProps) => {
 
   function updateMaxDisplayedCycles(newValue: number) {
     setMaxDisplayedCycles(newValue);
+    storage.set
+      .maxDisplayedCycles(newValue)
+      .then(() => {
+        console.log(`maxDisplayedCycles has been switched to ${newValue}`);
+      })
+      .catch((err) => console.error(err));
   }
 
   useEffect(() => {
@@ -220,7 +226,17 @@ const App = (props: AppProps) => {
         // Notifications are off by default
         storage.set.notifications(false).catch((err) => console.error(err));
       });
-  }, [changeLanguage, theme]);
+
+    storage.get
+      .maxDisplayedCycles()
+      .then(setMaxDisplayedCycles)
+      .catch((err) => {
+        console.error(`Can't get maxDisplayedCycles ${(err as Error).message}`);
+        storage.set
+          .maxDisplayedCycles(maxDisplayedCycles)
+          .catch((err) => console.error(err));
+      });
+  }, [changeLanguage, theme, maxDisplayedCycles]);
 
   useEffect(() => {
     if (!configuration.features.notifications || !notificationsStatus) {

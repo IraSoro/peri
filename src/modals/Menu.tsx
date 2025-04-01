@@ -140,10 +140,16 @@ const ThemeSwitcher = () => {
 const CycleCountSelector = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
+  const { maxDisplayedCycles, updateMaxDisplayedCycles } =
+    useContext(SettingsContext);
 
   const [selectedCount, setSelectedCount] = useState(6);
   const [pendingCount, setPendingCount] = useState<number | null>(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  useEffect(() => {
+    setSelectedCount(maxDisplayedCycles);
+  }, [maxDisplayedCycles]);
 
   const countList = [];
   for (const item of [6, 12, 24]) {
@@ -210,6 +216,7 @@ const CycleCountSelector = () => {
             handler: () => {
               if (pendingCount !== null) {
                 setSelectedCount(pendingCount);
+                updateMaxDisplayedCycles(pendingCount);
               }
             },
           },
@@ -303,12 +310,14 @@ const Exporter = () => {
     const theme = await storage.get.theme();
     const notifications = await storage.get.notifications();
     const lastNotificationId = await storage.get.lastNotificationId();
+    const maxDisplayedCycles = await storage.get.maxDisplayedCycles();
     await exportConfig({
       cycles,
       language,
       theme,
       notifications,
       lastNotificationId,
+      maxDisplayedCycles,
     });
   };
 
