@@ -227,6 +227,11 @@ const App = (props: AppProps) => {
         storage.set.notifications(false).catch((err) => console.error(err));
       });
 
+    storage.get.lastNotificationId().catch((err) => {
+      console.error(`Can't get lastNotificationId ${(err as Error).message}`);
+      storage.set.lastNotificationId(0).catch((err) => console.error(err));
+    });
+
     storage.get
       .maxDisplayedCycles()
       .then(setMaxDisplayedCycles)
