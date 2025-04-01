@@ -26,7 +26,7 @@ import {
   addMonths,
   max,
 } from "date-fns";
-import { CyclesContext, ThemeContext } from "../state/Context";
+import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -45,7 +45,7 @@ import {
   getForecastPeriodDates,
   getOvulationDates,
   getPeriodDatesOfLastCycle,
-  maxDisplayedCycles,
+  // maxDisplayedCycles,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 import { format } from "../utils/datetime";
@@ -61,8 +61,9 @@ const InfoButton = (props: InfoButtonProps) => {
 
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
+  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
 
-  const pregnancyChance = getPregnancyChance(cycles);
+  const pregnancyChance = getPregnancyChance(cycles, maxDisplayedCycles);
   if (cycles.length <= 1) {
     return <p style={{ marginBottom: "20px", height: "22px" }}></p>;
   }
@@ -111,10 +112,14 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
+  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
 
-  const periodDates = getPeriodDates(cycles);
-  const forecastPeriodDates = getForecastPeriodDates(cycles);
-  const ovulationDates = getOvulationDates(cycles);
+  const periodDates = getPeriodDates(cycles, maxDisplayedCycles);
+  const forecastPeriodDates = getForecastPeriodDates(
+    cycles,
+    maxDisplayedCycles,
+  );
+  const ovulationDates = getOvulationDates(cycles, maxDisplayedCycles);
 
   const firstPeriodDay = periodDates
     .sort((left, right) => {
@@ -216,6 +221,7 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
+  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
 
   // NOTE: This is a hack. I fixed the bug: when opening the editing calendar,
   // a month not related to the specified dates opened (May 2021).
@@ -225,10 +231,10 @@ const EditCalendar = (props: SelectCalendarProps) => {
 
   // and then in the useEffect I update this value to the required ones
   useEffect(() => {
-    setDatesValue(getPeriodDates(cycles));
-  }, [cycles]);
+    setDatesValue(getPeriodDates(cycles, maxDisplayedCycles));
+  }, [cycles, maxDisplayedCycles]);
 
-  const periodDays = getPeriodDates(cycles);
+  const periodDays = getPeriodDates(cycles, maxDisplayedCycles);
   const lastPeriodDays = getPeriodDatesOfLastCycle(cycles);
 
   const sortedPeriodDays = periodDays.sort((left, right) => {
@@ -392,6 +398,7 @@ const TabHome = () => {
 
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
+  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
 
   return (
     <IonPage
@@ -419,7 +426,7 @@ const TabHome = () => {
                     color: `var(--ion-color-text-${theme})`,
                   }}
                 >
-                  {getDaysBeforePeriod(cycles).title}
+                  {getDaysBeforePeriod(cycles, maxDisplayedCycles).title}
                 </p>
               </IonLabel>
             </div>
@@ -442,7 +449,7 @@ const TabHome = () => {
                         }
                   }
                 >
-                  {getDaysBeforePeriod(cycles).days}
+                  {getDaysBeforePeriod(cycles, maxDisplayedCycles).days}
                 </p>
               </IonLabel>
             </div>
@@ -459,7 +466,7 @@ const TabHome = () => {
                 disabled={isPeriodToday(cycles)}
                 onClick={() => {
                   const newCycles = getNewCyclesHistory(
-                    getPeriodDatesWithNewElement(cycles),
+                    getPeriodDatesWithNewElement(cycles, maxDisplayedCycles),
                   );
                   updateCycles(newCycles);
                 }}

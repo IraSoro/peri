@@ -15,9 +15,8 @@ import {
   getAverageLengthOfPeriod,
   getDayOfCycle,
   getLastStartDate,
-  maxDisplayedCycles,
 } from "../state/CalculationLogics";
-import { CyclesContext, ThemeContext } from "../state/Context";
+import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
@@ -131,6 +130,7 @@ interface IdxProps {
 const ListProgress = () => {
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
+  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
   const dayOfCycle = getDayOfCycle(cycles);
 
   const maxLength = cycles.reduce((max: number, item) => {
@@ -180,9 +180,16 @@ interface AverageValuesProps {
 const AverageValues = ({ cycles }: AverageValuesProps) => {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext).theme;
+  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
 
-  const averageLengthOfCycle = getAverageLengthOfCycle(cycles);
-  const averageLengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  const averageLengthOfCycle = getAverageLengthOfCycle(
+    cycles,
+    maxDisplayedCycles,
+  );
+  const averageLengthOfPeriod = getAverageLengthOfPeriod(
+    cycles,
+    maxDisplayedCycles,
+  );
 
   const lengthOfCycle = `${averageLengthOfCycle} ${t("Days", {
     postProcess: "interval",
