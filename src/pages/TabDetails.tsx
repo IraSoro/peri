@@ -261,7 +261,7 @@ const TabDetails = () => {
               style={{ background: `var(--ion-color-calendar-${theme})` }}
             >
               {cycles.length > 0 ? (
-                <IonList>
+                <IonList style={{ maxHeight: "475px", overflowY: "auto" }}>
                   <CurrentCycle />
                   {cycles.length > 1 && <ListProgress />}
                 </IonList>
