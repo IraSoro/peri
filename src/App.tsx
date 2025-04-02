@@ -173,7 +173,7 @@ const App = (props: AppProps) => {
   function updateMaxNumberOfDisplayedCycles(newValue: number) {
     setMaxNumberOfDisplayedCycles(newValue);
     storage.set
-      .maxDisplayedCycles(newValue)
+      .maxNumberOfDisplayedCycles(newValue)
       .then(() => {
         console.log(`maxDisplayedCycles has been switched to ${newValue}`);
       })
@@ -239,12 +239,12 @@ const App = (props: AppProps) => {
     });
 
     storage.get
-      .maxDisplayedCycles()
+      .maxNumberOfDisplayedCycles()
       .then(setMaxNumberOfDisplayedCycles)
       .catch((err) => {
         console.error(`Can't get maxDisplayedCycles ${(err as Error).message}`);
         storage.set
-          .maxDisplayedCycles(maxNumberOfDisplayedCycles)
+          .maxNumberOfDisplayedCycles(maxNumberOfDisplayedCycles)
           .catch((err) => console.error(err));
       });
   }, [changeLanguage, theme, maxNumberOfDisplayedCycles]);

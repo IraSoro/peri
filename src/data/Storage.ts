@@ -10,7 +10,7 @@ export interface Context {
   theme: string;
   notifications: boolean;
   lastNotificationId: number;
-  maxDisplayedCycles: number;
+  maxNumberOfDisplayedCycles: number;
 }
 
 export enum StorageKey {
@@ -19,7 +19,7 @@ export enum StorageKey {
   Theme = "theme",
   Notifications = "notifications",
   LastNotificationId = "lastNotificationId",
-  MaxDisplayedCycles = "maxDisplayedCycles",
+  MaxNumberOfDisplayedCycles = "maxNumberOfDisplayedCycles",
 }
 
 type StorageValueTypeMap = {
@@ -28,7 +28,7 @@ type StorageValueTypeMap = {
   [StorageKey.Theme]: string;
   [StorageKey.Notifications]: boolean;
   [StorageKey.LastNotificationId]: number;
-  [StorageKey.MaxDisplayedCycles]: number;
+  [StorageKey.MaxNumberOfDisplayedCycles]: number;
 };
 
 type StorageValueType<K extends StorageKey> = StorageValueTypeMap[K];
@@ -100,11 +100,11 @@ export const storage = {
         value: value.toString(),
       });
     },
-    maxDisplayedCycles: (
-      value: StorageValueType<StorageKey.MaxDisplayedCycles>,
+    maxNumberOfDisplayedCycles: (
+      value: StorageValueType<StorageKey.MaxNumberOfDisplayedCycles>,
     ) => {
       return Preferences.set({
-        key: StorageKey.MaxDisplayedCycles,
+        key: StorageKey.MaxNumberOfDisplayedCycles,
         value: value.toString(),
       });
     },
@@ -151,13 +151,13 @@ export const storage = {
       }
       return Number(value);
     },
-    maxDisplayedCycles: async () => {
+    maxNumberOfDisplayedCycles: async () => {
       const { value } = await Preferences.get({
-        key: StorageKey.MaxDisplayedCycles,
+        key: StorageKey.MaxNumberOfDisplayedCycles,
       });
       if (!value) {
         throw new Error(
-          `Can't find '${StorageKey.MaxDisplayedCycles}' in storage`,
+          `Can't find '${StorageKey.MaxNumberOfDisplayedCycles}' in storage`,
         );
       }
       return Number(value);
