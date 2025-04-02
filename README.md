@@ -37,9 +37,9 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 <table>
   <tr>
-    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//welcome.jpg" alt="Welcome"></td>
-    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//home.jpg" alt="Home"></td>
-    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//details.jpg" alt="Details"></td>
+    <td><img width="300" src="https://github.com/IraSoro/peri-storage/blob/main/screenshots/welcome.jpg?raw=true" alt="Welcome"></td>
+    <td><img width="300" src="https://github.com/IraSoro/peri-storage/blob/main/screenshots/home.jpg?raw=true" alt="Home"></td>
+    <td><img width="300" src="https://github.com/IraSoro/peri-storage/blob/main/screenshots/details.jpg?raw=true" alt="Details"></td>
   </tr>
   <tr>
     <td align="center">Welcome page</td>
@@ -47,8 +47,8 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
     <td align="center">Details</td>
   </tr>
     <tr>
-    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//info.jpg" alt="Info"></td>
-    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//menu.jpg" alt="Menu"></td>
+    <td><img width="300" src="https://github.com/IraSoro/peri-storage/blob/main/screenshots/info.jpg?raw=true" alt="Info"></td>
+    <td><img width="300" src="https://github.com/IraSoro/peri-storage/blob/main/screenshots/menu.jpg?raw=true" alt="Menu"></td>
   </tr>
   <tr>
     <td align="center">Additional Info</td>
@@ -60,8 +60,8 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 <table>
     <tr>
-    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//home.jpg" alt="lightTheme"></td>
-    <td><img width="300" src="https://hwqayoqnchqdhcaqwyjo.supabase.co/storage/v1/object/public/peri//darkTheme.jpg" alt="darkTheme"></td>
+    <td><img width="300" src="https://github.com/IraSoro/peri-storage/blob/main/screenshots/home.jpg?raw=true" alt="lightTheme"></td>
+    <td><img width="300" src="https://github.com/IraSoro/peri-storage/blob/main/screenshots/darkTheme.jpg?raw=true" alt="darkTheme"></td>
   </tr>
   <tr>
     <td align="center">Light Theme</td>
