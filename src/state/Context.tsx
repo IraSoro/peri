@@ -24,15 +24,15 @@ const themeInit: IThemeContext = {
 interface ISettingsContext {
   notificationsStatus: boolean;
   updateNotificationsStatus: (newStatus: boolean) => void;
-  maxDisplayedCycles: number;
-  updateMaxDisplayedCycles: (newValue: number) => void;
+  maxNumberOfDisplayedCycles: number;
+  updateMaxNumberOfDisplayedCycles: (newValue: number) => void;
 }
 
 const settingsInit: ISettingsContext = {
   notificationsStatus: false,
   updateNotificationsStatus: (_newStatus) => {},
-  maxDisplayedCycles: 6,
-  updateMaxDisplayedCycles: (_newValue: number) => {},
+  maxNumberOfDisplayedCycles: 6,
+  updateMaxNumberOfDisplayedCycles: (_newValue: number) => {},
 };
 
 export const CyclesContext = React.createContext<ICyclesContext>(cyclesInit);

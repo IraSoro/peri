@@ -61,9 +61,13 @@ const InfoButton = (props: InfoButtonProps) => {
 
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
-  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
 
-  const pregnancyChance = getPregnancyChance(cycles, maxDisplayedCycles);
+  const pregnancyChance = getPregnancyChance(
+    cycles,
+    maxNumberOfDisplayedCycles,
+  );
   if (cycles.length <= 1) {
     return <p style={{ marginBottom: "20px", height: "22px" }}></p>;
   }
@@ -112,14 +116,15 @@ const ViewCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
-  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
 
-  const periodDates = getPeriodDates(cycles, maxDisplayedCycles);
+  const periodDates = getPeriodDates(cycles, maxNumberOfDisplayedCycles);
   const forecastPeriodDates = getForecastPeriodDates(
     cycles,
-    maxDisplayedCycles,
+    maxNumberOfDisplayedCycles,
   );
-  const ovulationDates = getOvulationDates(cycles, maxDisplayedCycles);
+  const ovulationDates = getOvulationDates(cycles, maxNumberOfDisplayedCycles);
 
   const firstPeriodDay = periodDates
     .sort((left, right) => {
@@ -221,7 +226,8 @@ const EditCalendar = (props: SelectCalendarProps) => {
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
   const theme = useContext(ThemeContext).theme;
-  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
 
   // NOTE: This is a hack. I fixed the bug: when opening the editing calendar,
   // a month not related to the specified dates opened (May 2021).
@@ -231,10 +237,10 @@ const EditCalendar = (props: SelectCalendarProps) => {
 
   // and then in the useEffect I update this value to the required ones
   useEffect(() => {
-    setDatesValue(getPeriodDates(cycles, maxDisplayedCycles));
-  }, [cycles, maxDisplayedCycles]);
+    setDatesValue(getPeriodDates(cycles, maxNumberOfDisplayedCycles));
+  }, [cycles, maxNumberOfDisplayedCycles]);
 
-  const periodDays = getPeriodDates(cycles, maxDisplayedCycles);
+  const periodDays = getPeriodDates(cycles, maxNumberOfDisplayedCycles);
   const lastPeriodDays = getPeriodDatesOfLastCycle(cycles);
 
   const sortedPeriodDays = periodDays.sort((left, right) => {
@@ -256,7 +262,10 @@ const EditCalendar = (props: SelectCalendarProps) => {
 
   const minDate = formatISO(
     startOfMonth(
-      min([firstPeriodDayDate, subMonths(startOfToday(), maxDisplayedCycles)]),
+      min([
+        firstPeriodDayDate,
+        subMonths(startOfToday(), maxNumberOfDisplayedCycles),
+      ]),
     ),
   );
 
@@ -398,7 +407,8 @@ const TabHome = () => {
 
   const { t } = useTranslation();
   const { cycles, updateCycles } = useContext(CyclesContext);
-  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
 
   return (
     <IonPage
@@ -426,7 +436,10 @@ const TabHome = () => {
                     color: `var(--ion-color-text-${theme})`,
                   }}
                 >
-                  {getDaysBeforePeriod(cycles, maxDisplayedCycles).title}
+                  {
+                    getDaysBeforePeriod(cycles, maxNumberOfDisplayedCycles)
+                      .title
+                  }
                 </p>
               </IonLabel>
             </div>
@@ -449,7 +462,7 @@ const TabHome = () => {
                         }
                   }
                 >
-                  {getDaysBeforePeriod(cycles, maxDisplayedCycles).days}
+                  {getDaysBeforePeriod(cycles, maxNumberOfDisplayedCycles).days}
                 </p>
               </IonLabel>
             </div>
@@ -466,7 +479,10 @@ const TabHome = () => {
                 disabled={isPeriodToday(cycles)}
                 onClick={() => {
                   const newCycles = getNewCyclesHistory(
-                    getPeriodDatesWithNewElement(cycles, maxDisplayedCycles),
+                    getPeriodDatesWithNewElement(
+                      cycles,
+                      maxNumberOfDisplayedCycles,
+                    ),
                   );
                   updateCycles(newCycles);
                 }}

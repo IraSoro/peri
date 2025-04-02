@@ -130,7 +130,8 @@ interface IdxProps {
 const ListProgress = () => {
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
-  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
   const dayOfCycle = getDayOfCycle(cycles);
 
   const maxLength = cycles.reduce((max: number, item) => {
@@ -161,7 +162,7 @@ const ListProgress = () => {
     );
   };
 
-  const list = cycles.slice(1, maxDisplayedCycles).map((_item, idx) => {
+  const list = cycles.slice(1, maxNumberOfDisplayedCycles).map((_item, idx) => {
     return (
       <ItemProgress
         key={idx}
@@ -180,15 +181,16 @@ interface AverageValuesProps {
 const AverageValues = ({ cycles }: AverageValuesProps) => {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext).theme;
-  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
 
   const averageLengthOfCycle = getAverageLengthOfCycle(
     cycles,
-    maxDisplayedCycles,
+    maxNumberOfDisplayedCycles,
   );
   const averageLengthOfPeriod = getAverageLengthOfPeriod(
     cycles,
-    maxDisplayedCycles,
+    maxNumberOfDisplayedCycles,
   );
 
   const lengthOfCycle = `${averageLengthOfCycle} ${t("Days", {

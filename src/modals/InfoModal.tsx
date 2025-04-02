@@ -22,14 +22,24 @@ const InfoModal = (props: PropsInfoModal) => {
   const { t } = useTranslation();
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
-  const maxDisplayedCycles = useContext(SettingsContext).maxDisplayedCycles;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
 
-  const lengthOfCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
+  const lengthOfCycle = getAverageLengthOfCycle(
+    cycles,
+    maxNumberOfDisplayedCycles,
+  );
   const currentDay = getDayOfCycle(cycles);
-  const ovulationStatus = getOvulationStatus(cycles, maxDisplayedCycles);
-  const pregnancyChance = getPregnancyChance(cycles, maxDisplayedCycles);
+  const ovulationStatus = getOvulationStatus(
+    cycles,
+    maxNumberOfDisplayedCycles,
+  );
+  const pregnancyChance = getPregnancyChance(
+    cycles,
+    maxNumberOfDisplayedCycles,
+  );
 
-  const phase = getPhase(cycles, maxDisplayedCycles);
+  const phase = getPhase(cycles, maxNumberOfDisplayedCycles);
 
   return (
     <IonModal

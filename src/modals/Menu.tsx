@@ -140,7 +140,7 @@ const ThemeSwitcher = () => {
 const CycleCountSelector = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
-  const { maxDisplayedCycles, updateMaxDisplayedCycles } =
+  const { maxNumberOfDisplayedCycles, updateMaxNumberOfDisplayedCycles } =
     useContext(SettingsContext);
 
   const [selectedCount, setSelectedCount] = useState(6);
@@ -148,8 +148,8 @@ const CycleCountSelector = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   useEffect(() => {
-    setSelectedCount(maxDisplayedCycles);
-  }, [maxDisplayedCycles]);
+    setSelectedCount(maxNumberOfDisplayedCycles);
+  }, [maxNumberOfDisplayedCycles]);
 
   const countList = [];
   for (const item of [6, 12, 24]) {
@@ -216,7 +216,7 @@ const CycleCountSelector = () => {
             handler: () => {
               if (pendingCount !== null) {
                 setSelectedCount(pendingCount);
-                updateMaxDisplayedCycles(pendingCount);
+                updateMaxNumberOfDisplayedCycles(pendingCount);
               }
             },
           },
