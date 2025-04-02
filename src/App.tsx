@@ -98,8 +98,10 @@ const App = (props: AppProps) => {
   );
 
   function updateCycles(newCycles: Cycle[]) {
-    const maxOfCycles = getMaxStoredCountOfCycles(maxNumberOfDisplayedCycles);
-    const slicedCycles = newCycles.slice(0, maxOfCycles);
+    const slicedCycles = newCycles.slice(
+      0,
+      getMaxStoredCountOfCycles(maxNumberOfDisplayedCycles),
+    );
     setCycles(slicedCycles);
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
 
