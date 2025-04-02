@@ -97,33 +97,36 @@ const App = (props: AppProps) => {
     [i18n],
   );
 
-  const updateCycles = (newCycles: Cycle[]) => {
-    const slicedCycles = newCycles.slice(
-      0,
-      getMaxStoredCountOfCycles(maxNumberOfDisplayedCycles),
-    );
-    setCycles(slicedCycles);
-    storage.set.cycles(slicedCycles).catch((err) => console.error(err));
+  const updateCycles = useCallback(
+    (newCycles: Cycle[]) => {
+      const slicedCycles = newCycles.slice(
+        0,
+        getMaxStoredCountOfCycles(maxNumberOfDisplayedCycles),
+      );
+      setCycles(slicedCycles);
+      storage.set.cycles(slicedCycles).catch((err) => console.error(err));
 
-    if (configuration.features.notifications && notificationsStatus) {
-      clearAllDeliveredNotifications().catch((err) => {
-        console.error("Error removing delivered notifications", err);
-      });
-      removePendingNotifications()
-        .then(() => {
-          createNotifications(cycles, maxNumberOfDisplayedCycles).catch(
-            (err) => {
-              console.error("Error creating notifications", err);
-            },
-          );
-        })
-        .catch((err) => {
-          console.error("Error removing pending notifications", err);
+      if (configuration.features.notifications && notificationsStatus) {
+        clearAllDeliveredNotifications().catch((err) => {
+          console.error("Error removing delivered notifications", err);
         });
-    }
-  };
+        removePendingNotifications()
+          .then(() => {
+            createNotifications(cycles, maxNumberOfDisplayedCycles).catch(
+              (err) => {
+                console.error("Error creating notifications", err);
+              },
+            );
+          })
+          .catch((err) => {
+            console.error("Error removing pending notifications", err);
+          });
+      }
+    },
+    [cycles, maxNumberOfDisplayedCycles, notificationsStatus],
+  );
 
-  const updateTheme = (newTheme: string) => {
+  const updateTheme = useCallback((newTheme: string) => {
     if (newTheme === "light") {
       newTheme = "basic";
     }
@@ -147,32 +150,35 @@ const App = (props: AppProps) => {
         newTheme === "basic" ? "default" : "black",
       );
     }
-  };
+  }, []);
 
-  const updateNotificationsStatus = (newStatus: boolean) => {
-    setNotificationsStatus(newStatus);
-    storage.set
-      .notifications(newStatus)
-      .then(() => {
-        console.log(
-          `Notification has been switched to ${newStatus ? "on" : "off"}`,
-        );
-        if (newStatus) {
-          createNotifications(cycles, maxNumberOfDisplayedCycles).catch(
-            (err) => {
-              console.error("Error creating notifications", err);
-            },
+  const updateNotificationsStatus = useCallback(
+    (newStatus: boolean) => {
+      setNotificationsStatus(newStatus);
+      storage.set
+        .notifications(newStatus)
+        .then(() => {
+          console.log(
+            `Notification has been switched to ${newStatus ? "on" : "off"}`,
           );
-          return;
-        }
-        removePendingNotifications().catch((err) => {
-          console.error("Error removing pending notifications", err);
-        });
-      })
-      .catch((err) => console.error(err));
-  };
+          if (newStatus) {
+            createNotifications(cycles, maxNumberOfDisplayedCycles).catch(
+              (err) => {
+                console.error("Error creating notifications", err);
+              },
+            );
+            return;
+          }
+          removePendingNotifications().catch((err) => {
+            console.error("Error removing pending notifications", err);
+          });
+        })
+        .catch((err) => console.error(err));
+    },
+    [cycles, maxNumberOfDisplayedCycles],
+  );
 
-  const updateMaxNumberOfDisplayedCycles = (newValue: number) => {
+  const updateMaxNumberOfDisplayedCycles = useCallback((newValue: number) => {
     setMaxNumberOfDisplayedCycles(newValue);
     storage.set
       .maxNumberOfDisplayedCycles(newValue)
@@ -180,7 +186,7 @@ const App = (props: AppProps) => {
         console.log(`maxDisplayedCycles has been switched to ${newValue}`);
       })
       .catch((err) => console.error(err));
-  };
+  }, []);
 
   useEffect(() => {
     if (!configuration.features.useCustomVersionUpdate) {
