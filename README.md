@@ -101,3 +101,7 @@ We welcome contributions to translate our application into different languages. 
 ### Algorithms and calculations
 
 You can find a description of the logic and algorithms that are used in the application in [CALCULATION.md](https://github.com/IraSoro/peri/blob/master/info/CALCULATION.md).
+
+### Thanks for noticing our project
+
+[![MadeWithReactJs.com shield](https://img.shields.io/badge/MadeWithReactJs.com-blue)](https://madewithreactjs.com)
