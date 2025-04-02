@@ -27,6 +27,11 @@ span.info-item-basic {
   font-weight: bold;
 }
 
+a.link-basic {
+  color: var(--ion-color-less-dark-basic);
+  font-weight: bold;
+}
+
 /* dark */
 p.info-title-dark {
   font-weight: bold;
@@ -46,6 +51,11 @@ li.info-item-dark::marker {
 }
 
 span.info-item-dark {
+  color: var(--ion-color-less-dark-dark);
+  font-weight: bold;
+}
+
+a.link-dark {
   color: var(--ion-color-less-dark-dark);
   font-weight: bold;
 }
