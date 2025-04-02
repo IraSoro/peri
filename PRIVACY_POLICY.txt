@@ -1,0 +1,42 @@
+Privacy Policy for Peri
+Last updated: 2025-04-02
+
+Peri (“the Application”, “we”, “our”, or “us”) is an open source period tracker application. This Privacy Policy explains our practices regarding any personal data or other information you may interact with while using Peri.
+
+1. Data Collection
+1.1. No Server-Side Data Collection
+Peri is designed so that no personal data is collected or transmitted to any server. All data is stored locally on your device. We do not track, collect, or transmit your personal data or any other information without your consent.
+
+1.2. Local Storage
+All your data, including any period tracking or related information, remains on your device in local storage. The Application does not upload your data to any remote server or cloud service.
+
+1.3. Manual Data Sharing
+You have the option to manually export your data as a file for backup or sharing purposes. Data import/export is entirely under your control:
+
+Export: When you choose to export your data, it is saved as a file on your device.
+Import: Similarly, when you choose to import data, you manually select a file from your device.
+No data is automatically shared with any third parties or remote services.
+
+2. Data Usage
+Since Peri does not collect personal data:
+
+No user profiling: We do not use any data for analytics, advertising, or profiling.
+Local Operations: All application processing and storage of data are performed locally on your device.
+
+3. Third-Party Services
+Peri is an open source application. We do not include or integrate any third-party services that collect or process your data. If you choose to share or upload your data via third-party tools or services, please review their respective privacy policies.
+
+4. Data Security
+While Peri stores all data locally on your device, it is important to note the following:
+
+Local Security: Ensure that your device is protected with appropriate security measures (such as password or biometric protection) to keep your personal information safe.
+Application Updates: We strive to maintain the security of the Application through regular updates. However, it is your responsibility to safeguard your device and data.
+
+5. Children's Privacy
+Peri is intended for a general audience and does not deliberately collect any information from children under the age of 13. If you are a parent or guardian and believe that your child’s data has been inadvertently collected through manual sharing, please contact us immediately.
+
+6. Changes to This Privacy Policy
+We may update this Privacy Policy periodically. Any changes will be posted on this page with an updated "Last updated" date. Your continued use of Peri indicates that you accept such changes.
+
+7. Contact Us
+If you have any questions or concerns regarding this Privacy Policy or our data practices, please contact us by opening an issue on our GitHub repository or through the contact information provided in the project documentation.
