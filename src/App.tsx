@@ -126,6 +126,24 @@ const App = (props: AppProps) => {
     }
     setTheme(newTheme);
     storage.set.theme(newTheme).catch((err) => console.error(err));
+    const metaStatusBarColorAndroid = document.querySelector(
+      "meta[name=theme-color]",
+    );
+    if (metaStatusBarColorAndroid) {
+      metaStatusBarColorAndroid.setAttribute(
+        "content",
+        newTheme === "basic" ? "#eae7ff" : "#1f1f1f",
+      );
+    }
+    const metaStatusBarColorIOS = document.querySelector(
+      "meta[name=apple-mobile-web-app-status-bar-style]",
+    );
+    if (metaStatusBarColorIOS) {
+      metaStatusBarColorIOS.setAttribute(
+        "content",
+        newTheme === "basic" ? "default" : "black",
+      );
+    }
   }
 
   function updateNotificationsStatus(newStatus: boolean) {
