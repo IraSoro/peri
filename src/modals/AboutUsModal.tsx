@@ -11,7 +11,7 @@ interface PropsHelpModal {
   setIsOpen: (newIsOpen: boolean) => void;
 }
 
-const HelpModal = (props: PropsHelpModal) => {
+const AboutUsModal = (props: PropsHelpModal) => {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext).theme;
 
@@ -59,4 +59,4 @@ const HelpModal = (props: PropsHelpModal) => {
   );
 };
 
-export default HelpModal;
+export default AboutUsModal;

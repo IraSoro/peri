@@ -43,7 +43,7 @@ import {
   supportedLanguages,
 } from "../utils/translation";
 import { changeDateTimeLocale } from "../utils/datetime";
-import HelpModal from "../modals/HelpModal";
+import AboutUsModal from "./AboutUsModal";
 
 const LanguageSwitcher = () => {
   const { t } = useTranslation();
@@ -252,7 +252,7 @@ const Exporter = () => {
   );
 };
 
-const Help = () => {
+const AboutUs = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -269,14 +269,14 @@ const Help = () => {
           icon={helpCircleOutline}
           color={`text-${theme}`}
         />
-        <IonText color={`text-${theme}`}>{t("Help")}</IonText>
+        <IonText color={`text-${theme}`}>{t("About us")}</IonText>
         <IonIcon
           slot="end"
           icon={chevronForwardOutline}
           color={`text-${theme}`}
         />
       </IonItem>
-      <HelpModal
+      <AboutUsModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
@@ -330,7 +330,7 @@ export const Menu = (props: MenuProps) => {
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Other")}</IonLabel>
         </IonItem>
-        <Help />
+        <AboutUs />
         {configuration.features.useCustomVersionUpdate && needUpdate && (
           <IonItem
             button
