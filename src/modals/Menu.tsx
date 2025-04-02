@@ -346,7 +346,7 @@ export const Menu = (props: MenuProps) => {
             color="medium"
             slot="end"
           >
-            {configuration.app.version}
+            {configuration.app.version}.test5
           </IonLabel>
         </IonItem>
       </IonList>
