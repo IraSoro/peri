@@ -8,7 +8,7 @@ We welcome contributions for translating our application into various languages.
 
 1. Look for the `./src/utils/translations` directory to find existing translations. If you didn't find the language you interested in then proceed to step 2.
 
-2. Create a new file for the language by duplicating the `./src/utils/translations/source.ts` file. Name it using the language code (e.g., `ru.ts` for Russian translations).
+2. Create a new file for the language by duplicating the `./src/utils/translations/example.ts` file. Name it using the language code (e.g., `ru.ts` for Russian translations).
 
 3. Translate the keys into your language. Remember to also change the language code in first the line:
 
