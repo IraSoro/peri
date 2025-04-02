@@ -87,7 +87,8 @@ const App = (props: AppProps) => {
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
   const [notificationsStatus, setNotificationsStatus] = useState(false);
-  const [maxDisplayedCycles, setMaxDisplayedCycles] = useState(6);
+  const [maxNumberOfDisplayedCycles, setMaxNumberOfDisplayedCycles] =
+    useState(6);
 
   const changeLanguage = useCallback(
     (lng: string) => {
@@ -97,7 +98,7 @@ const App = (props: AppProps) => {
   );
 
   function updateCycles(newCycles: Cycle[]) {
-    const maxOfCycles = getMaxStoredCountOfCycles(maxDisplayedCycles);
+    const maxOfCycles = getMaxStoredCountOfCycles(maxNumberOfDisplayedCycles);
     const slicedCycles = newCycles.slice(0, maxOfCycles);
     setCycles(slicedCycles);
     storage.set.cycles(slicedCycles).catch((err) => console.error(err));
@@ -108,9 +109,11 @@ const App = (props: AppProps) => {
       });
       removePendingNotifications()
         .then(() => {
-          createNotifications(cycles, maxDisplayedCycles).catch((err) => {
-            console.error("Error creating notifications", err);
-          });
+          createNotifications(cycles, maxNumberOfDisplayedCycles).catch(
+            (err) => {
+              console.error("Error creating notifications", err);
+            },
+          );
         })
         .catch((err) => {
           console.error("Error removing pending notifications", err);
@@ -153,9 +156,11 @@ const App = (props: AppProps) => {
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
         if (newStatus) {
-          createNotifications(cycles, maxDisplayedCycles).catch((err) => {
-            console.error("Error creating notifications", err);
-          });
+          createNotifications(cycles, maxNumberOfDisplayedCycles).catch(
+            (err) => {
+              console.error("Error creating notifications", err);
+            },
+          );
           return;
         }
         removePendingNotifications().catch((err) => {
@@ -165,8 +170,8 @@ const App = (props: AppProps) => {
       .catch((err) => console.error(err));
   }
 
-  function updateMaxDisplayedCycles(newValue: number) {
-    setMaxDisplayedCycles(newValue);
+  function updateMaxNumberOfDisplayedCycles(newValue: number) {
+    setMaxNumberOfDisplayedCycles(newValue);
     storage.set
       .maxDisplayedCycles(newValue)
       .then(() => {
@@ -235,14 +240,14 @@ const App = (props: AppProps) => {
 
     storage.get
       .maxDisplayedCycles()
-      .then(setMaxDisplayedCycles)
+      .then(setMaxNumberOfDisplayedCycles)
       .catch((err) => {
         console.error(`Can't get maxDisplayedCycles ${(err as Error).message}`);
         storage.set
-          .maxDisplayedCycles(maxDisplayedCycles)
+          .maxDisplayedCycles(maxNumberOfDisplayedCycles)
           .catch((err) => console.error(err));
       });
-  }, [changeLanguage, theme, maxDisplayedCycles]);
+  }, [changeLanguage, theme, maxNumberOfDisplayedCycles]);
 
   useEffect(() => {
     if (!configuration.features.notifications || !notificationsStatus) {
@@ -261,8 +266,8 @@ const App = (props: AppProps) => {
           value={{
             notificationsStatus,
             updateNotificationsStatus,
-            maxDisplayedCycles,
-            updateMaxDisplayedCycles,
+            maxNumberOfDisplayedCycles,
+            updateMaxNumberOfDisplayedCycles,
           }}
         >
           <IonApp>
