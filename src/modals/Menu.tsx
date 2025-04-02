@@ -20,6 +20,8 @@ import {
   colorFillOutline,
   logoGithub,
   notificationsOutline,
+  helpCircleOutline,
+  chevronForwardOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -41,6 +43,7 @@ import {
   supportedLanguages,
 } from "../utils/translation";
 import { changeDateTimeLocale } from "../utils/datetime";
+import HelpModal from "../modals/HelpModal";
 
 const LanguageSwitcher = () => {
   const { t } = useTranslation();
@@ -249,6 +252,38 @@ const Exporter = () => {
   );
 };
 
+const Help = () => {
+  const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <IonItem
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        <IonIcon
+          slot="start"
+          icon={helpCircleOutline}
+          color={`text-${theme}`}
+        />
+        <IonText color={`text-${theme}`}>{t("Help")}</IonText>
+        <IonIcon
+          slot="end"
+          icon={chevronForwardOutline}
+          color={`text-${theme}`}
+        />
+      </IonItem>
+      <HelpModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
+    </>
+  );
+};
+
 interface MenuProps {
   contentId: string;
 }
@@ -292,6 +327,10 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <Importer />
         <Exporter />
+        <IonItem lines="full">
+          <IonLabel color={`dark-${theme}`}>{t("Other")}</IonLabel>
+        </IonItem>
+        <Help />
         {configuration.features.useCustomVersionUpdate && needUpdate && (
           <IonItem
             button
