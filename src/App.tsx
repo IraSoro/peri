@@ -97,7 +97,7 @@ const App = (props: AppProps) => {
     [i18n],
   );
 
-  function updateCycles(newCycles: Cycle[]) {
+  const updateCycles = (newCycles: Cycle[]) => {
     const slicedCycles = newCycles.slice(
       0,
       getMaxStoredCountOfCycles(maxNumberOfDisplayedCycles),
@@ -121,9 +121,9 @@ const App = (props: AppProps) => {
           console.error("Error removing pending notifications", err);
         });
     }
-  }
+  };
 
-  function updateTheme(newTheme: string) {
+  const updateTheme = (newTheme: string) => {
     if (newTheme === "light") {
       newTheme = "basic";
     }
@@ -147,9 +147,9 @@ const App = (props: AppProps) => {
         newTheme === "basic" ? "default" : "black",
       );
     }
-  }
+  };
 
-  function updateNotificationsStatus(newStatus: boolean) {
+  const updateNotificationsStatus = (newStatus: boolean) => {
     setNotificationsStatus(newStatus);
     storage.set
       .notifications(newStatus)
@@ -170,9 +170,9 @@ const App = (props: AppProps) => {
         });
       })
       .catch((err) => console.error(err));
-  }
+  };
 
-  function updateMaxNumberOfDisplayedCycles(newValue: number) {
+  const updateMaxNumberOfDisplayedCycles = (newValue: number) => {
     setMaxNumberOfDisplayedCycles(newValue);
     storage.set
       .maxNumberOfDisplayedCycles(newValue)
@@ -180,7 +180,7 @@ const App = (props: AppProps) => {
         console.log(`maxDisplayedCycles has been switched to ${newValue}`);
       })
       .catch((err) => console.error(err));
-  }
+  };
 
   useEffect(() => {
     if (!configuration.features.useCustomVersionUpdate) {
