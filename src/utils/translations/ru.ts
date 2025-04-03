@@ -85,6 +85,7 @@ const ru = {
   "Export config": "Экспортировать данные",
   "Configuration has been imported": "Данные были успешно импортированы",
   "Download latest version": "Загрузить новую версию",
+  "Stored cycles count": "Кол-во циклов",
   // Alert Demo
   "This is just a demo": "Это только demo",
   "You can download the application ": "Загрузить приложение можно ",
