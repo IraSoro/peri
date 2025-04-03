@@ -96,6 +96,13 @@ const ru = {
   "Period is coming soon": "Месячные скоро начнутся",
   "Your period may start tomorrow": "Месячные могут начаться уже завтра",
   "Your period may start today": "Месячные могут начаться уже сегодня",
+
+  //Count stored cycles
+  "Confirm selection": "Подтвердите выбор",
+  "Are you sure you want to change the number of stored cycles?":
+    "Вы уверены, что хотите изменить количество сохраненных циклов?",
+  "Reducing the number will permanently remove some cycles.":
+    "Уменьшение числа приведет к удалению некоторых циклов навсегда.",
 };
 
 export default ru;
