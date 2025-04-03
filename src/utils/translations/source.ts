@@ -99,6 +99,7 @@ const example = {
   "Configuration has been imported": "",
   "Download latest version": "",
   "We are on GitHub": "",
+  "Stored cycles count": "",
 
   // Alert Demo
   "This is just a demo": "",
