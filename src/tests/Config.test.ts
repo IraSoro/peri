@@ -107,6 +107,7 @@ describe("exportConfig", () => {
       theme: "basic",
       notifications: false,
       lastNotificationId: 1,
+      maxNumberOfDisplayedCycles: 6,
     } satisfies Context);
 
     expect(mockedCapacitorFilesystem.Filesystem.writeFile).toHaveBeenCalled();
@@ -155,6 +156,7 @@ describe("exportConfig", () => {
       theme: "basic",
       notifications: false,
       lastNotificationId: 1,
+      maxNumberOfDisplayedCycles: 6,
     } satisfies Context);
 
     expect(URL.createObjectURL).toHaveBeenCalled();
