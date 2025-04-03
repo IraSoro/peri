@@ -204,7 +204,7 @@ const CycleCountSelector = () => {
         message={t("Reducing the number will permanently remove some cycles.")}
         buttons={[
           {
-            text: "Cancel",
+            text: t("cancel"),
             role: "cancel",
             handler: () => {
               setPendingCount(null);

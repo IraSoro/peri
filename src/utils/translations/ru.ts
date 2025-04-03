@@ -91,6 +91,13 @@ const ru = {
   "You can download the application ": "Загрузить приложение можно ",
   here: "тут",
   "We are on GitHub": "Мы в GitHub",
+
+  //Count stored cycles
+  "Confirm selection": "Подтвердите выбор",
+  "Are you sure you want to change the number of stored cycles?":
+    "Вы уверены, что хотите изменить количество сохраненных циклов?",
+  "Reducing the number will permanently remove some cycles.":
+    "Уменьшение числа приведет к удалению некоторых циклов навсегда.",
 };
 
 export default ru;
