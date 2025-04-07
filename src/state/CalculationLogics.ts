@@ -10,9 +10,6 @@ import {
 import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
-export const maxOfCycles = 8;
-const maxDisplayedCycles = 6;
-
 export function getLastStartDate(cycles: Cycle[]) {
   if (cycles.length === 0) {
     return "";
@@ -41,12 +38,15 @@ export function getDayOfCycle(cycles: Cycle[]) {
 }
 
 // NOTE: Detailed description of ovulation calculation: https://github.com/IraSoro/peri/blob/master/info/CALCULATION.md#ovulation-day
-export function getOvulationStatus(cycles: Cycle[]) {
+export function getOvulationStatus(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   if (cycles.length === 0) {
     return "";
   }
 
-  const cycleLength = getAverageLengthOfCycle(cycles);
+  const cycleLength = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
   const dayOfCycle = getDayOfCycle(cycles);
 
   // Length of the luteal phase in days (fixed value)
@@ -80,12 +80,15 @@ export function getOvulationStatus(cycles: Cycle[]) {
   }
 }
 
-export function getPregnancyChance(cycles: Cycle[]) {
+export function getPregnancyChance(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   if (cycles.length === 0) {
     return "";
   }
 
-  const ovulationStatus = getOvulationStatus(cycles);
+  const ovulationStatus = getOvulationStatus(cycles, maxDisplayedCycles);
   if (
     ["tomorrow", "today", "possible"].some((status) =>
       ovulationStatus.includes(i18n.t(status)),
@@ -97,7 +100,10 @@ export function getPregnancyChance(cycles: Cycle[]) {
   return i18n.t("Low");
 }
 
-export function getDaysBeforePeriod(cycles: Cycle[]) {
+export function getDaysBeforePeriod(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   if (cycles.length === 0) {
     return {
       title: i18n.t("Period in"),
@@ -130,7 +136,7 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
   // We know the start date of the cycle
   const startDate = cycles[0].startDate;
   // We know the length of the cycle (the average of all cycles)
-  const cycleLength = getAverageLengthOfCycle(cycles);
+  const cycleLength = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
 
   // So we can calculate the end date of the cycle
   const dateOfFinish = addDays(startOfDay(new Date(startDate)), cycleLength);
@@ -164,8 +170,8 @@ export function getDaysBeforePeriod(cycles: Cycle[]) {
   };
 }
 
-export function getPhase(cycles: Cycle[]) {
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+export function getPhase(cycles: Cycle[], maxDisplayedCycles: number) {
+  const lengthOfCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
   const lengthOfPeriod = getLengthOfLastPeriod(cycles);
   const currentDay = getDayOfCycle(cycles);
 
@@ -248,7 +254,10 @@ export function getPhase(cycles: Cycle[]) {
   return phases.luteal;
 }
 
-export function getAverageLengthOfCycle(cycles: Cycle[]) {
+export function getAverageLengthOfCycle(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   const displayedCycles = cycles.slice(0, maxDisplayedCycles);
   const length = displayedCycles.length;
 
@@ -266,7 +275,10 @@ export function getAverageLengthOfCycle(cycles: Cycle[]) {
   return Math.round(sum / (length - 1));
 }
 
-export function getAverageLengthOfPeriod(cycles: Cycle[]) {
+export function getAverageLengthOfPeriod(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   const displayedCycles = cycles.slice(0, maxDisplayedCycles);
   const length = displayedCycles.length;
 
@@ -333,9 +345,15 @@ export function getNewCyclesHistory(periodDays: string[]) {
   return newCycles;
 }
 
+export function getMaxStoredCountOfCycles(maxDisplayedCycles: number) {
+  // NOTE: maxDisplayedCycles is the number of cycles we display in details. We store a maximum of maxDisplayedCycles + 2 cycles (for case the last cycle is accidentally deleted)
+  return maxDisplayedCycles + 2;
+}
+
 // The function returns an array of generated dates
-export function getPeriodDates(cycles: Cycle[]) {
+export function getPeriodDates(cycles: Cycle[], maxDisplayedCycles: number) {
   const periodDays: string[] = [];
+  const maxOfCycles = getMaxStoredCountOfCycles(maxDisplayedCycles);
 
   cycles.slice(0, maxOfCycles).forEach((cycle) => {
     const startOfCycle = startOfDay(new Date(cycle.startDate));
@@ -381,17 +399,21 @@ export function getActiveDates(date: Date, cycles: Cycle[]) {
 }
 
 // The function returns the dates of all previous cycles, and adds the dates for the current cycle, starting from today and for several days after
-export function getPeriodDatesWithNewElement(cycles: Cycle[]) {
+export function getPeriodDatesWithNewElement(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   const nowDate = startOfToday();
   // Forming an array of dates based on cycles
   // getPeriodDates(cycles) returns an array of strings with dates in ISO format
   // Using map , these strings are converted to Date objects, and then back to strings, but in the format returned by Date.prototype.toString()
-  const periodDates = getPeriodDates(cycles).map((isoDateString) =>
-    parseISO(isoDateString).toString(),
+  const periodDates = getPeriodDates(cycles, maxDisplayedCycles).map(
+    (isoDateString) => parseISO(isoDateString).toString(),
   );
   // Gets the average length of the period based on the given cycles
   // If the average length is not defined, it defaults to 5 days (for the case when the array is empty)
-  const lengthOfPeriod = getAverageLengthOfPeriod(cycles) || 5;
+  const lengthOfPeriod =
+    getAverageLengthOfPeriod(cycles, maxDisplayedCycles) || 5;
 
   // Checking for completion of current period
   if (cycles.length > 0) {
@@ -414,13 +436,16 @@ export function getPeriodDatesWithNewElement(cycles: Cycle[]) {
   return periodDates.concat(additionalDays);
 }
 
-export function getForecastPeriodDates(cycles: Cycle[]) {
+export function getForecastPeriodDates(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   if (cycles.length === 0) {
     return [];
   }
 
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
-  const lengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  const lengthOfCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
+  const lengthOfPeriod = getAverageLengthOfPeriod(cycles, maxDisplayedCycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const nowDate = startOfToday();
   const forecastDates: string[] = [];
@@ -470,12 +495,12 @@ export function isPeriodToday(cycles: Cycle[]) {
   return dayOfCycle <= cycles[0].periodLength;
 }
 
-export function getOvulationDates(cycles: Cycle[]) {
+export function getOvulationDates(cycles: Cycle[], maxDisplayedCycles: number) {
   if (cycles.length < 2) {
     return [];
   }
 
-  const averageCycle = getAverageLengthOfCycle(cycles);
+  const averageCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const ovulationDates = [];
 
@@ -508,13 +533,18 @@ export function getOvulationDates(cycles: Cycle[]) {
     );
   }
 
-  return ovulationDates.concat(getFutureOvulationDates(cycles));
+  return ovulationDates.concat(
+    getFutureOvulationDates(cycles, maxDisplayedCycles),
+  );
 }
 
-export function getFutureOvulationDates(cycles: Cycle[]) {
+export function getFutureOvulationDates(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
   if (cycles.length < 2) return [];
 
-  const lengthOfCycle = getAverageLengthOfCycle(cycles);
+  const lengthOfCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const nowDate = startOfToday();
   const ovulationDates: string[] = [];
@@ -547,8 +577,9 @@ export function getFutureOvulationDates(cycles: Cycle[]) {
 export function getPeriodShiftInDays(
   cycles: Cycle[],
   periodShiftInDays: number,
+  maxDisplayedCycles: number,
 ) {
-  const cycleLength = getAverageLengthOfCycle(cycles);
+  const cycleLength = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
   return addDays(
     startOfDay(new Date(cycles[0].startDate)),
     cycleLength + periodShiftInDays,

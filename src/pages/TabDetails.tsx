@@ -16,7 +16,7 @@ import {
   getDayOfCycle,
   getLastStartDate,
 } from "../state/CalculationLogics";
-import { CyclesContext, ThemeContext } from "../state/Context";
+import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import { Cycle } from "../data/ClassCycle";
 import { format } from "../utils/datetime";
 
@@ -130,6 +130,8 @@ interface IdxProps {
 const ListProgress = () => {
   const cycles = useContext(CyclesContext).cycles;
   const theme = useContext(ThemeContext).theme;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
   const dayOfCycle = getDayOfCycle(cycles);
 
   const maxLength = cycles.reduce((max: number, item) => {
@@ -160,17 +162,14 @@ const ListProgress = () => {
     );
   };
 
-  const list = cycles
-    // NOTE: 6 is the number of cycles we display in details. We store a maximum of 7 cycles (in case the last cycle is accidentally deleted)
-    .slice(1, 6)
-    .map((_item, idx) => {
-      return (
-        <ItemProgress
-          key={idx}
-          idx={idx}
-        />
-      );
-    });
+  const list = cycles.slice(1, maxNumberOfDisplayedCycles).map((_item, idx) => {
+    return (
+      <ItemProgress
+        key={idx}
+        idx={idx}
+      />
+    );
+  });
 
   return <>{list}</>;
 };
@@ -182,9 +181,17 @@ interface AverageValuesProps {
 const AverageValues = ({ cycles }: AverageValuesProps) => {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext).theme;
+  const maxNumberOfDisplayedCycles =
+    useContext(SettingsContext).maxNumberOfDisplayedCycles;
 
-  const averageLengthOfCycle = getAverageLengthOfCycle(cycles);
-  const averageLengthOfPeriod = getAverageLengthOfPeriod(cycles);
+  const averageLengthOfCycle = getAverageLengthOfCycle(
+    cycles,
+    maxNumberOfDisplayedCycles,
+  );
+  const averageLengthOfPeriod = getAverageLengthOfPeriod(
+    cycles,
+    maxNumberOfDisplayedCycles,
+  );
 
   const lengthOfCycle = `${averageLengthOfCycle} ${t("Days", {
     postProcess: "interval",
@@ -256,7 +263,7 @@ const TabDetails = () => {
               style={{ background: `var(--ion-color-calendar-${theme})` }}
             >
               {cycles.length > 0 ? (
-                <IonList>
+                <IonList style={{ maxHeight: "475px", overflowY: "auto" }}>
                   <CurrentCycle />
                   {cycles.length > 1 && <ListProgress />}
                 </IonList>

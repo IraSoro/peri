@@ -21,17 +21,21 @@ const themeInit: IThemeContext = {
   updateTheme: (_newTheme) => {},
 };
 
-interface INotificationsContext {
+interface ISettingsContext {
   notificationsStatus: boolean;
   updateNotificationsStatus: (newStatus: boolean) => void;
+  maxNumberOfDisplayedCycles: number;
+  updateMaxNumberOfDisplayedCycles: (newValue: number) => void;
 }
 
-const notificationsStatusInit: INotificationsContext = {
+const settingsInit: ISettingsContext = {
   notificationsStatus: false,
   updateNotificationsStatus: (_newStatus) => {},
+  maxNumberOfDisplayedCycles: 6,
+  updateMaxNumberOfDisplayedCycles: (_newValue: number) => {},
 };
 
 export const CyclesContext = React.createContext<ICyclesContext>(cyclesInit);
 export const ThemeContext = React.createContext<IThemeContext>(themeInit);
-export const NotificationEnabledContext =
-  React.createContext<INotificationsContext>(notificationsStatusInit);
+export const SettingsContext =
+  React.createContext<ISettingsContext>(settingsInit);

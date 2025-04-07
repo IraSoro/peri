@@ -99,6 +99,7 @@ const example = {
   "Configuration has been imported": "",
   "Download latest version": "",
   "We are on GitHub": "",
+  "Stored cycles count": "",
 
   // Alert Demo
   "This is just a demo": "",
@@ -110,6 +111,11 @@ const example = {
   "Period is coming soon": "",
   "Your period may start tomorrow": "",
   "Your period may start today": "",
+
+  //Count stored cycles
+  "Confirm selection": "",
+  "Are you sure you want to change the number of stored cycles?": "",
+  "Reducing the number will permanently remove some cycles.": "",
 };
 
 export default example;

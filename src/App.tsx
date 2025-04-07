@@ -42,12 +42,8 @@ import "./theme/variables.css";
 import { storage } from "./data/Storage";
 
 import type { Cycle } from "./data/ClassCycle";
-import { maxOfCycles } from "./state/CalculationLogics";
-import {
-  CyclesContext,
-  ThemeContext,
-  NotificationEnabledContext,
-} from "./state/Context";
+import { getMaxStoredCountOfCycles } from "./state/CalculationLogics";
+import { CyclesContext, ThemeContext, SettingsContext } from "./state/Context";
 import { Menu } from "./modals/Menu";
 import { isNewVersionAvailable } from "./data/AppVersion";
 import { configuration } from "./data/AppConfiguration";
@@ -91,6 +87,8 @@ const App = (props: AppProps) => {
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
   const [notificationsStatus, setNotificationsStatus] = useState(false);
+  const [maxNumberOfDisplayedCycles, setMaxNumberOfDisplayedCycles] =
+    useState(6);
 
   const changeLanguage = useCallback(
     (lng: string) => {
@@ -99,28 +97,29 @@ const App = (props: AppProps) => {
     [i18n],
   );
 
-  function updateCycles(newCycles: Cycle[]) {
-    const slicedCycles = newCycles.slice(0, maxOfCycles);
-    setCycles(slicedCycles);
-    storage.set.cycles(slicedCycles).catch((err) => console.error(err));
+  const updateCycles = useCallback(
+    async (newCycles: Cycle[]) => {
+      try {
+        const slicedCycles = newCycles.slice(
+          0,
+          getMaxStoredCountOfCycles(maxNumberOfDisplayedCycles),
+        );
+        setCycles(slicedCycles);
+        await storage.set.cycles(slicedCycles);
 
-    if (configuration.features.notifications && notificationsStatus) {
-      clearAllDeliveredNotifications().catch((err) => {
-        console.error("Error removing delivered notifications", err);
-      });
-      removePendingNotifications()
-        .then(() => {
-          createNotifications(cycles).catch((err) => {
-            console.error("Error creating notifications", err);
-          });
-        })
-        .catch((err) => {
-          console.error("Error removing pending notifications", err);
-        });
-    }
-  }
+        if (configuration.features.notifications && notificationsStatus) {
+          await clearAllDeliveredNotifications();
+          await removePendingNotifications();
+          await createNotifications(cycles, maxNumberOfDisplayedCycles);
+        }
+      } catch (err) {
+        console.error("Error updating cycles", err);
+      }
+    },
+    [cycles, maxNumberOfDisplayedCycles, notificationsStatus],
+  );
 
-  function updateTheme(newTheme: string) {
+  const updateTheme = useCallback((newTheme: string) => {
     if (newTheme === "light") {
       newTheme = "basic";
     }
@@ -144,28 +143,41 @@ const App = (props: AppProps) => {
         newTheme === "basic" ? "default" : "black",
       );
     }
-  }
+  }, []);
 
-  function updateNotificationsStatus(newStatus: boolean) {
-    setNotificationsStatus(newStatus);
-    storage.set
-      .notifications(newStatus)
-      .then(() => {
+  const updateNotificationsStatus = useCallback(
+    async (newStatus: boolean) => {
+      try {
+        setNotificationsStatus(newStatus);
+        await storage.set.notifications(newStatus);
         console.log(
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
+
         if (newStatus) {
-          createNotifications(cycles).catch((err) => {
-            console.error("Error creating notifications", err);
-          });
-          return;
+          await createNotifications(cycles, maxNumberOfDisplayedCycles);
+        } else {
+          await removePendingNotifications();
         }
-        removePendingNotifications().catch((err) => {
-          console.error("Error removing pending notifications", err);
-        });
-      })
-      .catch((err) => console.error(err));
-  }
+      } catch (err) {
+        console.error("Error updating notification status", err);
+      }
+    },
+    [cycles, maxNumberOfDisplayedCycles],
+  );
+
+  const updateMaxNumberOfDisplayedCycles = useCallback(
+    async (newValue: number) => {
+      try {
+        setMaxNumberOfDisplayedCycles(newValue);
+        await storage.set.maxNumberOfDisplayedCycles(newValue);
+        console.log(`maxDisplayedCycles has been switched to ${newValue}`);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!configuration.features.useCustomVersionUpdate) {
@@ -219,7 +231,22 @@ const App = (props: AppProps) => {
         // Notifications are off by default
         storage.set.notifications(false).catch((err) => console.error(err));
       });
-  }, [changeLanguage, theme]);
+
+    storage.get.lastNotificationId().catch((err) => {
+      console.error(`Can't get lastNotificationId ${(err as Error).message}`);
+      storage.set.lastNotificationId(0).catch((err) => console.error(err));
+    });
+
+    storage.get
+      .maxNumberOfDisplayedCycles()
+      .then(setMaxNumberOfDisplayedCycles)
+      .catch((err) => {
+        console.error(`Can't get maxDisplayedCycles ${(err as Error).message}`);
+        storage.set
+          .maxNumberOfDisplayedCycles(maxNumberOfDisplayedCycles)
+          .catch((err) => console.error(err));
+      });
+  }, [changeLanguage, theme, maxNumberOfDisplayedCycles]);
 
   useEffect(() => {
     if (!configuration.features.notifications || !notificationsStatus) {
@@ -232,10 +259,30 @@ const App = (props: AppProps) => {
   }, [notificationsStatus]);
 
   return (
-    <CyclesContext.Provider value={{ cycles, updateCycles }}>
+    <CyclesContext.Provider
+      value={{
+        cycles,
+        updateCycles: (newCycles) => {
+          updateCycles(newCycles).catch((err) => console.error(err));
+        },
+      }}
+    >
       <ThemeContext.Provider value={{ theme, updateTheme }}>
-        <NotificationEnabledContext.Provider
-          value={{ notificationsStatus, updateNotificationsStatus }}
+        <SettingsContext.Provider
+          value={{
+            notificationsStatus,
+            updateNotificationsStatus: (newStatus) => {
+              updateNotificationsStatus(newStatus).catch((err) =>
+                console.error(err),
+              );
+            },
+            maxNumberOfDisplayedCycles,
+            updateMaxNumberOfDisplayedCycles: (newValue) => {
+              updateMaxNumberOfDisplayedCycles(newValue).catch((err) =>
+                console.error(err),
+              );
+            },
+          }}
         >
           <IonApp>
             <Menu contentId="main-content" />
@@ -329,7 +376,7 @@ const App = (props: AppProps) => {
               </IonContent>
             </IonReactRouter>
           </IonApp>
-        </NotificationEnabledContext.Provider>
+        </SettingsContext.Provider>
       </ThemeContext.Provider>
     </CyclesContext.Provider>
   );

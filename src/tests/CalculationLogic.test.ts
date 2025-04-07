@@ -30,9 +30,11 @@ import {
   getPeriodDatesOfLastCycle,
 } from "../state/CalculationLogics";
 
+const maxDisplayedCycles = 6;
+
 describe("getOvulationStatus", () => {
   it("cycles array is empty", () => {
-    expect(getOvulationStatus([])).toEqual("");
+    expect(getOvulationStatus([], maxDisplayedCycles)).toEqual("");
   });
 
   it("a few days before ovulation", () => {
@@ -52,7 +54,7 @@ describe("getOvulationStatus", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getOvulationStatus(cycles)).toEqual(
+    expect(getOvulationStatus(cycles, maxDisplayedCycles)).toEqual(
       `${i18n.t("in")} 9 ${i18n.t("Days", {
         postProcess: "interval",
         count: 9,
@@ -77,7 +79,7 @@ describe("getOvulationStatus", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getOvulationStatus(cycles)).toEqual("tomorrow");
+    expect(getOvulationStatus(cycles, maxDisplayedCycles)).toEqual("tomorrow");
   });
 
   it("ovulation is today", () => {
@@ -97,7 +99,7 @@ describe("getOvulationStatus", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getOvulationStatus(cycles)).toEqual("today");
+    expect(getOvulationStatus(cycles, maxDisplayedCycles)).toEqual("today");
   });
 
   it("if ovulation is possible", () => {
@@ -117,7 +119,7 @@ describe("getOvulationStatus", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getOvulationStatus(cycles)).toEqual("possible");
+    expect(getOvulationStatus(cycles, maxDisplayedCycles)).toEqual("possible");
   });
 
   it("ovulation is finished", () => {
@@ -137,13 +139,13 @@ describe("getOvulationStatus", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getOvulationStatus(cycles)).toEqual("finished");
+    expect(getOvulationStatus(cycles, maxDisplayedCycles)).toEqual("finished");
   });
 });
 
 describe("getPregnancyChance", () => {
   it("cycles array is empty", () => {
-    expect(getPregnancyChance([])).toEqual("");
+    expect(getPregnancyChance([], maxDisplayedCycles)).toEqual("");
   });
 
   it("pregnancy chance is high", () => {
@@ -163,7 +165,7 @@ describe("getPregnancyChance", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getPregnancyChance(cycles)).toEqual("High");
+    expect(getPregnancyChance(cycles, maxDisplayedCycles)).toEqual("High");
   });
 
   it("pregnancy chance is low", () => {
@@ -182,7 +184,7 @@ describe("getPregnancyChance", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getPregnancyChance(cycles)).toEqual("Low");
+    expect(getPregnancyChance(cycles, maxDisplayedCycles)).toEqual("Low");
   });
 });
 
@@ -215,7 +217,7 @@ describe("getDayOfCycle", () => {
 
 describe("getAverageLengthOfCycle", () => {
   it("cycles array is empty", () => {
-    expect(getAverageLengthOfCycle([])).toEqual(0);
+    expect(getAverageLengthOfCycle([], maxDisplayedCycles)).toEqual(0);
   });
 
   it("only one item in the cycles array", () => {
@@ -229,7 +231,7 @@ describe("getAverageLengthOfCycle", () => {
         startDate: "2023-06-30",
       },
     ];
-    expect(getAverageLengthOfCycle(cycles)).toEqual(28);
+    expect(getAverageLengthOfCycle(cycles, maxDisplayedCycles)).toEqual(28);
   });
 
   it("more than one item in the cycles array", () => {
@@ -253,13 +255,13 @@ describe("getAverageLengthOfCycle", () => {
         startDate: "2023-05-07",
       },
     ];
-    expect(getAverageLengthOfCycle(cycles)).toEqual(28);
+    expect(getAverageLengthOfCycle(cycles, maxDisplayedCycles)).toEqual(28);
   });
 });
 
 describe("getAverageLengthOfPeriod", () => {
   it("cycles array is empty", () => {
-    expect(getAverageLengthOfPeriod([])).toEqual(0);
+    expect(getAverageLengthOfPeriod([], maxDisplayedCycles)).toEqual(0);
   });
 
   it("only one item in the cycles array", () => {
@@ -273,7 +275,7 @@ describe("getAverageLengthOfPeriod", () => {
         startDate: "2023-06-30",
       },
     ];
-    expect(getAverageLengthOfPeriod(cycles)).toEqual(5);
+    expect(getAverageLengthOfPeriod(cycles, maxDisplayedCycles)).toEqual(5);
   });
 
   it("more than one item in the cycles array", () => {
@@ -297,7 +299,7 @@ describe("getAverageLengthOfPeriod", () => {
         startDate: "2023-05-07",
       },
     ];
-    expect(getAverageLengthOfPeriod(cycles)).toEqual(5);
+    expect(getAverageLengthOfPeriod(cycles, maxDisplayedCycles)).toEqual(5);
   });
 });
 
@@ -306,7 +308,7 @@ describe("getDaysBeforePeriod", () => {
     // @ts-expect-error mocked `t` method
     vi.spyOn(i18n, "t").mockImplementation((key) => key);
 
-    expect(getDaysBeforePeriod([])).toEqual({
+    expect(getDaysBeforePeriod([], maxDisplayedCycles)).toEqual({
       title: i18n.t("Period in"),
       days: i18n.t("---"),
     });
@@ -329,7 +331,7 @@ describe("getDaysBeforePeriod", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Period in"),
       days: `10 ${i18n.t("Days", {
         postProcess: "interval",
@@ -355,7 +357,7 @@ describe("getDaysBeforePeriod", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Period in"),
       days: `1 ${i18n.t("Days", {
         postProcess: "interval",
@@ -382,7 +384,7 @@ describe("getDaysBeforePeriod", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Period"),
       days: i18n.t("today"),
     });
@@ -402,7 +404,7 @@ describe("getDaysBeforePeriod", () => {
       },
     ];
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Period is"),
       days: i18n.t("possible today"),
     });
@@ -425,7 +427,7 @@ describe("getDaysBeforePeriod", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Delay"),
       days: `1 ${i18n.t("Days", {
         postProcess: "interval",
@@ -451,7 +453,7 @@ describe("getDaysBeforePeriod", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Delay"),
       days: `10 ${i18n.t("Days", {
         postProcess: "interval",
@@ -473,7 +475,7 @@ describe("getDaysBeforePeriod", () => {
       },
     ];
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Period is"),
       days: i18n.t("possible today"),
     });
@@ -496,7 +498,7 @@ describe("getDaysBeforePeriod", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getDaysBeforePeriod(cycles)).toEqual({
+    expect(getDaysBeforePeriod(cycles, maxDisplayedCycles)).toEqual({
       title: i18n.t("Period"),
       days: i18n.t("day"),
     });
@@ -562,7 +564,7 @@ describe("getPhase", () => {
   it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     vi.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPhase([])).toEqual(phases.non);
+    expect(getPhase([], maxDisplayedCycles)).toEqual(phases.non);
   });
 
   it("cycle phase is menstrual", () => {
@@ -582,7 +584,7 @@ describe("getPhase", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getPhase(cycles)).toEqual(phases.menstrual);
+    expect(getPhase(cycles, maxDisplayedCycles)).toEqual(phases.menstrual);
   });
 
   it("cycle phase is follicular", () => {
@@ -602,7 +604,7 @@ describe("getPhase", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getPhase(cycles)).toEqual(phases.follicular);
+    expect(getPhase(cycles, maxDisplayedCycles)).toEqual(phases.follicular);
   });
 
   it("cycle phase is ovulation", () => {
@@ -622,7 +624,7 @@ describe("getPhase", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getPhase(cycles)).toEqual(phases.ovulation);
+    expect(getPhase(cycles, maxDisplayedCycles)).toEqual(phases.ovulation);
   });
 
   it("cycle phase is luteal", () => {
@@ -642,7 +644,7 @@ describe("getPhase", () => {
     }
     cycles[0].cycleLength = 0;
 
-    expect(getPhase(cycles)).toEqual(phases.luteal);
+    expect(getPhase(cycles, maxDisplayedCycles)).toEqual(phases.luteal);
   });
 });
 
@@ -714,7 +716,7 @@ describe("getPeriodDays", () => {
   it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     vi.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getPeriodDates([])).toEqual([]);
+    expect(getPeriodDates([], maxDisplayedCycles)).toEqual([]);
   });
 
   it("cycles array has a few items", () => {
@@ -758,7 +760,7 @@ describe("getPeriodDays", () => {
       "2023-06-13",
     ];
 
-    expect(getPeriodDates(cycles)).toEqual(periodDays);
+    expect(getPeriodDates(cycles, maxDisplayedCycles)).toEqual(periodDays);
   });
 });
 
@@ -950,7 +952,9 @@ describe("getPastFuturePeriodDays", () => {
       const periodDay = addDays(nowDate, day);
       periodDates.push(periodDay.toString());
     }
-    expect(getPeriodDatesWithNewElement([])).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement([], maxDisplayedCycles)).toEqual(
+      periodDates,
+    );
   });
 
   it("cycles array has a few items", () => {
@@ -970,16 +974,20 @@ describe("getPastFuturePeriodDays", () => {
     }
     cycles[0].cycleLength = 0;
 
-    const periodDates = getPeriodDates(cycles).map((isoDateString) => {
-      return parseISO(isoDateString).toString();
-    });
+    const periodDates = getPeriodDates(cycles, maxDisplayedCycles).map(
+      (isoDateString) => {
+        return parseISO(isoDateString).toString();
+      },
+    );
     const nowDate = startOfToday();
     for (let day = 0; day < 5; day++) {
       const periodDay = addDays(nowDate, day);
       periodDates.push(periodDay.toString());
     }
 
-    expect(getPeriodDatesWithNewElement(cycles)).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement(cycles, maxDisplayedCycles)).toEqual(
+      periodDates,
+    );
   });
 
   it("delay a few days", () => {
@@ -999,9 +1007,11 @@ describe("getPastFuturePeriodDays", () => {
     }
     cycles[0].cycleLength = 0;
 
-    const periodDates = getPeriodDates(cycles).map((isoDateString) => {
-      return parseISO(isoDateString).toString();
-    });
+    const periodDates = getPeriodDates(cycles, maxDisplayedCycles).map(
+      (isoDateString) => {
+        return parseISO(isoDateString).toString();
+      },
+    );
     const nowDate = startOfToday();
 
     for (let day = 0; day < 5; day++) {
@@ -1009,7 +1019,9 @@ describe("getPastFuturePeriodDays", () => {
       periodDates.push(periodDay.toString());
     }
 
-    expect(getPeriodDatesWithNewElement(cycles)).toEqual(periodDates);
+    expect(getPeriodDatesWithNewElement(cycles, maxDisplayedCycles)).toEqual(
+      periodDates,
+    );
   });
 });
 
@@ -1069,7 +1081,7 @@ describe("getForecastPeriodDates", () => {
   it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     vi.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getForecastPeriodDates([])).toEqual([]);
+    expect(getForecastPeriodDates([], maxDisplayedCycles)).toEqual([]);
   });
 
   it("cycles array has a few items", () => {
@@ -1103,7 +1115,9 @@ describe("getForecastPeriodDates", () => {
       }
     }
 
-    expect(getForecastPeriodDates(cycles)).toEqual(forecastDays);
+    expect(getForecastPeriodDates(cycles, maxDisplayedCycles)).toEqual(
+      forecastDays,
+    );
   });
 });
 
@@ -1111,7 +1125,7 @@ describe("getOvulationDates", () => {
   it("cycles array is empty", () => {
     // @ts-expect-error mocked `t` method
     vi.spyOn(i18n, "t").mockImplementation((key) => key);
-    expect(getOvulationDates([])).toEqual([]);
+    expect(getOvulationDates([], maxDisplayedCycles)).toEqual([]);
   });
 
   it("cycles array has 1 item", () => {
@@ -1128,7 +1142,7 @@ describe("getOvulationDates", () => {
       startDate: date.toString(),
     });
 
-    expect(getOvulationDates(cycles)).toEqual([]);
+    expect(getOvulationDates(cycles, maxDisplayedCycles)).toEqual([]);
   });
 
   it("cycles array has a 6 items", () => {
@@ -1179,6 +1193,8 @@ describe("getOvulationDates", () => {
       }
     }
 
-    expect(getOvulationDates(cycles)).toEqual(ovulationDays);
+    expect(getOvulationDates(cycles, maxDisplayedCycles)).toEqual(
+      ovulationDays,
+    );
   });
 });

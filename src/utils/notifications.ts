@@ -60,12 +60,19 @@ const getNextNotificationId = async () => {
   }
 };
 
-export const createNotifications = async (cycles: Cycle[]) => {
+export const createNotifications = async (
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) => {
   try {
     const notificationsId1 = await getNextNotificationId();
     const notificationsId2 = await getNextNotificationId();
-    const dayBeforePeriod = getPeriodShiftInDays(cycles, -1);
-    const dayOfPeriod = getPeriodShiftInDays(cycles, 0);
+    const dayBeforePeriod = getPeriodShiftInDays(
+      cycles,
+      -1,
+      maxDisplayedCycles,
+    );
+    const dayOfPeriod = getPeriodShiftInDays(cycles, 0, maxDisplayedCycles);
 
     await LocalNotifications.schedule({
       notifications: [

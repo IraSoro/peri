@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  IonAlert,
   IonChip,
   IonIcon,
   IonItem,
@@ -20,6 +21,7 @@ import {
   colorFillOutline,
   logoGithub,
   notificationsOutline,
+  serverOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -30,11 +32,7 @@ import {
   isNewVersionAvailable,
   openGitHubPage,
 } from "../data/AppVersion";
-import {
-  CyclesContext,
-  NotificationEnabledContext,
-  ThemeContext,
-} from "../state/Context";
+import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import {
   changeTranslation,
   getCurrentTranslation,
@@ -139,12 +137,101 @@ const ThemeSwitcher = () => {
   );
 };
 
+const CycleCountSelector = () => {
+  const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
+  const { maxNumberOfDisplayedCycles, updateMaxNumberOfDisplayedCycles } =
+    useContext(SettingsContext);
+
+  const [selectedCount, setSelectedCount] = useState(6);
+  const [pendingCount, setPendingCount] = useState<number | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  useEffect(() => {
+    setSelectedCount(maxNumberOfDisplayedCycles);
+  }, [maxNumberOfDisplayedCycles]);
+
+  const countList = [];
+  for (const item of [6, 12, 24]) {
+    countList.push(
+      <IonSelectOption
+        key={item}
+        value={item}
+      >
+        {item}
+      </IonSelectOption>,
+    );
+  }
+
+  return (
+    <IonItem>
+      <IonIcon
+        slot="start"
+        icon={serverOutline}
+        color={`text-${theme}`}
+      />
+
+      <IonSelect
+        className={theme}
+        value={selectedCount}
+        interface="popover"
+        justify="space-between"
+        interfaceOptions={{
+          cssClass: theme,
+        }}
+        onIonChange={(event) => {
+          setPendingCount(Number(event.target.value));
+          setIsAlertOpen(true);
+
+          // NOTE: Reset value to selectedCount to prevent flickering:
+          // the browser shows the new value first, but React replaces it with the old one before confirmation in IonAlert.
+          event.target.value = selectedCount;
+        }}
+      >
+        <div slot="label">
+          <IonText
+            color={`text-${theme}`}
+          >{`${t("Stored cycles count")} (β)`}</IonText>
+        </div>
+        {countList}
+      </IonSelect>
+      <IonAlert
+        isOpen={isAlertOpen}
+        header={t("Confirm selection")}
+        subHeader={t(
+          "Are you sure you want to change the number of stored cycles?",
+        )}
+        message={t("Reducing the number will permanently remove some cycles.")}
+        buttons={[
+          {
+            text: t("cancel"),
+            role: "cancel",
+            handler: () => {
+              setPendingCount(null);
+            },
+          },
+          {
+            text: "OK",
+            role: "confirm",
+            handler: () => {
+              if (pendingCount !== null) {
+                setSelectedCount(pendingCount);
+                updateMaxNumberOfDisplayedCycles(pendingCount);
+              }
+            },
+          },
+        ]}
+        onDidDismiss={() => setIsAlertOpen(false)}
+      ></IonAlert>
+    </IonItem>
+  );
+};
+
 const NotificationToggle = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
-  const { notificationsStatus, updateNotificationsStatus } = useContext(
-    NotificationEnabledContext,
-  );
+  const { notificationsStatus, updateNotificationsStatus } =
+    useContext(SettingsContext);
 
   return (
     <IonItem>
@@ -223,12 +310,15 @@ const Exporter = () => {
     const theme = await storage.get.theme();
     const notifications = await storage.get.notifications();
     const lastNotificationId = await storage.get.lastNotificationId();
+    const maxNumberOfDisplayedCycles =
+      await storage.get.maxNumberOfDisplayedCycles();
     await exportConfig({
       cycles,
       language,
       theme,
       notifications,
       lastNotificationId,
+      maxNumberOfDisplayedCycles,
     });
   };
 
@@ -286,6 +376,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <LanguageSwitcher />
         <ThemeSwitcher />
+        <CycleCountSelector />
         {configuration.features.notifications && <NotificationToggle />}
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Edit")}</IonLabel>

@@ -10,6 +10,7 @@ export interface Context {
   theme: string;
   notifications: boolean;
   lastNotificationId: number;
+  maxNumberOfDisplayedCycles: number;
 }
 
 export enum StorageKey {
@@ -18,6 +19,7 @@ export enum StorageKey {
   Theme = "theme",
   Notifications = "notifications",
   LastNotificationId = "lastNotificationId",
+  MaxNumberOfDisplayedCycles = "maxNumberOfDisplayedCycles",
 }
 
 type StorageValueTypeMap = {
@@ -26,6 +28,7 @@ type StorageValueTypeMap = {
   [StorageKey.Theme]: string;
   [StorageKey.Notifications]: boolean;
   [StorageKey.LastNotificationId]: number;
+  [StorageKey.MaxNumberOfDisplayedCycles]: number;
 };
 
 type StorageValueType<K extends StorageKey> = StorageValueTypeMap[K];
@@ -97,6 +100,14 @@ export const storage = {
         value: value.toString(),
       });
     },
+    maxNumberOfDisplayedCycles: (
+      value: StorageValueType<StorageKey.MaxNumberOfDisplayedCycles>,
+    ) => {
+      return Preferences.set({
+        key: StorageKey.MaxNumberOfDisplayedCycles,
+        value: value.toString(),
+      });
+    },
   },
   get: {
     cycles: async () => {
@@ -136,6 +147,17 @@ export const storage = {
       if (!value) {
         throw new Error(
           `Can't find '${StorageKey.LastNotificationId}' in storage`,
+        );
+      }
+      return Number(value);
+    },
+    maxNumberOfDisplayedCycles: async () => {
+      const { value } = await Preferences.get({
+        key: StorageKey.MaxNumberOfDisplayedCycles,
+      });
+      if (!value) {
+        throw new Error(
+          `Can't find '${StorageKey.MaxNumberOfDisplayedCycles}' in storage`,
         );
       }
       return Number(value);
@@ -389,7 +411,7 @@ function _randomMenstrualPhase(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
@@ -412,7 +434,7 @@ function _randomFollicularPhase(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
@@ -435,7 +457,7 @@ function _randomLutealPhase(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
@@ -458,7 +480,7 @@ function _randomDelayOfCycle(countOfCycles: number) {
   }
 
   if (countOfCycles > 1) {
-    const averagePeriod = getAverageLengthOfPeriod(cycles);
+    const averagePeriod = getAverageLengthOfPeriod(cycles, countOfCycles - 2);
     cycles[0].periodLength = averagePeriod;
     cycles[0].cycleLength = 0;
   }
