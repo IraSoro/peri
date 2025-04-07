@@ -106,7 +106,7 @@ const example = {
   here: "", // eg. You can download the application here
 
   // Notifications
-  "Notifications (β)": "",
+  Notifications: "",
   "Period is coming soon": "",
   "Your period may start tomorrow": "",
   "Your period may start today": "",
