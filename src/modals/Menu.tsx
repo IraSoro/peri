@@ -160,7 +160,7 @@ const NotificationToggle = () => {
           updateNotificationsStatus(!notificationsStatus);
         }}
       >
-        <IonText color={`text-${theme}`}>{t("Notification (β)")}</IonText>
+        <IonText color={`text-${theme}`}>{`${t("Notifications")} (β)`}</IonText>
       </IonToggle>
     </IonItem>
   );

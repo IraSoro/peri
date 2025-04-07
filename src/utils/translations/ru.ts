@@ -90,6 +90,11 @@ const ru = {
   "You can download the application ": "Загрузить приложение можно ",
   here: "тут",
   "We are on GitHub": "Мы в GitHub",
+  // Notifications
+  Notifications: "Оповещения",
+  "Period is coming soon": "Месячные скоро начнутся",
+  "Your period may start tomorrow": "Месячные могут начаться уже завтра",
+  "Your period may start today": "Месячные могут начаться уже сегодня",
 };
 
 export default ru;
