@@ -25,6 +25,24 @@ async function init() {
   let theme: string | undefined;
   try {
     theme = await storage.get.theme();
+    const metaStatusBarColorAndroid = document.querySelector(
+      "meta[name=theme-color]",
+    );
+    if (metaStatusBarColorAndroid) {
+      metaStatusBarColorAndroid.setAttribute(
+        "content",
+        theme === "basic" ? "#eae7ff" : "#1f1f1f",
+      );
+    }
+    const metaStatusBarColorIOS = document.querySelector(
+      "meta[name=apple-mobile-web-app-status-bar-style]",
+    );
+    if (metaStatusBarColorIOS) {
+      metaStatusBarColorIOS.setAttribute(
+        "content",
+        theme === "basic" ? "default" : "black",
+      );
+    }
   } catch (err) {
     console.error(`Can't get theme ${(err as Error).message}`);
   }
