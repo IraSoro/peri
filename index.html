@@ -10,6 +10,16 @@
       name="color-scheme"
       content="light dark"
     />
+    <!-- Lets us control PWA status bar theme on Android -->
+    <meta
+      name="theme-color"
+      content="#eae7ff"
+    />
+    <!-- Lets us control PWA status bar theme on iOS -->
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="default"
+    />
     <meta
       name="viewport"
       content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -25,13 +35,13 @@
 
     <link
       rel="manifest"
-      href="/peri/manifest.json"
+      href="/manifest.json"
     />
 
     <link
       rel="shortcut icon"
       type="image/x-icon"
-      href="/peri/assets/icon/favicon.ico"
+      href="/assets/icon/favicon.ico"
     />
 
     <!-- add to homescreen for ios -->
@@ -47,8 +57,8 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black"
     />
-    <script type="module" crossorigin src="/peri/assets/index-D9OIpspl.js"></script>
-    <link rel="stylesheet" crossorigin href="/peri/assets/index-DUiKOC4T.css">
+    <script type="module" crossorigin src="/assets/index-CY73WrCg.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D6PVDigZ.css">
     <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
     <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
   <link rel="manifest" href="/peri/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/peri/registerSW.js"></script></head>
@@ -56,7 +66,7 @@
   <body>
     <div id="root"></div>
     <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
-    <script nomodule crossorigin id="vite-legacy-polyfill" src="/peri/assets/polyfills-legacy-B_hLVWVB.js"></script>
-    <script nomodule crossorigin id="vite-legacy-entry" data-src="/peri/assets/index-legacy-D7bov30r.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+    <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-B_hLVWVB.js"></script>
+    <script nomodule crossorigin id="vite-legacy-entry" data-src="/assets/index-legacy-rYSboP_e.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
   </body>
 </html>
