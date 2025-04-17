@@ -1,7 +1,7 @@
 .github/
 .vscode/
 android/
-build/
+dist/
 coverage/
 demonstration/
 info/

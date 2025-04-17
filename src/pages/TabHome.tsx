@@ -45,7 +45,6 @@ import {
   getForecastPeriodDates,
   getOvulationDates,
   getPeriodDatesOfLastCycle,
-  // maxDisplayedCycles,
 } from "../state/CalculationLogics";
 import { getCurrentTranslation } from "../utils/translation";
 import { format } from "../utils/datetime";
