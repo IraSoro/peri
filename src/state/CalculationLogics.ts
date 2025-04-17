@@ -111,14 +111,6 @@ export function getDaysBeforePeriod(
     };
   }
 
-  // NOTE: 28 is the default cycle length. If there is only one cycle in the array, its length will be 28. But since this is the first cycle, we do not know its exact length, it may be longer. Therefore, in this case, we do not display the "Delay", but display the "possible today"
-  if (cycles.length === 1 && cycles[0].cycleLength >= 28) {
-    return {
-      title: i18n.t("Period is"),
-      days: i18n.t("possible today"),
-    };
-  }
-
   const periodLength = cycles[0].periodLength;
   const dayOfCycle = getDayOfCycle(cycles);
 
@@ -130,6 +122,14 @@ export function getDaysBeforePeriod(
         count: dayOfCycle,
         ordinal: true,
       })}`,
+    };
+  }
+
+  // NOTE: 28 is the default cycle length. If there is only one cycle in the array, its length will be 28. But since this is the first cycle, we do not know its exact length, it may be longer. Therefore, in this case, we do not display the "Delay", but display the "possible today"
+  if (cycles.length === 1 && cycles[0].cycleLength >= 28) {
+    return {
+      title: i18n.t("Period is"),
+      days: i18n.t("possible today"),
     };
   }
 
