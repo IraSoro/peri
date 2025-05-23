@@ -23,6 +23,7 @@ import {
   notificationsOutline,
   serverOutline,
 } from "ionicons/icons";
+import { isPlatform } from "@ionic/core";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -370,7 +371,10 @@ export const Menu = (props: MenuProps) => {
       contentId={props.contentId}
       className={theme}
     >
-      <IonList lines="none">
+      <IonList
+        lines="none"
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Preferences")}</IonLabel>
         </IonItem>
