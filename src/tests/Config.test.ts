@@ -1,11 +1,38 @@
-import * as mockedIonicCore from "@ionic/core";
-import * as mockedCapacitorFilesystem from "@capacitor/filesystem";
-import * as mockedCapacitorShare from "@capacitor/share";
+import * as ionicCore from "@ionic/core";
+import { Filesystem } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
 
 import { describe, it, expect, vi } from "vitest";
 
 import type { Context } from "../data/Storage";
 import { exportConfig, importConfig } from "../data/Config";
+
+vi.mock("@capacitor/core", async () => {
+  const actual = await vi.importActual("@capacitor/core");
+  return {
+    ...actual,
+    isPlatform: vi.fn(),
+  };
+});
+vi.mock("@capacitor/filesystem", async () => {
+  const actual = await vi.importActual("@capacitor/filesystem");
+  return {
+    ...actual,
+    Filesystem: {
+      getUri: vi.fn(),
+      writeFile: vi.fn(),
+    },
+  };
+});
+vi.mock("@capacitor/share", async () => {
+  const actual = await vi.importActual("@capacitor/share");
+  return {
+    ...actual,
+    Share: {
+      share: vi.fn(),
+    },
+  };
+});
 
 it("importConfig", async () => {
   // @ts-expect-error This is just a mocked `HTMLInputElement` and we don't need
@@ -74,26 +101,17 @@ it("importConfig", async () => {
 
 describe("exportConfig", () => {
   it("Android", async () => {
-    vi.spyOn(mockedIonicCore, "isPlatform")
+    vi.spyOn(ionicCore, "isPlatform")
       .mockReturnValueOnce(true)
       .mockReturnValueOnce(false);
 
-    // @ts-expect-error TS doesn't let me redefine readonly `Filesystem`
-    mockedCapacitorFilesystem.Filesystem = {
-      writeFile: vi
-        .fn()
-        .mockResolvedValueOnce({} as mockedCapacitorFilesystem.WriteFileResult),
-      getUri: vi.fn().mockResolvedValueOnce({
-        uri: "temporal-uri-to-cache-file",
-      } as mockedCapacitorFilesystem.GetUriResult),
-    };
-
-    // @ts-expect-error TS doesn't let me redefine readonly `Share`
-    mockedCapacitorShare.Share = {
-      share: vi
-        .fn()
-        .mockResolvedValueOnce({} as mockedCapacitorShare.ShareResult),
-    };
+    vi.spyOn(Filesystem, "getUri").mockResolvedValueOnce({
+      uri: "temporal-uri-to-cache-file",
+    });
+    vi.spyOn(Filesystem, "writeFile").mockResolvedValueOnce({
+      uri: "it-doesn't-matter",
+    });
+    vi.spyOn(Share, "share").mockResolvedValue({});
 
     await exportConfig({
       cycles: [
@@ -110,9 +128,9 @@ describe("exportConfig", () => {
       maxNumberOfDisplayedCycles: 6,
     } satisfies Context);
 
-    expect(mockedCapacitorFilesystem.Filesystem.writeFile).toHaveBeenCalled();
-    expect(mockedCapacitorFilesystem.Filesystem.getUri).toHaveBeenCalled();
-    expect(mockedCapacitorShare.Share.share).toHaveBeenCalledWith({
+    expect(Filesystem.writeFile).toHaveBeenCalled();
+    expect(Filesystem.getUri).toHaveBeenCalled();
+    expect(Share.share).toHaveBeenCalledWith({
       url: "temporal-uri-to-cache-file",
     });
   });
@@ -121,15 +139,12 @@ describe("exportConfig", () => {
     URL.createObjectURL = vi.fn().mockReturnValue("temporal-config-url");
     URL.revokeObjectURL = vi.fn();
 
-    vi.spyOn(
-      mockedCapacitorFilesystem.Filesystem,
-      "getUri",
-    ).mockResolvedValueOnce({
+    vi.spyOn(Filesystem, "getUri").mockResolvedValueOnce({
       uri: "some-test-uri",
     });
 
     // android
-    vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValue(false);
+    vi.spyOn(ionicCore, "isPlatform").mockReturnValue(false);
 
     // @ts-expect-error We don't want to implement all methods for `HTMLElement` mock
     const mockedAnchorElement = {
