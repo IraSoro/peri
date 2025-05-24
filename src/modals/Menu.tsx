@@ -23,7 +23,6 @@ import {
   notificationsOutline,
   serverOutline,
 } from "ionicons/icons";
-import { isPlatform } from "@ionic/core";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
