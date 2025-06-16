@@ -22,6 +22,7 @@ import {
   logoGithub,
   notificationsOutline,
   serverOutline,
+  chatbubbleOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -31,6 +32,7 @@ import {
   downloadLatestRelease,
   isNewVersionAvailable,
   openGitHubPage,
+  openLastReleasePage,
 } from "../data/AppVersion";
 import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import {
@@ -339,6 +341,25 @@ const Exporter = () => {
   );
 };
 
+const WhatIsNew = () => {
+  const { t } = useTranslation();
+  const theme = useContext(ThemeContext).theme;
+
+  return (
+    <IonItem
+      button
+      onClick={() => openLastReleasePage()}
+    >
+      <IonIcon
+        slot="start"
+        color={`opposite-${theme}`}
+        icon={chatbubbleOutline}
+      />
+      <IonLabel color={`opposite-${theme}`}>{t("What's new")}</IonLabel>
+    </IonItem>
+  );
+};
+
 interface MenuProps {
   contentId: string;
 }
@@ -386,6 +407,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <Importer />
         <Exporter />
+        <WhatIsNew />
         {configuration.features.useCustomVersionUpdate && needUpdate && (
           <IonItem
             button

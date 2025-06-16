@@ -79,3 +79,13 @@ export function openGitHubPage() {
   }
   window.open(homepageURL, "_system", "location=yes");
 }
+
+export function openLastReleasePage() {
+  const lastReleaseURL = "https://github.com/IraSoro/peri/releases/latest";
+
+  if (isPlatform("desktop")) {
+    window.open(lastReleaseURL, "_blank")?.focus();
+    return;
+  }
+  window.open(lastReleaseURL, "_system", "location=yes");
+}
