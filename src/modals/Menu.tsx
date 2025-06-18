@@ -314,6 +314,8 @@ const Exporter = () => {
     const lastNotificationId = await storage.get.lastNotificationId();
     const maxNumberOfDisplayedCycles =
       await storage.get.maxNumberOfDisplayedCycles();
+    const lastSeenVersion = await storage.get.lastSeenVersion();
+
     await exportConfig({
       cycles,
       language,
@@ -321,6 +323,7 @@ const Exporter = () => {
       notifications,
       lastNotificationId,
       maxNumberOfDisplayedCycles,
+      lastSeenVersion,
     });
   };
 
@@ -368,6 +371,7 @@ export const Menu = (props: MenuProps) => {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext).theme;
   const [needUpdate, setNeedUpdate] = useState(false);
+  const [isShowWhatsNew, setIsShowWhatsNew] = useState(false);
 
   useEffect(() => {
     if (!configuration.features.useCustomVersionUpdate) {
@@ -384,6 +388,22 @@ export const Menu = (props: MenuProps) => {
       .catch((err) => {
         console.error(err);
       });
+  }, []);
+
+  useEffect(() => {
+    const checkWhatsNew = async () => {
+      const currentVersion = configuration.app.version;
+      const lastSeenVersion = await storage.get.lastSeenVersion();
+
+      if (lastSeenVersion !== currentVersion) {
+        setIsShowWhatsNew(true);
+        storage.set
+          .lastSeenVersion(currentVersion)
+          .catch((err) => console.error(err));
+      }
+    };
+
+    checkWhatsNew();
   }, []);
 
   return (
@@ -407,7 +427,7 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <Importer />
         <Exporter />
-        <WhatIsNew />
+        {isShowWhatsNew && <WhatIsNew />}
         {configuration.features.useCustomVersionUpdate && needUpdate && (
           <IonItem
             button

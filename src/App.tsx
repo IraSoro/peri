@@ -246,6 +246,11 @@ const App = (props: AppProps) => {
           .maxNumberOfDisplayedCycles(maxNumberOfDisplayedCycles)
           .catch((err) => console.error(err));
       });
+
+    storage.get.lastSeenVersion().catch((err) => {
+      console.error(`Can't get lastSeenVersion ${(err as Error).message}`);
+      storage.set.lastSeenVersion(configuration.app.version).catch((err) => console.error(err));
+    });
   }, [changeLanguage, theme, maxNumberOfDisplayedCycles]);
 
   useEffect(() => {
