@@ -249,7 +249,9 @@ const App = (props: AppProps) => {
 
     storage.get.lastSeenVersion().catch((err) => {
       console.error(`Can't get lastSeenVersion ${(err as Error).message}`);
-      storage.set.lastSeenVersion(configuration.app.version).catch((err) => console.error(err));
+      storage.set
+        .lastSeenVersion(configuration.app.version)
+        .catch((err) => console.error(err));
     });
   }, [changeLanguage, theme, maxNumberOfDisplayedCycles]);
 

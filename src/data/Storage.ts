@@ -111,9 +111,7 @@ export const storage = {
         value: value.toString(),
       });
     },
-    lastSeenVersion: (
-      value: StorageValueType<StorageKey.LastSeenVersion>,
-    ) => {
+    lastSeenVersion: (value: StorageValueType<StorageKey.LastSeenVersion>) => {
       return Preferences.set({
         key: StorageKey.LastSeenVersion,
         value: value,
@@ -178,7 +176,9 @@ export const storage = {
         key: StorageKey.LastSeenVersion,
       });
       if (!value) {
-        throw new Error(`Can't find '${StorageKey.LastSeenVersion}' in storage`);
+        throw new Error(
+          `Can't find '${StorageKey.LastSeenVersion}' in storage`,
+        );
       }
       return value;
     },
