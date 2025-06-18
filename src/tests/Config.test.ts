@@ -126,6 +126,7 @@ describe("exportConfig", () => {
       notifications: false,
       lastNotificationId: 1,
       maxNumberOfDisplayedCycles: 6,
+      lastSeenVersion: "v2.6.4",
     } satisfies Context);
 
     expect(Filesystem.writeFile).toHaveBeenCalled();
@@ -172,6 +173,7 @@ describe("exportConfig", () => {
       notifications: false,
       lastNotificationId: 1,
       maxNumberOfDisplayedCycles: 6,
+      lastSeenVersion: "v2.6.4",
     } satisfies Context);
 
     expect(URL.createObjectURL).toHaveBeenCalled();
