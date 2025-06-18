@@ -32,7 +32,7 @@ import {
   downloadLatestRelease,
   isNewVersionAvailable,
   openGitHubPage,
-  openLastReleasePage,
+  openLatestReleasePage,
 } from "../data/AppVersion";
 import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import {
@@ -351,7 +351,7 @@ const WhatIsNew = () => {
   return (
     <IonItem
       button
-      onClick={() => openLastReleasePage()}
+      onClick={() => openLatestReleasePage()}
     >
       <IonIcon
         slot="start"
@@ -403,7 +403,9 @@ export const Menu = (props: MenuProps) => {
       }
     };
 
-    checkWhatsNew();
+    checkWhatsNew().catch((err) => {
+      console.error("What’s New error:", err);
+    });
   }, []);
 
   return (
