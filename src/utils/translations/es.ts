@@ -32,7 +32,7 @@ const es = {
   mark: "Marcar",
   cancel: "Cancelar",
   // Welcome Modal
-  "Welcome to Peri": "Bienvenida a Peri",
+  "Welcome to Peri": "Te damos la bienvenida a Peri",
   "Mark the days of your": "Marca los días de tu",
   "last period": "última menstruación",
   Continue: "Continuar",
@@ -87,6 +87,8 @@ const es = {
   "Export config": "Exportar configuración",
   "Configuration has been imported": "La configuración ha sido importada",
   "Download latest version": "Descargar la última versión",
+  "Stored cycles count": "Cant. ciclos alm.",
+
   // Alert Demo
   "This is just a demo": "Esto es solo una demostración",
   "You can download the application ": "Puedes descargar la aplicación ",
