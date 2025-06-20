@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonList,
   IonMenu,
+  IonRow,
   IonSelect,
   IonSelectOption,
   IonText,
@@ -22,7 +23,6 @@ import {
   logoGithub,
   notificationsOutline,
   serverOutline,
-  chatbubbleOutline,
 } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { storage } from "../data/Storage";
@@ -341,22 +341,31 @@ const Exporter = () => {
   );
 };
 
-const WhatIsNew = () => {
+const ChipInfo = () => {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext).theme;
 
   return (
-    <IonItem
-      button
-      onClick={() => openLastReleasePage()}
-    >
-      <IonIcon
-        slot="start"
-        color={`opposite-${theme}`}
-        icon={chatbubbleOutline}
-      />
-      <IonLabel color={`opposite-${theme}`}>{t("What's new")}</IonLabel>
-    </IonItem>
+    <IonRow>
+      <IonChip
+        outline
+        color={`text-${theme}`}
+        onClick={() => openGitHubPage()}
+      >
+        <IonIcon
+          icon={logoGithub}
+          color={`text-${theme}`}
+        />
+        <IonLabel>{t("We are on GitHub")}</IonLabel>
+      </IonChip>
+      <IonChip
+        outline
+        color={`text-${theme}`}
+        onClick={() => openLastReleasePage()}
+      >
+        <IonLabel>{t("What's new")}</IonLabel>
+      </IonChip>
+    </IonRow>
   );
 };
 
@@ -407,7 +416,6 @@ export const Menu = (props: MenuProps) => {
         </IonItem>
         <Importer />
         <Exporter />
-        <WhatIsNew />
         {configuration.features.useCustomVersionUpdate && needUpdate && (
           <IonItem
             button
@@ -435,17 +443,7 @@ export const Menu = (props: MenuProps) => {
           alignItems: "center",
         }}
       >
-        <IonChip
-          outline
-          color={`text-${theme}`}
-          onClick={() => openGitHubPage()}
-        >
-          <IonIcon
-            icon={logoGithub}
-            color={`text-${theme}`}
-          />
-          <IonLabel>{t("We are on GitHub")}</IonLabel>
-        </IonChip>
+        <ChipInfo />
         <IonItem
           color="none"
           lines="none"
