@@ -80,7 +80,7 @@ export function openGitHubPage() {
   window.open(homepageURL, "_system", "location=yes");
 }
 
-export function openLastReleasePage() {
+export function openLatestReleasePage() {
   const lastReleaseURL = "https://github.com/IraSoro/peri/releases/latest";
 
   if (isPlatform("desktop")) {

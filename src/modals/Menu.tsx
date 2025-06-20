@@ -32,7 +32,7 @@ import {
   downloadLatestRelease,
   isNewVersionAvailable,
   openGitHubPage,
-  openLastReleasePage,
+  openLatestReleasePage,
 } from "../data/AppVersion";
 import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import {
@@ -361,7 +361,7 @@ const ChipInfo = () => {
       <IonChip
         outline
         color={`text-${theme}`}
-        onClick={() => openLastReleasePage()}
+        onClick={() => openLatestReleasePage()}
       >
         <IonLabel>{t("What's new")}</IonLabel>
       </IonChip>
