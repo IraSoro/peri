@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonList,
   IonMenu,
+  IonRow,
   IonSelect,
   IonSelectOption,
   IonText,
@@ -31,6 +32,7 @@ import {
   downloadLatestRelease,
   isNewVersionAvailable,
   openGitHubPage,
+  openCurrentReleasePage,
 } from "../data/AppVersion";
 import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
 import {
@@ -339,6 +341,34 @@ const Exporter = () => {
   );
 };
 
+const ChipInfo = () => {
+  const { t } = useTranslation();
+  const theme = useContext(ThemeContext).theme;
+
+  return (
+    <IonRow>
+      <IonChip
+        outline
+        color={`text-${theme}`}
+        onClick={() => openGitHubPage()}
+      >
+        <IonIcon
+          icon={logoGithub}
+          color={`text-${theme}`}
+        />
+        <IonLabel>{t("We are on GitHub")}</IonLabel>
+      </IonChip>
+      <IonChip
+        outline
+        color={`text-${theme}`}
+        onClick={() => openCurrentReleasePage()}
+      >
+        <IonLabel>{t("What's new")}</IonLabel>
+      </IonChip>
+    </IonRow>
+  );
+};
+
 interface MenuProps {
   contentId: string;
 }
@@ -413,17 +443,7 @@ export const Menu = (props: MenuProps) => {
           alignItems: "center",
         }}
       >
-        <IonChip
-          outline
-          color={`text-${theme}`}
-          onClick={() => openGitHubPage()}
-        >
-          <IonIcon
-            icon={logoGithub}
-            color={`text-${theme}`}
-          />
-          <IonLabel>{t("We are on GitHub")}</IonLabel>
-        </IonChip>
+        <ChipInfo />
         <IonItem
           color="none"
           lines="none"
