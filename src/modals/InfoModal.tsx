@@ -48,7 +48,6 @@ const InfoModal = (props: PropsInfoModal) => {
       isOpen={props.isOpen}
     >
       <IonContent
-        className="ion-padding"
         color={`transparent-${theme}`}
       >
         <div className="info-screen">
