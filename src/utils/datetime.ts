@@ -12,6 +12,7 @@ import {
   gu,
   vi,
   ta,
+  ptBR,
 } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
@@ -31,6 +32,7 @@ const locales = new Map([
   ["gu", gu],
   ["vi", vi],
   ["ta", ta],
+  ["pt", ptBR],
 ]);
 
 const defaultLocale = "en";
