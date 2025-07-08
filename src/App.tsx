@@ -149,7 +149,7 @@ const App = (props: AppProps) => {
     async (newStatus: boolean) => {
       try {
         setNotificationsStatus(newStatus);
-        await storage.set.notifications(newStatus);
+        await storage.set.isNotifications(newStatus);
         console.log(
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
@@ -222,14 +222,14 @@ const App = (props: AppProps) => {
       });
 
     storage.get
-      .notifications()
+      .isNotifications()
       .then(setNotificationsStatus)
       .catch((err) => {
         console.error(
           `Can't get notifications status ${(err as Error).message}`,
         );
         // Notifications are off by default
-        storage.set.notifications(false).catch((err) => console.error(err));
+        storage.set.isNotifications(false).catch((err) => console.error(err));
       });
 
     storage.get.lastNotificationId().catch((err) => {

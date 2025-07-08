@@ -123,7 +123,7 @@ describe("exportConfig", () => {
       ],
       language: "en",
       theme: "basic",
-      notifications: false,
+      isNotifications: false,
       lastNotificationId: 1,
       maxNumberOfDisplayedCycles: 6,
     } satisfies Context);
@@ -169,7 +169,7 @@ describe("exportConfig", () => {
       ],
       language: "en",
       theme: "basic",
-      notifications: false,
+      isNotifications: false,
       lastNotificationId: 1,
       maxNumberOfDisplayedCycles: 6,
     } satisfies Context);

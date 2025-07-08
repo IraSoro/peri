@@ -8,7 +8,7 @@ export interface Context {
   cycles: Cycle[];
   language: string;
   theme: string;
-  notifications: boolean;
+  isNotifications: boolean;
   lastNotificationId: number;
   maxNumberOfDisplayedCycles: number;
 }
@@ -17,7 +17,7 @@ export enum StorageKey {
   Cycles = "cycles",
   Language = "language",
   Theme = "theme",
-  Notifications = "notifications",
+  isNotifications = "isNotifications",
   LastNotificationId = "lastNotificationId",
   MaxNumberOfDisplayedCycles = "maxNumberOfDisplayedCycles",
 }
@@ -26,7 +26,7 @@ type StorageValueTypeMap = {
   [StorageKey.Cycles]: Cycle[];
   [StorageKey.Language]: string;
   [StorageKey.Theme]: string;
-  [StorageKey.Notifications]: boolean;
+  [StorageKey.isNotifications]: boolean;
   [StorageKey.LastNotificationId]: number;
   [StorageKey.MaxNumberOfDisplayedCycles]: number;
 };
@@ -86,9 +86,9 @@ export const storage = {
         value: value,
       });
     },
-    notifications: (value: StorageValueType<StorageKey.Notifications>) => {
+    isNotifications: (value: StorageValueType<StorageKey.isNotifications>) => {
       return Preferences.set({
-        key: StorageKey.Notifications,
+        key: StorageKey.isNotifications,
         value: value.toString(),
       });
     },
@@ -131,12 +131,14 @@ export const storage = {
       }
       return value;
     },
-    notifications: async () => {
+    isNotifications: async () => {
       const { value } = await Preferences.get({
-        key: StorageKey.Notifications,
+        key: StorageKey.isNotifications,
       });
       if (!value) {
-        throw new Error(`Can't find '${StorageKey.Notifications}' in storage`);
+        throw new Error(
+          `Can't find '${StorageKey.isNotifications}' in storage`,
+        );
       }
       return value === "true";
     },
