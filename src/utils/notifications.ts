@@ -2,7 +2,7 @@ import { LocalNotifications } from "@capacitor/local-notifications";
 import i18n from "i18next";
 
 import { getPeriodShiftInDays } from "../state/CalculationLogics";
-import { Cycle } from "../data/ClassCycle";
+import { Cycle } from "../data/Cycle.interface";
 import { storage } from "../data/Storage";
 
 export const requestPermission = async () => {

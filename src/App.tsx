@@ -41,7 +41,7 @@ import "./theme/variables.css";
 
 import { storage } from "./data/Storage";
 
-import type { Cycle } from "./data/ClassCycle";
+import type { Cycle } from "./data/Cycle.interface";
 import { getMaxStoredCountOfCycles } from "./state/CalculationLogics";
 import { CyclesContext, ThemeContext, SettingsContext } from "./state/Context";
 import { Menu } from "./modals/Menu";

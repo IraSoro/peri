@@ -17,7 +17,7 @@ import {
   getLastStartDate,
 } from "../state/CalculationLogics";
 import { CyclesContext, SettingsContext, ThemeContext } from "../state/Context";
-import { Cycle } from "../data/ClassCycle";
+import { Cycle } from "../data/Cycle.interface";
 import { format } from "../utils/datetime";
 
 import "./TabDetails.css";

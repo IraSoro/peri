@@ -7,7 +7,7 @@ import {
   startOfToday,
 } from "date-fns";
 
-import { Cycle } from "../data/ClassCycle";
+import { Cycle } from "../data/Cycle.interface";
 import { format } from "../utils/datetime";
 
 export function getLastStartDate(cycles: Cycle[]) {
