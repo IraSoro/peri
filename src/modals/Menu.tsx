@@ -311,6 +311,7 @@ const Exporter = () => {
     const language = await storage.get.language();
     const theme = await storage.get.theme();
     const isNotifications = await storage.get.isNotifications();
+    const notifications = await storage.get.notifications();
     const lastNotificationId = await storage.get.lastNotificationId();
     const maxNumberOfDisplayedCycles =
       await storage.get.maxNumberOfDisplayedCycles();
@@ -319,6 +320,7 @@ const Exporter = () => {
       language,
       theme,
       isNotifications,
+      notifications,
       lastNotificationId,
       maxNumberOfDisplayedCycles,
     });
