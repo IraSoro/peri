@@ -108,15 +108,13 @@ const App = (props: AppProps) => {
         await storage.set.cycles(slicedCycles);
 
         if (configuration.features.notifications && notificationsStatus) {
-          await clearAllDeliveredNotifications();
-          await removePendingNotifications();
-          await createNotifications(cycles, maxNumberOfDisplayedCycles);
+          await updateNotifications(newCycles, maxNumberOfDisplayedCycles);
         }
       } catch (err) {
         console.error("Error updating cycles", err);
       }
     },
-    [cycles, maxNumberOfDisplayedCycles, notificationsStatus],
+    [maxNumberOfDisplayedCycles, notificationsStatus],
   );
 
   const updateTheme = useCallback((newTheme: string) => {
@@ -144,6 +142,15 @@ const App = (props: AppProps) => {
       );
     }
   }, []);
+
+  const updateNotifications = async (
+    cycles: Cycle[],
+    maxDisplayedCycles: number,
+  ) => {
+    await clearAllDeliveredNotifications();
+    await removePendingNotifications();
+    await createNotifications(cycles, maxDisplayedCycles);
+  };
 
   const updateNotificationsStatus = useCallback(
     async (newStatus: boolean) => {
@@ -257,6 +264,17 @@ const App = (props: AppProps) => {
       console.error("Error request permission notifications", err);
     });
   }, [notificationsStatus]);
+
+  // NOTE: Refresh notifications every time user open the app
+  useEffect(() => {
+    if (!notificationsStatus || cycles.length === 0) {
+      return;
+    }
+
+    updateNotifications(cycles, maxNumberOfDisplayedCycles).catch((err) => {
+      console.error("Error update notifications", err);
+    });
+  }, [notificationsStatus, cycles, maxNumberOfDisplayedCycles]);
 
   return (
     <CyclesContext.Provider

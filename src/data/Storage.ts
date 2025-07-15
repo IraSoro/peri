@@ -2,9 +2,7 @@ import { Storage, Drivers } from "@ionic/storage";
 import { Preferences } from "@capacitor/preferences";
 import { addDays, startOfToday, subDays } from "date-fns";
 import type { Cycle } from "./Cycle.interface";
-import type { Notification } from "./Notification.interface";
 import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
-import { notifications } from "ionicons/icons";
 
 export interface Context {
   cycles: Cycle[];
@@ -12,7 +10,6 @@ export interface Context {
   theme: string;
   isNotifications: boolean;
   lastNotificationId: number;
-  notifications: Notification[];
   maxNumberOfDisplayedCycles: number;
 }
 
@@ -22,7 +19,6 @@ export enum StorageKey {
   Theme = "theme",
   isNotifications = "isNotifications",
   LastNotificationId = "lastNotificationId",
-  Notifications = "notifications",
   MaxNumberOfDisplayedCycles = "maxNumberOfDisplayedCycles",
 }
 
@@ -32,7 +28,6 @@ type StorageValueTypeMap = {
   [StorageKey.Theme]: string;
   [StorageKey.isNotifications]: boolean;
   [StorageKey.LastNotificationId]: number;
-  [StorageKey.Notifications]: Notification[];
   [StorageKey.MaxNumberOfDisplayedCycles]: number;
 };
 
@@ -105,12 +100,6 @@ export const storage = {
         value: value.toString(),
       });
     },
-    notifications: (value: StorageValueType<StorageKey.Notifications>) => {
-      return Preferences.set({
-        key: StorageKey.Notifications,
-        value: JSON.stringify(value),
-      });
-    },
     maxNumberOfDisplayedCycles: (
       value: StorageValueType<StorageKey.MaxNumberOfDisplayedCycles>,
     ) => {
@@ -152,15 +141,6 @@ export const storage = {
         );
       }
       return value === "true";
-    },
-    notifications: async () => {
-      const { value } = await Preferences.get({
-        key: StorageKey.Notifications,
-      });
-      if (!value) {
-        throw new Error(`Can't find '${StorageKey.Notifications}' in storage`);
-      }
-      return JSON.parse(value) as StorageValueType<StorageKey.Notifications>;
     },
     lastNotificationId: async () => {
       const { value } = await Preferences.get({
