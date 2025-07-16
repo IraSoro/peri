@@ -1,7 +1,7 @@
 import { Storage, Drivers } from "@ionic/storage";
 import { Preferences } from "@capacitor/preferences";
 import { addDays, startOfToday, subDays } from "date-fns";
-import type { Cycle } from "./Cycle";
+import type { Cycle } from "./ICycle";
 import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
 
 export interface Context {
