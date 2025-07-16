@@ -86,7 +86,7 @@ const App = (props: AppProps) => {
 
   const { t, i18n } = useTranslation();
   const [needUpdate, setNeedUpdate] = useState(false);
-  const [notificationsStatus, setNotificationsStatus] = useState(false);
+  const [notificationEnabled, setNotificationEnabled] = useState(false);
   const [maxNumberOfDisplayedCycles, setMaxNumberOfDisplayedCycles] =
     useState(6);
 
@@ -107,14 +107,14 @@ const App = (props: AppProps) => {
         setCycles(slicedCycles);
         await storage.set.cycles(slicedCycles);
 
-        if (configuration.features.notifications && notificationsStatus) {
+        if (configuration.features.notifications && notificationEnabled) {
           await updateNotifications(newCycles, maxNumberOfDisplayedCycles);
         }
       } catch (err) {
         console.error("Error updating cycles", err);
       }
     },
-    [maxNumberOfDisplayedCycles, notificationsStatus],
+    [maxNumberOfDisplayedCycles, notificationEnabled],
   );
 
   const updateTheme = useCallback((newTheme: string) => {
@@ -155,8 +155,8 @@ const App = (props: AppProps) => {
   const updateNotificationsStatus = useCallback(
     async (newStatus: boolean) => {
       try {
-        setNotificationsStatus(newStatus);
-        await storage.set.isNotifications(newStatus);
+        setNotificationEnabled(newStatus);
+        await storage.set.isNotificationEnabled(newStatus);
         console.log(
           `Notification has been switched to ${newStatus ? "on" : "off"}`,
         );
@@ -229,14 +229,16 @@ const App = (props: AppProps) => {
       });
 
     storage.get
-      .isNotifications()
-      .then(setNotificationsStatus)
+      .isNotificationEnabled()
+      .then(setNotificationEnabled)
       .catch((err) => {
         console.error(
           `Can't get notifications status ${(err as Error).message}`,
         );
         // Notifications are off by default
-        storage.set.isNotifications(false).catch((err) => console.error(err));
+        storage.set
+          .isNotificationEnabled(false)
+          .catch((err) => console.error(err));
       });
 
     storage.get.lastNotificationId().catch((err) => {
@@ -256,25 +258,25 @@ const App = (props: AppProps) => {
   }, [changeLanguage, theme, maxNumberOfDisplayedCycles]);
 
   useEffect(() => {
-    if (!configuration.features.notifications || !notificationsStatus) {
+    if (!configuration.features.notifications || !notificationEnabled) {
       return;
     }
 
     requestPermission().catch((err) => {
       console.error("Error request permission notifications", err);
     });
-  }, [notificationsStatus]);
+  }, [notificationEnabled]);
 
   // NOTE: Refresh notifications every time user open the app
   useEffect(() => {
-    if (!notificationsStatus || cycles.length === 0) {
+    if (!notificationEnabled || cycles.length === 0) {
       return;
     }
 
     updateNotifications(cycles, maxNumberOfDisplayedCycles).catch((err) => {
       console.error("Error update notifications", err);
     });
-  }, [notificationsStatus, cycles, maxNumberOfDisplayedCycles]);
+  }, [notificationEnabled, cycles, maxNumberOfDisplayedCycles]);
 
   return (
     <CyclesContext.Provider
@@ -288,8 +290,8 @@ const App = (props: AppProps) => {
       <ThemeContext.Provider value={{ theme, updateTheme }}>
         <SettingsContext.Provider
           value={{
-            notificationsStatus,
-            updateNotificationsStatus: (newStatus) => {
+            notificationEnabled,
+            updateNotificationEnabled: (newStatus) => {
               updateNotificationsStatus(newStatus).catch((err) =>
                 console.error(err),
               );

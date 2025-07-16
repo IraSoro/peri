@@ -232,7 +232,7 @@ const CycleCountSelector = () => {
 const NotificationToggle = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
-  const { notificationsStatus, updateNotificationsStatus } =
+  const { notificationEnabled, updateNotificationEnabled } =
     useContext(SettingsContext);
 
   return (
@@ -244,9 +244,9 @@ const NotificationToggle = () => {
       />
       <IonToggle
         color={`dark-${theme}`}
-        checked={notificationsStatus}
+        checked={notificationEnabled}
         onIonChange={() => {
-          updateNotificationsStatus(!notificationsStatus);
+          updateNotificationEnabled(!notificationEnabled);
         }}
       >
         <IonText color={`text-${theme}`}>{`${t("Notifications")} (β)`}</IonText>
@@ -310,7 +310,7 @@ const Exporter = () => {
     const cycles = await storage.get.cycles();
     const language = await storage.get.language();
     const theme = await storage.get.theme();
-    const isNotifications = await storage.get.isNotifications();
+    const isNotificationEnabled = await storage.get.isNotificationEnabled();
     const lastNotificationId = await storage.get.lastNotificationId();
     const maxNumberOfDisplayedCycles =
       await storage.get.maxNumberOfDisplayedCycles();
@@ -318,7 +318,7 @@ const Exporter = () => {
       cycles,
       language,
       theme,
-      isNotifications,
+      isNotificationEnabled,
       lastNotificationId,
       maxNumberOfDisplayedCycles,
     });
