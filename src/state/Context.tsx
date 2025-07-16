@@ -1,5 +1,5 @@
 import React from "react";
-import type { Cycle } from "../data/Cycle.interface";
+import type { Cycle } from "../data/Cycle";
 
 interface ICyclesContext {
   cycles: Cycle[];
