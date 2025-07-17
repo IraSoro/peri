@@ -1,14 +1,14 @@
 import { Storage, Drivers } from "@ionic/storage";
 import { Preferences } from "@capacitor/preferences";
 import { addDays, startOfToday, subDays } from "date-fns";
-import type { Cycle } from "./ClassCycle";
+import type { Cycle } from "./ICycle";
 import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
 
 export interface Context {
   cycles: Cycle[];
   language: string;
   theme: string;
-  notifications: boolean;
+  isNotificationEnabled: boolean;
   lastNotificationId: number;
   maxNumberOfDisplayedCycles: number;
 }
@@ -17,7 +17,7 @@ export enum StorageKey {
   Cycles = "cycles",
   Language = "language",
   Theme = "theme",
-  Notifications = "notifications",
+  IsNotificationEnabled = "isNotificationEnabled",
   LastNotificationId = "lastNotificationId",
   MaxNumberOfDisplayedCycles = "maxNumberOfDisplayedCycles",
 }
@@ -26,7 +26,7 @@ type StorageValueTypeMap = {
   [StorageKey.Cycles]: Cycle[];
   [StorageKey.Language]: string;
   [StorageKey.Theme]: string;
-  [StorageKey.Notifications]: boolean;
+  [StorageKey.IsNotificationEnabled]: boolean;
   [StorageKey.LastNotificationId]: number;
   [StorageKey.MaxNumberOfDisplayedCycles]: number;
 };
@@ -86,9 +86,11 @@ export const storage = {
         value: value,
       });
     },
-    notifications: (value: StorageValueType<StorageKey.Notifications>) => {
+    isNotificationEnabled: (
+      value: StorageValueType<StorageKey.IsNotificationEnabled>,
+    ) => {
       return Preferences.set({
-        key: StorageKey.Notifications,
+        key: StorageKey.IsNotificationEnabled,
         value: value.toString(),
       });
     },
@@ -131,12 +133,14 @@ export const storage = {
       }
       return value;
     },
-    notifications: async () => {
+    isNotificationEnabled: async () => {
       const { value } = await Preferences.get({
-        key: StorageKey.Notifications,
+        key: StorageKey.IsNotificationEnabled,
       });
       if (!value) {
-        throw new Error(`Can't find '${StorageKey.Notifications}' in storage`);
+        throw new Error(
+          `Can't find '${StorageKey.IsNotificationEnabled}' in storage`,
+        );
       }
       return value === "true";
     },

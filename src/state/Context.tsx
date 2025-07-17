@@ -1,5 +1,5 @@
 import React from "react";
-import type { Cycle } from "../data/ClassCycle";
+import type { Cycle } from "../data/ICycle";
 
 interface ICyclesContext {
   cycles: Cycle[];
@@ -22,15 +22,15 @@ const themeInit: IThemeContext = {
 };
 
 interface ISettingsContext {
-  notificationsStatus: boolean;
-  updateNotificationsStatus: (newStatus: boolean) => void;
+  notificationEnabled: boolean;
+  updateNotificationEnabled: (newStatus: boolean) => void;
   maxNumberOfDisplayedCycles: number;
   updateMaxNumberOfDisplayedCycles: (newValue: number) => void;
 }
 
 const settingsInit: ISettingsContext = {
-  notificationsStatus: false,
-  updateNotificationsStatus: (_newStatus) => {},
+  notificationEnabled: false,
+  updateNotificationEnabled: (_newStatus) => {},
   maxNumberOfDisplayedCycles: 6,
   updateMaxNumberOfDisplayedCycles: (_newValue: number) => {},
 };
