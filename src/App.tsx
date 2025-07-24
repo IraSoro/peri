@@ -269,7 +269,11 @@ const App = (props: AppProps) => {
 
   // NOTE: Refresh notifications every time user open the app
   useEffect(() => {
-    if (!notificationEnabled || cycles.length === 0) {
+    if (
+      !notificationEnabled ||
+      cycles.length === 0 ||
+      !configuration.features.notifications
+    ) {
       return;
     }
 

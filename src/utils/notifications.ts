@@ -82,7 +82,7 @@ export const createNotifications = async (
           body: i18n.t("Your period may start tomorrow"),
           schedule: { at: dayBeforePeriod },
           sound: "default",
-          smallIcon: "ic_launcher",
+          smallIcon: "ic_notification_icon",
           largeIcon: "ic_launcher",
         },
         {
@@ -91,7 +91,7 @@ export const createNotifications = async (
           body: i18n.t("Your period may start today"),
           schedule: { at: dayOfPeriod },
           sound: "default",
-          smallIcon: "ic_launcher",
+          smallIcon: "ic_notification_icon",
           largeIcon: "ic_launcher",
         },
       ],
