@@ -82,6 +82,7 @@ Our application supports the following languages:
 - Hindi (हिन्दी)
 - Hinglish (Hinglish)
 - Persian (پارسی)
+- Portuguese (Português)
 - Russian (Русский)
 - Spanish (Español)
 - Tagalog (Tagalog)
