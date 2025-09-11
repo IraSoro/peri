@@ -285,7 +285,9 @@ const App = (props: AppProps) => {
 
   // Disabled interface overlay on statusbar
   useEffect(() => {
-    StatusBar.setOverlaysWebView({ overlay: false });
+    StatusBar.setOverlaysWebView({ overlay: false }).catch((err) => {
+      console.error("StatusBar error", err);
+    });
   }, []);
 
   return (
