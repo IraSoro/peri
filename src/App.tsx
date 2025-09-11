@@ -283,7 +283,7 @@ const App = (props: AppProps) => {
     });
   }, [notificationEnabled, cycles, maxNumberOfDisplayedCycles]);
 
-
+  // Disabled interface overlay on statusbar
   useEffect(() => {
     StatusBar.setOverlaysWebView({ overlay: false });
   }, []);
