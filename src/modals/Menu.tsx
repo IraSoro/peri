@@ -400,7 +400,10 @@ export const Menu = (props: MenuProps) => {
       contentId={props.contentId}
       className={theme}
     >
-      <IonList lines="none">
+      <IonList
+        lines="none"
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
         <IonItem lines="full">
           <IonLabel color={`dark-${theme}`}>{t("Preferences")}</IonLabel>
         </IonItem>

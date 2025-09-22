@@ -15,7 +15,6 @@ import {
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { menuOutline } from "ionicons/icons";
-import { StatusBar } from "@capacitor/status-bar";
 import { useTranslation } from "react-i18next";
 import TabHome from "./pages/TabHome";
 import TabDetails from "./pages/TabDetails";
@@ -72,6 +71,7 @@ const Badge = () => {
         minWidth: 10,
         minHeight: 10,
         borderRadius: 10,
+        marginTop: "env(safe-area-inset-top)",
       }}
     />
   );
@@ -282,13 +282,6 @@ const App = (props: AppProps) => {
       console.error("Error update notifications", err);
     });
   }, [notificationEnabled, cycles, maxNumberOfDisplayedCycles]);
-
-  // Disabled interface overlay on statusbar
-  useEffect(() => {
-    StatusBar.setOverlaysWebView({ overlay: false }).catch((err) => {
-      console.error("StatusBar error", err);
-    });
-  }, []);
 
   return (
     <CyclesContext.Provider

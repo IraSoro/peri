@@ -2,7 +2,7 @@ div.info-screen {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 16px 0 16px;
+  padding: env(safe-area-inset-top) 16px 0 16px;
 }
 
 /* basic */
