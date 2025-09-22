@@ -71,6 +71,7 @@ const Badge = () => {
         minWidth: 10,
         minHeight: 10,
         borderRadius: 10,
+        marginTop: "env(safe-area-inset-top)",
       }}
     />
   );
