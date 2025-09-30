@@ -1,4 +1,3 @@
-// eslint.config.js
 import tsParser from "@typescript-eslint/parser";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import react from "eslint-plugin-react";
@@ -11,7 +10,6 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// убираем битый глоб
 const browserGlobals = { ...globals.browser };
 delete browserGlobals["AudioWorkletGlobalScope "];
 
@@ -31,7 +29,6 @@ export default [
     ],
   },
 
-  // JS/JSX файлы — без TS project
   {
     files: ["*.js", "*.jsx"],
     languageOptions: {
@@ -57,7 +54,6 @@ export default [
     },
   },
 
-  // TS/TSX файлы — с project
   {
     files: ["*.ts", "*.tsx"],
     languageOptions: {
@@ -102,7 +98,6 @@ export default [
     },
   },
 
-  // Тесты — отдельные правила
   {
     files: ["src/tests/**"],
     rules: {
