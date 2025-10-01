@@ -30,7 +30,7 @@ export default [
   },
 
   {
-    files: ["*.js", "*.jsx"],
+    files: ["**/*.js", "**/*.jsx"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -55,7 +55,7 @@ export default [
   },
 
   {
-    files: ["*.ts", "*.tsx"],
+    files: ["**/*.ts", "**/*.tsx"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
