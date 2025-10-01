@@ -44,7 +44,6 @@ it("importConfig", async () => {
         //                  and we added it just for testing purposes
         mockedInputElement.onChangeCallback = () => {
           // NOTE: Here we use callback for the sake of mocking, so we don't care about the type of the function
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           callback({
             target: {
               files: ["some-file-chosen-by-user.json"],
@@ -57,7 +56,6 @@ it("importConfig", async () => {
     click: vi.fn().mockImplementationOnce(() => {
       // @ts-expect-error Same reason as above
       // NOTE: eslint ignore with same reason as above
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       mockedInputElement.onChangeCallback();
     }),
   } as HTMLInputElement;

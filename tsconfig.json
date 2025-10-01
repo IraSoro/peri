@@ -26,6 +26,8 @@
     "vite.config.ts",
     "vitest.config.ts",
     "tsconfig.json",
+    "v3/src/**/*",
+    "v3/vite.config.ts",
   ],
   "references": [
     {
