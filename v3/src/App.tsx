@@ -30,7 +30,9 @@ function App() {
           />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <div className="bg-[#12ab34] w-64 h-32">
+        <h1>Vite + React</h1>
+      </div>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
