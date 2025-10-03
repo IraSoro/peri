@@ -57,7 +57,8 @@ const ar = {
 
   // Phases info
   "Menstrual phase": "مرحلة الحيض",
-  "This cycle is accompanied by low hormone levels.": "هذه الدورة مصحوبة بمستويات منخفضة من الهرمونات.",
+  "This cycle is accompanied by low hormone levels.":
+    "هذه الدورة مصحوبة بمستويات منخفضة من الهرمونات.",
   "lack of energy and strength": "نقص الطاقة والقوة",
   pain: "ألم",
   "weakness and irritability": "ضعف وتهيج",
@@ -115,8 +116,10 @@ const ar = {
 
   //Count stored cycles
   "Confirm selection": "تأكيد الاختيار",
-  "Are you sure you want to change the number of stored cycles?": "هل أنت متأكدة من تغيير عدد الدورات المحفوظة؟",
-  "Reducing the number will permanently remove some cycles.": "سيؤدي تقليل العدد إلى إزالة بعض الدورات بشكل دائم.",
+  "Are you sure you want to change the number of stored cycles?":
+    "هل أنت متأكدة من تغيير عدد الدورات المحفوظة؟",
+  "Reducing the number will permanently remove some cycles.":
+    "سيؤدي تقليل العدد إلى إزالة بعض الدورات بشكل دائم.",
 };
 
 export default ar;
