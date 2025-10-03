@@ -17,6 +17,7 @@ import vi from "./translations/vi";
 import ta from "./translations/ta";
 import fa from "./translations/fa";
 import pt from "./translations/pt";
+import ar from "./translations/ar";
 
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -30,6 +31,7 @@ export const supportedLanguages = new Map<string, string>([
   ["hi", "हिन्दी"],
   ["ru", "русский"],
   ["pt", "português"],
+  ["ar", "العربية"],
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી (β)"],
@@ -97,6 +99,9 @@ export async function init() {
         pt: {
           translation: pt,
         },
+        ar: {
+          translation: ar,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -114,6 +119,7 @@ export async function init() {
         vi: ["vi"],
         ta: ["ta"],
         pt: ["pt"],
+        ar: ["ar"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
