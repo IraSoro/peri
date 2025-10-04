@@ -299,17 +299,18 @@ ion-modal#alert-demo-modal {
 ion-modal#alert-demo-modal .wrapper {
   margin: 10px 20px 10px 10px;
 }
-.custom-alert .alert-button {
-  background-color: var(--ion-color-light);
-  color: var(--ion-color-dark-basic);
-  border-radius: 6px;
-  font-weight: 500;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+ion-alert.custom-alert {
+  --button-color: var(--ion-color-dark-basic);
+  --button-border-radius: 6px;
+  --button-font-weight: 500;
 }
 
-.custom-alert .alert-button:hover {
+ion-alert.custom-alert .alert-button {
+  background-color: transparent;
+  color: var(--ion-color-dark-basic);
+}
+
+ion-alert.custom-alert .alert-button:hover {
   background-color: var(--ion-color-dark-basic);
   color: var(--ion-color-light);
 }
