@@ -204,6 +204,7 @@ const CycleCountSelector = () => {
           "Are you sure you want to change the number of stored cycles?",
         )}
         message={t("Reducing the number will permanently remove some cycles.")}
+        cssClass="custom-alert"
         buttons={[
           {
             text: t("cancel"),
