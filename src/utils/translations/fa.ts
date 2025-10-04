@@ -102,7 +102,7 @@ const fa = {
   "Are you sure you want to change the number of stored cycles?":
     "آیا مطمئن هستید که می‌خواهید تعداد دوره‌های ذخیره شده را تغییر دهید؟",
   "Reducing the number will permanently remove some cycles.":
-    "کاهش این عدد باعث حذف برخی دوره های ذخیره شده می‌شود.",
+    "کاهش این عدد باعث حذف دائمی برخی دوره های ذخیره شده می‌شود.",
 };
 
 export default fa;
