@@ -300,17 +300,16 @@ ion-modal#alert-demo-modal .wrapper {
   margin: 10px 20px 10px 10px;
 }
 .custom-alert .alert-button {
-  transition: background-color 0.3s ease;
-  background-color: #4d3b9e;
-}.custom-alert .alert-button {
-  background-color: #f3f0ff; /* soft light purple background */
-  color: #4d3b9e;            /* main purple for text */
+  background-color: var(--ion-color-light);
+  color: var(--ion-color-dark-basic);
   border-radius: 6px;
   font-weight: 500;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .custom-alert .alert-button:hover {
-  background-color: #4d3b9e; /* purple background on hover */
-  color: #ffffff;            /* white text for contrast */
+  background-color: var(--ion-color-dark-basic);
+  color: var(--ion-color-light);
 }
