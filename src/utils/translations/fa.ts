@@ -28,7 +28,6 @@ const fa = {
   "Cycle length": "طول دوره",
   "You haven't marked any periods yet":
     "شما تا به حال هیچ پریودی را مشخص نکرده اید",
-
   // Mark Modal
   mark: "علامت زدن",
   cancel: "کنسل",
@@ -43,12 +42,12 @@ const fa = {
   "Frequent symptoms": "علائم رایج",
   "is current phase of cycle": "مرحله اخیر دوره است",
   // Phases info
-  "Menstrual phase": "مرحله قاعدگی",
+  "Menstrual phase": "مرحله قائدگی",
   "This cycle is accompanied by low hormone levels.":
     "این دوره به دلیل سطح پایین هورمون ها رخ می دهد.",
   "lack of energy and strength": "کمبود انرژی و توان بدنی",
   pain: "درد",
-  "weakness and irritability": "ضعف و تحریک‌پذیری",
+  "weakness and irritability": "ضعف و زود رنجی",
   "increased appetite": "افزایش اشتها",
 
   "Follicular phase": "مرحله فولیکولی",
@@ -93,13 +92,11 @@ const fa = {
   "You can download the application ": "می توانید برنامه را دانلود کنید.",
   here: "اینجا",
   "We are on GitHub": "ما در گیت‌هاب هستیم",
-
   // Notifications
   Notifications: "اعلان‌ها",
   "Period is coming soon": "پریود به زودی شروع می‌شود",
   "Your period may start tomorrow": "ممکن است فردا پریود شوید",
   "Your period may start today": "ممکن است امروز پریود شوید",
-
   //Count stored cycles
   "Confirm selection": "تأیید انتخاب",
   "Are you sure you want to change the number of stored cycles?":
