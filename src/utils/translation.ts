@@ -18,6 +18,7 @@ import ta from "./translations/ta";
 import fa from "./translations/fa";
 import pt from "./translations/pt";
 import ar from "./translations/ar";
+import zh from "./translations/zh";
 
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -41,6 +42,7 @@ export const supportedLanguages = new Map<string, string>([
         ["fa", "پارسی (β)"],
         ["tl", "tagalog (β)"],
         ["vi", "tiếng Việt (β)"],
+        ["zh", "中文 (β)"],
       ] as const)
     : []),
 ]);
@@ -102,6 +104,9 @@ export async function init() {
         ar: {
           translation: ar,
         },
+        zh: {
+          translation: zh,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -120,6 +125,7 @@ export async function init() {
         ta: ["ta"],
         pt: ["pt"],
         ar: ["ar"],
+        zh: ["zh"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
