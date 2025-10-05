@@ -30,8 +30,8 @@ const zh = {
   "Period today": "今天有月经",
   edit: "编辑",
   save: "储存",
-  "Period is": "月经会来", // eg. Period is possible today
-  "possible today": "今天可能",
+  "Period is": "月经", // eg. Period is possible today
+  "possible today": "今天可能会来",
 
   // Details Tab
   Details: "详细内容",
@@ -45,7 +45,7 @@ const zh = {
 
   // Welcome Modal
   "Welcome to Peri": "欢迎使用 peri",
-  "Mark the days of your": "登记日期", // eg. Mark the days of your last period
+  "Mark the days of your": "登记您", // eg. Mark the days of your last period
   "last period": "上次月经", // eg. Mark the days of your last period
   Continue: "继续",
   "Forecast will not be generated.": "不会生成预测。",
