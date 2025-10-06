@@ -13,6 +13,7 @@ import {
   vi,
   ta,
   ptBR,
+  zhCN,
 } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
@@ -33,6 +34,7 @@ const locales = new Map([
   ["vi", vi],
   ["ta", ta],
   ["pt", ptBR],
+  ["zh", zhCN],
 ]);
 
 const defaultLocale = "en";
