@@ -9,8 +9,10 @@ npm install
 After that, you can start development server, which will be useful for quickly testing your changes:
 
 ```shell
-npm start
+npm run dev
 ```
+
+Once your dev server is running, you should see a link like `http://localhost:5173/` in your shell. Copy the link and paste it into your browser to see the running app.
 
 To build the native `peri` you need `Android Studio` installed and all necessary JDK/SDK. To install, follow the instruction <https://developer.android.com/studio/install>.
 
@@ -24,7 +26,7 @@ npx cap add android
 npx cap open android
 ```
 
-An `android` directory will be generated and you can open it with `Android Studio` and build the project based on this instruction <https://capacitorjs.com/docs/android>
+An `android` directory will be generated and you can open it with `Android Studio` and build the project with the instructions in <https://capacitorjs.com/docs/android#running-with-android-studio>, starting from the **Running with Android Studio** section.
 
 You can also create a development version of native `peri` using the following `Dockerfile`, just create it in the root of the `peri` project:
 
