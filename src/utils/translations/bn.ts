@@ -47,21 +47,24 @@ const bn = {
 
   // Phases info
   "Menstrual phase": "মাসিক পর্যায়",
-  "This cycle is accompanied by low hormone levels.": "এই চক্রে হরমোনের মাত্রা কম থাকে।",
+  "This cycle is accompanied by low hormone levels.":
+    "এই চক্রে হরমোনের মাত্রা কম থাকে।",
   "lack of energy and strength": "শক্তি এবং বলের অভাব",
   pain: "ব্যথা",
   "weakness and irritability": "দুর্বলতা এবং বিরক্তি",
   "increased appetite": "ক্ষুধা বৃদ্ধি",
 
   "Follicular phase": "ফলিকুলার পর্যায়",
-  "The level of estrogen in this phase rises and reaches a maximum level.": "এই পর্যায়ে ইস্ট্রোজেনের মাত্রা বৃদ্ধি পায় এবং সর্বোচ্চ স্তরে পৌঁছায়।",
+  "The level of estrogen in this phase rises and reaches a maximum level.":
+    "এই পর্যায়ে ইস্ট্রোজেনের মাত্রা বৃদ্ধি পায় এবং সর্বোচ্চ স্তরে পৌঁছায়।",
   "strength and vigor appear": "শক্তি এবং উদ্যম দেখা যায়",
   "endurance increases": "সহনশীলতা বৃদ্ধি পায়",
   "new ideas and plans appear": "নতুন ধারণা এবং পরিকল্পনা দেখা যায়",
   "libido increases": "যৌন ইচ্ছা বৃদ্ধি পায়",
 
   "Ovulation phase": "ডিম্বস্ফোটন পর্যায়",
-  "Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.": "একবার ইস্ট্রোজেনের মাত্রা শীর্ষে পৌঁছালে, এটি দুটি গুরুত্বপূর্ণ ডিম্বস্ফোটন হরমোনের মুক্তিকে ট্রিগার করে, ফলিকল-স্টিমুলেটিং হরমোন এবং লুটিনাইজিং হরমোন।",
+  "Once estrogen levels peak, they trigger the release of two important ovulation hormones, follicle-stimulating hormone and luteinizing hormone.":
+    "একবার ইস্ট্রোজেনের মাত্রা শীর্ষে পৌঁছালে, এটি দুটি গুরুত্বপূর্ণ ডিম্বস্ফোটন হরমোনের মুক্তিকে ট্রিগার করে, ফলিকল-স্টিমুলেটিং হরমোন এবং লুটিনাইজিং হরমোন।",
   "increased sexual desire": "যৌন ইচ্ছা বৃদ্ধি",
   "optimistic mood": "আশাবাদী মেজাজ",
   "mild fever": "হালকা জ্বর",
@@ -70,7 +73,8 @@ const bn = {
   "characteristic secretions": "বৈশিষ্ট্যপূর্ণ স্রাব",
 
   "Luteal phase": "লুটিয়াল পর্যায়",
-  "Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.": "ইস্ট্রোজেন এবং প্রোজেস্টেরন হরমোনের মাত্রা প্রথমে বৃদ্ধি পায় তারপর পিরিয়ডের ঠিক আগে তীব্রভাবে কমে যায়। লুটিয়াল পর্যায়ে প্রোজেস্টেরন তার শীর্ষে পৌঁছায়।",
+  "Levels of the hormones estrogen and progesterone first rise and then drop sharply just before a period. Progesterone reaches its peak in the luteal phase.":
+    "ইস্ট্রোজেন এবং প্রোজেস্টেরন হরমোনের মাত্রা প্রথমে বৃদ্ধি পায় তারপর পিরিয়ডের ঠিক আগে তীব্রভাবে কমে যায়। লুটিয়াল পর্যায়ে প্রোজেস্টেরন তার শীর্ষে পৌঁছায়।",
   "breast tenderness": "স্তনের কোমলতা",
   puffiness: "ফুলে যাওয়া",
   "acne and skin rashes": "ব্রণ এবং ত্বকের ফুসকুড়ি",
@@ -90,7 +94,8 @@ const bn = {
 
   // Alert Demo
   "This is just a demo": "এটি শুধুমাত্র একটি ডেমো",
-  "You can download the application ": "আপনি অ্যাপ্লিকেশনটি ডাউনলোড করতে পারেন ",
+  "You can download the application ":
+    "আপনি অ্যাপ্লিকেশনটি ডাউনলোড করতে পারেন ",
   here: "এখানে",
   "We are on GitHub": "আমরা GitHub এ আছি",
 
@@ -102,8 +107,10 @@ const bn = {
 
   // Count stored cycles
   "Confirm selection": "নির্বাচন নিশ্চিত করুন",
-  "Are you sure you want to change the number of stored cycles?": "আপনি কি নিশ্চিত যে আপনি সংরক্ষিত চক্রের সংখ্যা পরিবর্তন করতে চান?",
-  "Reducing the number will permanently remove some cycles.": "সংখ্যা কমানো হলে কিছু চক্র স্থায়ীভাবে মুছে যাবে।",
+  "Are you sure you want to change the number of stored cycles?":
+    "আপনি কি নিশ্চিত যে আপনি সংরক্ষিত চক্রের সংখ্যা পরিবর্তন করতে চান?",
+  "Reducing the number will permanently remove some cycles.":
+    "সংখ্যা কমানো হলে কিছু চক্র স্থায়ীভাবে মুছে যাবে।",
 };
 
 export default bn;
