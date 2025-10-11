@@ -18,7 +18,7 @@ const ar = {
   // day_ordinal_two: "{{count}}nd day",
   // day_ordinal_few: "{{count}}rd day",
   // day_ordinal_other: "{{count}}th day",
-  day: "اليوم {{count}}", // eg. Period - 1st day
+  day: "{{count}} يوم", // eg. Period - 1st day
   Ovulation: "التبويض",
   possible: "محتملة", // eg. Ovulation - possible
   finished: "انتهت", // eg. Ovulation - finished
