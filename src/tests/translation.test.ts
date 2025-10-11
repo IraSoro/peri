@@ -7,18 +7,18 @@ import ru from "../utils/translations/ru";
 
 // Initialize i18n for testing ordinal translations
 i18n.init({
-  lng: 'en',
+  lng: "en",
   resources: {
     en: {
-      translation: en
+      translation: en,
     },
     fr: {
-      translation: fr
+      translation: fr,
     },
     ru: {
-      translation: ru
-    }
-  }
+      translation: ru,
+    },
+  },
 });
 
 it("Change translation", async () => {
