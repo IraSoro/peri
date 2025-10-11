@@ -44,7 +44,7 @@ export const supportedLanguages = new Map<string, string>([
         ["tl", "tagalog (β)"],
         ["vi", "tiếng Việt (β)"],
         ["zh", "中文 (β)"],
-        ["bn", "বাংলা (β)"], // Bengali
+        ["bn", "বাংলা (β)"],
       ] as const)
     : []),
 ]);
