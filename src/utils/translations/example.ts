@@ -14,7 +14,11 @@ const example = {
   // or
   // day: "{{count}}-й день" (день is day)
   // If language has specific rules then it's like this (see en.ts):
-  day: "", // eg. Period - 1st day
+  // day_ordinal_one: "{{count}}st day",
+  // day_ordinal_two: "{{count}}nd day",
+  // day_ordinal_few: "{{count}}rd day",
+  // day_ordinal_other: "{{count}}th day",
+  day_ordinal: "", // eg. Period - 1st day
   Ovulation: "",
   possible: "", // eg. Ovulation - possible
   finished: "", // eg. Ovulation - finished

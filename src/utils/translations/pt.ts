@@ -14,7 +14,11 @@ const pt = {
   // or
   // day: "{{count}}-й день" (день is day)
   // If language has specific rules then it's like this (see en.ts):
-  day: "{{count}}º dia", // eg. Period - 1st day
+  // day_ordinal_one: "{{count}}st day",
+  // day_ordinal_two: "{{count}}nd day",
+  // day_ordinal_few: "{{count}}rd day",
+  // day_ordinal_other: "{{count}}th day",
+  day_ordinal: "{{count}}º dia", // eg. Period - 1st day
   Ovulation: "Ovulação",
   possible: "possível", // eg. Ovulation - possible
   finished: "terminou", // eg. Ovulation - finished

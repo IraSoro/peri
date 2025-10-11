@@ -8,7 +8,7 @@ const de = {
   Delay: "Verzögerung",
   Days: "(0)[Tage];(1)[Tag];(2-inf)[Tage];",
   "Current cycle day": "Aktueller Zyklustag",
-  day: "{{count}}. Tag",
+  day_ordinal: "{{count}}. Tag",
   Ovulation: "Ovulation",
   possible: "möglich",
   finished: "fertig",

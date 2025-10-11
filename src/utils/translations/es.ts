@@ -8,7 +8,7 @@ const es = {
   Delay: "Retraso",
   Days: "(0)[Días];(1)[Día];(2-inf)[Días]",
   "Current cycle day": "Día actual del ciclo",
-  day: "{{count}}º día",
+  day_ordinal: "{{count}}º día",
   Ovulation: "Ovulación",
   possible: "posible hoy",
   finished: "Terminado",

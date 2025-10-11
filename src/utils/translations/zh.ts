@@ -14,7 +14,11 @@ const zh = {
   // or
   // day: "{{count}}-й день" (день is day)
   // If language has specific rules then it's like this (see en.ts):
-  day: "第{{count}}天", // eg. Period - 1st day
+  // day_ordinal_one: "{{count}}st day",
+  // day_ordinal_two: "{{count}}nd day",
+  // day_ordinal_few: "{{count}}rd day",
+  // day_ordinal_other: "{{count}}th day",
+  day_ordinal: "第{{count}}天", // eg. Period - 1st day
   Ovulation: "排卵",
   possible: "可能", // eg. Ovulation - possible
   finished: "结束", // eg. Ovulation - finished

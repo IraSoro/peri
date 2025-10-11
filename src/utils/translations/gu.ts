@@ -8,7 +8,7 @@ const gu = {
   Delay: "વિલંબ",
   Days: "(0-inf)[દિવસ];",
   "Current cycle day": "વર્તમાન ચક્ર દિવસ",
-  day: "{{count}} દિવસ",
+  day_ordinal: "{{count}} દિવસ",
   Ovulation: "અંડોત્સર્જન",
   possible: "શક્ય",
   finished: "સમાપ્ત",
