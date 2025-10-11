@@ -1,60 +1,50 @@
 const pl = {
   // Home Tab
   Home: "Strona główna",
-  "Period in": "Miesiączka za", // eg. Period in 5 Days
+  "Period in": "Miesiączka za",
   "no info": "brak danych",
-  Period: "Miesiączka", // eg. Period today
+  Period: "Miesiączka",
   today: "dzisiaj",
-  Delay: "Opóźnienie", // mean Period Delay
-  Days: "Dni", // eg. "(0)[Days];(1)[Day];(2-inf)[Days];"
+  Delay: "Opóźnienie",
+  Days: "Dni",
   "Current cycle day": "Obecny dzień cyklu",
-
-  // You can write like this (general way):
-  // day: "{{count}}. päivä" (päivä is day)
-  // or
-  // day: "{{count}}-й день" (день is day)
-  // If language has specific rules then it's like this (see en.ts):
-  // day_ordinal_one: "{{count}}st day",
-  // day_ordinal_two: "{{count}}nd day",
-  // day_ordinal_few: "{{count}}rd day",
-  // day_ordinal_other: "{{count}}th day",
-  day: "{{count}}. dzień", // eg. Period - 1st day
+  day: "{{count}}. dzień",
   Ovulation: "Owulacja",
-  possible: "możliwa", // eg. Ovulation - possible
-  finished: "zakończona", // eg. Ovulation - finished
-  tomorrow: "jutro", // eg. Ovulation - tomorrow
-  in: "za", // eg. Period in 5 Days
-  "chance of getting pregnant": "szansa na zajście w ciążę", // eg. High/Low chance of getting pregnant
+  possible: "możliwa",
+  finished: "zakończona",
+  tomorrow: "jutro",
+  in: "za",
+  "chance of getting pregnant": "szansa na zajście w ciążę",
   High: "Wysoka",
   Low: "Niska",
   "Period today": "Dzisiaj miesiączka",
   edit: "edytuj",
   save: "zapisz",
-  "Period is": "Miesiączka jest", // eg. Period is possible today
+  "Period is": "Miesiączka jest",
   "possible today": "możliwa dzisiaj",
 
   // Details Tab
   Details: "Szczegóły",
-  "Period length": "Długość miesiączki", // eg. Period length - 5 Days
-  "Cycle length": "Długość cyklu", // eg. Cycle length - 25 Days
+  "Period length": "Długość miesiączki",
+  "Cycle length": "Długość cyklu",
   "You haven't marked any periods yet":
     "Nie oznaczono jeszcze żadnych miesiączek",
 
   // Mark Modal
-  mark: "oznacz", // eg. mark your period
+  mark: "oznacz",
   cancel: "anuluj",
 
   // Welcome Modal
   "Welcome to Peri": "Witaj w Peri",
-  "Mark the days of your": "Oznacz dni swojej", // eg. Mark the days of your last period
-  "last period": "ostatniej miesiączki", // eg. Mark the days of your last period
+  "Mark the days of your": "Oznacz dni swojej",
+  "last period": "ostatniej miesiączki",
   Continue: "Kontynuuj",
   "Forecast will not be generated.": "Prognoza nie zostanie wygenerowana",
   or: "lub",
 
   // Info Modal
   "Frequent symptoms": "Częste objawy",
-  "is current phase of cycle": "jest obecną fazą cyklu", // eg. Menstrual phase is current phase of cycle"
+  "is current phase of cycle": "jest obecną fazą cyklu",
 
   // Phases info
   "Menstrual phase": "Faza menstruacyjna",
@@ -106,8 +96,8 @@ const pl = {
 
   // Alert Demo
   "This is just a demo": "To jest jedynie demo",
-  "You can download the application ": "Aplikację możesz pobrać ", // eg. You can download the application here
-  here: "tutaj", // eg. You can download the application here
+  "You can download the application ": "Aplikację możesz pobrać ",
+  here: "tutaj",
 
   // Notifications
   Notifications: "Powiadomienia",
