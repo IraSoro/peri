@@ -19,6 +19,7 @@ import fa from "./translations/fa";
 import pt from "./translations/pt";
 import ar from "./translations/ar";
 import zh from "./translations/zh";
+import pl from "./translations/pl";
 
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -33,6 +34,7 @@ export const supportedLanguages = new Map<string, string>([
   ["ru", "русский"],
   ["pt", "português"],
   ["ar", "العربية"],
+  ["pl", "polski"],
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી (β)"],
@@ -107,6 +109,9 @@ export async function init() {
         zh: {
           translation: zh,
         },
+        pl: {
+          translation: pl,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -126,6 +131,7 @@ export async function init() {
         pt: ["pt"],
         ar: ["ar"],
         zh: ["zh"],
+        pl: ["pl"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
