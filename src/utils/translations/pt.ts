@@ -18,6 +18,7 @@ const pt = {
   // day_ordinal_two: "{{count}}nd day",
   // day_ordinal_few: "{{count}}rd day",
   // day_ordinal_other: "{{count}}th day",
+  day: "{{count}}º dia", // eg. Period - 1st day
   day_ordinal: "{{count}}º dia", // eg. Period - 1st day
   Ovulation: "Ovulação",
   possible: "possível", // eg. Ovulation - possible

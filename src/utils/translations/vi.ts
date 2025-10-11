@@ -8,6 +8,7 @@ const vi = {
   Delay: "Bị chậm trễ",
   Days: "(0-inf)[ngày]",
   "Current cycle day": "Ngày hiện tại của chu kỳ",
+  day: "{{count}} ngày",
   day_ordinal: "{{count}} ngày",
   Ovulation: "Sự rụng trứng",
   possible: "có khả năng",

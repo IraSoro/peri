@@ -18,6 +18,7 @@ const zh = {
   // day_ordinal_two: "{{count}}nd day",
   // day_ordinal_few: "{{count}}rd day",
   // day_ordinal_other: "{{count}}th day",
+  day: "第{{count}}天", // eg. Period - 1st day
   day_ordinal: "第{{count}}天", // eg. Period - 1st day
   Ovulation: "排卵",
   possible: "可能", // eg. Ovulation - possible

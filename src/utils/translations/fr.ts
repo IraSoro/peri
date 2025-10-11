@@ -8,6 +8,7 @@ const fr = {
   Delay: "Retard",
   Days: "(0)[Jour];(1)[Jour];(2-inf)[Jours];",
   "Current cycle day": "Jour actuel du cycle",
+  day: "{{count}}e jour",
   day_ordinal_one: "{{count}}er jour",
   day_ordinal_two: "{{count}}e jour",
   day_ordinal_few: "{{count}}e jour",

@@ -8,6 +8,7 @@ const hg = {
   Delay: "Delay",
   Days: "(0)[Din];(1)[Din];(2-4)[Din];(5-20)[Din];(21)[Din];(22-24)[Din];(25-30)[Din];(31)[Din];(32-34)[Din];(35-40)[Din];",
   "Current cycle day": "Abhi ka cycle din",
+  day: "{{count}}va din",
   day_ordinal: "{{count}}va din",
   Ovulation: "Ovulation",
   possible: "Aaj possible",

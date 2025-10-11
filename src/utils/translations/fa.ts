@@ -8,6 +8,7 @@ const fa = {
   Delay: "تاخیر",
   Days: "(0-inf)[روز]",
   "Current cycle day": "روز های دوره کنونی",
+  day: "{{count}}مین روز",
   day_ordinal: "{{count}}مین روز",
   Ovulation: "تخمک گذاری",
   possible: "احتمال دارد.",
