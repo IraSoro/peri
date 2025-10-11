@@ -21,7 +21,7 @@ const pl = {
   edit: "edytuj",
   save: "zapisz",
   "Period is": "Miesiączka jest",
-  "possible today": "możliwa dzisiaj",
+  "possible today": "dzisiaj możliwa",
 
   // Details Tab
   Details: "Szczegóły",
@@ -92,6 +92,7 @@ const pl = {
   "Configuration has been imported": "Konfiguracja została zaimportowana",
   "Download latest version": "Pobierz najnowszą wersję",
   "We are on GitHub": "Jesteśmy na GitHubie",
+  "What's new": "Co nowego?",
   "Stored cycles count": "Liczba zapisanych cykli",
 
   // Alert Demo
