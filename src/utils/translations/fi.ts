@@ -9,7 +9,6 @@ const fi = {
   Days: "(0)[päivää];(1)[päivä];(2-inf)[päivää];",
   "Current cycle day": "Kuukautiskierron päivä",
   day: "{{count}}. päivä",
-  day_ordinal: "{{count}}. päivä",
   Ovulation: "Ovulaatio",
   possible: "saattaa tapahtua tänään",
   finished: "on tapahtunut",

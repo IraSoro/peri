@@ -18,7 +18,7 @@ const example = {
   // day_ordinal_two: "{{count}}nd day",
   // day_ordinal_few: "{{count}}rd day",
   // day_ordinal_other: "{{count}}th day",
-  day_ordinal: "", // eg. Period - 1st day
+  day: "", // eg. Period - 1st day
   Ovulation: "",
   possible: "", // eg. Ovulation - possible
   finished: "", // eg. Ovulation - finished
