@@ -52,13 +52,13 @@ export function getOvulationStatus(
 
   // Length of the luteal phase in days (fixed value)
   const lutealPhaseLength = 14;
-  
+
   // Calculate ovulation days based on shortest and longest cycles
   // For shortest cycle: earlier ovulation
   // For longest cycle: later ovulation
   const ovulationDayEarliest = shortestCycle - lutealPhaseLength;
   const ovulationDayLatest = longestCycle - lutealPhaseLength;
-  
+
   // Calculate the difference between the current day of the cycle and the ovulation window
   const diffDayEarliest = ovulationDayEarliest - dayOfCycle;
   const diffDayLatest = ovulationDayLatest - dayOfCycle;
@@ -309,13 +309,15 @@ export function getShortestCycleLength(
   }
 
   // Filter out the current cycle (cycleLength = 0) and find the shortest cycle
-  const completedCycles = displayedCycles.filter(cycle => cycle.cycleLength > 0);
-  
+  const completedCycles = displayedCycles.filter(
+    (cycle) => cycle.cycleLength > 0,
+  );
+
   if (completedCycles.length === 0) {
     return 28; // Default value
   }
 
-  return Math.min(...completedCycles.map(cycle => cycle.cycleLength));
+  return Math.min(...completedCycles.map((cycle) => cycle.cycleLength));
 }
 
 export function getLongestCycleLength(
@@ -331,13 +333,15 @@ export function getLongestCycleLength(
   }
 
   // Filter out the current cycle (cycleLength = 0) and find the longest cycle
-  const completedCycles = displayedCycles.filter(cycle => cycle.cycleLength > 0);
-  
+  const completedCycles = displayedCycles.filter(
+    (cycle) => cycle.cycleLength > 0,
+  );
+
   if (completedCycles.length === 0) {
     return 28; // Default value
   }
 
-  return Math.max(...completedCycles.map(cycle => cycle.cycleLength));
+  return Math.max(...completedCycles.map((cycle) => cycle.cycleLength));
 }
 
 export function getAverageLengthOfPeriod(
@@ -583,8 +587,10 @@ export function getOvulationDates(cycles: Cycle[], maxDisplayedCycles: number) {
       // For completed cycles, calculate based on the actual cycle length
       // But also consider the variation from shortest to longest
       const cycleVariation = longestCycle - shortestCycle;
-      ovulationStartDay = cycle.cycleLength - 16 - Math.floor(cycleVariation / 2);
-      ovulationEndDay = cycle.cycleLength - 16 + Math.ceil(cycleVariation / 2) + 3;
+      ovulationStartDay =
+        cycle.cycleLength - 16 - Math.floor(cycleVariation / 2);
+      ovulationEndDay =
+        cycle.cycleLength - 16 + Math.ceil(cycleVariation / 2) + 3;
     } else {
       // For current cycle
       if (dayOfCycle > longestCycle) {
