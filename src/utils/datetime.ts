@@ -1,4 +1,4 @@
-import { format as dateFnsFormat } from "date-fns";
+import { format as dateFnsFormat, hoursToMilliseconds } from "date-fns";
 import {
   enUS,
   ru,
@@ -14,6 +14,7 @@ import {
   ta,
   ptBR,
   zhCN,
+  hu,
 } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
@@ -35,6 +36,7 @@ const locales = new Map([
   ["ta", ta],
   ["pt", ptBR],
   ["zh", zhCN],
+  ["hu", hu],
 ]);
 
 const defaultLocale = "en";
