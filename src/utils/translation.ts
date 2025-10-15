@@ -20,6 +20,7 @@ import fa from "./translations/fa";
 import pt from "./translations/pt";
 import ar from "./translations/ar";
 import zh from "./translations/zh";
+import te from "./translations/te";
 import pl from "./translations/pl";
 
 import { storage } from "../data/Storage";
@@ -47,6 +48,7 @@ export const supportedLanguages = new Map<string, string>([
         ["tl", "tagalog (β)"],
         ["vi", "tiếng Việt (β)"],
         ["zh", "中文 (β)"],
+        ["te", "తెలుగు (β)"],
       ] as const)
     : []),
 ]);
@@ -114,6 +116,9 @@ export async function init() {
         zh: {
           translation: zh,
         },
+        te: {
+          translation: te,
+        },
         pl: {
           translation: pl,
         },
@@ -137,6 +142,7 @@ export async function init() {
         pt: ["pt"],
         ar: ["ar"],
         zh: ["zh"],
+        te: ["te"],
         pl: ["pl"],
         default: [defaultLanguageCode],
       },

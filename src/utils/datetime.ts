@@ -15,6 +15,7 @@ import {
   ta,
   ptBR,
   zhCN,
+  te,
   pl,
 } from "date-fns/locale";
 
@@ -38,6 +39,7 @@ const locales = new Map([
   ["ta", ta],
   ["pt", ptBR],
   ["zh", zhCN],
+  ["te", te],
   ["pl", pl],
 ]);
 
