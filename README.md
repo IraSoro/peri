@@ -81,6 +81,7 @@ Our application supports the following languages:
 - Gujarati (ગુજરાતી)
 - Hindi (हिन्दी)
 - Hinglish (Hinglish)
+- Hungarian (Magyar)
 - Persian (پارسی)
 - Portuguese (Português)
 - Russian (Русский)

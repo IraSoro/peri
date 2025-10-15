@@ -9,6 +9,7 @@ import tl from "./translations/tl";
 import de from "./translations/de";
 import hi from "./translations/hi";
 import hg from "./translations/hg";
+import hu from "./translations/hu";
 import fr from "./translations/fr";
 import fi from "./translations/fi";
 import id from "./translations/id";
@@ -39,6 +40,7 @@ export const supportedLanguages = new Map<string, string>([
     ? ([
         ["gu", "ગુજરાતી (β)"],
         ["hg", "hinglish (β)"],
+        ["hu", "hungarian (β)"],
         ["id", "bahasa indonesia (β)"],
         ["ta", "தமிழ் (β)"],
         ["fa", "پارسی (β)"],
@@ -78,6 +80,9 @@ export async function init() {
         },
         hg: {
           translation: hg,
+        },
+        hu: {
+          translation: hu,
         },
         fa: {
           translation: fa,
@@ -126,6 +131,7 @@ export async function init() {
         fi: ["fi"],
         id: ["id"],
         gu: ["gu"],
+        hu: ["hu"],
         vi: ["vi"],
         ta: ["ta"],
         pt: ["pt"],
