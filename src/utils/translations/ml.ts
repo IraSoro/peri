@@ -86,7 +86,7 @@ const ml = {
   "irritability and depressed mood": "പ്രകോപനവും വിഷാദവും",
 
   // Menu
-  Preferences: "മുൻഗണനകൾ",
+  Preferences: "ക്രമീകരണങ്ങൾ",
   Edit: "എഡിറ്റ് ചെയ്യുക",
   Language: "ഭാഷ",
   Theme: "തീം",
