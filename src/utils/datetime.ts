@@ -39,6 +39,7 @@ const locales = new Map([
   ["pt", ptBR],
   ["zh", zhCN],
   ["pl", pl],
+  ["ml", enUS],
 ]);
 
 const defaultLocale = "en";
