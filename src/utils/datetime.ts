@@ -16,6 +16,7 @@ import {
   ptBR,
   zhCN,
   pl,
+  kn,
 } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
