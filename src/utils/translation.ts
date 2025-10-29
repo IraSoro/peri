@@ -12,6 +12,7 @@ import hg from "./translations/hg";
 import hu from "./translations/hu";
 import fr from "./translations/fr";
 import fi from "./translations/fi";
+import fil from "./translations/fil";
 import id from "./translations/id";
 import gu from "./translations/gu";
 import vi from "./translations/vi";
@@ -31,6 +32,7 @@ export const supportedLanguages = new Map<string, string>([
   ["de", "deutsch"],
   ["es", "español"],
   ["fi", "suomi"],
+  ["fil", "filipino"],
   ["fr", "français"],
   ["hi", "हिन्दी"],
   ["ru", "русский"],
@@ -92,6 +94,9 @@ export async function init() {
         fr: {
           translation: fr,
         },
+        fil: {
+          translation: fil,
+        },
         fi: {
           translation: fi,
         },
@@ -133,6 +138,7 @@ export async function init() {
         hg: ["hg"],
         fa: ["fa"],
         fr: ["fr"],
+        fil: ["fil"],
         fi: ["fi"],
         id: ["id"],
         gu: ["gu"],
