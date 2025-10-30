@@ -87,12 +87,14 @@ const te = {
   Theme: "థీమ్",
   "Import config": "కాన్ఫిగరేషన్ దిగుమతి చేయి",
   "Export config": "కాన్ఫిగరేషన్ ఎగుమతి చేయి",
-  "Configuration has been imported": "కాన్ఫిగరేషన్ విజయవంతంగా దిగుమతి చేయబడింది",
+  "Configuration has been imported":
+    "కాన్ఫిగరేషన్ విజయవంతంగా దిగుమతి చేయబడింది",
   "Download latest version": "తాజా వెర్షన్‌ను డౌన్‌లోడ్ చేయి",
 
   // Alert Demo
   "This is just a demo": "ఇది కేవలం డెమో మాత్రమే",
-  "You can download the application ": "మీరు అనువర్తనాన్ని డౌన్‌లోడ్ చేసుకోవచ్చు ",
+  "You can download the application ":
+    "మీరు అనువర్తనాన్ని డౌన్‌లోడ్ చేసుకోవచ్చు ",
   here: "ఇక్కడ",
   "We are on GitHub": "మేము GitHub లో ఉన్నాము",
 };
