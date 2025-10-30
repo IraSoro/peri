@@ -1,10 +1,10 @@
 const hi = {
   Home: "मुख पृष्ठ",
-  "Period in": "मासिक धर्म में", 
-  "no info": "कोई जानकारी नहीं", 
+  "Period in": "मासिक धर्म में",
+  "no info": "कोई जानकारी नहीं",
   Period: "मासिक धर्म",
   today: "आज",
-  Delay: "विलंब", 
+  Delay: "विलंब",
   Days: "(0)[दिन];(1)[दिन];(2-4)[दिन];(5-20)[दिन];",
   "Current cycle day": "वर्तमान चक्र का दिन",
   day: "{{count}}-वां दिन",
@@ -22,7 +22,6 @@ const hi = {
   "Period is": "मासिक धर्म है",
   "possible today": "आज संभव है",
 
-
   Details: "विवरण",
   "Period length": "मासिक धर्म की अवधि",
   "Cycle length": "चक्र की अवधि",
@@ -32,17 +31,15 @@ const hi = {
   mark: "चिह्नित करें",
   cancel: "रद्द करें",
 
-
   "Welcome to Peri": "Peri में आपका स्वागत है",
   "Mark the days of your": "अपने अंतिम मासिक धर्म के दिनों को चिह्नित करें",
   "last period": "अंतिम मासिक धर्म",
   Continue: "जारी रखें",
-  "Forecast will not be generated.": "पूर्वानुमान उत्पन्न नहीं किया जाएगा।", 
+  "Forecast will not be generated.": "पूर्वानुमान उत्पन्न नहीं किया जाएगा।",
   or: "या",
 
-
   "Frequent symptoms": "सामान्य लक्षण",
-  "is current phase of cycle": "चक्र का वर्तमान चरण है", 
+  "is current phase of cycle": "चक्र का वर्तमान चरण है",
 
   "Menstrual phase": "मासिक धर्म चरण",
   "This cycle is accompanied by low hormone levels.":
@@ -78,7 +75,6 @@ const hi = {
   "diarrhea or constipation": "दस्त या कब्ज",
   "irritability and depressed mood": "चिड़चिड़ापन और उदास मनोदशा",
 
- 
   Preferences: "प्राथमिकताएँ",
   Edit: "संपादन",
   Language: "भाषा",
@@ -88,9 +84,8 @@ const hi = {
   "Configuration has been imported":
     "कॉन्फ़िगरेशन सफलतापूर्वक आयात किया गया है",
   "Download latest version": "नवीनतम संस्करण डाउनलोड करें",
-  "We are on GitHub": "हम GitHub पर उपलब्ध हैं", 
+  "We are on GitHub": "हम GitHub पर उपलब्ध हैं",
 
-g
   "This is just a demo": "यह केवल एक डेमो है",
   "You can download the application ": "आप यह ऐप डाउनलोड कर सकते हैं ",
   here: "यहाँ",
