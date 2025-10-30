@@ -38,7 +38,6 @@ export const supportedLanguages = new Map<string, string>([
   ["pt", "português"],
   ["ar", "العربية"],
   ["pl", "polski"],
-  ["kn", "ಕನ್ನಡ"],
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી (β)"],
@@ -51,6 +50,7 @@ export const supportedLanguages = new Map<string, string>([
         ["vi", "tiếng Việt (β)"],
         ["zh", "中文 (β)"],
         ["ml", "മലയാളം (β)"],
+        ["kn", "ಕನ್ನಡ (β)"],
       ] as const)
     : []),
 ]);
