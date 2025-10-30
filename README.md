@@ -89,6 +89,7 @@ Our application supports the following languages:
 - Tagalog (Tagalog)
 - Tamil (தமிழ்)
 - Vietnamese (Tiếng Việt)
+- Kannada (ಕನ್ನಡ)
 
 You can find the translations files in [this](https://github.com/IraSoro/peri/tree/master/src/utils/translations) folder.
 

@@ -149,6 +149,7 @@ export async function init() {
         zh: ["zh"],
         pl: ["pl"],
         ml: ["ml"],
+        kn: ["kn"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
