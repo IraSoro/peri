@@ -1,16 +1,15 @@
 const hi = {
-  // Home Tab
   Home: "मुख पृष्ठ",
-  "Period in": "मासिक धर्म में", // was "मासिक धर्म के माध्यम से" ❌
-  "no info": "कोई जानकारी नहीं", // more natural than "अज्ञात"
+  "Period in": "मासिक धर्म में", 
+  "no info": "कोई जानकारी नहीं", 
   Period: "मासिक धर्म",
   today: "आज",
-  Delay: "विलंब", // "रुकावट" sounds like blockage, not delay
-  Days: "(0)[दिन];(1)[दिन];(2-4)[दिन];(5-20)[दिन];", // simplified, plural works same
+  Delay: "विलंब", 
+  Days: "(0)[दिन];(1)[दिन];(2-4)[दिन];(5-20)[दिन];",
   "Current cycle day": "वर्तमान चक्र का दिन",
   day: "{{count}}-वां दिन",
   Ovulation: "अंडोत्सर्जन",
-  possible: "संभावित", // better than "आज हो सकता है"
+  possible: "संभावित",
   finished: "समाप्त",
   tomorrow: "कल",
   in: "में",
@@ -23,30 +22,28 @@ const hi = {
   "Period is": "मासिक धर्म है",
   "possible today": "आज संभव है",
 
-  // Details Tab
+
   Details: "विवरण",
   "Period length": "मासिक धर्म की अवधि",
   "Cycle length": "चक्र की अवधि",
   "You haven't marked any periods yet":
     "आपने अभी तक कोई मासिक धर्म चिह्नित नहीं किया है",
 
-  // Mark Modal
   mark: "चिह्नित करें",
   cancel: "रद्द करें",
 
-  // Welcome Modal
+
   "Welcome to Peri": "Peri में आपका स्वागत है",
-  "Mark the days of your": "अपने अंतिम मासिक धर्म के दिनों को चिह्नित करें", // fixed missing word
+  "Mark the days of your": "अपने अंतिम मासिक धर्म के दिनों को चिह्नित करें",
   "last period": "अंतिम मासिक धर्म",
   Continue: "जारी रखें",
-  "Forecast will not be generated.": "पूर्वानुमान उत्पन्न नहीं किया जाएगा।", // small tense correction
+  "Forecast will not be generated.": "पूर्वानुमान उत्पन्न नहीं किया जाएगा।", 
   or: "या",
 
-  // Info Modal
-  "Frequent symptoms": "सामान्य लक्षण",
-  "is current phase of cycle": "चक्र का वर्तमान चरण है", // made full sentence
 
-  // Phases info
+  "Frequent symptoms": "सामान्य लक्षण",
+  "is current phase of cycle": "चक्र का वर्तमान चरण है", 
+
   "Menstrual phase": "मासिक धर्म चरण",
   "This cycle is accompanied by low hormone levels.":
     "यह चरण कम हार्मोन स्तर से संबंधित होता है।",
@@ -81,7 +78,7 @@ const hi = {
   "diarrhea or constipation": "दस्त या कब्ज",
   "irritability and depressed mood": "चिड़चिड़ापन और उदास मनोदशा",
 
-  // Menu
+ 
   Preferences: "प्राथमिकताएँ",
   Edit: "संपादन",
   Language: "भाषा",
@@ -91,9 +88,9 @@ const hi = {
   "Configuration has been imported":
     "कॉन्फ़िगरेशन सफलतापूर्वक आयात किया गया है",
   "Download latest version": "नवीनतम संस्करण डाउनलोड करें",
-  "We are on GitHub": "हम GitHub पर उपलब्ध हैं", // smoother Hindi
+  "We are on GitHub": "हम GitHub पर उपलब्ध हैं", 
 
-  // Alert Demo
+g
   "This is just a demo": "यह केवल एक डेमो है",
   "You can download the application ": "आप यह ऐप डाउनलोड कर सकते हैं ",
   here: "यहाँ",
