@@ -16,6 +16,7 @@ import {
   ptBR,
   zhCN,
   pl,
+  kn,
 } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
@@ -40,6 +41,7 @@ const locales = new Map([
   ["zh", zhCN],
   ["pl", pl],
   ["ml", enUS],
+  ["kn", kn],
 ]);
 
 const defaultLocale = "en";
