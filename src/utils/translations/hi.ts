@@ -7,7 +7,7 @@ const hi = {
   Delay: "विलंब",
   Days: "(0)[दिन];(1)[दिन];(2-4)[दिन];(5-20)[दिन];",
   "Current cycle day": "वर्तमान चक्र का दिन",
-  day: "{{count}}-वां दिन",
+  day: "{{count}}वां दिन",
   Ovulation: "अंडोत्सर्जन",
   possible: "संभावित",
   finished: "समाप्त",
