@@ -52,6 +52,7 @@
     "i18next-intervalplural-postprocessor": "^3.0.0",
     "ionicons": "^7.1.2",
     "jsdom": "^25.0.1",
+    "prettier": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.0.2",
@@ -68,7 +69,6 @@
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@vitest/coverage-v8": "^2.1.8",
     "gh-pages": "^5.0.0",
-    "prettier": "^3.6.2",
     "vite-plugin-pwa": "^0.21.1",
     "vitest": "^2.1.8"
   }

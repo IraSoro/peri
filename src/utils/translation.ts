@@ -51,6 +51,7 @@ export const supportedLanguages = new Map<string, string>([
         ["vi", "tiếng Việt (β)"],
         ["zh", "中文 (β)"],
         ["ml", "മലയാളം (β)"],
+        ["kn", "ಕನ್ನಡ (β)"],
       ] as const)
     : []),
 ]);
