@@ -17,7 +17,6 @@ export async function getSettings(): Promise<Settings> {
     where: { id: DEFAULT_SETTINGS_ID }
   });
 
-  // 設定が存在しない場合はデフォルト値で作成
   if (!settings) {
     settings = await prisma.settings.create({
       data: {
@@ -36,7 +35,6 @@ export async function getSettings(): Promise<Settings> {
 }
 
 export async function updateSetting(key: string, value: any): Promise<void> {
-  // 設定が存在しない場合は作成
   const existing = await prisma.settings.findUnique({
     where: { id: DEFAULT_SETTINGS_ID }
   });

@@ -14,7 +14,7 @@ model Cycle {
   id           String   @id @default(uuid())
   cycleLength  Int
   periodLength Int
-  startDate    String   // ISO形式の日付文字列
+  startDate    String   // ISO formatted date string
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
