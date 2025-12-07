@@ -1,5 +1,65 @@
 # How to build
 
+## Web Application (Docker Compose)
+
+The easiest way to run the web application is using Docker Compose, which sets up the frontend, backend API, and PostgreSQL database automatically.
+
+### Prerequisites
+
+- Docker and Docker Compose installed on your system
+
+### Quick Start
+
+1. Clone the repository and navigate to the project directory:
+
+```shell
+cd peri
+```
+
+2. Configure storage mode in `.env` file:
+
+```shell
+# For local storage (default)
+VITE_STORAGE_MODE=local
+
+# For remote storage with PostgreSQL
+VITE_STORAGE_MODE=remote
+VITE_API_BASE_URL=http://localhost:3001/api
+```
+
+3. Start the development environment:
+
+```shell
+docker compose up peri-dev
+```
+
+This will start:
+- Frontend (Vite dev server) on `http://localhost:5173`
+- Backend API server on `http://localhost:3001` (if remote mode)
+- PostgreSQL database on `localhost:5432` (if remote mode)
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+### Production Build
+
+To run the production build:
+
+```shell
+docker compose --profile production up -d
+```
+
+This will start the production-optimized version on `http://localhost:8080`.
+
+### Clean Up
+
+To stop all containers and remove volumes:
+
+```shell
+docker compose down -v
+```
+
+## Web Application (Manual Setup)
+
 Install dependencies:
 
 ```shell
@@ -13,6 +73,37 @@ npm run dev
 ```
 
 Once your dev server is running, you should see a link like `http://localhost:5173/` in your shell. Copy the link and paste it into your browser to see the running app.
+
+### Remote Storage Backend Setup
+
+If you want to use remote storage mode, you also need to set up the backend:
+
+1. Navigate to the backend directory:
+
+```shell
+cd backend
+npm install
+```
+
+2. Set up PostgreSQL database and configure the connection in `backend/.env`:
+
+```shell
+DATABASE_URL=postgresql://peri_user:peri_password@localhost:5432/peri_db
+PORT=3001
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+```
+
+3. Start the backend server:
+
+```shell
+cd backend
+npm run dev
+```
+
+The backend API will be available at `http://localhost:3001`.
+
+## Android Application
 
 To build the native `peri` you need `Android Studio` installed and all necessary JDK/SDK. To install, follow the instruction <https://developer.android.com/studio/install>.
 

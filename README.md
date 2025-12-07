@@ -31,6 +31,19 @@ Peri is period tracker application. The application has the necessary features t
 
 It also tracks the current phase of the cycle. And displays information about this phase and the symptoms that a woman may feel during this phase.
 
+### Data Storage Options
+
+Peri supports two storage modes:
+
+- **Local Storage (default)**: Data is stored locally on your device using Capacitor Preferences. All data remains on your device and never leaves it.
+- **Remote Storage**: Data is stored in a PostgreSQL database via REST API. This enables data backup and synchronization across devices.
+
+You can switch between storage modes by setting the `VITE_STORAGE_MODE` environment variable in `.env` file:
+- `VITE_STORAGE_MODE=local` - Use local storage (default)
+- `VITE_STORAGE_MODE=remote` - Use remote API with PostgreSQL backend
+
+See the [BUILDING.md](https://github.com/IraSoro/peri/blob/master/BUILDING.md) for instructions on setting up the remote storage backend.
+
 See the [open issues](https://github.com/IraSoro/peri/issues) and [project](https://github.com/users/IraSoro/projects/4/views/1) for a full list of known issues.
 
 ### Usage
