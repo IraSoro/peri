@@ -3,6 +3,7 @@ import { Preferences } from "@capacitor/preferences";
 import { addDays, startOfToday, subDays } from "date-fns";
 import type { Cycle } from "./ICycle";
 import { getAverageLengthOfPeriod } from "../state/CalculationLogics";
+import { storageAdapter } from "./StorageAdapter";
 
 export interface Context {
   cycles: Cycle[];
@@ -69,118 +70,71 @@ function createStorageGetterOld<Key extends StorageKey>(
 export const storage = {
   set: {
     cycles: (value: StorageValueType<StorageKey.Cycles>) => {
-      return Preferences.set({
-        key: StorageKey.Cycles,
-        value: JSON.stringify(value),
-      });
+      return storageAdapter.getBackend().setCycles(value);
     },
     language: (value: StorageValueType<StorageKey.Language>) => {
-      return Preferences.set({
-        key: StorageKey.Language,
-        value: value,
-      });
+      return storageAdapter.getBackend().setLanguage(value);
     },
     theme: (value: StorageValueType<StorageKey.Theme>) => {
-      return Preferences.set({
-        key: StorageKey.Theme,
-        value: value,
-      });
+      return storageAdapter.getBackend().setTheme(value);
     },
     isNotificationEnabled: (
       value: StorageValueType<StorageKey.IsNotificationEnabled>,
     ) => {
-      return Preferences.set({
-        key: StorageKey.IsNotificationEnabled,
-        value: value.toString(),
-      });
+      return storageAdapter.getBackend().setIsNotificationEnabled(value);
     },
     lastNotificationId: (
       value: StorageValueType<StorageKey.LastNotificationId>,
     ) => {
-      return Preferences.set({
-        key: StorageKey.LastNotificationId,
-        value: value.toString(),
-      });
+      return storageAdapter.getBackend().setLastNotificationId(value);
     },
     maxNumberOfDisplayedCycles: (
       value: StorageValueType<StorageKey.MaxNumberOfDisplayedCycles>,
     ) => {
-      return Preferences.set({
-        key: StorageKey.MaxNumberOfDisplayedCycles,
-        value: value.toString(),
-      });
+      return storageAdapter.getBackend().setMaxNumberOfDisplayedCycles(value);
     },
   },
   get: {
     cycles: async () => {
-      const { value } = await Preferences.get({ key: StorageKey.Cycles });
-      if (!value) {
-        throw new Error(`Can't find '${StorageKey.Cycles}' in storage`);
-      }
-      return JSON.parse(value) as StorageValueType<StorageKey.Cycles>;
+      return storageAdapter.getBackend().getCycles();
     },
     language: async () => {
-      const { value } = await Preferences.get({ key: StorageKey.Language });
-      if (!value) {
-        throw new Error(`Can't find '${StorageKey.Language}' in storage`);
-      }
-      return value;
+      return storageAdapter.getBackend().getLanguage();
     },
     theme: async () => {
-      const { value } = await Preferences.get({ key: StorageKey.Theme });
-      if (!value) {
-        throw new Error(`Can't find '${StorageKey.Theme}' in storage`);
-      }
-      return value;
+      return storageAdapter.getBackend().getTheme();
     },
     isNotificationEnabled: async () => {
-      const { value } = await Preferences.get({
-        key: StorageKey.IsNotificationEnabled,
-      });
-      if (!value) {
-        throw new Error(
-          `Can't find '${StorageKey.IsNotificationEnabled}' in storage`,
-        );
-      }
-      return value === "true";
+      return storageAdapter.getBackend().getIsNotificationEnabled();
     },
     lastNotificationId: async () => {
-      const { value } = await Preferences.get({
-        key: StorageKey.LastNotificationId,
-      });
-      if (!value) {
-        throw new Error(
-          `Can't find '${StorageKey.LastNotificationId}' in storage`,
-        );
-      }
-      return Number(value);
+      return storageAdapter.getBackend().getLastNotificationId();
     },
     maxNumberOfDisplayedCycles: async () => {
-      const { value } = await Preferences.get({
-        key: StorageKey.MaxNumberOfDisplayedCycles,
-      });
-      if (!value) {
-        throw new Error(
-          `Can't find '${StorageKey.MaxNumberOfDisplayedCycles}' in storage`,
-        );
-      }
-      return Number(value);
+      return storageAdapter.getBackend().getMaxNumberOfDisplayedCycles();
     },
   },
   getUnsafe: {
     cycles: async () => {
-      const { value } = await Preferences.get({ key: StorageKey.Cycles });
-      return value
-        ? (JSON.parse(value) as StorageValueType<StorageKey.Cycles>)
-        : null;
+      try {
+        return await storageAdapter.getBackend().getCycles();
+      } catch {
+        return null;
+      }
     },
     language: async () => {
-      const { value } = await Preferences.get({ key: StorageKey.Language });
-      return value;
+      try {
+        return await storageAdapter.getBackend().getLanguage();
+      } catch {
+        return null;
+      }
     },
     theme: async () => {
-      const { value } = await Preferences.get({ key: StorageKey.Theme });
-      return value;
+      try {
+        return await storageAdapter.getBackend().getTheme();
+      } catch {
+        return null;
+      }
     },
   },
   old: {
