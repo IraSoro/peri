@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Cycle {
+  id           String   @id @default(uuid())
+  cycleLength  Int
+  periodLength Int
+  startDate    String   // ISO形式の日付文字列
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([startDate])
+}
+
+model Settings {
+  id                         String   @id @default("default")
+  language                   String   @default("en")
+  theme                      String   @default("basic")
+  isNotificationEnabled      Boolean  @default(false)
+  lastNotificationId         Int      @default(0)
+  maxNumberOfDisplayedCycles Int      @default(6)
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
