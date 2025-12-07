@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  peri-dev:
+    build:
+      context: .
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    container_name: peri-dev
+
+  peri-prod:
+    build:
+      context: .
+      target: production
+    ports:
+      - "8080:80"
+    environment:
+      - NODE_ENV=production
+    container_name: peri-prod
+    profiles:
+      - production
