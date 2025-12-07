@@ -12,6 +12,10 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - VITE_STORAGE_MODE=${VITE_STORAGE_MODE:-local}
+      - VITE_API_BASE_URL=http://localhost:3001/api
+    depends_on:
+      - backend
     container_name: peri-dev
 
   peri-prod:
@@ -22,6 +26,68 @@ services:
       - "8080:80"
     environment:
       - NODE_ENV=production
+    depends_on:
+      - backend
     container_name: peri-prod
     profiles:
       - production
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://peri_user:peri_password@db:5432/peri_db
+      - PORT=3001
+      - FRONTEND_URL=http://localhost:5173
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    command: npm run dev
+    container_name: peri-backend
+
+  backend-prod:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://peri_user:peri_password@db:5432/peri_db
+      - PORT=3001
+      - FRONTEND_URL=http://localhost:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    container_name: peri-backend-prod
+    profiles:
+      - production
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=peri_user
+      - POSTGRES_PASSWORD=peri_password
+      - POSTGRES_DB=peri_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U peri_user -d peri_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    container_name: peri-db
+
+volumes:
+  postgres_data:
