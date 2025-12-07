@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Backend API for Peri period tracker app",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "npx prisma db push --skip-generate && tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "start:migrate": "npx prisma migrate deploy && npm start",
