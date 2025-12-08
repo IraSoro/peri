@@ -39,13 +39,14 @@ export const supportedLanguages = new Map<string, string>([
   ["ar", "العربية"],
   ["pl", "polski"],
   ["kn", "ಕನ್ನಡ"],
+  ["ta", "தமிழ்"], // Moved Tamil here to make it fully supported
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી (β)"],
         ["hg", "hinglish (β)"],
         ["hu", "hungarian (β)"],
         ["id", "bahasa indonesia (β)"],
-        ["ta", "தமிழ் (β)"],
+        // ["ta", "தமிழ் (β)"], // Removed from beta list
         ["fa", "پارسی (β)"],
         ["tl", "tagalog (β)"],
         ["vi", "tiếng Việt (β)"],
@@ -65,69 +66,27 @@ export async function init() {
     .use(intervalPlural)
     .init({
       resources: {
-        en: {
-          translation: en,
-        },
-        ru: {
-          translation: ru,
-        },
-        es: {
-          translation: es,
-        },
-        tl: {
-          translation: tl,
-        },
-        de: {
-          translation: de,
-        },
-        hi: {
-          translation: hi,
-        },
-        hg: {
-          translation: hg,
-        },
-        hu: {
-          translation: hu,
-        },
-        fa: {
-          translation: fa,
-        },
-        fr: {
-          translation: fr,
-        },
-        fi: {
-          translation: fi,
-        },
-        id: {
-          translation: id,
-        },
-        gu: {
-          translation: gu,
-        },
-        vi: {
-          translation: vi,
-        },
-        ta: {
-          translation: ta,
-        },
-        pt: {
-          translation: pt,
-        },
-        ar: {
-          translation: ar,
-        },
-        zh: {
-          translation: zh,
-        },
-        pl: {
-          translation: pl,
-        },
-        ml: {
-          translation: ml,
-        },
-        kn: {
-          translation: kn,
-        },
+        en: { translation: en },
+        ru: { translation: ru },
+        es: { translation: es },
+        tl: { translation: tl },
+        de: { translation: de },
+        hi: { translation: hi },
+        hg: { translation: hg },
+        hu: { translation: hu },
+        fa: { translation: fa },
+        fr: { translation: fr },
+        fi: { translation: fi },
+        id: { translation: id },
+        gu: { translation: gu },
+        vi: { translation: vi },
+        ta: { translation: ta },
+        pt: { translation: pt },
+        ar: { translation: ar },
+        zh: { translation: zh },
+        pl: { translation: pl },
+        ml: { translation: ml },
+        kn: { translation: kn },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
