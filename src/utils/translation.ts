@@ -23,6 +23,7 @@ import zh from "./translations/zh";
 import pl from "./translations/pl";
 import ml from "./translations/ml";
 import kn from "./translations/kn";
+import mm from "./translations/mm";
 
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -39,6 +40,7 @@ export const supportedLanguages = new Map<string, string>([
   ["ar", "العربية"],
   ["pl", "polski"],
   ["kn", "ಕನ್ನಡ"],
+  ["mm", "မြန်မာ"],
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી (β)"],
@@ -52,6 +54,7 @@ export const supportedLanguages = new Map<string, string>([
         ["zh", "中文 (β)"],
         ["ml", "മലയാളം (β)"],
         ["kn", "ಕನ್ನಡ (β)"],
+        ["mm", "မြန်မာ (β)"],
       ] as const)
     : []),
 ]);
@@ -128,6 +131,9 @@ export async function init() {
         kn: {
           translation: kn,
         },
+        mm: {
+          translation: mm,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -151,6 +157,7 @@ export async function init() {
         pl: ["pl"],
         ml: ["ml"],
         kn: ["kn"],
+        mm: ["mm"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
