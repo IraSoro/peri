@@ -17,6 +17,7 @@ import {
   zhCN,
   pl,
   kn,
+  th
 } from "date-fns/locale";
 
 import { storage } from "../data/Storage";
@@ -42,6 +43,7 @@ const locales = new Map([
   ["pl", pl],
   ["ml", enUS],
   ["kn", kn],
+  ["mm", th]
 ]);
 
 const defaultLocale = "en";
