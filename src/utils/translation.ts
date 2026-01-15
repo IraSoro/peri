@@ -23,6 +23,7 @@ import zh from "./translations/zh";
 import pl from "./translations/pl";
 import ml from "./translations/ml";
 import kn from "./translations/kn";
+import mm from "./translations/mm";
 import bn from "./translations/bn";
 
 import { storage } from "../data/Storage";
@@ -40,6 +41,7 @@ export const supportedLanguages = new Map<string, string>([
   ["ar", "العربية"],
   ["pl", "polski"],
   ["kn", "ಕನ್ನಡ"],
+  ["mm", "မြန်မာ"],
   ...(configuration.features.betaLanguages
     ? ([
         ["gu", "ગુજરાતી (β)"],
@@ -130,6 +132,9 @@ export async function init() {
         kn: {
           translation: kn,
         },
+        mm: {
+          translation: mm,
+        },
         bn: {
           translation: bn,
         },
@@ -156,6 +161,7 @@ export async function init() {
         pl: ["pl"],
         ml: ["ml"],
         kn: ["kn"],
+        mm: ["mm"],
         bn: ["bn"],
         default: [defaultLanguageCode],
       },
