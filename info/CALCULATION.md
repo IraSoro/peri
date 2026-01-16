@@ -42,76 +42,132 @@ Definition of the day of ovulation by calculations is only approximate. There ar
 
 We know the value of the cycle length and the start date of the current cycle. For example, let the length of cycle is 30 days. In most cases, ovulation occurs 14 days before the start of your period (14 days before the start of a new cycle). Therefore, if the cycle length is 30 days, then ovulation will occur on ```30-14=16``` day of the cycle.
 
-Another example with dates:
-Let period (and therefore the cycle) begin on January 1, the average length of cycle is 25 days. Then ovulation will occur on the 11th day of the cycle, that is, January 11.
+However, cycle lengths vary from month to month for the same person. To provide a more accurate ovulation window, we use the **shortest** and **longest** cycle lengths from the user's history instead of just the average.
 
-So the function will look like this:
+### Improved ovulation calculation with cycle range
+
+Since cycle lengths vary, ovulation timing also varies. By using the shortest and longest cycles, we can determine a range of days when ovulation is most likely to occur:
+
+1. **Earliest ovulation day**: `shortestCycleLength - 14`
+2. **Latest ovulation day**: `longestCycleLength - 14`
+
+For example:
+- If the shortest cycle is 26 days, earliest ovulation = `26 - 14 = 12th day`
+- If the longest cycle is 32 days, latest ovulation = `32 - 14 = 18th day`
+- **Ovulation window**: Days 12-18 of the cycle
+
+This approach provides a more personalized and accurate estimation of when ovulation might occur, accounting for individual cycle variations.
+
+### Example implementation
+
+A basic version of the function:
 
 ```ts
-function getOvulationStatus(startDate: Date, cycleLength: number){
-    const currentDay = getCurrentDay(startDate, cycleLength);
-    const diffInDays = cycleLength - currentDay;
+function getOvulationStatus(startDate: Date, shortestCycle: number, longestCycle: number){
+    const currentDay = getCurrentDay(startDate);
+    const ovulationEarliest = shortestCycle - 14;
+    const ovulationLatest = longestCycle - 14;
+    
+    const diffEarliest = ovulationEarliest - currentDay;
+    const diffLatest = ovulationLatest - currentDay;
 
-    if (diffInDays > 14){
-        return `Ovulation in ${diffInDays - 14} Days`;
+    if (diffLatest < 0){
+        return "Ovulation finished";
     }
-    if (diffInDays === 14){
-        return "Ovulation today";
+    if (diffEarliest <= 0 && diffLatest >= 0){
+        return "Ovulation today or possible";
     }
-    return "Ovulation finished";
+    if (diffEarliest > 0){
+        return `Ovulation in ${diffEarliest} Days`;
+    }
 }
 ```
 
-Let's improve the function. Since the egg can exist for 12-48 hours, so ovulation can last 2 days longer. Then the function will look like this:
+Let's improve the function to account for the egg viability period (12-48 hours, approximately 2 days):
 
 ```ts
-function getOvulationStatus(startDate: Date, cycleLength: number){
-    const currentDay = getCurrentDay(startDate, cycleLength);
-    const diffInDays = cycleLength - currentDay;
+function getOvulationStatus(startDate: Date, shortestCycle: number, longestCycle: number){
+    const currentDay = getCurrentDay(startDate);
+    const errorMargin = 2;
+    
+    const ovulationEarliest = shortestCycle - 14;
+    const ovulationLatest = longestCycle - 14;
+    
+    const diffEarliest = ovulationEarliest - currentDay;
+    const diffLatest = ovulationLatest - currentDay;
 
-    if (diffInDays > 14){
-        return `Ovulation in ${diffInDays - 14} Days`;
+    // Past ovulation window (with error margin)
+    if (diffLatest < -errorMargin){
+        return "Ovulation finished";
     }
-    if (diffInDays === 14){
-        return "Ovulation today";
+    
+    // Within or near ovulation window
+    if (diffEarliest <= errorMargin && diffLatest >= -errorMargin){
+        if (diffEarliest <= 0 && diffLatest >= 0){
+            return "Ovulation today";
+        }
+        if (diffEarliest <= 1 && diffLatest >= 1){
+            return "Ovulation tomorrow";
+        }
+        return "Ovulation possible";
     }
-    if (diffInDays >= 12){
-        "Ovulation possible"
+    
+    // Before ovulation window
+    if (diffEarliest > 0){
+        return `Ovulation in ${diffEarliest} Days`;
     }
-    return "Ovulation finished";
 }
 ```
+
+### Benefits of range-based calculation
+
+1. **More accurate**: Accounts for individual cycle variations rather than using a single average value
+2. **Wider fertility window**: Users see a more realistic range of fertile days
+3. **Better for irregular cycles**: Particularly helpful for users with variable cycle lengths
+4. **Personalized**: Adapts to each user's unique cycle pattern over time
 
 ## Chance of getting pregnant
 
-As written above, the pregnancy occurs only during ovulation. Therefore, during ovulation there is a high chance of getting pregnant. Then the function will look like this:
+As written above, pregnancy occurs only during ovulation. Therefore, during the ovulation window there is a high chance of getting pregnant. With the improved range-based calculation, we can provide a more accurate assessment:
 
 ```ts
-function getPregnancyChance(startDate: Date, cycleLength: number){
-    const currentDay = getCurrentDay(startDate, cycleLength);
-    const diffInDays = cycleLength - currentDay;
+function getPregnancyChance(startDate: Date, shortestCycle: number, longestCycle: number){
+    const currentDay = getCurrentDay(startDate);
+    const ovulationEarliest = shortestCycle - 14;
+    const ovulationLatest = longestCycle - 14;
+    
+    const diffEarliest = ovulationEarliest - currentDay;
+    const diffLatest = ovulationLatest - currentDay;
 
-    if (diffInDays === 14){
+    // Within the ovulation window
+    if (diffEarliest <= 0 && diffLatest >= 0){
         return "High";
     }
     return "Low";
 }
 ```
 
-But ovulation can occurs not only on the day of calculation. So, let's add an error equal to 2 days:
+Adding an error margin to account for sperm viability (up to 5 days) and egg viability (12-48 hours):
 
 ```ts
-function getPregnancyChance(startDate: Date, cycleLength: number){
-    const error = 2;
-    const currentDay = getCurrentDay(startDate, cycleLength);
-    const diffInDays = cycleLength - currentDay;
+function getPregnancyChance(startDate: Date, shortestCycle: number, longestCycle: number){
+    const errorMargin = 2;
+    const currentDay = getCurrentDay(startDate);
+    const ovulationEarliest = shortestCycle - 14;
+    const ovulationLatest = longestCycle - 14;
+    
+    const diffEarliest = ovulationEarliest - currentDay;
+    const diffLatest = ovulationLatest - currentDay;
 
-    if (diffInDays >= 14 - error && diffInDays <= 14 + error){
+    // Within or near the ovulation window (with error margin)
+    if (diffEarliest <= errorMargin && diffLatest >= -errorMargin){
         return "High";
     }
     return "Low";
 }
 ```
+
+This range-based approach provides a more realistic fertility window, especially for users with irregular cycles.
 
 ## Days before period
 
@@ -165,25 +221,42 @@ Each phase has characteristic symptoms. The most common and indicative of them a
 
 ### Calculation of the current phase
 
-For calculations we need to know three values: the length of cycle ```lengthCycle```, the length of period ```lengthPeriod``` and start date of the cycle ```startDate```. As written above, the division of phases depends on ovulation, which means it's calculations are also necessary. The function will look like this:
+For calculations we need to know the shortest and longest cycle lengths, the length of period, and start date of the cycle. As written above, the division of phases depends on ovulation, which means its calculations are also necessary. With the improved range-based approach:
 
 ```ts
-function getPhase(cycleLength: number, periodLength: number, startDate: Date){
-    const currentDay = getCurrentDay(startDate, cycleLength);
-    const ovulationStatus = getOvulationStatus(startDate, cycleLength);
+function getPhase(shortestCycle: number, longestCycle: number, periodLength: number, startDate: Date){
+    const currentDay = getCurrentDay(startDate);
+    const lutealPhaseLength = 14;
+    const errorMargin = 2;
+    
+    const ovulationEarliest = shortestCycle - lutealPhaseLength;
+    const ovulationLatest = longestCycle - lutealPhaseLength;
     
     if (currentDay <= periodLength){
         return "Menstrual phase";
     }
-    if (ovulationStatus === "Ovulation today" && ovulationStatus === "Ovulation possible"){
+    
+    // Follicular phase: after period and before earliest ovulation (with error margin)
+    if (currentDay <= ovulationEarliest - errorMargin){
+        return "Follicular phase";
+    }
+    
+    // Ovulation phase: from earliest to latest ovulation (with error margins)
+    if (currentDay <= ovulationLatest + errorMargin){
         return "Ovulation phase";
     }
-    if (ovulationStatus === "Ovulation finished"){
-        return "Luteal phase";
-    }
-    return "Follicular phase";
+    
+    // Luteal phase: after ovulation window
+    return "Luteal phase";
 }
 ```
+
+This approach provides a wider and more accurate ovulation phase window, adapting to individual cycle variations. For example:
+- User with shortest cycle 26 days, longest 32 days
+- Ovulation earliest: day 12 (26-14)
+- Ovulation latest: day 18 (32-14)
+- With error margin: Ovulation phase spans from day 10 to day 20
+- This gives a 10-day ovulation phase window instead of the traditional fixed 4-day window
 
 ## Sources
 
