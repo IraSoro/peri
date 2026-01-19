@@ -9,6 +9,7 @@ import {
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { addDays, startOfDay } from "date-fns";
+import i18n from "i18next";
 
 import {
   getAverageLengthOfCycle,
@@ -90,10 +91,10 @@ const CurrentCycle = () => {
 
   const { t } = useTranslation();
   const dayOfCycle = getDayOfCycle(cycles);
-  const title = `${dayOfCycle} ${t("Days", {
-    postProcess: "interval",
-    count: 1, // NOTE: to indicate which day is in the account, you need to write the day as if in the singular
-  })}`;
+  const title = i18n.t("day", {
+    count: dayOfCycle,
+    ordinal: true,
+  });
 
   const startDate = new Date(getLastStartDate(cycles));
   const lengthOfPeriod = cycles[0].periodLength ?? 0;

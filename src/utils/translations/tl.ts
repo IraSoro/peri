@@ -8,7 +8,7 @@ const tl = {
   Delay: "Antala",
   Days: "(0)[Mga araw];(1)[Araw];(2-4)[Mga araw];(5-20)[Mga araw];(21)[Araw];(22-24)[Mga araw];(25-30)[Mga araw];(31)[Araw];(32-34)[Mga araw];(35-40)[Mga araw];",
   "Current cycle day": "Kasalukuyang araw ng siklo",
-  day: "{{count}}º Araw",
+  day: "{{count}} Araw",
   Ovulation: "Obulasyon",
   possible: "posible",
   finished: "Tapos na",

@@ -8,7 +8,7 @@ const id = {
   Delay: "Terlambat",
   Days: "(0-inf)[Hari]",
   "Current cycle day": "Hari siklus saat ini",
-  day: "{{count}}-hari",
+  day: "{{count}} hari",
   Ovulation: "Ovulasi",
   possible: "mungkin hari ini",
   finished: "selesai",
