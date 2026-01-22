@@ -73,7 +73,10 @@ See the [open issues](https://github.com/IraSoro/peri/issues) and [project](http
 
 Our application supports the following languages:
 
+- Arabic (العربية)
 - Bahasa Indonesia (Bahasa Indonesia)
+- Bengali (বাংলা)
+- Chinese (中文)
 - English (English)
 - Finnish (Suomi)
 - French (Français)
@@ -82,14 +85,17 @@ Our application supports the following languages:
 - Hindi (हिन्दी)
 - Hinglish (Hinglish)
 - Hungarian (Magyar)
+- Kannada (ಕನ್ನಡ)
+- Malayalam (മലയാളം)
+- Myanmar (မြန်မာ)
 - Persian (پارسی)
+- Polish (Polski)
 - Portuguese (Português)
 - Russian (Русский)
 - Spanish (Español)
 - Tagalog (Tagalog)
 - Tamil (தமிழ்)
 - Vietnamese (Tiếng Việt)
-- Kannada (ಕನ್ನಡ)
 
 You can find the translations files in [this](https://github.com/IraSoro/peri/tree/master/src/utils/translations) folder.
 
