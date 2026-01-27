@@ -46,6 +46,7 @@ const locales = new Map([
   ["kn", kn],
   ["mm", th],
   ["bn", bn],
+  ["mr", hi],
 ]);
 
 const defaultLocale = "en";

@@ -25,6 +25,7 @@ import ml from "./translations/ml";
 import kn from "./translations/kn";
 import mm from "./translations/mm";
 import bn from "./translations/bn";
+import mr from "./translations/mr";
 
 import { storage } from "../data/Storage";
 import { configuration } from "../data/AppConfiguration";
@@ -55,6 +56,7 @@ export const supportedLanguages = new Map<string, string>([
         ["ta", "தமிழ் (β)"],
         ["tl", "tagalog (β)"],
         ["vi", "tiếng Việt (β)"],
+        ["mr", "मराठी (β)"],
       ] as const)
     : []),
 ]);
@@ -137,6 +139,9 @@ export async function init() {
         bn: {
           translation: bn,
         },
+        mr: {
+          translation: mr,
+        },
       },
       lng: (await storage.getUnsafe.language()) || navigator.language,
       fallbackLng: {
@@ -162,6 +167,7 @@ export async function init() {
         kn: ["kn"],
         mm: ["mm"],
         bn: ["bn"],
+        mr: ["mr"],
         default: [defaultLanguageCode],
       },
     } satisfies InitOptions);
