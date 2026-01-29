@@ -115,5 +115,3 @@ You can find a description of the logic and algorithms that are used in the appl
 ### Thanks for noticing our project
 
 [![MadeWithReactJs.com shield](https://madewithreactjs.com/storage/repo-shields/5322-shield.svg)](https://madewithreactjs.com/p/peri/shield-link)
-
-
