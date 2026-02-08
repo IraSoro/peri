@@ -2,6 +2,15 @@ import { addDays, differenceInCalendarDays, subDays } from "date-fns";
 
 import { type Cycle } from "./ICycle";
 
+const LUTEAL_PHASE_DAYS = 14;
+
+export const CyclePhase = {
+  Menstrual: 0,
+  Follicular: 1,
+  Ovulation: 2,
+  Luteal: 3,
+};
+
 const median = (values: number[]) => {
   if (!values.length) return 0;
 
@@ -34,8 +43,6 @@ export const daysUntilNextCycle = (cycles: Cycle[]) => {
 };
 
 export const ovulationDate = (cycles: Cycle[]) => {
-  const LUTEAL_PHASE_DAYS = 14;
-
   if (!cycles.length) return;
 
   const cycleLength = medianCycleLength(cycles);
@@ -58,3 +65,30 @@ export const ovulationDateWindow = (cycles: Cycle[]) => {
   ];
 };
 
+export const cyclePhase = (cycles: Cycle[], day: Date) => {
+  if (!cycles.length) return;
+
+  const activeCycle = cycles[0];
+  const menstruationEnd = addDays(
+    activeCycle.start_date,
+    activeCycle.period_length - 1,
+  );
+
+  const ovulationWindow = ovulationDateWindow(cycles);
+  if (!ovulationWindow || ovulationWindow.length === 0) return;
+
+  const ovulationStart = ovulationWindow[0];
+  const ovulationEnd = ovulationWindow.at(-1)!;
+
+  if (day <= menstruationEnd) return CyclePhase.Menstrual;
+  if (day < ovulationStart) return CyclePhase.Follicular;
+  if (day <= ovulationEnd) return CyclePhase.Ovulation;
+
+  return CyclePhase.Luteal;
+};
+
+export const isFertile = (cycles: Cycle[], day: Date) => {
+  if (!cycles.length) return;
+
+  return cyclePhase(cycles, day) === CyclePhase.Ovulation
+}
