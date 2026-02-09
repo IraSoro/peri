@@ -1,3 +1,4 @@
+import { median } from 'es-toolkit/math';
 import { addDays, differenceInCalendarDays, subDays } from "date-fns";
 
 import { type Cycle } from "./ICycle";
@@ -9,17 +10,6 @@ export const CyclePhase = {
   Follicular: 1,
   Ovulation: 2,
   Luteal: 3,
-};
-
-const median = (values: number[]) => {
-  if (!values.length) return 0;
-
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-
-  return sorted.length % 2 !== 0
-    ? sorted[mid]
-    : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
 };
 
 export const medianCycleLength = (cycles: Cycle[]) => {
