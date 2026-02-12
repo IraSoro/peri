@@ -8,7 +8,7 @@ const ta = {
   Delay: "தாமதம்",
   Days: "(0-inf)[நாள்];",
   "Current cycle day": "தற்போதைய சுழற்சி நாள்",
-  day: "{{count}}-வது நாள்",
+  day: "{{count}}வது நாள்",
   Ovulation: "உயிரணுவடிவம்",
   possible: "வாய்ப்பு",
   finished: "முடிந்தது",
