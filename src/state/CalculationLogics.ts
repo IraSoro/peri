@@ -46,38 +46,53 @@ export function getOvulationStatus(
     return "";
   }
 
-  const cycleLength = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
+  const shortestCycle = getShortestCycleLength(cycles, maxDisplayedCycles);
+  const longestCycle = getLongestCycleLength(cycles, maxDisplayedCycles);
   const dayOfCycle = getDayOfCycle(cycles);
 
   // Length of the luteal phase in days (fixed value)
   const lutealPhaseLength = 14;
-  // Calculate what day ovulation should occur based on cycle length
-  // For example, if the cycle length is 30, then ovulation should occur on 30-14=16 day
-  const ovulationDay = cycleLength - lutealPhaseLength;
-  // Calculate the difference between the current day of the cycle and the day of ovulation
-  const diffDay = ovulationDay - dayOfCycle;
 
-  // If the day of ovulation has already passed by more than 2 days, return the status "completed"
-  // NOTE: 2 is the error value (margin of error)
-  if (diffDay < -2) {
+  // Calculate ovulation days based on shortest and longest cycles
+  // For shortest cycle: earlier ovulation
+  // For longest cycle: later ovulation
+  const ovulationDayEarliest = shortestCycle - lutealPhaseLength;
+  const ovulationDayLatest = longestCycle - lutealPhaseLength;
+
+  // Calculate the difference between the current day of the cycle and the ovulation window
+  const diffDayEarliest = ovulationDayEarliest - dayOfCycle;
+  const diffDayLatest = ovulationDayLatest - dayOfCycle;
+
+  // If we're past the latest possible ovulation day (with error margin), ovulation is finished
+  if (diffDayLatest < -2) {
     return i18n.t("finished");
   }
 
-  switch (diffDay) {
-    case -2:
-    case -1:
-      return i18n.t("possible");
-    // If the day of ovulation and the day of the cycle are the same (dayOfCycle = 16 and ovulationDay = 16), then ovulation is today
-    case 0:
-      return i18n.t("today");
-    case 1:
-      return i18n.t("tomorrow");
-    default:
-      return `${i18n.t("in")} ${diffDay} ${i18n.t("Days", {
-        postProcess: "interval",
-        count: diffDay,
-      })}`;
+  // Check if ovulation is today (within the earliest to latest range)
+  if (diffDayEarliest <= 0 && diffDayLatest >= 0) {
+    return i18n.t("today");
   }
+
+  // Check if ovulation is tomorrow
+  if (diffDayEarliest <= 1 && diffDayLatest >= 1) {
+    return i18n.t("tomorrow");
+  }
+
+  // If we're within the ovulation window or close to it (including error margin)
+  if (diffDayEarliest <= 2 && diffDayLatest >= -2) {
+    return i18n.t("possible");
+  }
+
+  // Before ovulation window - report days until earliest ovulation
+  if (diffDayEarliest > 0) {
+    return `${i18n.t("in")} ${diffDayEarliest} ${i18n.t("Days", {
+      postProcess: "interval",
+      count: diffDayEarliest,
+    })}`;
+  }
+
+  // Should not reach here, but return possible as fallback
+  return i18n.t("possible");
 }
 
 export function getPregnancyChance(
@@ -171,7 +186,8 @@ export function getDaysBeforePeriod(
 }
 
 export function getPhase(cycles: Cycle[], maxDisplayedCycles: number) {
-  const lengthOfCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
+  const shortestCycle = getShortestCycleLength(cycles, maxDisplayedCycles);
+  const longestCycle = getLongestCycleLength(cycles, maxDisplayedCycles);
   const lengthOfPeriod = getLengthOfLastPeriod(cycles);
   const currentDay = getDayOfCycle(cycles);
 
@@ -243,14 +259,19 @@ export function getPhase(cycles: Cycle[], maxDisplayedCycles: number) {
     return phases.menstrual;
   }
 
-  const ovulationDay = lengthOfCycle - lutealPhaseLength;
+  // Use earliest ovulation day (from shortest cycle) to determine phase boundaries
+  const ovulationDayEarliest = shortestCycle - lutealPhaseLength;
+  const ovulationDayLatest = longestCycle - lutealPhaseLength;
 
-  if (currentDay <= ovulationDay - ovulationOnError) {
+  // Follicular phase: after period and before the earliest ovulation (with error margin)
+  if (currentDay <= ovulationDayEarliest - ovulationOnError) {
     return phases.follicular;
   }
-  if (currentDay <= ovulationDay + ovulationOnError) {
+  // Ovulation phase: from earliest ovulation (with error) to latest ovulation (with error)
+  if (currentDay <= ovulationDayLatest + ovulationOnError) {
     return phases.ovulation;
   }
+  // Luteal phase: after ovulation ends
   return phases.luteal;
 }
 
@@ -273,6 +294,54 @@ export function getAverageLengthOfCycle(
 
   //NOTE: We subtract 1 because the length of the current cycle is 0 (i.e. cycles[0].cycleLength = 0) and we don't need to take it into account in the calculation.
   return Math.round(sum / (length - 1));
+}
+
+export function getShortestCycleLength(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
+  const displayedCycles = cycles.slice(0, maxDisplayedCycles);
+  const length = displayedCycles.length;
+
+  if (length <= 1) {
+    // NOTE: If there is only one cycle in history (the current one), then its length is at least 28 or more
+    return length === 0 ? 0 : displayedCycles[0].cycleLength;
+  }
+
+  // Filter out the current cycle (cycleLength = 0) and find the shortest cycle
+  const completedCycles = displayedCycles.filter(
+    (cycle) => cycle.cycleLength > 0,
+  );
+
+  if (completedCycles.length === 0) {
+    return 28; // Default value
+  }
+
+  return Math.min(...completedCycles.map((cycle) => cycle.cycleLength));
+}
+
+export function getLongestCycleLength(
+  cycles: Cycle[],
+  maxDisplayedCycles: number,
+) {
+  const displayedCycles = cycles.slice(0, maxDisplayedCycles);
+  const length = displayedCycles.length;
+
+  if (length <= 1) {
+    // NOTE: If there is only one cycle in history (the current one), then its length is at least 28 or more
+    return length === 0 ? 0 : displayedCycles[0].cycleLength;
+  }
+
+  // Filter out the current cycle (cycleLength = 0) and find the longest cycle
+  const completedCycles = displayedCycles.filter(
+    (cycle) => cycle.cycleLength > 0,
+  );
+
+  if (completedCycles.length === 0) {
+    return 28; // Default value
+  }
+
+  return Math.max(...completedCycles.map((cycle) => cycle.cycleLength));
 }
 
 export function getAverageLengthOfPeriod(
@@ -500,35 +569,49 @@ export function getOvulationDates(cycles: Cycle[], maxDisplayedCycles: number) {
     return [];
   }
 
-  const averageCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
+  const shortestCycle = getShortestCycleLength(cycles, maxDisplayedCycles);
+  const longestCycle = getLongestCycleLength(cycles, maxDisplayedCycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const ovulationDates = [];
 
   for (const cycle of cycles) {
     const startOfCycle = startOfDay(new Date(cycle.startDate));
 
-    // We determine the date of the beginning of ovulation
-    // NOTE: Ovulation is calculated as follows: if the cycle length is 32 days, then ovulation will be on day 32-14 = 18. But we add the probability of error, so instead of 14 we subtract 16.
-    // NOTE: Then the date of the beginning of ovulation will be: the date of the start of the cycle + (the length of the cycle - 16)
-    const ovulationStartDate = addDays(
-      startOfCycle,
-      cycle.cycleLength
-        ? // This case is for cycles that have already passed.
-          cycle.cycleLength - 16
-        : // This case is for the current cycle
-          dayOfCycle > averageCycle
-          ? // This is the case if there is a delay now
-            // NOTE: About 17: since today is a delay, we mean that menstruation can start today, so it is marked in the calendar. Therefore, if menstruation can start today, then today will be the beginning of a new cycle.
-            // Then the length of the cycle, which we calculate, will be: "dayOfCycle - 17".
-            // Then the beginning of ovulation will be "dayOfCycle - 1 - 16 = dayOfCycle - 17"
-            dayOfCycle - 17
-          : averageCycle - 16,
-    );
+    // Calculate ovulation range based on shortest and longest cycles
+    // NOTE: Using shortest cycle for earliest ovulation, longest for latest
+    // We subtract 16 (14 for luteal phase + 2 for error margin) to get the start of the ovulation window
+    let ovulationStartDay: number;
+    let ovulationEndDay: number;
 
-    // Add another 4 days of ovulation
+    if (cycle.cycleLength > 0) {
+      // For completed cycles, calculate based on the actual cycle length
+      // But also consider the variation from shortest to longest
+      const cycleVariation = longestCycle - shortestCycle;
+      ovulationStartDay =
+        cycle.cycleLength - 16 - Math.floor(cycleVariation / 2);
+      ovulationEndDay =
+        cycle.cycleLength - 16 + Math.ceil(cycleVariation / 2) + 3;
+    } else {
+      // For current cycle
+      if (dayOfCycle > longestCycle) {
+        // Delay case
+        ovulationStartDay = dayOfCycle - 17 - (longestCycle - shortestCycle);
+        ovulationEndDay = dayOfCycle - 13;
+      } else {
+        // Normal case - use range from shortest to longest
+        ovulationStartDay = shortestCycle - 16;
+        ovulationEndDay = longestCycle - 13; // Base ovulation day plus a small window
+      }
+    }
+
+    // Ensure we don't have negative days
+    ovulationStartDay = Math.max(1, ovulationStartDay);
+    const numDays = ovulationEndDay - ovulationStartDay + 1;
+
+    // Add all days in the ovulation range
     ovulationDates.push(
-      ...Array.from({ length: 4 }, (_, i) =>
-        format(addDays(ovulationStartDate, i), "yyyy-MM-dd"),
+      ...Array.from({ length: numDays }, (_, i) =>
+        format(addDays(startOfCycle, ovulationStartDay + i), "yyyy-MM-dd"),
       ),
     );
   }
@@ -544,30 +627,38 @@ export function getFutureOvulationDates(
 ) {
   if (cycles.length < 2) return [];
 
-  const lengthOfCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
+  const averageCycle = getAverageLengthOfCycle(cycles, maxDisplayedCycles);
+  const shortestCycle = getShortestCycleLength(cycles, maxDisplayedCycles);
+  const longestCycle = getLongestCycleLength(cycles, maxDisplayedCycles);
   const dayOfCycle = getDayOfCycle(cycles);
   const nowDate = startOfToday();
   const ovulationDates: string[] = [];
 
   const addOvulationDates = (startDate: Date) => {
+    // Calculate the range of ovulation days for future cycles
+    // Using shortest cycle for earliest ovulation, longest for latest
+    const ovulationStartDay = shortestCycle - 16;
+    const ovulationEndDay = longestCycle - 13; // Base ovulation day plus a small window
+    const numDays = ovulationEndDay - ovulationStartDay + 1;
+
     ovulationDates.push(
-      ...Array.from({ length: 4 }, (_, i) =>
-        format(addDays(startDate, lengthOfCycle - 16 + i), "yyyy-MM-dd"),
+      ...Array.from({ length: numDays }, (_, i) =>
+        format(addDays(startDate, ovulationStartDay + i), "yyyy-MM-dd"),
       ),
     );
   };
 
-  let ovulationStartDate =
-    dayOfCycle <= lengthOfCycle
-      ? addDays(startOfDay(new Date(cycles[0].startDate)), lengthOfCycle)
+  let nextCycleStartDate =
+    dayOfCycle <= averageCycle
+      ? addDays(startOfDay(new Date(cycles[0].startDate)), averageCycle)
       : nowDate;
 
-  addOvulationDates(ovulationStartDate);
+  addOvulationDates(nextCycleStartDate);
 
   // 5 - the number of cycles for which we will calculate ovulation
   Array.from({ length: 5 }).forEach(() => {
-    ovulationStartDate = addDays(ovulationStartDate, lengthOfCycle);
-    addOvulationDates(ovulationStartDate);
+    nextCycleStartDate = addDays(nextCycleStartDate, averageCycle);
+    addOvulationDates(nextCycleStartDate);
   });
 
   return ovulationDates;
