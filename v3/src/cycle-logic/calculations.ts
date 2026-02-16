@@ -1,9 +1,10 @@
-import { median } from 'es-toolkit/math';
+import { median } from "es-toolkit/math";
 import { addDays, differenceInCalendarDays, subDays } from "date-fns";
 
 import { type Cycle } from "./ICycle";
 
 const LUTEAL_PHASE_DAYS = 14;
+const AVERAGE_PERIOD_LENGTH = 5;
 
 export const CyclePhase = {
   Menstrual: 0,
@@ -80,5 +81,43 @@ export const cyclePhase = (cycles: Cycle[], day: Date) => {
 export const isFertile = (cycles: Cycle[], day: Date) => {
   if (!cycles.length) return;
 
-  return cyclePhase(cycles, day) === CyclePhase.Ovulation
-}
+  return cyclePhase(cycles, day) === CyclePhase.Ovulation;
+};
+
+export const addCycle = (cycles: Cycle[], startNewCycle: Date) => {
+  if (!cycles.length) {
+    const newCycle = {
+      cycle_length: 0,
+      period_length: AVERAGE_PERIOD_LENGTH,
+      start_date: startNewCycle,
+      end_date: null,
+      ovulation_date: null,
+    };
+
+    return [newCycle];
+  }
+
+  const finishedCycle = cycles[0];
+  const cycleLength = differenceInCalendarDays(
+    startNewCycle,
+    finishedCycle.start_date,
+  );
+  const endDate = subDays(startNewCycle, 1);
+
+  const updatedLastCycle = {
+    ...finishedCycle,
+    cycle_length: cycleLength,
+    end_date: endDate,
+    ovulation_date: ovulationDate(cycles),
+  };
+
+  const newCycle = {
+    cycle_length: 0,
+    period_length: medianPeriodLength(cycles),
+    start_date: startNewCycle,
+    end_date: null,
+    ovulation_date: null,
+  };
+
+  return [newCycle, updatedLastCycle, ...cycles.slice(1)];
+};
