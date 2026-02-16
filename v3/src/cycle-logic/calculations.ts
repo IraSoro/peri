@@ -121,3 +121,30 @@ export const addCycle = (cycles: Cycle[], startNewCycle: Date) => {
 
   return [newCycle, updatedLastCycle, ...cycles.slice(1)];
 };
+
+export const allPeriodDays = (cycles: Cycle[]) => {
+  const allDays: Date[] = [];
+
+  cycles.forEach((cycle) => {
+    for (let i = 0; i < cycle.period_length; i++) {
+      allDays.push(addDays(cycle.start_date, i));
+    }
+  });
+
+  return allDays;
+};
+
+export const allOvulationDays = (cycles: Cycle[]) => {
+  const ovulationDays: Date[] = [];
+
+  cycles.forEach((cycle) => {
+    if (!cycle.ovulation_date) return;
+
+    ovulationDays.push(subDays(cycle.ovulation_date, 1));
+    ovulationDays.push(cycle.ovulation_date);
+    ovulationDays.push(addDays(cycle.ovulation_date, 1));
+    ovulationDays.push(addDays(cycle.ovulation_date, 2));
+  });
+
+  return ovulationDays;
+};

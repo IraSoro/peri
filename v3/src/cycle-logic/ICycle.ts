@@ -3,7 +3,7 @@ export interface Cycle {
   period_length: number;
   start_date: Date;
   end_date: Date;
-  ovulation_date: number;
+  ovulation_date: Date;
 }
 
 export interface CycleInfo {
