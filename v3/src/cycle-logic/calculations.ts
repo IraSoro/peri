@@ -1,5 +1,11 @@
 import { median } from "es-toolkit/math";
-import { addDays, differenceInCalendarDays, subDays } from "date-fns";
+import {
+  addDays,
+  differenceInCalendarDays,
+  isAfter,
+  isSameDay,
+  subDays,
+} from "date-fns";
 
 import { type Cycle } from "./ICycle";
 
@@ -33,18 +39,23 @@ export const daysUntilNextCycle = (cycles: Cycle[]) => {
   return daysLeft > 0 ? daysLeft : 0;
 };
 
-export const ovulationDate = (cycles: Cycle[]) => {
+export const ovulationDate = (cycles: Cycle[], selectedCycle: Cycle) => {
   if (!cycles.length) return;
 
-  const cycleLength = medianCycleLength(cycles);
   const activeCycle = cycles[0];
 
+  if (!isSameDay(selectedCycle.ovulation_date, activeCycle.ovulation_date)) {
+    return selectedCycle.ovulation_date;
+  }
+
+  const cycleLength = medianCycleLength(cycles);
   const ovulationOffsetDays = cycleLength - LUTEAL_PHASE_DAYS;
+
   return addDays(activeCycle.start_date, ovulationOffsetDays);
 };
 
-export const ovulationDateWindow = (cycles: Cycle[]) => {
-  const ovulation = ovulationDate(cycles);
+export const ovulationDateWindow = (cycles: Cycle[], selectedCycle: Cycle) => {
+  const ovulation = ovulationDate(cycles, selectedCycle);
 
   if (!ovulation) return;
 
@@ -59,19 +70,20 @@ export const ovulationDateWindow = (cycles: Cycle[]) => {
 export const cyclePhase = (cycles: Cycle[], day: Date) => {
   if (!cycles.length) return;
 
-  const activeCycle = cycles[0];
-  const menstruationEnd = addDays(
-    activeCycle.start_date,
-    activeCycle.period_length - 1,
+  const selectedCycle = cycles.find(
+    (cycle) =>
+      isAfter(day, cycle.start_date) || isSameDay(day, cycle.start_date),
   );
 
-  const ovulationWindow = ovulationDateWindow(cycles);
-  if (!ovulationWindow || ovulationWindow.length === 0) return;
+  if (!selectedCycle) return;
+
+  const ovulationWindow = ovulationDateWindow(cycles, selectedCycle);
+  if (!ovulationWindow) return;
 
   const ovulationStart = ovulationWindow[0];
   const ovulationEnd = ovulationWindow.at(-1)!;
 
-  if (day <= menstruationEnd) return CyclePhase.Menstrual;
+  if (day <= selectedCycle.period_end_date) return CyclePhase.Menstrual;
   if (day < ovulationStart) return CyclePhase.Follicular;
   if (day <= ovulationEnd) return CyclePhase.Ovulation;
 
@@ -85,38 +97,38 @@ export const isFertile = (cycles: Cycle[], day: Date) => {
 };
 
 export const addCycle = (cycles: Cycle[], startNewCycle: Date) => {
-  if (!cycles.length) {
-    const newCycle = {
-      cycle_length: 0,
-      period_length: AVERAGE_PERIOD_LENGTH,
-      start_date: startNewCycle,
-      end_date: null,
-      ovulation_date: null,
-    };
-
-    return [newCycle];
-  }
+  if (!cycles.length)
+    return [
+      {
+        cycle_length: 0,
+        period_length: AVERAGE_PERIOD_LENGTH,
+        start_date: startNewCycle,
+        period_end_date: addDays(startNewCycle, AVERAGE_PERIOD_LENGTH),
+        cycle_end_date: startNewCycle,
+        ovulation_date: startNewCycle,
+      },
+    ];
 
   const finishedCycle = cycles[0];
   const cycleLength = differenceInCalendarDays(
     startNewCycle,
     finishedCycle.start_date,
   );
-  const endDate = subDays(startNewCycle, 1);
 
   const updatedLastCycle = {
     ...finishedCycle,
     cycle_length: cycleLength,
-    end_date: endDate,
-    ovulation_date: ovulationDate(cycles),
+    end_date: subDays(startNewCycle, 1),
+    ovulation_date: ovulationDate(cycles, finishedCycle),
   };
 
-  const newCycle = {
+  const newCycle: Cycle = {
     cycle_length: 0,
     period_length: medianPeriodLength(cycles),
     start_date: startNewCycle,
-    end_date: null,
-    ovulation_date: null,
+    period_end_date: addDays(startNewCycle, medianPeriodLength(cycles)),
+    cycle_end_date: startNewCycle,
+    ovulation_date: startNewCycle,
   };
 
   return [newCycle, updatedLastCycle, ...cycles.slice(1)];
@@ -138,12 +150,10 @@ export const allOvulationDays = (cycles: Cycle[]) => {
   const ovulationDays: Date[] = [];
 
   cycles.forEach((cycle) => {
-    if (!cycle.ovulation_date) return;
+    const ovulationDates = ovulationDateWindow(cycles, cycle);
+    if (!ovulationDates) return;
 
-    ovulationDays.push(subDays(cycle.ovulation_date, 1));
-    ovulationDays.push(cycle.ovulation_date);
-    ovulationDays.push(addDays(cycle.ovulation_date, 1));
-    ovulationDays.push(addDays(cycle.ovulation_date, 2));
+    ovulationDays.push(...ovulationDates);
   });
 
   return ovulationDays;
