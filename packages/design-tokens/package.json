@@ -1,0 +1,14 @@
+{
+  "name": "@repo/design-tokens",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "style-dictionary build --config style-dictionary.config.js"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.0.0"
+  },
+  "exports": {
+    "./css": "./dist/tokens.gen.css"
+  }
+}

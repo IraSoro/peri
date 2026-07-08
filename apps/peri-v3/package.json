@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@repo/design-tokens": "workspace:*",
     "date-fns": "^4.1.0",
     "es-toolkit": "^1.44.0",
     "react": "^19.1.1",

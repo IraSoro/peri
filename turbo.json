@@ -1,6 +1,10 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "tasks": {
+    "@repo/design-tokens#build": {
+      "inputs": ["tokens/**/*.json", "style-dictionary.config.js"],
+      "outputs": ["dist/**"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
