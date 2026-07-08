@@ -1,6 +1,12 @@
 packages:
   - "apps/*"
   - "packages/*"
+
 allowBuilds:
   core-js: true
   esbuild: true
+
+# We need this to override old react-router version in peri-v2
+overrides:
+  '@types/react-router>@types/react': '18.3.31'
+  '@types/react-router-dom>@types/react': '18.3.31'
