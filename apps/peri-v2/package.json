@@ -1,5 +1,5 @@
 {
-  "name": "peri",
+  "name": "peri-v2",
   "description": "The Period Tracker App",
   "version": "2.6.6",
   "type": "module",
@@ -17,7 +17,8 @@
     "test:coverage": "vitest run --coverage --silent",
     "lint": "eslint --ext .js --ext .mjs --ext .ts --ext .tsx .",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "fmt:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@capacitor/android": "^7.0.0",
@@ -60,17 +61,18 @@
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "semver": "^7.6.2",
-    "typescript": "^4.9.5",
+    "typescript": "^5.8.3",
     "vite": "^6.0.2"
   },
   "devDependencies": {
     "@capacitor/cli": "^7.0.0",
     "@ionic/lab": "3.2.15",
     "@types/semver": "^7.5.8",
-    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.63.0",
     "@vitest/coverage-v8": "^2.1.8",
     "eslint": "^9.36.0",
     "gh-pages": "^5.0.0",
+    "globals": "^16.5.0",
     "vite-plugin-pwa": "^0.21.1",
     "vitest": "^2.1.8"
   }

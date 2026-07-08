@@ -8,5 +8,5 @@ export interface Cycle {
 }
 
 export interface CycleInfo {
-  cycles: Cycle[]
+  cycles: Cycle[];
 }

@@ -135,7 +135,9 @@ it("Download latest release", async () => {
   // android
   vi.spyOn(mockedIonicCore, "isPlatform").mockReturnValueOnce(true);
 
-  const mockedWindowOpen = vi.spyOn(window, "open");
+  const mockedWindowOpen = vi
+    .spyOn(window, "open")
+    .mockImplementationOnce(() => null);
 
   globalThis.fetch = vi.fn().mockResolvedValue({
     json: vi.fn().mockResolvedValue({

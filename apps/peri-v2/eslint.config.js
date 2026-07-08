@@ -16,8 +16,6 @@ delete browserGlobals["AudioWorkletGlobalScope "];
 export default [
   {
     ignores: [
-      "**/.github/",
-      "**/.vscode/",
       "**/android/",
       "**/coverage/",
       "**/demonstration/",
@@ -26,6 +24,7 @@ export default [
       "**/node_modules/",
       "**/public/",
       "**/resources/",
+      "**/*d.ts",
     ],
   },
 
