@@ -8,9 +8,6 @@
     "url": "https://github.com/IraSoro"
   },
   "private": true,
-  "workspaces": [
-    "v3"
-  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
