@@ -3,10 +3,10 @@ packages:
   - "packages/*"
 
 allowBuilds:
-  '@bundled-es-modules/glob': false
+  '@bundled-es-modules/glob': true
   core-js: true
   esbuild: true
-  style-dictionary: false
+  style-dictionary: true
 
 # We need this to override old react-router version in peri-v2
 overrides:
