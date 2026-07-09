@@ -1,2 +1,2 @@
 @import "tailwindcss";
-@import "@repo/design-tokens/css";
+@import "@repo/design-tokens/tokens.gen.css";
