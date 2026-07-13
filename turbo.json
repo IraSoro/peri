@@ -18,7 +18,7 @@
       "dependsOn": ["^transit"]
     },
     "typecheck": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^typecheck"]
     },
     "@repo/design-tokens#build": {
       "inputs": ["tokens/**/*.json", "style-dictionary.config.js"],

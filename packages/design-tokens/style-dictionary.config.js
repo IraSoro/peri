@@ -50,12 +50,7 @@ StyleDictionary.registerParser({
   parser: ({ contents }) => flattenPenpotFile(JSON.parse(contents)),
 });
 
-// Builds a comment banner that flags this file as generated.
-// The `@generated` marker and "DO NOT EDIT" phrasing are recognized by
-// several IDEs/tools (JetBrains IDEs dim generated files, GitHub can
-// collapse them in diffs, some ESLint/Prettier ignore configs key off it).
 function generatedBanner({ sourcePath, scriptPath }) {
-  const timestamp = new Date().toISOString();
   return [
     '/**',
     ' * @generated',
@@ -64,8 +59,6 @@ function generatedBanner({ sourcePath, scriptPath }) {
     ` * This file is auto-generated from "${sourcePath}"`,
     ` * by running "${scriptPath}".`,
     ' * Any changes made here will be overwritten the next time the build runs.',
-    ' *',
-    ` * Generated: ${timestamp}`,
     ' */',
     '',
   ].join('\n');
