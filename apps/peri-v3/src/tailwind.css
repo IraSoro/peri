@@ -1,2 +1,13 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource/source-sans-pro";
 @import "@repo/design-tokens/tokens.gen.css";
+
+@theme {
+  --font-sans: "Source Sans Pro", sans-serif;
+  --breakpoint-sm: 375px;
+  --breakpoint-md: 425px;
+  --breakpoint-lg: 640px;
+  --breakpoint-xl: 768px;
+  --breakpoint-2xl: 1024px;
+}

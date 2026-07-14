@@ -1,11 +1,12 @@
+import { WelcomeView1, WelcomeView2, WelcomeView3 } from "./views/Welcome";
+
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="text-base-primary-inverse bg-error-primary">test</div>
-      <h1 className="bg-amber-200">Test</h1>
-      <h1>123</h1>
-      <h1>{import.meta.env.VITE_TEST_VAR}</h1>
-    </div>
+    <>
+      {/* <WelcomeView1 /> */}
+      {/* <WelcomeView2 /> */}
+      <WelcomeView3 />
+    </>
   );
 }
 

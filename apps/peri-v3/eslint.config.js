@@ -36,6 +36,7 @@ export default tseslint.config([
       ],
       "@typescript-eslint/no-unsafe-enum-comparison": ["off"],
       "prettier/prettier": ["warn"],
+      "react-refresh/only-export-components": "off",
     },
   },
 ]);
