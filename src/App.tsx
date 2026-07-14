@@ -226,7 +226,7 @@ const App = (props: AppProps) => {
       .then(setTheme)
       .catch((err) => {
         console.error(`Can't get theme ${(err as Error).message}`);
-        storage.set.theme(theme).catch((err) => console.error(err));
+        storage.set.theme("basic").catch((err) => console.error(err));
       });
 
     storage.get
@@ -253,10 +253,11 @@ const App = (props: AppProps) => {
       .catch((err) => {
         console.error(`Can't get maxDisplayedCycles ${(err as Error).message}`);
         storage.set
-          .maxNumberOfDisplayedCycles(maxNumberOfDisplayedCycles)
+          .maxNumberOfDisplayedCycles(6)
           .catch((err) => console.error(err));
       });
-  }, [changeLanguage, theme, maxNumberOfDisplayedCycles]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [changeLanguage]);
 
   useEffect(() => {
     if (!configuration.features.notifications || !notificationEnabled) {
