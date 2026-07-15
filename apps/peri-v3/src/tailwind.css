@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@fontsource/source-sans-pro";
+@import "@fontsource/source-sans-pro/700.css";
+@import "@fontsource/source-sans-pro/900.css";
 @import "@repo/design-tokens/tokens.gen.css";
 
 @theme {
@@ -10,4 +12,8 @@
   --breakpoint-lg: 640px;
   --breakpoint-xl: 768px;
   --breakpoint-2xl: 1024px;
+}
+
+@utility peri-gradient-linear {
+  background-image: linear-gradient(to right, var(--color-gradient-step-2), var(--color-gradient-step-8));
 }

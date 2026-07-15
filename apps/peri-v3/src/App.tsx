@@ -1,12 +1,19 @@
-import { WelcomeView1, WelcomeView2, WelcomeView3 } from "./views/Welcome";
+import { AppLayout } from "./components/layouts/AppLayout";
+import { WelcomePage } from "./pages/WelcomePage";
+import { SetupPage } from "./pages/SetupPage";
+import { InitializationPage } from "./pages/InitializationPage";
+import { FirstPage } from "./pages/FirstPage";
+import { SecondPage } from "./pages/SecondPage";
 
 function App() {
   return (
-    <>
-      {/* <WelcomeView1 /> */}
-      {/* <WelcomeView2 /> */}
-      <WelcomeView3 />
-    </>
+    <AppLayout>
+      {/* <WelcomePage /> */}
+      {/* <SetupPage /> */}
+      {/* <InitializationPage /> */}
+      {/* <FirstPage /> */}
+      {/* <SecondPage /> */}
+    </AppLayout>
   );
 }
 
