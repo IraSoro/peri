@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 
 const pageLayoutContentVariants = cva("flex flex-col items-center", {
   variants: {
-    alignment: {
+    justify: {
       start: "",
       center: "m-auto",
     },
@@ -15,7 +15,7 @@ const pageLayoutContentVariants = cva("flex flex-col items-center", {
     },
   },
   defaultVariants: {
-    alignment: "start",
+    justify: "start",
     gap: "md",
   },
 });
@@ -23,10 +23,10 @@ const pageLayoutContentVariants = cva("flex flex-col items-center", {
 type PageLayout = VariantProps<typeof pageLayoutContentVariants> &
   Pick<ComponentProps<"div">, "children">;
 
-export const PageLayout = ({ alignment, gap, children }: PageLayout) => {
+export const PageLayout = ({ justify, gap, children }: PageLayout) => {
   return (
     <div className="flex size-full scrollbar-none flex-col overflow-y-auto p-6">
-      <div className={pageLayoutContentVariants({ alignment, gap })}>
+      <div className={pageLayoutContentVariants({ justify, gap })}>
         {children}
       </div>
     </div>
