@@ -5,6 +5,39 @@
 @import "@fontsource/source-sans-pro/900.css";
 @import "@repo/design-tokens/tokens.gen.css";
 
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("@fontsource/source-sans-pro/files/source-sans-pro-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("@fontsource/source-sans-pro/files/source-sans-pro-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("@fontsource/source-sans-pro/files/source-sans-pro-latin-900-normal.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
 @theme {
   --font-sans: "Source Sans Pro", sans-serif;
   --breakpoint-sm: 375px;
