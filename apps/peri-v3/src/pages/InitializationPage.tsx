@@ -1,10 +1,10 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
-import periLookup from "@/assets/peri-lookup.webp";
+import { Logo } from "@/components/ui/Logo";
 
 export const InitializationPage = () => {
   return (
-    <PageLayout justify="center" gap="none">
-      <img src={periLookup} alt="Peri lookup" className="h-60" />
+    <PageLayout justify="center">
+      <Logo variant="lockup" size={9} />
     </PageLayout>
   );
 };

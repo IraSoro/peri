@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 
 const COLORS = [
@@ -10,61 +11,108 @@ const COLORS = [
   "bg-gradient-step-6",
   "bg-gradient-step-7",
   "bg-gradient-step-8",
+  "bg-gradient-step-6",
+  "bg-gradient-step-5",
+  "bg-gradient-step-4",
+  "bg-gradient-step-3",
 ];
-
 const DOT_ORDER = [0, 1, 3, 2];
+const DEFAULT_COLORS_DURATION = 100;
+const DEFAULT_DOTS_DURATION = 300;
 
-const DOT_COUNT = 4;
+const loaderContainerVariants = cva(
+  "grid grid-cols-2 grid-rows-2 content-center items-center justify-center justify-items-start",
+  {
+    variants: {
+      size: {
+        sm: "gap-0.5",
+        md: "gap-1",
+      },
+    },
+    defaultVariants: {
+      size: "sm",
+    },
+  },
+);
+
+const loaderDotVariants = cva("rounded-full", {
+  variants: {
+    size: {
+      sm: "w-4 h-4",
+      md: "w-5 h-5",
+    },
+  },
+  defaultVariants: {
+    size: "sm",
+  },
+});
+
+const loaderMessageVariants = cva("text-base-secondary", {
+  variants: {
+    size: {
+      sm: "text-xl",
+      md: "text-2xl",
+    },
+  },
+  defaultVariants: {
+    size: "sm",
+  },
+});
 
 export type LoaderProps = {
-  size: number;
   message?: string;
-};
+} & VariantProps<typeof loaderContainerVariants>;
 
 export const Loader = ({ message, size }: LoaderProps) => {
   const [colors, setColors] = useState(["", "", "", ""]);
-  const [tick, setTick] = useState(0);
+  const [dotTick, setDotTick] = useState(0);
+
+  const colorTickRef = useRef(0);
 
   useEffect(() => {
+    colorTickRef.current = 0;
     const interval = setInterval(() => {
-      setTick((prevTick) => {
-        const nextTick = prevTick + 1;
-        setColors((prevColors) => {
-          const newColors = [...prevColors];
-          const dotIndex = DOT_ORDER[prevTick % DOT_ORDER.length];
-          newColors[dotIndex] = COLORS[prevTick % COLORS.length];
-          return newColors;
-        });
-        return nextTick;
+      const t = colorTickRef.current;
+      colorTickRef.current += 1;
+      setColors((prevColors) => {
+        const newColors = [...prevColors];
+        const dotIndex = DOT_ORDER[t % DOT_ORDER.length];
+        newColors[dotIndex] = COLORS[t % COLORS.length];
+        return newColors;
       });
-    }, 350);
+    }, DEFAULT_COLORS_DURATION);
 
     return () => clearInterval(interval);
   }, []);
 
-  const dotCount = message ? tick % DOT_COUNT : 0;
-  const gap = size * (4 / 42);
+  useEffect(() => {
+    if (!message) return;
+
+    const interval = setInterval(() => {
+      setDotTick((prev) => prev + 1);
+    }, DEFAULT_DOTS_DURATION);
+
+    return () => clearInterval(interval);
+  }, [message]);
 
   return (
     <div className="flex items-center gap-2">
-      <div
-        className="grid grid-cols-2 grid-rows-2 content-center items-center justify-center justify-items-start"
-        style={{ gap }}
-      >
+      <div className={cn(loaderContainerVariants({ size }))}>
         {colors.map((color, i) => (
-          <span
-            key={i}
-            className={cn("rounded-full", color)}
-            style={{ width: size, height: size }}
-          />
+          <span key={i} className={cn(loaderDotVariants({ size }), color)} />
         ))}
       </div>
 
       {message && (
-        <span className="text-base-secondary text-xl">
+        <span className={loaderMessageVariants({ size })}>
           {message}
-          <span className="inline-block w-4 text-left">
-            {".".repeat(dotCount)}
+          <span
+            className={cn(
+              "inline-block text-left",
+              loaderMessageVariants({ size }),
+            )}
+          >
+            {".".repeat(message ? dotTick % DOT_ORDER.length : 0)}
           </span>
         </span>
       )}

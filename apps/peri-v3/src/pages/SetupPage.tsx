@@ -1,14 +1,20 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
 import { CalendarWidget } from "@/components/widgets/CalendarWidget";
-import periLookup from "@/assets/peri-lookup.webp";
+import { Logo } from "@/components/ui/Logo";
+import { Typography } from "@/components/ui/Typography";
 
 export const SetupPage = () => {
   return (
     <PageLayout>
-      <img src={periLookup} alt="Peri lookup" className="h-45" />
-      <div className="text-base-secondary text-center text-3xl font-bold whitespace-pre-line">
+      <Logo size={7} />
+      <Typography
+        size={7}
+        weight="bold"
+        color="secondary"
+        className="text-center whitespace-pre-line"
+      >
         {"Let's mark the day of your\nlast period:"}
-      </div>
+      </Typography>
       <CalendarWidget />
     </PageLayout>
   );

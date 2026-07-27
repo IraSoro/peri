@@ -9,7 +9,7 @@ function App() {
   return (
     <AppLayout>
       {/* <WelcomePage /> */}
-      {/* <SetupPage /> */}
+      <SetupPage />
       {/* <InitializationPage /> */}
       {/* <FirstPage /> */}
       {/* <SecondPage /> */}

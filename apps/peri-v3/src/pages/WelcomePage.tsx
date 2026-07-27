@@ -1,13 +1,14 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
-import periLookup from "@/assets/peri-lookup.webp";
+import { Typography } from "@/components/ui/Typography";
+import { Logo } from "@/components/ui/Logo";
 
 export const WelcomePage = () => {
   return (
     <PageLayout justify="center" gap="none">
-      <div className="peri-gradient-linear bg-clip-text text-5xl font-bold text-transparent">
+      <Typography size={9} weight="bold" color="gradient">
         Welcome to
-      </div>
-      <img src={periLookup} alt="Peri lookup" className="h-60" />
+      </Typography>
+      <Logo variant="lockup" size={9} />
     </PageLayout>
   );
 };
