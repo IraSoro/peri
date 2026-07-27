@@ -26,6 +26,11 @@ const typographyVariants = cva("", {
       primary: "text-base-primary",
       secondary: "text-base-secondary",
       disabled: "text-base-disabled",
+      follicular: "text-follicular-primary",
+      menstrual: "text-menstrual-primary",
+      ovulation: "text-ovulation-primary",
+      luteal: "text-luteal-primary",
+      delayed: "text-delayed-primary",
       gradient: "peri-gradient-linear bg-clip-text text-transparent",
     },
   },
@@ -36,11 +41,8 @@ const typographyVariants = cva("", {
   },
 });
 
-export type TypographyProps = Pick<
-  React.ComponentProps<"div">,
-  "className" | "children"
-> &
-  VariantProps<typeof typographyVariants>;
+export type TypographyProps = VariantProps<typeof typographyVariants> &
+  Pick<React.ComponentProps<"div">, "className" | "children">;
 
 export const Typography = ({
   size,

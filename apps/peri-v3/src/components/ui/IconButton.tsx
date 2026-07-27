@@ -18,6 +18,7 @@ const iconButtonVariants = cva("", {
     color: {
       primary: "",
       secondary: "",
+      ternary: "",
     },
     disabled: {
       true: "border-base-disabled text-base-disabled",
@@ -41,6 +42,7 @@ const iconButtonIconVariants = cva("", {
     color: {
       primary: "stroke-base-primary",
       secondary: "stroke-base-secondary",
+      ternary: "stroke-base-ternary",
     },
     disabled: {
       true: "border-base-disabled text-base-disabled",

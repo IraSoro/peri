@@ -4,7 +4,7 @@ import { PeriodStatusWidget } from "@/components/widgets/PeriodStatusWidget";
 
 export const FirstPage = () => {
   return (
-    <PageLayout>
+    <PageLayout gap="2xl">
       <PeriodStatusWidget />
       <CalendarWidget />
     </PageLayout>

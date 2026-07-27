@@ -1,17 +1,28 @@
-import { cn } from "@/lib/utils/cn";
 import type { ComponentProps } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils/cn";
 
-type WidgetLayout = Pick<ComponentProps<"div">, "className" | "children">;
+const widgetLayoutVariants = cva(
+  "flex w-full shrink-0 scrollbar-none flex-col overflow-y-auto p-2",
+  {
+    variants: {
+      gap: {
+        none: "gap-0",
+        sm: "gap-2",
+        md: "gap-4",
+        lg: "gap-6",
+        "2xl": "gap-10",
+      },
+    },
+    defaultVariants: {
+      gap: "md",
+    },
+  },
+);
 
-export const WidgetLayout = ({ className, children }: WidgetLayout) => {
-  return (
-    <div
-      className={cn(
-        "flex w-full shrink-0 scrollbar-none flex-col gap-4 overflow-y-auto p-2",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+type WidgetLayoutProps = VariantProps<typeof widgetLayoutVariants> &
+  Pick<ComponentProps<"div">, "children">;
+
+export const WidgetLayout = ({ gap, children }: WidgetLayoutProps) => {
+  return <div className={cn(widgetLayoutVariants({ gap }))}>{children}</div>;
 };

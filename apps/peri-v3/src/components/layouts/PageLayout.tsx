@@ -12,6 +12,8 @@ const pageLayoutContentVariants = cva("flex flex-col items-center", {
       sm: "gap-2",
       md: "gap-4",
       lg: "gap-6",
+      xl: "gap-8",
+      "2xl": "gap-10",
     },
   },
   defaultVariants: {
