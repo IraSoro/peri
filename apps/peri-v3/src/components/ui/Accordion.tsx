@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils/cn";
 import { Accordion as AccordionPrimitive } from "@base-ui/react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export type AccordionProps = AccordionPrimitive.Root.Props;

@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils/cn";
 import { Collapsible as CollapsiblePrimitive } from "@base-ui/react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsDownUp, ChevronsUpDown } from "lucide-react";
 
 export type CollapsibleProps = CollapsiblePrimitive.Root.Props;
 
@@ -9,7 +8,7 @@ export const Collapsible = ({ className, ...props }: CollapsibleProps) => {
   return (
     <CollapsiblePrimitive.Root
       {...props}
-      className={cn("flex flex-col p-3", className)}
+      className={cn("flex flex-col", className)}
     />
   );
 };
@@ -25,12 +24,13 @@ export const CollapsibleTrigger = ({
     <CollapsiblePrimitive.Trigger
       {...props}
       className={cn(
-        "stroke-base-primary text-base-primary flex w-full items-center justify-between text-lg font-bold",
+        "group stroke-base-primary text-base-primary flex w-full items-center justify-between text-lg font-bold",
         className,
       )}
     >
       {children}
-      <ChevronsUpDown />
+      <ChevronsUpDown className="group-data-panel-open:hidden" />
+      <ChevronsDownUp className="hidden group-data-panel-open:block" />
     </CollapsiblePrimitive.Trigger>
   );
 };

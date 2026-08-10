@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Button as ButtonPrimitive } from "@base-ui/react";
 import { cn } from "@/lib/utils/cn";
 
-const buttonVariants = cva("", {
+const buttonVariants = cva("flex items-center justify-center", {
   variants: {
     variant: {
       contained: "text-base-primary-inverse bg-base-primary",
@@ -10,8 +10,8 @@ const buttonVariants = cva("", {
       text: "bg-transparent",
     },
     size: {
-      sm: "text-xl min-h-10 p-1 pl-3 pr-3 rounded-lg",
-      md: "text-2xl min-h-12 p-2 pl-6 pr-6 rounded-lg",
+      sm: "text-xl min-h-10 pt-2 pb-2 pl-3 pr-3 gap-2 rounded-lg",
+      md: "text-2xl min-h-12 pt-2 pb-2 pl-6 pr-6 gap-2 rounded-lg",
     },
     color: {
       primary: "border-base-primary text-base-primary",
@@ -41,7 +41,8 @@ const buttonVariants = cva("", {
   },
 });
 
-export type ButtonProps = VariantProps<typeof buttonVariants> & ButtonPrimitive.Props;
+export type ButtonProps = VariantProps<typeof buttonVariants> &
+  ButtonPrimitive.Props;
 
 export const Button = ({
   variant,
