@@ -8,10 +8,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/Accordion";
 import {
-  Carousel2,
+  Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/Carousel";
+import { cva, type VariantProps } from "class-variance-authority";
 
 export const PhaseInfoWidget = () => {
   return (
@@ -19,8 +20,8 @@ export const PhaseInfoWidget = () => {
       <Typography size={7} weight="bold">
         Follicular phase
       </Typography>
-      <StatusBadge />
-      <Carousel2 opts={{ loop: true }}>
+      <Badge text="2 days left" color="follicular" />
+      <Carousel opts={{ loop: true }}>
         <CarouselContent>
           <CarouselItem className="flex flex-col gap-4">
             <Typography size={4} weight="bold">
@@ -44,31 +45,55 @@ Many people experience premenstrual symptoms during the later part of the luteal
               <AccordionItem>
                 <AccordionTrigger>Frequent symptoms</AccordionTrigger>
                 <AccordionContent>
-                  <SymptomBadge />
+                  <Symptom text="puffiness" />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </CarouselItem>
         </CarouselContent>
-      </Carousel2>
+      </Carousel>
     </WidgetLayout>
   );
 };
 
-const StatusBadge = () => {
+const badgeVariants = cva(
+  "rounded-2xl border-2 pt-0.5 pb-0.5 pr-2.5 pl-2.5 font-bold",
+  {
+    variants: {
+      color: {
+        follicular:
+          "bg-follicular-bg text-follicular-primary stroke-follicular-primary",
+        menstrual:
+          "bg-menstrual-bg text-menstrual-primary stroke-menstrual-primary",
+        ovulation:
+          "bg-ovulation-bg text-ovulation-primary stroke-ovulation-primary",
+        luteal: "bg-luteal-bg text-luteal-primary stroke-luteal-primary",
+        delayed: "bg-delayed-bg text-delayed-primary stroke-delayed-primary",
+      },
+    },
+  },
+);
+
+type BadgeProps = {
+  text: string;
+} & VariantProps<typeof badgeVariants>;
+
+const Badge = ({ text, color }: BadgeProps) => {
   return (
     <div className="flex">
-      <div className="bg-follicular-bg text-follicular-primary stroke-follicular-primary rounded-2xl border-2 pt-0.5 pr-2.5 pb-0.5 pl-2.5 text-base font-bold">
-        2 days left
-      </div>
+      <div className={badgeVariants({ color })}>{text}</div>
     </div>
   );
 };
 
-const SymptomBadge = () => {
+type SymptomProps = {
+  text: string;
+};
+
+const Symptom = ({ text }: SymptomProps) => {
   return (
     <div className="bg-base-secondary text-base-primary-inverse rounded-md p-1 pr-3 pl-3 text-lg">
-      puffiness
+      {text}
     </div>
   );
 };

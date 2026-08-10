@@ -40,7 +40,7 @@ function useCarousel() {
   return context;
 }
 
-export const Carousel2 = ({
+export const Carousel = ({
   orientation = "horizontal",
   opts,
   children,
