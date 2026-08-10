@@ -7,7 +7,7 @@ import { IconButton } from "../ui/IconButton";
 
 export const PeriodStatusWidget = () => {
   return (
-    <WidgetLayout gap="2xl">
+    <WidgetLayout gap="lg">
       <PeriodCountdown />
       <PeriodInfo />
     </WidgetLayout>
