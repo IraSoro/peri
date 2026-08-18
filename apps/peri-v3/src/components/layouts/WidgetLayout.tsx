@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 
 const widgetLayoutVariants = cva(
-  "flex w-full shrink-0 scrollbar-none flex-col overflow-y-auto p-2",
+  "flex w-full shrink-0 scrollbar-none flex-col overflow-y-auto",
   {
     variants: {
       gap: {

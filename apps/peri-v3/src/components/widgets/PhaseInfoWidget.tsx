@@ -57,7 +57,7 @@ Many people experience premenstrual symptoms during the later part of the luteal
 };
 
 const badgeVariants = cva(
-  "rounded-2xl border-2 pt-0.5 pb-0.5 pr-2.5 pl-2.5 font-bold",
+  "rounded-2xl border-2 pt-0.5 pb-0.5 pr-2.5 pl-2.5 font-bold flex items-center justify-center text-center",
   {
     variants: {
       color: {

@@ -27,12 +27,14 @@ const Header = () => {
   );
 };
 
-type ContentProps = Pick<React.ComponentProps<"div">, "children">;
+type ContentProps = Pick<React.ComponentProps<"div">, "children" | "ref">;
 
-const Content = ({ children }: ContentProps) => {
+const Content = ({ children, ref }: ContentProps) => {
   return (
     <div className="flex size-full flex-col items-center justify-start overflow-hidden">
-      <div className="size-full overflow-y-auto">{children}</div>
+      <div ref={ref} className="size-full scrollbar-none overflow-y-auto">
+        {children}
+      </div>
     </div>
   );
 };

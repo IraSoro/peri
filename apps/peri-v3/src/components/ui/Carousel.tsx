@@ -122,9 +122,12 @@ export const CarouselContent = ({ ...props }: CarouselContentProps) => {
         {...props}
         className={cn(
           "flex",
+          // NOTE: Touch-action is set to the axis orthogonal to the carousel's own
+          // drag axis, so embla's JS handles dragging along its axis while the
+          // browser still natively pans/scrolls along the other one.
           orientation === "horizontal"
-            ? "-ml-1 touch-pan-x flex-row"
-            : "-mt-1 h-full touch-pan-y flex-col",
+            ? "-ml-1 touch-pan-y flex-row"
+            : "-mt-1 h-full touch-pan-x flex-col",
         )}
       />
     </div>
