@@ -8,10 +8,10 @@ import { SecondPage } from "./pages/SecondPage";
 function App() {
   return (
     <AppLayout>
-      {/* <WelcomePage /> */}
-      {/* <SetupPage /> */}
-      {/* <InitializationPage /> */}
-      {/* <FirstPage /> */}
+      <WelcomePage />
+      <SetupPage />
+      <InitializationPage />
+      <FirstPage />
       <SecondPage />
     </AppLayout>
   );

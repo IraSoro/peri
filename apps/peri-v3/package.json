@@ -19,6 +19,7 @@
     "@base-ui/react": "^1.6.0",
     "@fontsource/source-sans-pro": "^5.2.5",
     "@repo/design-tokens": "workspace:*",
+    "@use-gesture/react": "^10.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",

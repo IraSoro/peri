@@ -27,7 +27,7 @@ type PageLayout = VariantProps<typeof pageLayoutContentVariants> &
 
 export const PageLayout = ({ justify, gap, children }: PageLayout) => {
   return (
-    <div className="flex size-full scrollbar-none flex-col overflow-y-auto p-6">
+    <div className="flex min-h-full w-full flex-col p-6">
       <div className={pageLayoutContentVariants({ justify, gap })}>
         {children}
       </div>
