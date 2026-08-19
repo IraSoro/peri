@@ -1,12 +1,12 @@
 import {
+  Children,
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { useGesture, useScroll } from "@use-gesture/react";
+import { useGesture } from "@use-gesture/react";
 
 type PageScrollContextProps = {
   atTop: boolean;
@@ -27,62 +27,123 @@ export function usePageScroll() {
 
 type AppLayout = Pick<React.ComponentProps<"div">, "children">;
 
-const OVERSCROLL_THRESHOLD = 200;
+const SNAP_DURATION_MS = 300;
+// Fraction of a page's height that must be dragged to commit to the next/prev page.
+const SNAP_THRESHOLD_RATIO = 0.2;
 
 export const AppLayout = ({ children }: AppLayout) => {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const slides = Children.toArray(children);
+  const pageCount = slides.length;
 
-  const atTopRef = useRef(true);
-  const atBottomRef = useRef(false);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const [pageIndex, setPageIndex] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const pageIndexRef = useRef(0);
+  const isAnimatingRef = useRef(false);
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
   const pullRef = useRef(0);
-  const lockedRef = useRef(false);
   const touchStartYRef = useRef(0);
   const lastTouchYRef = useRef(0);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = el;
-      atTopRef.current = scrollTop <= 0;
-      atBottomRef.current = scrollTop + clientHeight >= scrollHeight - 1;
-      console.log("atTop", atTopRef.current);
-      console.log("atBottom", atBottomRef.current);
+  const getEdgeState = () => {
+    const el = slideRefs.current[pageIndexRef.current];
+    if (!el) return { atTop: true, atBottom: true };
+    const { scrollTop, scrollHeight, clientHeight } = el;
+    return {
+      atTop: scrollTop <= 0,
+      atBottom: scrollTop + clientHeight >= scrollHeight - 1,
     };
-
-    el.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const goNext = useCallback(() => console.log("switch to next page"), []);
-  const goPrev = useCallback(() => console.log("switch to previous page"), []);
-
-  const reset = () => {
-    pullRef.current = 0;
-    lockedRef.current = false;
   };
 
-  // dy > 0 = intent to reveal content below (scroll down)
-  const handleOverscroll = (dy: number) => {
-    if (lockedRef.current) return;
+  const getPageHeight = () => trackRef.current?.clientHeight ?? 0;
 
-    if (dy > 0 && atBottomRef.current) {
-      pullRef.current += dy;
-      if (pullRef.current > OVERSCROLL_THRESHOLD) {
-        lockedRef.current = true;
-        goNext();
-      }
-    } else if (dy < 0 && atTopRef.current) {
-      pullRef.current += -dy;
-      if (pullRef.current > OVERSCROLL_THRESHOLD) {
-        lockedRef.current = true;
-        goPrev();
-      }
-    } else {
-      pullRef.current = 0;
+  const commitOrSnapBack = () => {
+    const pulled = pullRef.current;
+    pullRef.current = 0;
+
+    if (pulled === 0) return; // nothing dragged, no transform change to animate/await
+
+    const pageHeight = getPageHeight();
+    const rawPagesMoved =
+      pageHeight > 0
+        ? Math.sign(pulled) *
+          Math.floor(Math.abs(pulled) / pageHeight + (1 - SNAP_THRESHOLD_RATIO))
+        : 0;
+    // Cap to one page per gesture — a fast wheel flick can rack up a huge
+    // cumulative delta in a single burst (unlike a physically-bounded touch
+    // drag), which would otherwise skip through several pages at once.
+    const pagesMoved =
+      Math.sign(rawPagesMoved) * Math.min(1, Math.abs(rawPagesMoved));
+
+    if (pagesMoved !== 0) {
+      const nextIndex = Math.max(
+        0,
+        Math.min(pageCount - 1, pageIndexRef.current + pagesMoved),
+      );
+      pageIndexRef.current = nextIndex;
+      setPageIndex(nextIndex);
     }
+
+    isAnimatingRef.current = true;
+    setIsAnimating(true);
+    setDragOffset(0);
+
+    // Fallback in case transitionend doesn't fire (e.g. interrupted transition)
+    if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+    animationTimeoutRef.current = setTimeout(
+      handleTrackTransitionEnd,
+      SNAP_DURATION_MS + 50,
+    );
+  };
+
+  const handleTrackTransitionEnd = () => {
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+    isAnimatingRef.current = false;
+    setIsAnimating(false);
+  };
+
+  // dy > 0 = intent to reveal content below (go to next page)
+  const handleOverscroll = (dy: number) => {
+    if (isAnimatingRef.current || dy === 0) return;
+
+    // Only re-validate against the true page edge when starting a new pull
+    // from neutral. Once engaged, follow the gesture freely in either
+    // direction (including back past neutral) and only decide at release.
+    if (pullRef.current === 0) {
+      const { atTop, atBottom } = getEdgeState();
+      const atFirstPage = pageIndexRef.current === 0;
+      const atLastPage = pageIndexRef.current === pageCount - 1;
+      const canGoNext = dy > 0 && atBottom && !atLastPage;
+      const canGoPrev = dy < 0 && atTop && !atFirstPage;
+      if (!canGoNext && !canGoPrev) return;
+    }
+
+    // Cap the drag itself to one page's worth in each direction (or less
+    // near a boundary) — matches the one-page-per-gesture commit cap below,
+    // so release never snaps across a distance farther than what was visible.
+    const pageHeight = getPageHeight();
+    const pagesAvailableForward = Math.min(
+      1,
+      pageCount - 1 - pageIndexRef.current,
+    );
+    const pagesAvailableBackward = Math.min(1, pageIndexRef.current);
+    const minPull = -pagesAvailableBackward * pageHeight;
+    const maxPull = pagesAvailableForward * pageHeight;
+
+    pullRef.current = Math.max(
+      minPull,
+      Math.min(maxPull, pullRef.current + dy),
+    );
+    setDragOffset(-pullRef.current);
   };
 
   // Desktop: wheel via use-gesture
@@ -90,15 +151,22 @@ export const AppLayout = ({ children }: AppLayout) => {
     {
       onWheel: ({ delta: [, dy], last }) => {
         handleOverscroll(dy);
-        if (last) reset();
+        if (last) commitOrSnapBack();
       },
     },
-    { target: scrollRef, eventOptions: { passive: true } },
+    { target: trackRef, eventOptions: { passive: true } },
   );
+
+  useEffect(() => {
+    return () => {
+      if (animationTimeoutRef.current)
+        clearTimeout(animationTimeoutRef.current);
+    };
+  }, []);
 
   // Mobile: raw touch events, NOT use-gesture's onDrag
   useEffect(() => {
-    const el = scrollRef.current;
+    const el = trackRef.current;
     if (!el) return;
 
     const onTouchStart = (e: TouchEvent) => {
@@ -113,7 +181,7 @@ export const AppLayout = ({ children }: AppLayout) => {
       handleOverscroll(dy);
     };
 
-    const onTouchEnd = () => reset();
+    const onTouchEnd = () => commitOrSnapBack();
 
     el.addEventListener("touchstart", onTouchStart, { passive: true });
     el.addEventListener("touchmove", onTouchMove, { passive: true });
@@ -127,10 +195,31 @@ export const AppLayout = ({ children }: AppLayout) => {
   }, []);
 
   return (
-    <div className="flex h-screen w-screen justify-center">
+    <div className="flex h-dvh w-screen justify-center">
       <div className="relative flex h-full w-full flex-col lg:max-w-150">
         <Header />
-        <Content ref={scrollRef}>{children}</Content>
+        <Content>
+          <div
+            ref={trackRef}
+            onTransitionEnd={handleTrackTransitionEnd}
+            className={`flex h-full w-full flex-col ${isAnimating ? "transition-transform duration-300 ease-out" : ""}`}
+            style={{
+              transform: `translateY(calc(${-pageIndex * 100}% + ${dragOffset}px))`,
+            }}
+          >
+            {slides.map((slide, i) => (
+              <div
+                key={i}
+                ref={(el) => {
+                  slideRefs.current[i] = el;
+                }}
+                className="size-full shrink-0 scrollbar-none overflow-y-auto"
+              >
+                {slide}
+              </div>
+            ))}
+          </div>
+        </Content>
         <Footer />
       </div>
     </div>
@@ -152,14 +241,12 @@ const Header = () => {
   );
 };
 
-type ContentProps = Pick<React.ComponentProps<"div">, "children" | "ref">;
+type ContentProps = Pick<React.ComponentProps<"div">, "children">;
 
-const Content = ({ children, ref }: ContentProps) => {
+const Content = ({ children }: ContentProps) => {
   return (
     <div className="flex size-full flex-col items-center justify-start overflow-hidden">
-      <div ref={ref} className="size-full scrollbar-none overflow-y-auto">
-        {children}
-      </div>
+      {children}
     </div>
   );
 };
