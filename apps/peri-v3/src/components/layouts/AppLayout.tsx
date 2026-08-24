@@ -65,23 +65,13 @@ const Content = ({ children }: ContentProps) => {
 };
 
 const Footer = () => {
-  const { canGoNext, canGoPrev } = usePager();
-
   return (
     <div className="absolute bottom-0 flex min-h-12 w-full items-center justify-center md:min-h-13">
       {/* Left block */}
       <div className="flex h-full items-center justify-center gap-x-2 p-3" />
       {/* Center block */}
       <div className="flex size-full items-center justify-center gap-x-2 p-3">
-        <div className="text-base-primary flex items-center gap-x-2 text-base md:text-xl">
-          <span className={canGoPrev ? "" : "opacity-50"}>
-            {canGoPrev ? "Can swipe back" : "Can't swipe back"}
-          </span>
-          <span>·</span>
-          <span className={canGoNext ? "" : "opacity-50"}>
-            {canGoNext ? "Can swipe next" : "Can't swipe next"}
-          </span>
-        </div>
+        <div className="text-base-primary flex items-center gap-x-2 text-base md:text-xl" />
       </div>
       {/* Right block */}
       <div className="flex h-full items-center justify-center gap-x-2 p-3" />
