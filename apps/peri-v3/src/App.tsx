@@ -1,5 +1,6 @@
 import { AppLayout, type Page } from "./components/layouts/AppLayout";
 import { PagerProvider } from "./components/layouts/PagerProvider";
+import { FooterProvider } from "./components/layouts/Footer";
 import { WelcomePage } from "./pages/WelcomePage";
 import { SetupPage } from "./pages/SetupPage";
 import { InitializationPage } from "./pages/InitializationPage";
@@ -17,7 +18,9 @@ const pages: Page[] = [
 function App() {
   return (
     <PagerProvider pageIds={pages.map((page) => page.id)}>
-      <AppLayout pages={pages} />
+      <FooterProvider>
+        <AppLayout pages={pages} />
+      </FooterProvider>
     </PagerProvider>
   );
 }

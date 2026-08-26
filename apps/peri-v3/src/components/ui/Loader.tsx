@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
+import { Typography } from "./Typography";
 
 const COLORS = [
   "bg-gradient-step-1",
@@ -18,54 +18,14 @@ const COLORS = [
 ];
 const DOT_ORDER = [0, 1, 3, 2];
 const DEFAULT_COLORS_DURATION = 100;
-const DEFAULT_DOTS_DURATION = 300;
-
-const loaderContainerVariants = cva(
-  "grid grid-cols-2 grid-rows-2 content-center items-center justify-center justify-items-start",
-  {
-    variants: {
-      size: {
-        sm: "gap-0.5",
-        md: "gap-1",
-      },
-    },
-    defaultVariants: {
-      size: "sm",
-    },
-  },
-);
-
-const loaderDotVariants = cva("rounded-full", {
-  variants: {
-    size: {
-      sm: "w-2 h-2 md:w-4 md:h-4",
-      md: "w-4 h-4 md:w-5 md:h-5",
-    },
-  },
-  defaultVariants: {
-    size: "sm",
-  },
-});
-
-const loaderMessageVariants = cva("text-base-secondary", {
-  variants: {
-    size: {
-      sm: "text-sm md:text-xl",
-      md: "text-xl md:text-2xl",
-    },
-  },
-  defaultVariants: {
-    size: "sm",
-  },
-});
+const LETTER_PULSE_STEP_MS = 60;
 
 export type LoaderProps = {
   message?: string;
-} & VariantProps<typeof loaderContainerVariants>;
+};
 
-export const Loader = ({ message, size }: LoaderProps) => {
+export const Loader = ({ message }: LoaderProps) => {
   const [colors, setColors] = useState(["", "", "", ""]);
-  const [dotTick, setDotTick] = useState(0);
 
   const colorTickRef = useRef(0);
 
@@ -85,36 +45,30 @@ export const Loader = ({ message, size }: LoaderProps) => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (!message) return;
-
-    const interval = setInterval(() => {
-      setDotTick((prev) => prev + 1);
-    }, DEFAULT_DOTS_DURATION);
-
-    return () => clearInterval(interval);
-  }, [message]);
-
   return (
-    <div className="flex items-center gap-2">
-      <div className={cn(loaderContainerVariants({ size }))}>
+    <div className="flex items-center gap-1 md:gap-2">
+      <div className="grid grid-cols-2 grid-rows-2 content-center items-center justify-center justify-items-start gap-0.5">
         {colors.map((color, i) => (
-          <span key={i} className={cn(loaderDotVariants({ size }), color)} />
+          <span
+            key={i}
+            className={cn("h-2 w-2 rounded-full md:h-3 md:w-3", color)}
+          />
         ))}
       </div>
-
       {message && (
-        <span className={loaderMessageVariants({ size })}>
-          {message}
-          <span
-            className={cn(
-              "inline-block text-left",
-              loaderMessageVariants({ size }),
-            )}
-          >
-            {".".repeat(message ? dotTick % DOT_ORDER.length : 0)}
-          </span>
-        </span>
+        <div className="flex">
+          {message.split("").map((char, i) => (
+            <Typography
+              key={i}
+              size={2}
+              color="secondary"
+              animate="letter-pulse"
+              style={{ animationDelay: `${i * LETTER_PULSE_STEP_MS}ms` }}
+            >
+              {char === " " ? " " : char}
+            </Typography>
+          ))}
+        </div>
       )}
     </div>
   );

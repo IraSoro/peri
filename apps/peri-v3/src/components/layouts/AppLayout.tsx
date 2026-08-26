@@ -1,4 +1,7 @@
 import { usePager } from "./PagerProvider";
+import { Header } from "./Header";
+import { Content } from "./Content";
+import { Footer } from "./Footer";
 
 export type Page = {
   id: string;
@@ -35,46 +38,6 @@ export const AppLayout = ({ pages }: AppLayoutProps) => {
         </Content>
         <Footer />
       </div>
-    </div>
-  );
-};
-
-const Header = () => {
-  return (
-    <div className="absolute top-0 flex min-h-12 items-center justify-center md:min-h-14">
-      {/* Left block */}
-      <div className="flex h-full items-center justify-center gap-x-2 p-3">
-        {/* <Menu className="stroke-base-primary h-5 md:h-6" /> */}
-      </div>
-      {/* Center block */}
-      <div className="flex size-full items-center justify-center gap-x-2 p-3" />
-      {/* Right block */}
-      <div className="flex h-full items-center justify-center gap-x-2 p-3" />
-    </div>
-  );
-};
-
-type ContentProps = Pick<React.ComponentProps<"div">, "children">;
-
-const Content = ({ children }: ContentProps) => {
-  return (
-    <div className="flex size-full flex-col items-center justify-start overflow-hidden">
-      {children}
-    </div>
-  );
-};
-
-const Footer = () => {
-  return (
-    <div className="absolute bottom-0 flex min-h-12 w-full items-center justify-center md:min-h-13">
-      {/* Left block */}
-      <div className="flex h-full items-center justify-center gap-x-2 p-3" />
-      {/* Center block */}
-      <div className="flex size-full items-center justify-center gap-x-2 p-3">
-        <div className="text-base-primary flex items-center gap-x-2 text-base md:text-xl" />
-      </div>
-      {/* Right block */}
-      <div className="flex h-full items-center justify-center gap-x-2 p-3" />
     </div>
   );
 };
