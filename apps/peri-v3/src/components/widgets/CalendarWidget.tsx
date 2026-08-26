@@ -3,6 +3,7 @@ import {
   getDefaultClassNames,
   type DayButtonProps as DayButtonPrimitiveProps,
 } from "react-day-picker";
+import { useDirection } from "@base-ui/react/direction-provider";
 import { cva, type VariantProps } from "class-variance-authority";
 import { WidgetLayout } from "@/components/layouts/WidgetLayout";
 import { Button } from "@/components/ui/Button";
@@ -17,10 +18,12 @@ import {
 import { IconButton } from "../ui/IconButton";
 
 export const CalendarWidget = () => {
+  const direction = useDirection();
+
   return (
     <WidgetLayout>
-      <Calendar mode="single" showOutsideDays />
-      <div className="flex justify-end gap-2 pr-3 pl-3 md:pr-5 md:pl-5">
+      <Calendar mode="single" showOutsideDays dir={direction} />
+      <div className="flex justify-end gap-2 ps-3 pe-3 md:ps-5 md:pe-5">
         <Button>Discard</Button>
         <Button variant="contained">Save</Button>
       </div>
@@ -42,7 +45,7 @@ const Calendar = ({ ...props }: CalendarProps) => {
         months: cn("relative flex relative flex-col", defaultClassNames.months),
         month: cn("flex w-full flex-col gap-1", defaultClassNames.month),
         nav: cn(
-          "absolute inset-x-0 top-0 flex w-full items-center justify-between pl-3 pr-3 md:pl-9 md:pr-9",
+          "absolute inset-x-0 top-0 flex w-full items-center justify-between ps-3 pe-3 md:ps-9 md:pe-9",
           defaultClassNames.nav,
         ),
         month_caption: cn(
@@ -67,7 +70,10 @@ const Calendar = ({ ...props }: CalendarProps) => {
           if (orientation === "left") {
             return (
               <ChevronLeft
-                className={cn("h-10 stroke-2 md:stroke-3", className)}
+                className={cn(
+                  "h-10 stroke-2 md:stroke-3 rtl:rotate-180",
+                  className,
+                )}
                 {...props}
               />
             );
@@ -75,7 +81,10 @@ const Calendar = ({ ...props }: CalendarProps) => {
           if (orientation === "right") {
             return (
               <ChevronRight
-                className={cn("h-10 stroke-2 md:stroke-3", className)}
+                className={cn(
+                  "h-10 stroke-2 md:stroke-3 rtl:rotate-180",
+                  className,
+                )}
                 {...props}
               />
             );
@@ -154,7 +163,7 @@ const DayButton = ({ day, modifiers, className, ...props }: DayButtonProps) => {
 };
 
 const dayStatusRingVariants = cva(
-  "absolute top-1.25 md:top-2.5 right-1.25 md:right-2.5 h-2 md:h-3 w-2 md:w-3 rounded-full",
+  "absolute top-1.25 md:top-2.5 end-1.25 md:end-2.5 h-2 md:h-3 w-2 md:w-3 rounded-full",
   {
     variants: {
       menstrual: {

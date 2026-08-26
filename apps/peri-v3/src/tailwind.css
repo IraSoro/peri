@@ -45,17 +45,6 @@
   --breakpoint-lg: 640px;
   --breakpoint-xl: 768px;
   --breakpoint-2xl: 1024px;
-  --animate-letter-pulse: letter-pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes letter-pulse {
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 1;
-  }
 }
 
 @utility peri-gradient-linear {

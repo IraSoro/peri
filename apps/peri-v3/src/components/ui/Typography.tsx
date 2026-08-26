@@ -34,40 +34,28 @@ const typographyVariants = cva("", {
       gradient: "peri-gradient-linear bg-clip-text text-transparent",
       action: "text-action-primary",
     },
-    animate: {
-      none: "",
-      "letter-pulse": "inline-block animate-letter-pulse",
-    },
   },
   defaultVariants: {
     size: 2,
     weight: "normal",
     color: "primary",
-    animate: "none",
   },
 });
 
 export type TypographyProps = VariantProps<typeof typographyVariants> &
-  Pick<
-    React.ComponentProps<"div">,
-    "className" | "children" | "onClick" | "style"
-  >;
+  Pick<React.ComponentProps<"div">, "className" | "children" | "onClick">;
 
 export const Typography = ({
   size,
   weight,
   color,
-  animate,
   className,
   ...props
 }: TypographyProps) => {
   return (
     <div
       {...props}
-      className={cn(
-        typographyVariants({ size, weight, color, animate }),
-        className,
-      )}
+      className={cn(typographyVariants({ size, weight, color }), className)}
     />
   );
 };

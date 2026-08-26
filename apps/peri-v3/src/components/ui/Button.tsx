@@ -10,8 +10,8 @@ const buttonVariants = cva("flex items-center justify-center", {
       text: "bg-transparent",
     },
     size: {
-      sm: "text-sm md:text-lg pt-2 pb-2 pl-3 pr-3 gap-2 rounded-lg",
-      md: "text-md md:text-xl pt-2 pb-2 pl-6 pr-6 gap-2 rounded-lg",
+      sm: "text-sm md:text-lg pt-2 pb-2 ps-3 pe-3 gap-2 rounded-lg",
+      md: "text-md md:text-xl pt-2 pb-2 ps-6 pe-6 gap-2 rounded-lg",
     },
     color: {
       primary: "border-base-primary text-base-primary",

@@ -18,7 +18,6 @@ const COLORS = [
 ];
 const DOT_ORDER = [0, 1, 3, 2];
 const DEFAULT_COLORS_DURATION = 100;
-const LETTER_PULSE_STEP_MS = 60;
 
 export type LoaderProps = {
   message?: string;
@@ -56,19 +55,9 @@ export const Loader = ({ message }: LoaderProps) => {
         ))}
       </div>
       {message && (
-        <div className="flex">
-          {message.split("").map((char, i) => (
-            <Typography
-              key={i}
-              size={2}
-              color="secondary"
-              animate="letter-pulse"
-              style={{ animationDelay: `${i * LETTER_PULSE_STEP_MS}ms` }}
-            >
-              {char === " " ? " " : char}
-            </Typography>
-          ))}
-        </div>
+        <Typography size={2} color="secondary" className="animate-pulse">
+          {message}
+        </Typography>
       )}
     </div>
   );

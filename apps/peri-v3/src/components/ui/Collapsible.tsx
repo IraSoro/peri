@@ -45,7 +45,7 @@ export const CollapsibleContent = ({
     <CollapsiblePrimitive.Panel
       {...props}
       className={cn(
-        "flex flex-col gap-1.5 pt-2 pr-1 pb-2 pl-1 md:pt-3 md:pr-3 md:pb-3",
+        "flex flex-col gap-1.5 ps-1 pe-1 pt-2 pb-2 md:pe-3 md:pt-3 md:pb-3",
         className,
       )}
     />

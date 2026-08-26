@@ -90,13 +90,13 @@ export const Footer = () => {
   return (
     <div className="bg-base-bg absolute bottom-0 z-20 flex min-h-10 w-full items-center justify-center md:min-h-14">
       {/* Left block */}
-      <div className="flex h-full items-center justify-center gap-x-2 pl-3" />
+      <div className="flex h-full items-center justify-center gap-x-2 ps-3" />
       {/* Center block */}
       <div className="flex size-full items-center justify-center gap-x-2">
         {loaderMessage && <Loader message={loaderMessage} />}
       </div>
       {/* Right block */}
-      <div className="flex h-full items-center justify-center gap-x-2 pr-3" />
+      <div className="flex h-full items-center justify-center gap-x-2 pe-3" />
     </div>
   );
 };
