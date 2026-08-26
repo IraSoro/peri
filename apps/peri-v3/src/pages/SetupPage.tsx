@@ -1,12 +1,10 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
 import { CalendarWidget } from "@/components/widgets/CalendarWidget";
-import { Logo } from "@/components/ui/Logo";
 import { Typography } from "@/components/ui/Typography";
 
 export const SetupPage = () => {
   return (
-    <PageLayout>
-      <Logo size={7} />
+    <PageLayout justify="center">
       <Typography
         size={7}
         weight="bold"

@@ -8,10 +8,10 @@ const widgetLayoutVariants = cva(
     variants: {
       gap: {
         none: "gap-0",
-        sm: "gap-2",
-        md: "gap-4",
-        lg: "gap-6",
-        "2xl": "gap-10",
+        sm: "gap-1 md:gap-2",
+        md: "gap-2 md:gap-4",
+        lg: "gap-4 md:gap-6",
+        "2xl": "gap-8 md:gap-10",
       },
     },
     defaultVariants: {

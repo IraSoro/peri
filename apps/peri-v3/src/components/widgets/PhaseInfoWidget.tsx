@@ -13,6 +13,7 @@ import {
   CarouselItem,
 } from "@/components/ui/Carousel";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Button } from "../ui/Button";
 
 export const PhaseInfoWidget = () => {
   return (
@@ -23,7 +24,7 @@ export const PhaseInfoWidget = () => {
       <Badge text="2 days left" color="follicular" />
       <Carousel opts={{ loop: true }}>
         <CarouselContent>
-          <CarouselItem className="flex flex-col gap-4">
+          <CarouselItem className="flex flex-col gap-2">
             <Typography size={4} weight="bold">
               About
             </Typography>
@@ -39,7 +40,7 @@ If fertilization does not occur, the corpus luteum breaks down after about 10 to
 
 Many people experience premenstrual symptoms during the later part of the luteal phase, including bloating, breast tenderness, mood changes, and fatigue, as the body responds to the falling hormone levels.
               `}
-              maxLength={350}
+              maxLength={230}
             />
             <Accordion>
               <AccordionItem>
@@ -57,7 +58,7 @@ Many people experience premenstrual symptoms during the later part of the luteal
 };
 
 const badgeVariants = cva(
-  "rounded-2xl border-2 pt-0.5 pb-0.5 pr-2.5 pl-2.5 font-bold flex items-center justify-center text-center",
+  "rounded-2xl border-1 md:border-2 pt-0.5 pb-0.5 pr-2.5 pl-2.5 font-bold flex items-center justify-center text-center text-sm md:text-base lg:text-md",
   {
     variants: {
       color: {
@@ -92,7 +93,7 @@ type SymptomProps = {
 
 const Symptom = ({ text }: SymptomProps) => {
   return (
-    <div className="bg-base-secondary text-base-primary-inverse rounded-md p-1 pr-3 pl-3 text-lg">
+    <div className="bg-base-secondary text-base-primary-inverse rounded-md p-1 pr-3 pl-3 text-sm md:text-lg lg:text-xl">
       {text}
     </div>
   );
@@ -142,33 +143,27 @@ const ExpandableText = ({ text, maxLength }: ExpandableTextProps) => {
   const displayedParagraphs = isExpanded ? paragraphs : visible;
 
   return (
-    <div className="text-base-secondary flex flex-col gap-3">
+    <div className="text-base-secondary flex flex-col gap-1 md:gap-2">
       {displayedParagraphs.map((p, index) => {
-        const isLast = index === displayedParagraphs.length - 1;
         return (
-          <Typography key={index} color="secondary">
+          <Typography key={index} color="secondary" size={2}>
             {p}
-            {!isExpanded && isTruncated && isLast && (
-              <button
-                type="button"
-                className="text-action-primary ml-1 whitespace-nowrap"
-                onClick={() => setIsExpanded(true)}
-              >
-                Show more
-              </button>
-            )}
           </Typography>
         );
       })}
-
+      {!isExpanded && isTruncated && (
+        <Typography size={2} color="action" onClick={() => setIsExpanded(true)}>
+          Show more
+        </Typography>
+      )}
       {isExpanded && isTruncated && (
-        <button
-          type="button"
-          className="text-action-primary self-start whitespace-nowrap"
+        <Typography
+          size={2}
+          color="action"
           onClick={() => setIsExpanded(false)}
         >
           Show less
-        </button>
+        </Typography>
       )}
     </div>
   );

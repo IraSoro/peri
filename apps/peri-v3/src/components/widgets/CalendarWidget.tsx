@@ -5,7 +5,6 @@ import {
 } from "react-day-picker";
 import { cva, type VariantProps } from "class-variance-authority";
 import { WidgetLayout } from "@/components/layouts/WidgetLayout";
-import { Loader } from "@/components/ui/Loader";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/cn";
 import {
@@ -20,13 +19,10 @@ import { IconButton } from "../ui/IconButton";
 export const CalendarWidget = () => {
   return (
     <WidgetLayout>
-      <Calendar2 mode="single" showOutsideDays />
-      <div className="flex justify-between pr-5 pl-5">
-        <Loader size="sm" message="Saving" />
-        <div className="flex gap-4">
-          <Button>Discard</Button>
-          <Button variant="contained">Save</Button>
-        </div>
+      <Calendar mode="single" showOutsideDays />
+      <div className="flex justify-end gap-2 pr-3 pl-3 md:pr-5 md:pl-5">
+        <Button>Discard</Button>
+        <Button variant="contained">Save</Button>
       </div>
     </WidgetLayout>
   );
@@ -34,184 +30,36 @@ export const CalendarWidget = () => {
 
 const defaultClassNames = getDefaultClassNames();
 
-const calendarVariants = cva(
-  "border-base-ternary aspect-square rounded-2xl border-3 p-4",
-  {
-    variants: {
-      size: {
-        md: "",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-    },
-  },
-);
+type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-const calendarRootGridVariants = cva("w-full", {
-  variants: {
-    size: {
-      md: "",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-const calendarMonthsVariants = cva("relative flex relative flex-col gap-4", {
-  variants: {
-    size: {
-      md: "",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-const calendarMonthVariants = cva("flex w-full flex-col gap-4", {
-  variants: {
-    size: {
-      md: "",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-const calendarNavVariants = cva(
-  "absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1 pl-9 pr-9",
-  {
-    variants: {
-      size: {
-        md: "",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-    },
-  },
-);
-
-const calendarMonthCaptionVariants = cva(
-  "flex w-full text-base-primary font-bold text-xl items-center justify-center h-10",
-  {
-    variants: {
-      size: {
-        md: "",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-    },
-  },
-);
-
-const calendarMonthGridVariants = cva("w-full border-collapse", {
-  variants: {
-    size: {
-      md: "",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-const calendarWeekdaysVariants = cva("flex", {
-  variants: {
-    size: {
-      md: "",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-const calendarWeekdayVariants = cva(
-  "flex flex-1 items-center justify-center text-xl text-base-secondary aspect-square font-normal select-none",
-  {
-    variants: {
-      size: {
-        md: "",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-    },
-  },
-);
-
-const calendarWeekVariants = cva("flex w-full", {
-  variants: {
-    size: {
-      md: "",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-const calendarDayVariants = cva(
-  "flex-1 aspect-square p-0 text-center select-none p-1 rounded-[25px]",
-  {
-    variants: {
-      size: {
-        md: "",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-    },
-  },
-);
-
-const calendarChevronVariants = cva("stroke-base-primary", {
-  variants: {
-    size: {
-      md: "h-10 stroke-3",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-type Calendar2Props = VariantProps<typeof calendarVariants> &
-  React.ComponentProps<typeof DayPicker>;
-
-const Calendar2 = ({ size, ...props }: Calendar2Props) => {
+const Calendar = ({ ...props }: CalendarProps) => {
   return (
     <DayPicker
       {...props}
-      className={calendarVariants({ size })}
+      className="border-base-ternary aspect-square rounded-xl border-2 p-2 md:rounded-2xl md:border-3 md:p-4"
       classNames={{
-        root: cn(calendarRootGridVariants({ size }), defaultClassNames.root),
-        months: cn(calendarMonthsVariants({ size }), defaultClassNames.months),
-        month: cn(calendarMonthVariants({ size }), defaultClassNames.month),
-        nav: cn(calendarNavVariants({ size }), defaultClassNames.nav),
+        root: cn("w-full", defaultClassNames.root),
+        months: cn("relative flex relative flex-col", defaultClassNames.months),
+        month: cn("flex w-full flex-col gap-1", defaultClassNames.month),
+        nav: cn(
+          "absolute inset-x-0 top-0 flex w-full items-center justify-between pl-3 pr-3 md:pl-9 md:pr-9",
+          defaultClassNames.nav,
+        ),
         month_caption: cn(
-          calendarMonthCaptionVariants({ size }),
+          "flex w-full text-base-primary font-bold text-sm md:text-xl items-center justify-center h-10 lg:text-2xl",
           defaultClassNames.month_caption,
         ),
-        month_grid: cn(
-          calendarMonthGridVariants({ size }),
-          defaultClassNames.month_grid,
-        ),
-        weekdays: cn(
-          calendarWeekdaysVariants({ size }),
-          defaultClassNames.weekdays,
-        ),
+        month_grid: cn("w-full border-collapse", defaultClassNames.month_grid),
+        weekdays: cn("flex", defaultClassNames.weekdays),
         weekday: cn(
-          calendarWeekdayVariants({ size }),
+          "flex flex-1 items-center justify-center text-sm md:text-xl text-base-secondary aspect-square font-normal select-none",
           defaultClassNames.weekday,
         ),
-        week: cn(calendarWeekVariants({ size }), defaultClassNames.week),
-        day: cn(calendarDayVariants({ size }), defaultClassNames.day),
+        week: cn("flex w-full", defaultClassNames.week),
+        day: cn(
+          "flex-1 aspect-square p-0 text-center select-none p-px md:p-1",
+          defaultClassNames.day,
+        ),
       }}
       components={{
         DayButton,
@@ -219,7 +67,7 @@ const Calendar2 = ({ size, ...props }: Calendar2Props) => {
           if (orientation === "left") {
             return (
               <ChevronLeft
-                className={cn(calendarChevronVariants({ size }), className)}
+                className={cn("h-10 stroke-2 md:stroke-3", className)}
                 {...props}
               />
             );
@@ -227,14 +75,14 @@ const Calendar2 = ({ size, ...props }: Calendar2Props) => {
           if (orientation === "right") {
             return (
               <ChevronRight
-                className={cn(calendarChevronVariants({ size }), className)}
+                className={cn("h-10 stroke-2 md:stroke-3", className)}
                 {...props}
               />
             );
           }
           return (
             <ChevronDown
-              className={cn(calendarChevronVariants({ size }), className)}
+              className={cn("h-10 stroke-2 md:stroke-3", className)}
               {...props}
             />
           );
@@ -260,9 +108,6 @@ const dayButtonVariants = cva(
   "flex relative h-full w-full items-center justify-center select-none min-h-0 p-0",
   {
     variants: {
-      size: {
-        md: "text-xl rounded-[40%]",
-      },
       today: {
         true: "bg-base-primary/80 text-base-primary-inverse",
       },
@@ -283,29 +128,21 @@ const dayButtonVariants = cva(
         class: "text-base-primary-inverse",
       },
     ],
-    defaultVariants: {
-      size: "md",
-    },
   },
 );
 
 type DayButtonProps = VariantProps<typeof dayButtonVariants> &
   DayButtonPrimitiveProps;
 
-const DayButton = ({
-  day,
-  modifiers,
-  size,
-  className,
-  ...props
-}: DayButtonProps) => {
+const DayButton = ({ day, modifiers, className, ...props }: DayButtonProps) => {
   return (
     <Button
       {...props}
       variant="text"
       color="primary"
       className={cn(
-        dayButtonVariants({ size, ...modifiers }),
+        "rounded-[40%] text-sm md:text-base lg:text-xl",
+        dayButtonVariants({ ...modifiers }),
         defaultClassNames.day,
         className,
       )}
@@ -317,12 +154,9 @@ const DayButton = ({
 };
 
 const dayStatusRingVariants = cva(
-  "absolute top-2.5 right-2.5 h-3 w-3 rounded-full",
+  "absolute top-1.25 md:top-2.5 right-1.25 md:right-2.5 h-2 md:h-3 w-2 md:w-3 rounded-full",
   {
     variants: {
-      size: {
-        md: "",
-      },
       menstrual: {
         true: "",
       },
@@ -342,7 +176,7 @@ const dayStatusRingVariants = cva(
       {
         menstrual: true,
         future: true,
-        class: "border-menstrual-primary border-3",
+        class: "border-menstrual-primary border-2 md:border-3",
       },
     ],
   },
@@ -351,16 +185,14 @@ const dayStatusRingVariants = cva(
 type DayStatusRingProps = VariantProps<typeof dayStatusRingVariants> &
   Pick<DayButtonPrimitiveProps, "modifiers">;
 
-const DayStatusRing = ({ size, modifiers }: DayStatusRingProps) => {
-  return (
-    <span className={dayStatusRingVariants({ size, ...modifiers })}></span>
-  );
+const DayStatusRing = ({ modifiers }: DayStatusRingProps) => {
+  return <span className={dayStatusRingVariants({ ...modifiers })}></span>;
 };
 
 const CalendarFooter = () => {
   return (
-    <div className="p-3">
-      <div className="flex gap-4">
+    <div className="flex flex-col gap-3 p-2 md:gap-4 md:p-3">
+      <div className="flex gap-2 md:gap-4">
         <Button size="sm" variant="outlined" color="menstrual">
           Mark the first day
         </Button>
@@ -368,7 +200,7 @@ const CalendarFooter = () => {
           Today
         </Button>
       </div>
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-2 md:gap-4">
         <IconButton size="md" color="secondary">
           <CircleQuestionMark />
         </IconButton>

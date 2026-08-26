@@ -8,7 +8,7 @@ export const Accordion = ({ className, ...props }: AccordionProps) => {
   return (
     <AccordionPrimitive.Root
       {...props}
-      className={cn("flex flex-col rounded-xl border-2 p-3", className)}
+      className={cn("flex flex-col rounded-xl border p-3 md:p-4", className)}
     />
   );
 };
@@ -30,13 +30,13 @@ export const AccordionTrigger = ({
     <AccordionPrimitive.Trigger
       {...props}
       className={cn(
-        "stroke-base-primary text-base-primary group flex w-full items-center justify-between text-lg font-bold",
+        "stroke-base-primary text-base-primary group flex w-full items-center justify-between text-sm font-bold md:text-lg",
         className,
       )}
     >
       {children}
-      <ChevronDown className="group-data-panel-open:hidden" />
-      <ChevronUp className="hidden group-data-panel-open:block" />
+      <ChevronDown className="h-5 w-5 group-data-panel-open:hidden md:h-6 md:w-6" />
+      <ChevronUp className="hidden h-5 w-5 group-data-panel-open:block md:h-6 md:w-6" />
     </AccordionPrimitive.Trigger>
   );
 };
@@ -50,7 +50,10 @@ export const AccordionContent = ({
   return (
     <AccordionPrimitive.Panel
       {...props}
-      className={cn("flex flex-wrap gap-2 pt-3 pb-3", className)}
+      className={cn(
+        "flex flex-wrap gap-2 pt-2 pb-2 md:pt-3 md:pb-3",
+        className,
+      )}
     />
   );
 };

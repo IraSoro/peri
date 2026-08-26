@@ -38,8 +38,8 @@ const loaderContainerVariants = cva(
 const loaderDotVariants = cva("rounded-full", {
   variants: {
     size: {
-      sm: "w-4 h-4",
-      md: "w-5 h-5",
+      sm: "w-2 h-2 md:w-4 md:h-4",
+      md: "w-4 h-4 md:w-5 md:h-5",
     },
   },
   defaultVariants: {
@@ -50,8 +50,8 @@ const loaderDotVariants = cva("rounded-full", {
 const loaderMessageVariants = cva("text-base-secondary", {
   variants: {
     size: {
-      sm: "text-xl",
-      md: "text-2xl",
+      sm: "text-sm md:text-xl",
+      md: "text-xl md:text-2xl",
     },
   },
   defaultVariants: {

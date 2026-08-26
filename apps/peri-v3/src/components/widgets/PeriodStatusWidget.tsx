@@ -29,7 +29,7 @@ const PeriodCountdown = () => {
 
 const PeriodInfo = () => {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3 md:gap-4">
       <PeriodInfoIndicator label="Follicular" color="follicular" />
       <PeriodInfoIndicator label="Low" color="pregnancyLow" />
     </div>
@@ -55,15 +55,15 @@ type PeriodInfoIndicatorProps = {
 
 const PeriodInfoIndicator = ({ label, color }: PeriodInfoIndicatorProps) => {
   return (
-    <div className="flex">
-      <div className="flex items-center gap-1">
+    <div className="flex gap-0.5 md:gap-1">
+      <div className="flex items-center gap-1 md:gap-2">
         <div
           className={cn(
-            "size-4 rounded-full",
+            "size-3 rounded-full md:size-4",
             periodInfoIndicatorVariants({ color }),
           )}
         />
-        <div className="text-base-primary text-lg">{label}</div>
+        <Typography size={3}>{label}</Typography>
       </div>
       <IconButton size="sm" color="ternary">
         <Info />

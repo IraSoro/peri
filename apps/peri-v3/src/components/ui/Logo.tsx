@@ -18,21 +18,17 @@ const logoVariants = cva("object-cover", {
       transparent: "",
     },
     size: {
-      1: "h-8 w-8",
-      2: "h-12 w-12",
-      3: "h-16 w-16",
-      4: "h-24 w-24",
-      5: "h-32 w-32",
-      6: "h-40 w-40",
-      7: "h-48 w-48",
-      8: "h-56 w-56",
-      9: "h-64 w-64",
+      1: "h-16 w-16 md:h-28 md:w-28 lg:w-44 lg:h-44",
+      2: "h-28 w-28 md:h-36 md:w-36 lg:w-52 lg:h-52",
+      3: "h-36 w-36 md:h-44 md:w-44 lg:w-64 lg:h-64",
+      4: "h-44 w-44 md:h-52 md:w-52 lg:w-76 lg:h-76",
+      5: "h-52 w-52 md:h-64 md:w-64 lg:w-88 lg:h-88",
     },
   },
   defaultVariants: {
     variant: "icon",
     background: "transparent",
-    size: 4,
+    size: 1,
   },
 });
 

@@ -6,12 +6,12 @@ const buttonVariants = cva("flex items-center justify-center", {
   variants: {
     variant: {
       contained: "text-base-primary-inverse bg-base-primary",
-      outlined: "border-2 bg-transparent",
+      outlined: "border md:border-2 bg-transparent",
       text: "bg-transparent",
     },
     size: {
-      sm: "text-xl min-h-10 pt-2 pb-2 pl-3 pr-3 gap-2 rounded-lg",
-      md: "text-2xl min-h-12 pt-2 pb-2 pl-6 pr-6 gap-2 rounded-lg",
+      sm: "text-sm md:text-lg pt-2 pb-2 pl-3 pr-3 gap-2 rounded-lg",
+      md: "text-md md:text-xl pt-2 pb-2 pl-6 pr-6 gap-2 rounded-lg",
     },
     color: {
       primary: "border-base-primary text-base-primary",

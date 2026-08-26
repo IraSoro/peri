@@ -8,7 +8,7 @@ export const WelcomePage = () => {
       <Typography size={9} weight="bold" color="gradient">
         Welcome to
       </Typography>
-      <Logo variant="lockup" size={9} />
+      <Logo variant="lockup" size={4} />
     </PageLayout>
   );
 };

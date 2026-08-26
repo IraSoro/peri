@@ -194,7 +194,7 @@ const CarouselControls = () => {
         <div
           key={index}
           className={cn(
-            "size-3.5 rounded-full",
+            "size-2.5 rounded-full md:size-3.5",
             activeSlide === index
               ? "bg-base-primary"
               : "stroke-base-primary border",

@@ -8,26 +8,29 @@ import {
   CollapsibleTrigger,
 } from "../ui/Collapsible";
 import { Button } from "../ui/Button";
+import { IconButton } from "../ui/IconButton";
 
 export const CycleInfoWidget = () => {
   return (
-    <WidgetLayout>
+    <WidgetLayout gap="md">
       <Typography size={7} weight="bold">
         Cycle
       </Typography>
-      <div className="flex w-full flex-col gap-3">
-        <CapsuleList>
-          <Capsule color="follicular" />
-          <Capsule color="menstrual" />
-          <Capsule color="ovulation" />
-          <Capsule color="luteal" />
-        </CapsuleList>
-        <Collapsible>
-          <CollapsibleTrigger>Started on January 4th</CollapsibleTrigger>
-          <CollapsibleContent>
-            <Legend />
-          </CollapsibleContent>
-        </Collapsible>
+      <div className="flex w-full flex-col gap-4 md:gap-5">
+        <div className="flex flex-col gap-2 md:gap-3">
+          <CapsuleList>
+            <Capsule color="follicular" />
+            <Capsule color="menstrual" />
+            <Capsule color="ovulation" />
+            <Capsule color="luteal" />
+          </CapsuleList>
+          <Collapsible>
+            <CollapsibleTrigger>Started on January 4th</CollapsibleTrigger>
+            <CollapsibleContent>
+              <Legend />
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
         <CycleSummary />
       </div>
       <Button size="sm" variant="outlined">
@@ -44,11 +47,11 @@ const CapsuleList = ({ children }: CapsuleListProps) => {
   return <div className="flex gap-1">{children}</div>;
 };
 
-const capsuleVariants = cva("flex-1 rounded-2xl border-2", {
+const capsuleVariants = cva("flex-1 rounded-2xl md:rounded-3xl border", {
   variants: {
     size: {
-      xs: "h-7 max-w-4",
-      md: "h-14 max-w-7",
+      xs: "h-5 max-w-3 md:h-7 md:max-w-4",
+      md: "h-11 max-w-6 md:h-14 md:max-w-7",
     },
     color: {
       follicular: "bg-follicular-bg border-follicular-primary",
@@ -87,9 +90,9 @@ type LegendItemProps = {
 
 const LegendItem = ({ text, color }: LegendItemProps) => {
   return (
-    <div className="flex w-full gap-1">
+    <div className="flex w-full items-center gap-1">
       <Capsule size="xs" color={color} />
-      <Typography size={4} color="secondary">
+      <Typography size={2} color="secondary">
         {text}
       </Typography>
     </div>
@@ -100,26 +103,26 @@ const CycleSummary = () => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex w-full justify-between">
-        <Typography size={4} color="secondary">
+        <Typography size={2} color="secondary">
           Day of cycle
         </Typography>
-        <Typography size={4} color="primary" weight="bold">
+        <Typography size={2} color="primary" weight="bold">
           3rd
         </Typography>
       </div>
       <div className="flex w-full justify-between">
-        <Typography size={4} color="secondary">
+        <Typography size={2} color="secondary">
           Cycle length
         </Typography>
-        <Typography size={4} color="primary" weight="bold">
+        <Typography size={2} color="primary" weight="bold">
           28 ± 2 days
         </Typography>
       </div>
       <div className="flex w-full justify-between">
-        <Typography size={4} color="secondary">
+        <Typography size={2} color="secondary">
           Period length
         </Typography>
-        <Typography size={4} color="primary" weight="bold">
+        <Typography size={2} color="primary" weight="bold">
           6 days
         </Typography>
       </div>

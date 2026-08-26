@@ -9,11 +9,11 @@ import { Button as ButtonPrimitive } from "@base-ui/react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 
-const iconButtonVariants = cva("", {
+const iconButtonVariants = cva("flex items-center justify-center", {
   variants: {
     size: {
-      sm: "min-h-6 min-w-6 p-1",
-      md: "min-h-8 min-w-8 p-1",
+      sm: "min-h-4 min-w-4 md:min-h-6 md:min-w-6",
+      md: "min-h-6 min-w-6 md:min-h-8 md:min-w-8",
     },
     color: {
       primary: "",
@@ -33,11 +33,11 @@ const iconButtonVariants = cva("", {
 export type IconButtonProps = VariantProps<typeof iconButtonVariants> &
   ButtonPrimitive.Props;
 
-const iconButtonIconVariants = cva("", {
+const iconButtonIconVariants = cva("flex items-center justify-center", {
   variants: {
     size: {
-      sm: "min-h-6 min-w-6",
-      md: "min-h-8 min-w-8",
+      sm: "h-4 w-4 md:h-6 md:w-6",
+      md: "h-6 w-6 md:h-8 md:w-8",
     },
     color: {
       primary: "stroke-base-primary",
