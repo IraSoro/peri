@@ -1,6 +1,7 @@
 import { DirectionProvider } from "@base-ui/react/direction-provider";
 import { AppLayout, type Page } from "./components/layouts/AppLayout";
 import { PagerProvider } from "./components/layouts/PagerProvider";
+import { HeaderProvider } from "./components/layouts/Header";
 import { FooterProvider } from "./components/layouts/Footer";
 import { WelcomePage } from "./pages/WelcomePage";
 import { SetupPage } from "./pages/SetupPage";
@@ -37,9 +38,11 @@ function App() {
   return (
     <DirectionProvider direction={dir}>
       <PagerProvider pageIds={pages.map((page) => page.id)}>
-        <FooterProvider>
-          <AppLayout pages={pages} />
-        </FooterProvider>
+        <HeaderProvider>
+          <FooterProvider>
+            <AppLayout pages={pages} />
+          </FooterProvider>
+        </HeaderProvider>
       </PagerProvider>
     </DirectionProvider>
   );
