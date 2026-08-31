@@ -176,6 +176,11 @@ const dayButtonVariants = cva(
         selected: true,
         class: "text-base-primary-inverse",
       },
+      {
+        outside: true,
+        today: true,
+        class: "text-base-primary-inverse",
+      },
     ],
   },
 );
