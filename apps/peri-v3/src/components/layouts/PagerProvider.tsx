@@ -132,6 +132,22 @@ export const PagerProvider = ({
     if (!bridgingRef.current) return;
     bridgingRef.current = false;
     dispatchBridgeEvent("mouseup", 0);
+
+    // Embla treats our synthetic mousedown/mousemove/mouseup exactly like a
+    // real mouse drag: it arms an internal "preventClick" flag meant to
+    // swallow the next click after a real drag-release, via a capturing
+    // click listener on rootNode. Since our bridge never actually produces
+    // a real click of its own, that flag would otherwise stay armed and
+    // eat the user's next genuine tap/click anywhere in the app. Dispatch a
+    // synthetic click on the same node to let Embla consume/clear it now.
+    const root = emblaApi?.rootNode();
+    root?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+      }),
+    );
   };
 
   // dy > 0 = intent to reveal content below (go to next page)

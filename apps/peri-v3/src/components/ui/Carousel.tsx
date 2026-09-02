@@ -30,7 +30,7 @@ type CarouselContextProps = {
 
 const CarouselContext = createContext<CarouselContextProps | null>(null);
 
-function useCarousel() {
+export function useCarousel() {
   const context = useContext(CarouselContext);
 
   if (!context) {
@@ -108,10 +108,58 @@ export const Carousel = ({
   );
 };
 
+const CAROUSEL_HEIGHT_DURATION = 200;
+
 export type CarouselContentProps = React.ComponentProps<"div">;
 
 export const CarouselContent = ({ ...props }: CarouselContentProps) => {
-  const { emblaRef, orientation } = useCarousel();
+  const { emblaApi, emblaRef, orientation } = useCarousel();
+
+  // Every slide is a normal sibling in the same flex row, so without this
+  // the row (and anything below the carousel) sizes to the tallest slide
+  // at all times, not just the active one - sync the row's own height to
+  // match whichever slide is currently active instead.
+  useEffect(() => {
+    if (!emblaApi || orientation !== "horizontal") {
+      return;
+    }
+
+    const containerEl = emblaApi.containerNode();
+    let resizeObserver: ResizeObserver | null = null;
+
+    const applyHeight = (height: number) => {
+      containerEl.style.transition = `height ${CAROUSEL_HEIGHT_DURATION}ms ease-out`;
+      containerEl.style.height = `${height}px`;
+    };
+
+    const syncHeight = () => {
+      const activeSlide = emblaApi.slideNodes()[emblaApi.selectedScrollSnap()];
+      if (!activeSlide) {
+        return;
+      }
+
+      // getBoundingClientRect gives a sub-pixel-accurate height - offsetHeight
+      // rounds to a whole pixel, which can round down and clip the last
+      // fraction of a pixel (e.g. a border) under overflow-hidden.
+      applyHeight(activeSlide.getBoundingClientRect().height);
+
+      resizeObserver?.disconnect();
+      resizeObserver = new ResizeObserver(() => {
+        applyHeight(activeSlide.getBoundingClientRect().height);
+      });
+      resizeObserver.observe(activeSlide);
+    };
+
+    syncHeight();
+    emblaApi.on("select", syncHeight);
+    emblaApi.on("reInit", syncHeight);
+
+    return () => {
+      emblaApi.off("select", syncHeight);
+      emblaApi.off("reInit", syncHeight);
+      resizeObserver?.disconnect();
+    };
+  }, [emblaApi, orientation]);
 
   return (
     <div
@@ -126,7 +174,7 @@ export const CarouselContent = ({ ...props }: CarouselContentProps) => {
           // drag axis, so embla's JS handles dragging along its axis while the
           // browser still natively pans/scrolls along the other one.
           orientation === "horizontal"
-            ? "-ms-1 touch-pan-y flex-row"
+            ? "-ms-1 touch-pan-y flex-row items-start"
             : "-mt-1 h-full touch-pan-x flex-col",
         )}
       />

@@ -2,12 +2,14 @@ import { useState } from "react";
 import {
   DayPicker,
   getDefaultClassNames,
+  type ChevronProps,
   type DayButtonProps as DayButtonPrimitiveProps,
 } from "react-day-picker";
 import { useDirection } from "@base-ui/react/direction-provider";
 import { useDrag } from "@use-gesture/react";
 import { addMonths } from "date-fns";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Button as ButtonPrimitive } from "@base-ui/react";
 import { WidgetLayout } from "@/components/layouts/WidgetLayout";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/cn";
@@ -81,8 +83,16 @@ const Calendar = ({ dir, month, onMonthChange, ...props }: CalendarProps) => {
           ),
           month: cn("flex w-full flex-col gap-1", defaultClassNames.month),
           nav: cn(
-            "absolute inset-x-0 top-0 flex w-full items-center justify-between ps-3 pe-3 md:ps-9 md:pe-9",
+            "absolute inset-x-0 top-0 flex h-10 w-full items-center justify-between ps-3 pe-3 md:ps-9 md:pe-9",
             defaultClassNames.nav,
+          ),
+          button_previous: cn(
+            "flex items-center justify-center",
+            defaultClassNames.button_previous,
+          ),
+          button_next: cn(
+            "flex items-center justify-center",
+            defaultClassNames.button_next,
           ),
           month_caption: cn(
             "flex w-full text-base-primary font-bold text-sm md:text-xl items-center justify-center h-10 lg:text-2xl",
@@ -103,39 +113,7 @@ const Calendar = ({ dir, month, onMonthChange, ...props }: CalendarProps) => {
             defaultClassNames.day,
           ),
         }}
-        components={{
-          DayButton,
-          Chevron: ({ className, orientation, ...props }) => {
-            if (orientation === "left") {
-              return (
-                <ChevronLeft
-                  className={cn(
-                    "h-10 stroke-2 md:stroke-3 rtl:rotate-180",
-                    className,
-                  )}
-                  {...props}
-                />
-              );
-            }
-            if (orientation === "right") {
-              return (
-                <ChevronRight
-                  className={cn(
-                    "h-10 stroke-2 md:stroke-3 rtl:rotate-180",
-                    className,
-                  )}
-                  {...props}
-                />
-              );
-            }
-            return (
-              <ChevronDown
-                className={cn("h-10 stroke-2 md:stroke-3", className)}
-                {...props}
-              />
-            );
-          },
-        }}
+        components={{ DayButton, Chevron }}
         footer={<CalendarFooter />}
         modifiers={{
           future: (date) => {
@@ -153,8 +131,30 @@ const Calendar = ({ dir, month, onMonthChange, ...props }: CalendarProps) => {
   );
 };
 
+const Chevron = ({ orientation }: ChevronProps) => {
+  if (orientation === "left") {
+    return (
+      <IconButton>
+        <ChevronLeft />
+      </IconButton>
+    );
+  }
+  if (orientation === "right") {
+    return (
+      <IconButton>
+        <ChevronRight />
+      </IconButton>
+    );
+  }
+  return (
+    <IconButton>
+      <ChevronDown />
+    </IconButton>
+  );
+};
+
 const dayButtonVariants = cva(
-  "flex relative h-full w-full items-center justify-center select-none min-h-0 p-0",
+  "flex relative h-full w-full items-center justify-center select-none min-h-0 p-0 text-base-primary transition-colors duration-150",
   {
     variants: {
       today: {
@@ -190,10 +190,8 @@ type DayButtonProps = VariantProps<typeof dayButtonVariants> &
 
 const DayButton = ({ day, modifiers, className, ...props }: DayButtonProps) => {
   return (
-    <Button
+    <ButtonPrimitive
       {...props}
-      variant="text"
-      color="primary"
       className={cn(
         "rounded-[40%] text-sm md:text-base lg:text-xl",
         dayButtonVariants({ ...modifiers }),
@@ -203,7 +201,7 @@ const DayButton = ({ day, modifiers, className, ...props }: DayButtonProps) => {
     >
       {day.date.getDate()}
       <DayStatusRing modifiers={modifiers} />
-    </Button>
+    </ButtonPrimitive>
   );
 };
 

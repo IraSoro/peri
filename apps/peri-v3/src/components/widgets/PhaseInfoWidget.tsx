@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { WidgetLayout } from "@/components/layouts/WidgetLayout";
 import { Typography } from "@/components/ui/Typography";
 import {
@@ -11,9 +11,10 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  useCarousel,
 } from "@/components/ui/Carousel";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Button } from "../ui/Button";
+import { useHeightTransition } from "@/lib/hooks/useHeightTransition";
 
 export const PhaseInfoWidget = () => {
   return (
@@ -22,7 +23,7 @@ export const PhaseInfoWidget = () => {
         Follicular phase
       </Typography>
       <Badge text="2 days left" color="follicular" />
-      <Carousel opts={{ loop: true }}>
+      <Carousel>
         <CarouselContent>
           <CarouselItem className="flex flex-col gap-2">
             <Typography size={4} weight="bold">
@@ -42,14 +43,28 @@ Many people experience premenstrual symptoms during the later part of the luteal
               `}
               maxLength={230}
             />
-            <Accordion>
-              <AccordionItem>
-                <AccordionTrigger>Frequent symptoms</AccordionTrigger>
-                <AccordionContent>
-                  <Symptom text="puffiness" />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <SymptomsAccordion />
+          </CarouselItem>
+          {/*  */}
+          <CarouselItem className="flex flex-col gap-2">
+            <Typography size={4} weight="bold">
+              About
+            </Typography>
+            <ExpandableText
+              text={`
+The luteal phase is the second half of the menstrual cycle, starting after ovulation and lasting about 14 days.
+
+During this phase, the corpus luteum forms and releases progesterone, which prepares the uterus for a possible pregnancy.
+
+Progesterone levels rise steadily throughout the luteal phase, causing the uterine lining to thicken and become more receptive to a fertilized egg. This hormone also affects body temperature, mood, and energy levels.
+
+If fertilization does not occur, the corpus luteum breaks down after about 10 to 14 days, causing progesterone and estrogen levels to drop sharply. This hormonal shift triggers the shedding of the uterine lining, marking the start of menstruation and the beginning of a new cycle.
+
+Many people experience premenstrual symptoms during the later part of the luteal phase, including bloating, breast tenderness, mood changes, and fatigue, as the body responds to the falling hormone levels.
+              `}
+              maxLength={230}
+            />
+            <SymptomsAccordion />
           </CarouselItem>
         </CarouselContent>
       </Carousel>
@@ -99,6 +114,37 @@ const Symptom = ({ text }: SymptomProps) => {
   );
 };
 
+const SymptomsAccordion = () => {
+  const [value, setValue] = useState<string[]>([]);
+  const { emblaApi } = useCarousel();
+
+  // Collapse back to closed whenever the user swipes to another slide, so
+  // returning to this one later doesn't leave it expanded.
+  useEffect(() => {
+    if (!emblaApi) {
+      return;
+    }
+
+    const collapse = () => setValue([]);
+
+    emblaApi.on("select", collapse);
+    return () => {
+      emblaApi.off("select", collapse);
+    };
+  }, [emblaApi]);
+
+  return (
+    <Accordion value={value} onValueChange={setValue}>
+      <AccordionItem value="symptoms">
+        <AccordionTrigger>Frequent symptoms</AccordionTrigger>
+        <AccordionContent>
+          <Symptom text="puffiness" />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+};
+
 type ExpandableTextProps = {
   text: string;
   maxLength: number;
@@ -106,6 +152,31 @@ type ExpandableTextProps = {
 
 const ExpandableText = ({ text, maxLength }: ExpandableTextProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { ref: wrapperRef, captureHeight } = useHeightTransition(isExpanded);
+  const { emblaApi } = useCarousel();
+
+  const toggleExpanded = () => {
+    captureHeight();
+    setIsExpanded((prev) => !prev);
+  };
+
+  // Collapse back to the truncated view whenever the user swipes to another
+  // slide, so returning to this one later doesn't leave it expanded.
+  useEffect(() => {
+    if (!emblaApi) {
+      return;
+    }
+
+    const collapse = () => {
+      captureHeight();
+      setIsExpanded(false);
+    };
+
+    emblaApi.on("select", collapse);
+    return () => {
+      emblaApi.off("select", collapse);
+    };
+  }, [emblaApi, captureHeight]);
 
   const paragraphs = useMemo(
     () =>
@@ -143,28 +214,36 @@ const ExpandableText = ({ text, maxLength }: ExpandableTextProps) => {
   const displayedParagraphs = isExpanded ? paragraphs : visible;
 
   return (
-    <div className="text-base-secondary flex flex-col gap-1 md:gap-2">
-      {displayedParagraphs.map((p, index) => {
-        return (
-          <Typography key={index} color="secondary" size={2}>
-            {p}
+    <div ref={wrapperRef} className="overflow-hidden">
+      <div className="text-base-secondary flex flex-col gap-1 md:gap-2">
+        {displayedParagraphs.map((p, index) => {
+          return (
+            <Typography key={index} color="secondary" size={2}>
+              {p}
+            </Typography>
+          );
+        })}
+        {!isExpanded && isTruncated && (
+          <Typography
+            size={2}
+            color="action"
+            onClick={toggleExpanded}
+            className="inline-block self-start"
+          >
+            Show more
           </Typography>
-        );
-      })}
-      {!isExpanded && isTruncated && (
-        <Typography size={2} color="action" onClick={() => setIsExpanded(true)}>
-          Show more
-        </Typography>
-      )}
-      {isExpanded && isTruncated && (
-        <Typography
-          size={2}
-          color="action"
-          onClick={() => setIsExpanded(false)}
-        >
-          Show less
-        </Typography>
-      )}
+        )}
+        {isExpanded && isTruncated && (
+          <Typography
+            size={2}
+            color="action"
+            onClick={toggleExpanded}
+            className="inline-block self-start"
+          >
+            Show less
+          </Typography>
+        )}
+      </div>
     </div>
   );
 };

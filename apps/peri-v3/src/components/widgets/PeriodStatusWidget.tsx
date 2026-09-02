@@ -63,7 +63,7 @@ const PeriodInfoIndicator = ({ label, color }: PeriodInfoIndicatorProps) => {
             periodInfoIndicatorVariants({ color }),
           )}
         />
-        <Typography size={3}>{label}</Typography>
+        <Typography size={2}>{label}</Typography>
       </div>
       <IconButton size="sm" color="ternary">
         <Info />
