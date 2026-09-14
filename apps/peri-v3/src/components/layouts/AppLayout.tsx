@@ -13,7 +13,8 @@ type AppLayoutProps = {
 };
 
 export const AppLayout = ({ pages }: AppLayoutProps) => {
-  const { emblaRef } = usePager();
+  const { emblaRef, activePageId } = usePager();
+  const activeIndex = pages.findIndex((page) => page.id === activePageId);
 
   return (
     <div className="flex h-dvh w-screen justify-center">
@@ -25,14 +26,17 @@ export const AppLayout = ({ pages }: AppLayoutProps) => {
             className="h-full w-full touch-pan-y overflow-hidden"
           >
             <div className="flex h-full w-full flex-col">
-              {pages.map((page) => (
-                <div
-                  key={page.id}
-                  className="size-full shrink-0 scrollbar-none overflow-y-auto"
-                >
-                  {page.content}
-                </div>
-              ))}
+              {pages.map((page, index) => {
+                const isMounted = Math.abs(index - activeIndex) <= 1;
+                return (
+                  <div
+                    key={page.id}
+                    className="size-full shrink-0 scrollbar-none overflow-y-auto"
+                  >
+                    {isMounted ? page.content : null}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Content>
