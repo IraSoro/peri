@@ -2,6 +2,7 @@ import { usePager } from "./PagerProvider";
 import { Header } from "./Header";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
+import { LazyMount } from "@/components/ui/LazyMount";
 
 export type Page = {
   id: string;
@@ -27,13 +28,17 @@ export const AppLayout = ({ pages }: AppLayoutProps) => {
           >
             <div className="flex h-full w-full flex-col">
               {pages.map((page, index) => {
-                const isMounted = Math.abs(index - activeIndex) <= 1;
+                const distance = Math.abs(index - activeIndex);
                 return (
                   <div
                     key={page.id}
-                    className="size-full shrink-0 scrollbar-none overflow-y-auto"
+                    className="size-full shrink-0 scrollbar-none overflow-y-auto [content-visibility:auto]"
                   >
-                    {isMounted ? page.content : null}
+                    {distance <= 1 ? (
+                      <LazyMount isActive={distance === 0}>
+                        {page.content}
+                      </LazyMount>
+                    ) : null}
                   </div>
                 );
               })}
