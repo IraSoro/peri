@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 import intervalPlural from "i18next-intervalplural-postprocessor";
 
 import en from "./translations/en";
+import it from "./translations/it";
 import ru from "./translations/ru";
 import es from "./translations/es";
 import tl from "./translations/tl";

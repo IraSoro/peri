@@ -29,6 +29,7 @@ const locales = new Map([
   ["es", es],
   ["tl", enUS],
   ["de", de],
+  ["it", it],
   ["hi", hi],
   ["hg", enUS],
   ["fa", faIR],
