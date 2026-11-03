@@ -8,7 +8,6 @@ import {
   CollapsibleTrigger,
 } from "../ui/Collapsible";
 import { Button } from "../ui/Button";
-import { IconButton } from "../ui/IconButton";
 
 export const CycleInfoWidget = () => {
   return (
