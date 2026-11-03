@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/config-v2",
+  "title": "Config V2",
+  "description": "Peri config. Readers must ignore unknown fields, so additionalProperties is intentionally left open everywhere.",
+  "type": "object",
+  "$defs": {
+    "IsoDate": {
+      "description": "ISO 8601 date-time",
+      "type": "string",
+      "format": "date-time"
+    },
+    "Semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "Core": {
+      "description": "Host app identity and private storage",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Host app identifier",
+          "examples": ["peri"],
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "description": "Host app release version",
+          "$ref": "#/$defs/Semver"
+        },
+        "data": {
+          "description": "Host app KV storage. Format is up to the host app",
+          "type": "object"
+        }
+      },
+      "required": ["id", "version", "data"]
+    },
+    "Cycle": {
+      "description": "Menstrual cycle history entry",
+      "type": "object",
+      "properties": {
+        "start_date": {
+          "description": "Cycle start / first day of the period",
+          "$ref": "#/$defs/IsoDate"
+        },
+        "end_date": {
+          "description": "Cycle end. null for the current cycle",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/IsoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "period_length": {
+          "description": "Period length in days",
+          "oneOf": [
+            {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cycle_length": {
+          "description": "Cycle length in days. null until the next cycle starts",
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": ["start_date", "end_date", "period_length", "cycle_length"]
+    },
+    "PredictionDay": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/IsoDate"
+        }
+      },
+      "required": ["date"]
+    },
+    "Prediction": {
+      "type": "object",
+      "properties": {
+        "algorithm_id": {
+          "description": "Id of an entry in `algorithms`",
+          "type": "string",
+          "minLength": 1
+        },
+        "days": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PredictionDay"
+          }
+        }
+      },
+      "required": ["algorithm_id", "days"]
+    },
+    "Permission": {
+      "description": "Scope in `resource:action` snake_case format. Wildcards are not supported",
+      "examples": ["cycles:read", "predictions:write"],
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"
+    },
+    "ManifestBase": {
+      "type": "object",
+      "properties": {
+        "manifest_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "id": {
+          "description": "Unique id, reverse domain name recommended",
+          "examples": ["com.peri.menstruation_calculator"],
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "$ref": "#/$defs/Semver"
+        },
+        "source": {
+          "description": "Set by the host app only, the manifest file value is ignored",
+          "enum": ["internal", "community"]
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Permission"
+          }
+        },
+        "author": {
+          "type": "string"
+        },
+        "repository_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "manifest_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "installed_at": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "manifest_version",
+        "id",
+        "name",
+        "version",
+        "source",
+        "permissions"
+      ],
+      "if": {
+        "properties": {
+          "source": {
+            "const": "internal"
+          }
+        },
+        "required": ["source"]
+      },
+      "then": {
+        "description": "Community-only fields must not be set for internal sources",
+        "properties": {
+          "author": false,
+          "repository_url": false,
+          "manifest_url": false,
+          "installed_at": false,
+          "verified": false
+        }
+      }
+    },
+    "Algorithm": {
+      "type": "object",
+      "properties": {
+        "manifest": {
+          "$ref": "#/$defs/ManifestBase"
+        }
+      },
+      "required": ["manifest"]
+    },
+    "App": {
+      "type": "object",
+      "properties": {
+        "manifest": {
+          "$ref": "#/$defs/ManifestBase"
+        },
+        "data": {
+          "description": "App KV storage. Format is up to the app",
+          "type": "object"
+        }
+      },
+      "required": ["manifest", "data"]
+    }
+  },
+  "properties": {
+    "version": {
+      "description": "Config format version. Bump only on breaking changes",
+      "const": 2
+    },
+    "revision": {
+      "description": "Incremented on every config change (optimistic concurrency)",
+      "type": "integer",
+      "minimum": 0
+    },
+    "core": {
+      "$ref": "#/$defs/Core"
+    },
+    "cycles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Cycle"
+      }
+    },
+    "predictions": {
+      "description": "Predicted dates keyed by prediction type. Open for new types",
+      "type": "object",
+      "properties": {
+        "menstruation": {
+          "$ref": "#/$defs/Prediction"
+        },
+        "ovulation": {
+          "$ref": "#/$defs/Prediction"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/Prediction"
+      }
+    },
+    "algorithms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Algorithm"
+      }
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/App"
+      }
+    }
+  },
+  "required": [
+    "version",
+    "revision",
+    "core",
+    "cycles",
+    "predictions",
+    "algorithms",
+    "apps"
+  ]
+}

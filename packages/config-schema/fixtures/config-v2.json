@@ -1,0 +1,123 @@
+{
+  "version": 2,
+  "revision": 1,
+  "core": {
+    "id": "peri",
+    "version": "3.0.0",
+    "data": {}
+  },
+  "cycles": [
+    {
+      "start_date": "2025-01-08T00:00:00.000Z",
+      "end_date": "2025-01-12T00:00:00.000Z",
+      "period_length": 5,
+      "cycle_length": 29
+    },
+    {
+      "start_date": "2025-02-06T00:00:00.000Z",
+      "end_date": "2025-02-10T00:00:00.000Z",
+      "period_length": 5,
+      "cycle_length": 27
+    },
+    {
+      "start_date": "2025-06-28T00:00:00.000Z",
+      "end_date": null,
+      "period_length": null,
+      "cycle_length": null
+    }
+  ],
+  "predictions": {
+    "menstruation": {
+      "algorithm_id": "com.peri.menstruation_calculator",
+      "days": [
+        {
+          "date": "2025-07-28T00:00:00.000Z"
+        },
+        {
+          "date": "2025-07-29T00:00:00.000Z"
+        },
+        {
+          "date": "2025-07-30T00:00:00.000Z"
+        },
+        {
+          "date": "2025-07-31T00:00:00.000Z"
+        }
+      ]
+    },
+    "ovulation": {
+      "algorithm_id": "com.peri.ovulation_calculator",
+      "days": [
+        {
+          "date": "2025-07-12T00:00:00.000Z"
+        },
+        {
+          "date": "2025-07-13T00:00:00.000Z"
+        },
+        {
+          "date": "2025-07-14T00:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "algorithms": [
+    {
+      "manifest": {
+        "manifest_version": 1,
+        "id": "com.peri.menstruation_calculator",
+        "name": "Menstruation calculator",
+        "version": "1.0.0",
+        "source": "internal",
+        "permissions": []
+      }
+    },
+    {
+      "manifest": {
+        "manifest_version": 1,
+        "id": "com.peri.ovulation_calculator",
+        "name": "Ovulation calculator",
+        "version": "1.0.0",
+        "source": "internal",
+        "permissions": []
+      }
+    }
+  ],
+  "apps": [
+    {
+      "manifest": {
+        "manifest_version": 1,
+        "id": "com.peri.period_in",
+        "name": "Period in widget",
+        "version": "1.0.0",
+        "source": "internal",
+        "permissions": []
+      },
+      "data": {}
+    },
+    {
+      "manifest": {
+        "manifest_version": 1,
+        "id": "com.peri.calendar",
+        "name": "Calendar widget",
+        "version": "1.0.0",
+        "source": "internal",
+        "permissions": []
+      },
+      "data": {}
+    },
+    {
+      "manifest": {
+        "manifest_version": 1,
+        "id": "com.some.extension.app.id",
+        "name": "Some extension app name",
+        "version": "1.0.0",
+        "source": "community",
+        "author": "Jane Roe",
+        "repository_url": "https://example.com",
+        "manifest_url": "https://example.com/manifest.json",
+        "installed_at": "2025-06-01T00:00:00.000Z",
+        "permissions": []
+      },
+      "data": {}
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@repo/config-schema",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "json2ts -i schemas -o dist --no-additionalProperties --no-style.singleQuote && node scripts/build-validator.mjs",
+    "test": "node scripts/build-validator.mjs && vitest run",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check ."
+  },
+  "exports": {
+    "./validate-config-v1": {
+      "types": "./src/validate-config-v1.ts",
+      "default": "./src/validate-config-v1.ts"
+    },
+    "./validate-config-v2": {
+      "types": "./src/validate-config-v2.ts",
+      "default": "./src/validate-config-v2.ts"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts"
+    }
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "json-schema-to-typescript": "^15.0.4",
+    "prettier": "^3.9.4",
+    "vitest": "^2.1.9"
+  }
+}

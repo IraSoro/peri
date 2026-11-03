@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "cycles": [
+    {
+      "cycleLength": 0,
+      "periodLength": 5,
+      "startDate": "Sat Jun 28 2025 00:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "cycleLength": 31,
+      "periodLength": 5,
+      "startDate": "Wed May 28 2025 00:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "cycleLength": 26,
+      "periodLength": 5,
+      "startDate": "Fri May 02 2025 00:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "cycleLength": 28,
+      "periodLength": 5,
+      "startDate": "Fri Apr 04 2025 00:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "cycleLength": 30,
+      "periodLength": 5,
+      "startDate": "Wed Mar 05 2025 00:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "cycleLength": 27,
+      "periodLength": 5,
+      "startDate": "Thu Feb 06 2025 00:00:00 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "cycleLength": 29,
+      "periodLength": 5,
+      "startDate": "Wed Jan 08 2025 00:00:00 GMT+0100 (Central European Standard Time)"
+    }
+  ],
+  "language": "en",
+  "theme": "dark",
+  "isNotificationEnabled": false,
+  "lastNotificationId": 0,
+  "maxNumberOfDisplayedCycles": 6
+}

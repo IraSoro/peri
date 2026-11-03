@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@repo/config-schema": "workspace:*",
     "@base-ui/react": "^1.6.0",
     "@fontsource/source-sans-pro": "^5.2.5",
     "@repo/design-tokens": "workspace:*",
