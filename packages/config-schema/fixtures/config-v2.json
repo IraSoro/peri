@@ -22,7 +22,7 @@
     {
       "start_date": "2025-06-28T00:00:00.000Z",
       "end_date": null,
-      "period_length": null,
+      "period_length": 5,
       "cycle_length": null
     }
   ],

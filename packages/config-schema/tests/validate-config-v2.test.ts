@@ -149,6 +149,44 @@ describe("validateConfigV2", () => {
     });
   });
 
+  describe("open cycle", () => {
+    it("rejects an old cycle without end_date", () => {
+      const config = validConfig();
+      config.cycles[0].end_date = null;
+      expect(errorsOf(config)).toEqual([
+        expect.objectContaining({
+          code: "open_cycle",
+          path: "/cycles/0/end_date",
+        }),
+      ]);
+    });
+
+    it("rejects an old cycle without cycle_length", () => {
+      const config = validConfig();
+      config.cycles[0].cycle_length = null;
+      expect(errorsOf(config)).toEqual([
+        expect.objectContaining({
+          code: "open_cycle",
+          path: "/cycles/0/cycle_length",
+        }),
+      ]);
+    });
+
+    it("finds the current cycle by start_date, not by position", () => {
+      const config = validConfig();
+      config.cycles.reverse();
+      expect(validateConfigV2(config).ok).toBe(true);
+    });
+
+    it("allows a finished current cycle", () => {
+      const config = validConfig();
+      const current = config.cycles[config.cycles.length - 1];
+      current.end_date = "2025-07-02T00:00:00.000Z";
+      current.cycle_length = 30;
+      expect(validateConfigV2(config).ok).toBe(true);
+    });
+  });
+
   it("reports every violation, not just the first", () => {
     const config = validConfig();
     config.apps.push(structuredClone(config.apps[0]));

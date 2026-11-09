@@ -10,6 +10,9 @@ const ajv = new Ajv2020({
 });
 addFormats(ajv);
 
+// CommonJS modules with `__esModule` and no `default` export, imported by name
+const NAMED_IMPORTS = { "ajv-formats/dist/formats": ["fullFormats"] };
+
 mkdirSync(new URL("../generated/", import.meta.url), { recursive: true });
 
 for (const version of ["v1", "v2"]) {
@@ -31,15 +34,27 @@ for (const version of ["v1", "v2"]) {
   );
   // Tools disagree on the shape of a default import of a CommonJS module (Node gives module.exports,
   // Vite/vitest may unwrap `default` when `__esModule` is set), so normalise it back to module.exports.
+  // Modules listed in NAMED_IMPORTS have no `default` export: Vite unwraps their default to `undefined`,
+  // so they are imported by name, which every tool resolves the same way.
   const imports =
     specifiers
-      .map(
-        (specifier, i) =>
-          `import __raw${i} from "${specifier}${specifier.endsWith(".js") ? "" : ".js"}";`,
-      )
+      .map((specifier, i) => {
+        const path = `${specifier}${specifier.endsWith(".js") ? "" : ".js"}`;
+        const names = NAMED_IMPORTS[specifier];
+        return names
+          ? `import { ${names.join(", ")} } from "${path}";`
+          : `import __raw${i} from "${path}";`;
+      })
       .join("") +
     "const __cjs = (m) => (typeof m === 'function' ? { default: m } : m);" +
-    specifiers.map((_, i) => `const __dep${i} = __cjs(__raw${i});`).join("");
+    specifiers
+      .map((specifier, i) => {
+        const names = NAMED_IMPORTS[specifier];
+        return names
+          ? `const __dep${i} = { ${names.join(", ")} };`
+          : `const __dep${i} = __cjs(__raw${i});`;
+      })
+      .join("");
 
   writeFileSync(
     new URL(`../generated/validate-config-${version}.js`, import.meta.url),

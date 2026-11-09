@@ -72,7 +72,7 @@ export interface Cycle {
   /**
    * Period length in days
    */
-  period_length: number | null;
+  period_length: number;
   /**
    * Cycle length in days. null until the next cycle starts
    */

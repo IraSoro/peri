@@ -8,7 +8,7 @@ export type {
   SchemaValidationResult,
 } from "./schema-errors.js";
 
-type ConfigErrorCode = "duplicate_id" | "unknown_algorithm";
+type ConfigErrorCode = "duplicate_id" | "unknown_algorithm" | "open_cycle";
 
 export interface ConfigError {
   code: SchemaErrorCode | ConfigErrorCode;
@@ -73,6 +73,35 @@ const predictionsUseKnownAlgorithms: Rule = (config) => {
     }));
 };
 
+const onlyCurrentCycleIsOpen: Rule = (config) => {
+  let current = -1;
+  let latest = -Infinity;
+  for (const [index, cycle] of config.cycles.entries()) {
+    const start = Date.parse(cycle.start_date);
+    if (start > latest) {
+      latest = start;
+      current = index;
+    }
+  }
+
+  const errors: ConfigError[] = [];
+  for (const [index, cycle] of config.cycles.entries()) {
+    if (index === current) {
+      continue;
+    }
+    for (const field of ["end_date", "cycle_length"] as const) {
+      if (cycle[field] === null) {
+        errors.push({
+          code: "open_cycle",
+          path: `/cycles/${index}/${field}`,
+          message: `Cycle "${cycle.start_date}" is not the current one, "${field}" must be set`,
+        });
+      }
+    }
+  }
+  return errors;
+};
+
 export function validateConfigV2(data: unknown): ConfigValidationResult {
   if (!validateSchema(data)) {
     return { ok: false, errors: toSchemaErrors(validateSchema.errors) };
@@ -84,6 +113,7 @@ export function validateConfigV2(data: unknown): ConfigValidationResult {
     allAppIdsAreUnique,
     allAlgorithmIdsAreUnique,
     predictionsUseKnownAlgorithms,
+    onlyCurrentCycleIsOpen,
   ]) {
     errors.push(...rule(config));
   }

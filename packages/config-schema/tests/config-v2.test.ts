@@ -7,7 +7,13 @@ const manifest = {
   name: "Test",
   version: "1.0.0",
   source: "internal",
-  permissions: ["cycles:read"],
+  permissions: [],
+};
+
+const communityManifest = {
+  ...manifest,
+  source: "community",
+  installed_at: "2025-06-01T00:00:00.000Z",
 };
 
 const config = {
@@ -23,7 +29,7 @@ const config = {
 const currentCycle = {
   start_date: "2025-01-08T00:00:00.000Z",
   end_date: null,
-  period_length: null,
+  period_length: 5,
   cycle_length: null,
 };
 
@@ -92,6 +98,11 @@ describe("config v2", () => {
     expect(validate({ ...config, cycles: [cycle] })).toBe(false);
   });
 
+  it("rejects a null period_length", () => {
+    const cycle = { ...currentCycle, period_length: null };
+    expect(validate({ ...config, cycles: [cycle] })).toBe(false);
+  });
+
   it("rejects a non-ISO date", () => {
     const cycle = { ...currentCycle, start_date: "Wed Jan 08 2025" };
     expect(validate({ ...config, cycles: [cycle] })).toBe(false);
@@ -131,18 +142,32 @@ describe("config v2", () => {
 
     it("accepts community-only fields on community source", () => {
       const community = {
-        ...manifest,
-        source: "community",
+        ...communityManifest,
         author: "Jane Roe",
         verified: false,
       };
       expect(validate(withManifest(community))).toBe(true);
     });
 
+    it("rejects permissions on an internal source", () => {
+      const m = { ...manifest, permissions: ["cycles:read"] };
+      expect(validate(withManifest(m))).toBe(false);
+    });
+
+    it("accepts permissions on a community source", () => {
+      const m = { ...communityManifest, permissions: ["cycles:read"] };
+      expect(validate(withManifest(m))).toBe(true);
+    });
+
+    it("requires `installed_at` on a community source", () => {
+      const { installed_at: _, ...m } = communityManifest;
+      expect(validate(withManifest(m))).toBe(false);
+    });
+
     it.each(["cycles*", "cycles:", ":read", "Cycles:Read", "cycles-read"])(
       "rejects malformed scope `%s`",
       (scope) => {
-        const m = { ...manifest, permissions: [scope] };
+        const m = { ...communityManifest, permissions: [scope] };
         expect(validate(withManifest(m))).toBe(false);
       },
     );

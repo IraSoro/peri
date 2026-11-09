@@ -56,15 +56,8 @@
         },
         "period_length": {
           "description": "Period length in days",
-          "oneOf": [
-            {
-              "type": "integer",
-              "exclusiveMinimum": 0
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "type": "integer",
+          "exclusiveMinimum": 0
         },
         "cycle_length": {
           "description": "Cycle length in days. null until the next cycle starts",
@@ -178,13 +171,31 @@
         "required": ["source"]
       },
       "then": {
-        "description": "Community-only fields must not be set for internal sources",
+        "description": "Community-only fields must not be set for internal sources, which have no permissions to request",
         "properties": {
           "author": false,
           "repository_url": false,
           "manifest_url": false,
           "installed_at": false,
-          "verified": false
+          "verified": false,
+          "permissions": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "if": {
+          "properties": {
+            "source": {
+              "const": "community"
+            }
+          },
+          "required": ["source"]
+        },
+        "then": {
+          "description": "The host always sets the install date of a community manifest",
+          "required": ["installed_at"]
         }
       }
     },

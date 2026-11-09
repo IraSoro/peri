@@ -5,7 +5,8 @@ interface ViteTypeOptions {
 }
 
 interface ImportMetaEnv {
-  readonly VITE_TEST_VAR: string;
+  readonly VITE_APP_NAME: string;
+  readonly VITE_APP_VERSION: string;
 }
 
 interface ImportMeta {
