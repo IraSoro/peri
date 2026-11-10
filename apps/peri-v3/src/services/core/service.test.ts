@@ -4,6 +4,7 @@ import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
 import { Service as AlgorithmsService } from "@/services/algorithms/service";
 import type { AlgorithmEntry } from "@/services/algorithms/types";
+import { Service as AppsService } from "@/services/apps/service";
 import { Service as CyclesService } from "@/services/cycles/service";
 import { Service } from "./service";
 
@@ -37,8 +38,9 @@ async function setup() {
   await store.load();
   const algorithms = new AlgorithmsService(store);
   const cycles = new CyclesService(store);
-  const service = new Service(store, algorithms);
-  return { store, algorithms, cycles, service };
+  const apps = new AppsService(store);
+  const service = new Service(store, algorithms, apps);
+  return { store, algorithms, apps, cycles, service };
 }
 
 describe("core service", () => {
@@ -104,26 +106,73 @@ describe("core service", () => {
       expect(good.calls).toBe(1);
     });
 
-    it("drops an unregistered algorithm instead of failing forever", async () => {
-      const { algorithms, service } = await setup();
-      await algorithms.register(manifest("gone"), counting());
-      await service.setActiveAlgorithm("menstruation", "gone");
-      await algorithms.unregister("gone");
+    it("runs an already active algorithm once its code is registered", async () => {
+      const { store, algorithms, service } = await setup();
+      await algorithms.register(manifest("a"), counting());
+      await service.setActiveAlgorithm("menstruation", "a");
+      const reloaded = new Service(
+        store,
+        new AlgorithmsService(store),
+        new AppsService(store),
+      );
+      const entry = counting();
 
-      const res = await service.recompute();
+      const res = await reloaded.registerAlgorithm(manifest("a"), entry);
+
+      expect(res).toEqual({ ok: true });
+      expect(entry.calls).toBe(1);
+    });
+
+    it("does not run an algorithm that is not active", async () => {
+      const { service } = await setup();
+      const entry = counting();
+
+      await service.registerAlgorithm(manifest("a"), entry);
+
+      expect(entry.calls).toBe(0);
+    });
+
+    it("reports a registration the algorithms service refuses", async () => {
+      const { service } = await setup();
+      await service.registerAlgorithm(manifest("a"), counting());
+
+      const res = await service.registerAlgorithm(manifest("a"), counting());
+
+      expect(res).toMatchObject({
+        ok: false,
+        error: { code: "registration_failed" },
+      });
+    });
+
+    it("drops the choice when its algorithm is unregistered", async () => {
+      const { service } = await setup();
+      await service.registerAlgorithm(manifest("gone"), counting());
+      await service.setActiveAlgorithm("menstruation", "gone");
+
+      const res = await service.unregisterAlgorithm("gone");
 
       expect(res).toEqual({ ok: true });
       expect(service.getActiveAlgorithm("menstruation")).toBeUndefined();
     });
 
-    it("keeps and runs the remaining algorithms when one is dropped", async () => {
-      const { algorithms, service } = await setup();
+    it("removes the predictions of an unregistered algorithm", async () => {
+      const { store, service } = await setup();
+      await service.registerAlgorithm(manifest("gone"), counting());
+      await service.setActiveAlgorithm("menstruation", "gone");
+
+      await service.unregisterAlgorithm("gone");
+
+      expect(store.get().predictions.menstruation).toBeUndefined();
+    });
+
+    it("keeps the other choices when one algorithm is unregistered", async () => {
+      const { service } = await setup();
       const kept = counting();
-      await algorithms.register(manifest("gone"), counting());
-      await algorithms.register(manifest("kept"), kept);
+      await service.registerAlgorithm(manifest("gone"), counting());
+      await service.registerAlgorithm(manifest("kept"), kept);
       await service.setActiveAlgorithm("menstruation", "gone");
       await service.setActiveAlgorithm("ovulation", "kept");
-      await algorithms.unregister("gone");
+      await service.unregisterAlgorithm("gone");
       kept.calls = 0;
 
       const res = await service.recompute();
@@ -131,6 +180,39 @@ describe("core service", () => {
       expect(res).toEqual({ ok: true });
       expect(service.getActiveAlgorithm("ovulation")).toBe("kept");
       expect(kept.calls).toBe(1);
+    });
+
+    it("reports unregistering an unknown algorithm", async () => {
+      const { service } = await setup();
+
+      const res = await service.unregisterAlgorithm("nope");
+
+      expect(res).toMatchObject({
+        ok: false,
+        error: { code: "registration_failed" },
+      });
+    });
+
+    it("registers and unregisters apps", async () => {
+      const { store, service } = await setup();
+      const component = () => null;
+
+      const added = await service.registerApp(manifest("w"), { component });
+      const duplicate = await service.registerApp(manifest("w"), { component });
+      const removed = await service.unregisterApp("w");
+      const missing = await service.unregisterApp("w");
+
+      expect(added).toEqual({ ok: true });
+      expect(duplicate).toMatchObject({
+        ok: false,
+        error: { code: "registration_failed" },
+      });
+      expect(removed).toEqual({ ok: true });
+      expect(missing).toMatchObject({
+        ok: false,
+        error: { code: "registration_failed" },
+      });
+      expect(store.get().apps).toHaveLength(0);
     });
 
     it("runs an algorithm once even when it serves several types", async () => {
