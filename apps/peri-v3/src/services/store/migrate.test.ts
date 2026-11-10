@@ -99,13 +99,13 @@ describe("v1ToV2", () => {
 
     expect(res.ok && (res.data as ConfigV2).cycles).toEqual([
       {
-        start_date: "2025-05-28T00:00:00Z",
-        end_date: "2025-06-27T00:00:00Z",
+        start_date: "2025-05-28T00:00:00.000Z",
+        end_date: "2025-06-27T00:00:00.000Z",
         period_length: 4,
         cycle_length: 31,
       },
       {
-        start_date: "2025-06-28T00:00:00Z",
+        start_date: "2025-06-28T00:00:00.000Z",
         end_date: null,
         period_length: 5,
         cycle_length: null,
@@ -126,7 +126,7 @@ describe("v1ToV2", () => {
     );
 
     expect(res.ok && (res.data as ConfigV2).cycles[0]?.start_date).toBe(
-      "2025-06-27T00:00:00Z",
+      "2025-06-27T00:00:00.000Z",
     );
   });
 

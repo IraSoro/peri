@@ -2,13 +2,13 @@ import { Temporal } from "temporal-polyfill";
 import type { Cycle } from "@repo/config-schema/config-v2.schema";
 import { service as store } from "@/services/store/service";
 import type { Service as StoreService } from "@/services/store/service";
+import { formatInstant } from "@/lib/utils/dates";
 import type {
   CycleErrorCode,
   CycleInput,
   CycleOperationResult,
   ValidateOperation,
 } from "./types";
-import { formatInstant } from "./dates";
 import {
   hasNoOverlappingPeriods,
   hasUniqueStartDates,

@@ -92,6 +92,37 @@ export class Service {
 
   recompute(): Promise<CoreOperationResult> {
     const run = this.#queue.then(async (): Promise<CoreOperationResult> => {
+      // An unregistered algorithm can't run, drop it so it doesn't fail
+      // every recompute forever
+      const registered = new Set(
+        this.#store.get().algorithms.map((a) => {
+          return a.manifest.id;
+        }),
+      );
+      const current: CoreData = this.#store.get().core.data;
+      const dangling = Object.values(current.active_algorithms ?? {}).some(
+        (id) => {
+          return !registered.has(id);
+        },
+      );
+      if (dangling) {
+        await this.#store.update((config) => {
+          const data: CoreData = config.core.data;
+          const active = Object.fromEntries(
+            Object.entries(data.active_algorithms ?? {}).filter(([, id]) => {
+              return registered.has(id);
+            }),
+          );
+          return {
+            ...config,
+            core: {
+              ...config.core,
+              data: { ...data, active_algorithms: active },
+            },
+          };
+        });
+      }
+
       const data: CoreData = this.#store.get().core.data;
       const ids = new Set(Object.values(data.active_algorithms ?? {}));
       let failure: CoreOperationResult = { ok: true };

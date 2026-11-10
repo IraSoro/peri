@@ -104,6 +104,35 @@ describe("core service", () => {
       expect(good.calls).toBe(1);
     });
 
+    it("drops an unregistered algorithm instead of failing forever", async () => {
+      const { algorithms, service } = await setup();
+      await algorithms.register(manifest("gone"), counting());
+      await service.setActiveAlgorithm("menstruation", "gone");
+      await algorithms.unregister("gone");
+
+      const res = await service.recompute();
+
+      expect(res).toEqual({ ok: true });
+      expect(service.getActiveAlgorithm("menstruation")).toBeUndefined();
+    });
+
+    it("keeps and runs the remaining algorithms when one is dropped", async () => {
+      const { algorithms, service } = await setup();
+      const kept = counting();
+      await algorithms.register(manifest("gone"), counting());
+      await algorithms.register(manifest("kept"), kept);
+      await service.setActiveAlgorithm("menstruation", "gone");
+      await service.setActiveAlgorithm("ovulation", "kept");
+      await algorithms.unregister("gone");
+      kept.calls = 0;
+
+      const res = await service.recompute();
+
+      expect(res).toEqual({ ok: true });
+      expect(service.getActiveAlgorithm("ovulation")).toBe("kept");
+      expect(kept.calls).toBe(1);
+    });
+
     it("runs an algorithm once even when it serves several types", async () => {
       const { algorithms, service } = await setup();
       const entry = counting();
