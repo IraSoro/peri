@@ -1,5 +1,9 @@
 import { useEffect, useId } from "react";
-import type { Cycle, ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type {
+  ConfigV2,
+  Cycle,
+  ManifestBase,
+} from "@repo/config-schema/config-v2.schema";
 import { useStoreSelector } from "@/lib/hooks/useStoreSelector";
 import type { CoreData, PredictionType } from "@/services/core/types";
 import { useFooterContext } from "@/components/layouts/Footer";
@@ -13,6 +17,13 @@ export const useCycles = (): [Cycle[], typeof updateCycles] => {
     return config.cycles;
   });
   return [cycles, updateCycles];
+};
+
+/** The stored predictions, by prediction type */
+export const usePredictions = (): ConfigV2["predictions"] => {
+  return useStoreSelector((config) => {
+    return config.predictions;
+  });
 };
 
 /** Manifests of the registered algorithms */
@@ -101,3 +112,13 @@ export function useBlockPrevPage(blocked: boolean) {
     return () => setBlockPrev(false);
   }, [blocked, setBlockPrev]);
 }
+
+/** True if the pager can go to the next page, false on the last page or while it is blocked */
+export const useCanGoNextPage = (): boolean => {
+  return usePagerContext().canGoNext;
+};
+
+/** True if the pager can go to the previous page, false on the first page or while it is blocked */
+export const useCanGoPrevPage = (): boolean => {
+  return usePagerContext().canGoPrev;
+};
