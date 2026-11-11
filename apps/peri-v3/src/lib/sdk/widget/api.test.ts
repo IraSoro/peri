@@ -27,11 +27,38 @@ async function setup() {
     new AlgorithmsService(store),
     new AppsService(store),
   );
-  return { store, api: createWidgetApi(core) };
+  return { store, core, api: createWidgetApi(core) };
 }
 
 describe("widget api", () => {
   describe("defineInternalWidget", () => {
+    const internal = {
+      manifest_version: 1 as const,
+      id: "i",
+      name: "i",
+      version: "1.0.0",
+    };
+
+    it("rejects a second registration by default", async () => {
+      const { api } = await setup();
+      await api.defineInternalWidget(internal, widget);
+
+      const res = await api.defineInternalWidget(internal, widget);
+
+      expect(res.ok).toBe(false);
+    });
+
+    it("replaces the registration with replaceInternal", async () => {
+      const { store, core } = await setup();
+      const api = createWidgetApi(core, { replaceInternal: true });
+      await api.defineInternalWidget(internal, widget);
+
+      const res = await api.defineInternalWidget(internal, widget);
+
+      expect(res).toEqual({ ok: true });
+      expect(store.get().apps).toHaveLength(1);
+    });
+
     it("stores the manifest as internal without permissions", async () => {
       const { store, api } = await setup();
 

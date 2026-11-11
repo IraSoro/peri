@@ -22,8 +22,9 @@ export class Service {
   async register(
     manifest: ManifestBase,
     entry: AlgorithmEntry,
+    options: { replace?: boolean } = {},
   ): Promise<AlgorithmOperationResult> {
-    if (this.#entries.has(manifest.id)) {
+    if (!options.replace && this.#entries.has(manifest.id)) {
       return {
         ok: false,
         error: {
@@ -34,6 +35,7 @@ export class Service {
     }
 
     // Set the entry first so a manifest in the store always has its entry
+    const previous = this.#entries.get(manifest.id);
     this.#entries.set(manifest.id, entry);
     const res = await this.#store.update((config) => {
       const index = config.algorithms.findIndex((a) => {
@@ -54,7 +56,11 @@ export class Service {
       return { ...config, algorithms };
     });
     if (!res.ok) {
-      this.#entries.delete(manifest.id);
+      if (previous) {
+        this.#entries.set(manifest.id, previous);
+      } else {
+        this.#entries.delete(manifest.id);
+      }
       return {
         ok: false,
         error: { code: "invalid_manifest", message: res.error.message },

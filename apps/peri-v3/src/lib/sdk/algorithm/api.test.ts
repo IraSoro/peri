@@ -33,6 +33,17 @@ async function setup() {
   return { store, core, api: createAlgorithmApi(core) };
 }
 
+const internal = { manifest_version: 1, id: "b", name: "b", version: "1.0.0" };
+const algorithm = {
+  run() {
+    return {};
+  },
+};
+
+function replacingApi(core: CoreService) {
+  return createAlgorithmApi(core, { replaceInternal: true });
+}
+
 describe("algorithm api", () => {
   describe("defineAlgorithm", () => {
     it("stores the manifest as community with an install date", async () => {
@@ -112,6 +123,26 @@ describe("algorithm api", () => {
   });
 
   describe("defineInternalAlgorithm", () => {
+    it("rejects a second registration by default", async () => {
+      const { api } = await setup();
+      await api.defineInternalAlgorithm(internal, algorithm);
+
+      const res = await api.defineInternalAlgorithm(internal, algorithm);
+
+      expect(res.ok).toBe(false);
+    });
+
+    it("replaces the registration with replaceInternal", async () => {
+      const { store, core } = await setup();
+      const api = replacingApi(core);
+      await api.defineInternalAlgorithm(internal, algorithm);
+
+      const res = await api.defineInternalAlgorithm(internal, algorithm);
+
+      expect(res).toEqual({ ok: true });
+      expect(store.get().algorithms).toHaveLength(1);
+    });
+
     it("stores the manifest as internal without permissions", async () => {
       const { store, api } = await setup();
 

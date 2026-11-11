@@ -8,8 +8,14 @@ import { grantByPermissions } from "../permissions";
 import type { CommunityManifest, InternalManifest } from "../types";
 import type { CommunityAlgorithm, InternalAlgorithm } from "./types";
 
+interface Options {
+  /** Lets an internal algorithm register again and replace its entry, for hot reload */
+  replaceInternal?: boolean;
+}
+
 export function createAlgorithmApi(
   core: Pick<CoreService, "registerAlgorithm">,
+  options: Options = {},
 ) {
   async function defineInternalAlgorithm(
     manifest: InternalManifest,
@@ -19,6 +25,7 @@ export function createAlgorithmApi(
     const res = await core.registerAlgorithm(
       { ...manifest, source: "internal", permissions: [] },
       algorithm,
+      { replace: options.replaceInternal },
     );
     if (res.ok) {
       console.info(
@@ -70,7 +77,7 @@ export function createAlgorithmApi(
   return { defineInternalAlgorithm, defineAlgorithm };
 }
 
-const api = createAlgorithmApi(core);
+const api = createAlgorithmApi(core, { replaceInternal: import.meta.env.DEV });
 
 /** Registers code that ships with the app, it gets the whole input */
 export const defineInternalAlgorithm = api.defineInternalAlgorithm;

@@ -7,7 +7,15 @@ import type { CoreOperationResult } from "@/services/core/types";
 import type { CommunityManifest, InternalManifest } from "../types";
 import type { CommunityWidget, InternalWidget } from "./types";
 
-export function createWidgetApi(core: Pick<CoreService, "registerApp">) {
+interface Options {
+  /** Lets an internal widget register again and replace its entry, for hot reload */
+  replaceInternal?: boolean;
+}
+
+export function createWidgetApi(
+  core: Pick<CoreService, "registerApp">,
+  options: Options = {},
+) {
   async function defineInternalWidget(
     manifest: InternalManifest,
     widget: InternalWidget,
@@ -16,6 +24,7 @@ export function createWidgetApi(core: Pick<CoreService, "registerApp">) {
     const res = await core.registerApp(
       { ...manifest, source: "internal", permissions: [] },
       wrapWidget(manifest.id, widget, { source: "internal", permissions: [] }),
+      { replace: options.replaceInternal },
     );
     if (res.ok) {
       console.info(
@@ -62,7 +71,7 @@ export function createWidgetApi(core: Pick<CoreService, "registerApp">) {
   return { defineInternalWidget, defineWidget };
 }
 
-const api = createWidgetApi(core);
+const api = createWidgetApi(core, { replaceInternal: import.meta.env.DEV });
 
 /** Registers code that ships with the app */
 export const defineInternalWidget = api.defineInternalWidget;

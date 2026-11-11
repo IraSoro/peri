@@ -17,8 +17,9 @@ export class Service {
   async register(
     manifest: ManifestBase,
     entry: AppEntry,
+    options: { replace?: boolean } = {},
   ): Promise<AppOperationResult> {
-    if (this.#apps.has(manifest.id)) {
+    if (!options.replace && this.#apps.has(manifest.id)) {
       return {
         ok: false,
         error: {
@@ -29,6 +30,7 @@ export class Service {
     }
 
     // Set the entry first so a manifest in the store always has its entry
+    const previous = this.#apps.get(manifest.id);
     this.#apps.set(manifest.id, entry);
     const res = await this.#store.update((config) => {
       const index = config.apps.findIndex((a) => {
@@ -51,7 +53,11 @@ export class Service {
       return { ...config, apps };
     });
     if (!res.ok) {
-      this.#apps.delete(manifest.id);
+      if (previous) {
+        this.#apps.set(manifest.id, previous);
+      } else {
+        this.#apps.delete(manifest.id);
+      }
       return {
         ok: false,
         error: { code: "invalid_manifest", message: res.error.message },

@@ -56,8 +56,9 @@ export class Service {
   async registerAlgorithm(
     manifest: ManifestBase,
     entry: AlgorithmEntry,
+    options: { replace?: boolean } = {},
   ): Promise<CoreOperationResult> {
-    const res = await this.#algorithms.register(manifest, entry);
+    const res = await this.#algorithms.register(manifest, entry, options);
     if (!res.ok) {
       return {
         ok: false,
@@ -103,8 +104,9 @@ export class Service {
   async registerApp(
     manifest: ManifestBase,
     entry: AppEntry,
+    options: { replace?: boolean } = {},
   ): Promise<CoreOperationResult> {
-    const res = await this.#apps.register(manifest, entry);
+    const res = await this.#apps.register(manifest, entry, options);
     if (!res.ok) {
       return {
         ok: false,
