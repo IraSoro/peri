@@ -33,6 +33,8 @@ export class Service {
       };
     }
 
+    // Set the entry first so a manifest in the store always has its entry
+    this.#entries.set(manifest.id, entry);
     const res = await this.#store.update((config) => {
       const index = config.algorithms.findIndex((a) => {
         return a.manifest.id === manifest.id;
@@ -52,13 +54,13 @@ export class Service {
       return { ...config, algorithms };
     });
     if (!res.ok) {
+      this.#entries.delete(manifest.id);
       return {
         ok: false,
         error: { code: "invalid_manifest", message: res.error.message },
       };
     }
 
-    this.#entries.set(manifest.id, entry);
     return { ok: true };
   }
 
@@ -188,4 +190,6 @@ console.info("[algorithms] starting");
 
 export const service = new Service(store);
 
-console.info(`[algorithms] ready in ${performance.now() - start}ms`);
+console.info(
+  `[algorithms] ready in ${(performance.now() - start).toFixed(1)}ms`,
+);

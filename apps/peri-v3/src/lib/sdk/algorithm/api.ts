@@ -11,23 +11,34 @@ import type { CommunityAlgorithm, InternalAlgorithm } from "./types";
 export function createAlgorithmApi(
   core: Pick<CoreService, "registerAlgorithm">,
 ) {
-  /** Registers code that ships with the app, it gets the whole input */
-  function defineInternalAlgorithm(
+  async function defineInternalAlgorithm(
     manifest: InternalManifest,
     algorithm: InternalAlgorithm,
   ): Promise<CoreOperationResult> {
-    return core.registerAlgorithm(
+    const start = performance.now();
+    const res = await core.registerAlgorithm(
       { ...manifest, source: "internal", permissions: [] },
       algorithm,
     );
+    if (res.ok) {
+      console.info(
+        `[algorithm] ${manifest.id} registered in ${(performance.now() - start).toFixed(1)}ms`,
+      );
+    } else {
+      console.warn(
+        `[algorithm] ${manifest.id} not registered (${(performance.now() - start).toFixed(1)}ms): ${res.error.message}`,
+      );
+    }
+
+    return res;
   }
 
-  /** Registers community code, it sees only the input its permissions allow */
-  function defineAlgorithm(
+  async function defineAlgorithm(
     manifest: CommunityManifest,
     algorithm: CommunityAlgorithm,
   ): Promise<CoreOperationResult> {
-    return core.registerAlgorithm(
+    const start = performance.now();
+    const res = await core.registerAlgorithm(
       {
         ...manifest,
         source: "community",
@@ -43,10 +54,26 @@ export function createAlgorithmApi(
         },
       },
     );
+    if (res.ok) {
+      console.info(
+        `[community algorithm] ${manifest.id} registered in ${(performance.now() - start).toFixed(1)}ms`,
+      );
+    } else {
+      console.warn(
+        `[community algorithm] ${manifest.id} not registered (${(performance.now() - start).toFixed(1)}ms): ${res.error.message}`,
+      );
+    }
+
+    return res;
   }
 
   return { defineInternalAlgorithm, defineAlgorithm };
 }
 
-export const { defineInternalAlgorithm, defineAlgorithm } =
-  createAlgorithmApi(core);
+const api = createAlgorithmApi(core);
+
+/** Registers code that ships with the app, it gets the whole input */
+export const defineInternalAlgorithm = api.defineInternalAlgorithm;
+
+/** Registers community code, it sees only the input its permissions allow */
+export const defineAlgorithm = api.defineAlgorithm;

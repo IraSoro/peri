@@ -4,6 +4,7 @@ import { Typography } from "../ui/Typography";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 import { IconButton } from "../ui/IconButton";
+import { defineInternalWidget } from "@/lib/sdk/widget/api";
 
 export const PeriodStatusWidget = () => {
   return (
@@ -71,3 +72,13 @@ const PeriodInfoIndicator = ({ label, color }: PeriodInfoIndicatorProps) => {
     </div>
   );
 };
+
+void defineInternalWidget(
+  {
+    manifest_version: 1,
+    id: "com.peri.period_status",
+    name: "Period status",
+    version: "1.0.0",
+  },
+  { component: PeriodStatusWidget },
+);

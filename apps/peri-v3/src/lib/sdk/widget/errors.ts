@@ -14,3 +14,13 @@ export class OutsideWidgetError extends Error {
     super("this hook can only be used inside a widget");
   }
 }
+
+/** Thrown by a hook that only internal widgets may use */
+export class InternalOnlyError extends Error {
+  action: string;
+
+  constructor(action: string) {
+    super(`only internal widgets can ${action}`);
+    this.action = action;
+  }
+}

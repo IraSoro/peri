@@ -5,9 +5,11 @@ import {
   useEffect,
   useRef,
   useState,
+  type RefObject,
 } from "react";
 import { useGesture } from "@use-gesture/react";
 import useEmblaCarousel from "embla-carousel-react";
+import { DuplicatePagerViewportError, OutsideProviderError } from "./errors";
 
 type PagerContextProps = {
   emblaRef: ReturnType<typeof useEmblaCarousel>[0];
@@ -16,15 +18,16 @@ type PagerContextProps = {
   canGoPrev: boolean;
   setBlockNext: (blocked: boolean) => void;
   setBlockPrev: (blocked: boolean) => void;
+  viewportClaimed: RefObject<boolean>;
 };
 
 const PagerContext = createContext<PagerContextProps | null>(null);
 
-export function usePager() {
+export function usePagerContext() {
   const context = useContext(PagerContext);
 
   if (!context) {
-    throw new Error("usePager must be used within a <PagerProvider />");
+    throw new OutsideProviderError("usePagerContext", "PagerProvider");
   }
 
   return context;
@@ -194,6 +197,8 @@ export const PagerProvider = ({
     },
   );
 
+  const viewportClaimed = useRef(false);
+
   return (
     <PagerContext
       value={{
@@ -203,9 +208,41 @@ export const PagerProvider = ({
         canGoPrev: pageIndex > 0 && !blockPrev,
         setBlockNext,
         setBlockPrev,
+        viewportClaimed,
       }}
     >
       {children}
     </PagerContext>
+  );
+};
+
+/**
+ * The only element that gets the carousel ref. The ref is not handed out,
+ * because embla has one viewport and a second element would take it over,
+ * so a second mounted viewport throws
+ */
+export const PagerViewport = ({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) => {
+  const { emblaRef, viewportClaimed } = usePagerContext();
+
+  useEffect(() => {
+    if (viewportClaimed.current) {
+      throw new DuplicatePagerViewportError();
+    }
+    viewportClaimed.current = true;
+    return () => {
+      viewportClaimed.current = false;
+    };
+  }, [viewportClaimed]);
+
+  return (
+    <div ref={emblaRef} className={className}>
+      {children}
+    </div>
   );
 };

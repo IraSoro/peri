@@ -125,4 +125,4 @@ console.info("[store] starting");
 export const service = new Service(new Stub());
 await service.load();
 
-console.info(`[store] ready in ${performance.now() - start}ms`);
+console.info(`[store] ready in ${(performance.now() - start).toFixed(1)}ms`);

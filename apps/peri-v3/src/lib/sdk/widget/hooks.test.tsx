@@ -1,13 +1,18 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeAll, describe, expect, it } from "vitest";
 import { service as store } from "@/services/store/service";
-import { OutsideWidgetError, PermissionError } from "./errors";
+import {
+  InternalOnlyError,
+  OutsideWidgetError,
+  PermissionError,
+} from "./errors";
 import { useCycles, usePredictions } from "./hooks";
 import { wrapWidget } from "./wrap";
 import type { WidgetContextValue } from "./wrap";
 
 function Cycles() {
-  return <p>{useCycles().length}</p>;
+  const [cycles] = useCycles();
+  return <p>{cycles.length}</p>;
 }
 
 function Predictions() {
@@ -88,5 +93,35 @@ describe("permission checks", () => {
     expect(() => {
       renderToStaticMarkup(<Cycles />);
     }).toThrow(OutsideWidgetError);
+  });
+});
+
+describe("setCycles", () => {
+  let setter: ReturnType<typeof useCycles>[1];
+
+  function Grab() {
+    [, setter] = useCycles();
+    return <p />;
+  }
+
+  it("writes through for an internal widget", async () => {
+    render(Grab, internal);
+
+    const res = await setter(() => {
+      return [{ start_date: "2025-02-01T00:00:00.000Z", period_length: 4 }];
+    });
+
+    expect(res).toEqual({ ok: true });
+    expect(store.get().cycles[0]?.start_date).toBe("2025-02-01T00:00:00.000Z");
+  });
+
+  it("throws InternalOnlyError when a community widget calls it", () => {
+    render(Grab, community("cycles:read"));
+
+    expect(() => {
+      void setter((cycles) => {
+        return cycles;
+      });
+    }).toThrow(new InternalOnlyError("edit cycles"));
   });
 });

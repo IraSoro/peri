@@ -81,6 +81,18 @@ describe("algorithms service", () => {
       expect(store.get().algorithms).toHaveLength(1);
     });
 
+    it("rejects a concurrent registration of the same id", async () => {
+      const { store, service } = await setup();
+
+      const results = await Promise.all([
+        service.register(internal("a"), entry()),
+        service.register(internal("a"), entry()),
+      ]);
+
+      expect(results.filter((res) => res.ok)).toHaveLength(1);
+      expect(store.get().algorithms).toHaveLength(1);
+    });
+
     it("rejects an invalid manifest and does not register it", async () => {
       const { store, service } = await setup();
       const { installed_at: _, ...noInstalledAt } = community("a", "x");

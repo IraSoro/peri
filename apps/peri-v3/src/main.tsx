@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "@/App";
 import "@/tailwind.css";
 
 async function bootstrap() {
@@ -16,14 +15,20 @@ async function bootstrap() {
   await import("@/services/cycles/service");
   await import("@/services/core/service");
 
-  console.info(`[bootstrap] ready in ${performance.now() - start}ms`);
+  // NOTE: Imported here, not at the top: App pulls in the services and the widget
+  // registration, which must start after the services above
+  const { default: App } = await import("@/App");
 
-  return Promise.resolve({});
+  console.info(
+    `[bootstrap] ready in ${(performance.now() - start).toFixed(1)}ms`,
+  );
+
+  return { App };
 }
 
 const root = createRoot(document.getElementById("root")!);
 bootstrap()
-  .then(() =>
+  .then(({ App }) =>
     root.render(
       <StrictMode>
         <App />

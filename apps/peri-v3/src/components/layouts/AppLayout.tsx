@@ -1,8 +1,9 @@
-import { usePager } from "./PagerProvider";
+import { PagerViewport } from "./PagerProvider";
 import { Header } from "./Header";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { LazyMount } from "@/components/ui/LazyMount";
+import { useActivePageId } from "@/lib/host/hooks";
 
 export type Page = {
   id: string;
@@ -14,7 +15,7 @@ type AppLayoutProps = {
 };
 
 export const AppLayout = ({ pages }: AppLayoutProps) => {
-  const { emblaRef, activePageId } = usePager();
+  const activePageId = useActivePageId();
   const activeIndex = pages.findIndex((page) => page.id === activePageId);
 
   return (
@@ -22,10 +23,7 @@ export const AppLayout = ({ pages }: AppLayoutProps) => {
       <div className="relative flex h-full w-full flex-col lg:max-w-150">
         <Header />
         <Content>
-          <div
-            ref={emblaRef}
-            className="h-full w-full touch-pan-y overflow-hidden"
-          >
+          <PagerViewport className="h-full w-full touch-pan-y overflow-hidden">
             <div className="flex h-full w-full flex-col">
               {pages.map((page, index) => {
                 const distance = Math.abs(index - activeIndex);
@@ -43,7 +41,7 @@ export const AppLayout = ({ pages }: AppLayoutProps) => {
                 );
               })}
             </div>
-          </div>
+          </PagerViewport>
         </Content>
         <Footer />
       </div>

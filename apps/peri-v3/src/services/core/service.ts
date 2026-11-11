@@ -211,4 +211,4 @@ import.meta.hot?.dispose(() => {
   service.stop();
 });
 
-console.info(`[core] ready in ${performance.now() - start}ms`);
+console.info(`[core] ready in ${(performance.now() - start).toFixed(1)}ms`);

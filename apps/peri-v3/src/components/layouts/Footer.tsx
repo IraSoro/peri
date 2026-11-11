@@ -2,12 +2,11 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useId,
   useMemo,
   useState,
 } from "react";
 import { Loader } from "../ui/Loader";
+import { OutsideProviderError } from "./errors";
 
 type LoaderEntry = {
   id: string;
@@ -22,13 +21,11 @@ type FooterContextProps = {
 
 const FooterContext = createContext<FooterContextProps | null>(null);
 
-function useFooterContext() {
+export function useFooterContext() {
   const context = useContext(FooterContext);
 
   if (!context) {
-    throw new Error(
-      "useFooterContext must be used within a <FooterProvider />",
-    );
+    throw new OutsideProviderError("useFooterContext", "FooterProvider");
   }
 
   return context;
@@ -64,21 +61,6 @@ export const FooterProvider = ({ children }: FooterProviderProps) => {
 
   return <FooterContext value={value}>{children}</FooterContext>;
 };
-
-export function useFooterLoader(message: string | null | undefined) {
-  const { showLoader, hideLoader } = useFooterContext();
-  const id = useId();
-
-  useEffect(() => {
-    if (!message) {
-      hideLoader(id);
-      return;
-    }
-
-    showLoader(id, message);
-    return () => hideLoader(id);
-  }, [message, id, showLoader, hideLoader]);
-}
 
 export const Footer = () => {
   const { loaderMessage } = useFooterContext();

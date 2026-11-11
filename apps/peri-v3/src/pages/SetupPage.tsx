@@ -1,12 +1,11 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
-import { usePager } from "@/components/layouts/PagerProvider";
-import { useHeaderMenuButton } from "@/components/layouts/Header";
 import { CalendarWidget } from "@/components/widgets/CalendarWidget";
 import { Typography } from "@/components/ui/Typography";
+import { useActivePageId, useHideHeaderMenuButton } from "@/lib/host/hooks";
 
 export const SetupPage = () => {
-  const { activePageId } = usePager();
-  useHeaderMenuButton(activePageId === "setup" ? false : null);
+  const activePageId = useActivePageId();
+  useHideHeaderMenuButton(activePageId === "setup");
 
   return (
     <PageLayout justify="center">

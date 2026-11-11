@@ -2,13 +2,12 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useId,
   useMemo,
   useState,
 } from "react";
 import { Menu } from "lucide-react";
 import { IconButton } from "../ui/IconButton";
+import { OutsideProviderError } from "./errors";
 
 type MenuButtonEntry = {
   id: string;
@@ -23,13 +22,11 @@ type HeaderContextProps = {
 
 const HeaderContext = createContext<HeaderContextProps | null>(null);
 
-function useHeaderContext() {
+export function useHeaderContext() {
   const context = useContext(HeaderContext);
 
   if (!context) {
-    throw new Error(
-      "useHeaderContext must be used within a <HeaderProvider />",
-    );
+    throw new OutsideProviderError("useHeaderContext", "HeaderProvider");
   }
 
   return context;
@@ -67,21 +64,6 @@ export const HeaderProvider = ({ children }: HeaderProviderProps) => {
 
   return <HeaderContext value={value}>{children}</HeaderContext>;
 };
-
-export function useHeaderMenuButton(visible: boolean | null | undefined) {
-  const { setMenuButtonVisible, clearMenuButtonVisible } = useHeaderContext();
-  const id = useId();
-
-  useEffect(() => {
-    if (visible === null || visible === undefined) {
-      clearMenuButtonVisible(id);
-      return;
-    }
-
-    setMenuButtonVisible(id, visible);
-    return () => clearMenuButtonVisible(id);
-  }, [visible, id, setMenuButtonVisible, clearMenuButtonVisible]);
-}
 
 export const Header = () => {
   const { showMenuButton } = useHeaderContext();

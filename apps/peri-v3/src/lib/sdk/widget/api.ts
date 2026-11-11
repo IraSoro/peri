@@ -8,23 +8,34 @@ import type { CommunityManifest, InternalManifest } from "../types";
 import type { CommunityWidget, InternalWidget } from "./types";
 
 export function createWidgetApi(core: Pick<CoreService, "registerApp">) {
-  /** Registers code that ships with the app */
-  function defineInternalWidget(
+  async function defineInternalWidget(
     manifest: InternalManifest,
     widget: InternalWidget,
   ): Promise<CoreOperationResult> {
-    return core.registerApp(
+    const start = performance.now();
+    const res = await core.registerApp(
       { ...manifest, source: "internal", permissions: [] },
       wrapWidget(manifest.id, widget, { source: "internal", permissions: [] }),
     );
+    if (res.ok) {
+      console.info(
+        `[widget] ${manifest.id} registered in ${(performance.now() - start).toFixed(1)}ms`,
+      );
+    } else {
+      console.warn(
+        `[widget] ${manifest.id} not registered (${(performance.now() - start).toFixed(1)}ms): ${res.error.message}`,
+      );
+    }
+
+    return res;
   }
 
-  /** Registers community code, the host sets its source and install date */
-  function defineWidget(
+  async function defineWidget(
     manifest: CommunityManifest,
     widget: CommunityWidget,
   ): Promise<CoreOperationResult> {
-    return core.registerApp(
+    const start = performance.now();
+    const res = await core.registerApp(
       {
         ...manifest,
         source: "community",
@@ -35,9 +46,26 @@ export function createWidgetApi(core: Pick<CoreService, "registerApp">) {
         permissions: manifest.permissions,
       }),
     );
+    if (res.ok) {
+      console.info(
+        `[community widget] ${manifest.id} registered in ${(performance.now() - start).toFixed(1)}ms`,
+      );
+    } else {
+      console.warn(
+        `[community widget] ${manifest.id} not registered (${(performance.now() - start).toFixed(1)}ms): ${res.error.message}`,
+      );
+    }
+
+    return res;
   }
 
   return { defineInternalWidget, defineWidget };
 }
 
-export const { defineInternalWidget, defineWidget } = createWidgetApi(core);
+const api = createWidgetApi(core);
+
+/** Registers code that ships with the app */
+export const defineInternalWidget = api.defineInternalWidget;
+
+/** Registers community code */
+export const defineWidget = api.defineWidget;

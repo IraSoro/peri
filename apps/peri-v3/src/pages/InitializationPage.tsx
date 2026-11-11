@@ -1,13 +1,15 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
-import { usePager } from "@/components/layouts/PagerProvider";
-import { useFooterLoader } from "@/components/layouts/Footer";
-import { useHeaderMenuButton } from "@/components/layouts/Header";
 import { Logo } from "@/components/ui/Logo";
+import {
+  useActivePageId,
+  useShowFooterLoader,
+  useHideHeaderMenuButton,
+} from "@/lib/host/hooks";
 
 export const InitializationPage = () => {
-  const { activePageId } = usePager();
-  useFooterLoader(activePageId === "initialization" ? "Initialization" : null);
-  useHeaderMenuButton(activePageId === "initialization" ? false : null);
+  const activePageId = useActivePageId();
+  useShowFooterLoader(activePageId === "initialization", "Initialization");
+  useHideHeaderMenuButton(activePageId === "initialization");
 
   return (
     <PageLayout justify="center">

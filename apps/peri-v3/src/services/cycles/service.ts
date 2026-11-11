@@ -135,4 +135,4 @@ console.info("[cycles] starting");
 
 export const service = new Service(store);
 
-console.info(`[cycles] ready in ${performance.now() - start}ms`);
+console.info(`[cycles] ready in ${(performance.now() - start).toFixed(1)}ms`);

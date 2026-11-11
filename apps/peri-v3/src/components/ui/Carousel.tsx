@@ -8,6 +8,7 @@ import {
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
+import { OutsideProviderError } from "@/components/layouts/errors";
 import { cn } from "@/lib/utils/cn";
 
 type CarouselApi = UseEmblaCarouselType[1];
@@ -34,7 +35,7 @@ export function useCarousel() {
   const context = useContext(CarouselContext);
 
   if (!context) {
-    throw new Error("useCarousel must be used within a <Carousel />");
+    throw new OutsideProviderError("useCarousel", "Carousel");
   }
 
   return context;
