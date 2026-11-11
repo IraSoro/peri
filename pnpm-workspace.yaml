@@ -12,3 +12,13 @@ allowBuilds:
 overrides:
   '@types/react-router>@types/react': '18.3.31'
   '@types/react-router-dom>@types/react': '18.3.31'
+
+# Ionic packages don't declare @types/react, so they resolve the hoisted v19 (from peri-v3).
+# Pin them to v18 types to match peri-v2.
+packageExtensions:
+  '@ionic/react':
+    dependencies:
+      '@types/react': '18.3.31'
+  '@ionic/react-router':
+    dependencies:
+      '@types/react': '18.3.31'
