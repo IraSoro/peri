@@ -81,3 +81,23 @@ export function useHideHeaderMenuButton(hidden: boolean) {
 export const useActivePageId = (): string => {
   return usePagerContext().activePageId;
 };
+
+/** Blocks paging to the next page while `blocked` is true and the component is mounted */
+export function useBlockNextPage(blocked: boolean) {
+  const { setBlockNext } = usePagerContext();
+
+  useEffect(() => {
+    setBlockNext(blocked);
+    return () => setBlockNext(false);
+  }, [blocked, setBlockNext]);
+}
+
+/** Blocks paging to the previous page while `blocked` is true and the component is mounted */
+export function useBlockPrevPage(blocked: boolean) {
+  const { setBlockPrev } = usePagerContext();
+
+  useEffect(() => {
+    setBlockPrev(blocked);
+    return () => setBlockPrev(false);
+  }, [blocked, setBlockPrev]);
+}
