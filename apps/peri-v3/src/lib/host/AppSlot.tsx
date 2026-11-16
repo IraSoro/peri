@@ -1,4 +1,3 @@
-import { AppCard } from "@/components/layouts/AppCard";
 import { Typography } from "@/components/ui/Typography";
 import { useStoreSelector } from "@/lib/hooks/useStoreSelector";
 import { service as apps } from "@/services/apps/service";
@@ -8,7 +7,7 @@ interface Props {
 }
 
 /**
- * Renders a registered app by id, already wrapped by its API. An app with
+ * Renders a registered app by id in the app card, already wrapped by its API. An app with
  * no registered code gets a placeholder, it is never unregistered because
  * that would delete its data. It re-renders on store changes, so an app
  * registered later or replaced on hot reload shows up
@@ -18,15 +17,16 @@ export const AppSlot = ({ id }: Props) => {
     return config.apps;
   });
   const entry = apps.get(id);
-  if (!entry) {
-    return (
-      <AppCard>
+  const Component = entry?.component;
+  return (
+    <div className="flex w-full shrink-0 scrollbar-none flex-col overflow-y-auto">
+      {Component ? (
+        <Component />
+      ) : (
         <Typography size={3} color="secondary">
           {`"${id}" is not installed`}
         </Typography>
-      </AppCard>
-    );
-  }
-  const Component = entry.component;
-  return <Component />;
+      )}
+    </div>
+  );
 };

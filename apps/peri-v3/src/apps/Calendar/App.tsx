@@ -9,7 +9,6 @@ import {
 import { useDirection } from "@base-ui/react/direction-provider";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Button as ButtonPrimitive } from "@base-ui/react";
-import { AppCard } from "@/components/layouts/AppCard";
 import { Button } from "@/components/ui/Button";
 import { LazyMount } from "@/components/ui/LazyMount";
 import { cn } from "@/lib/utils/cn";
@@ -113,7 +112,7 @@ export const CalendarApp = () => {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <AppCard>
+    <div className="flex flex-col gap-2 md:gap-4">
       <div className="border-base-ternary flex aspect-square flex-col rounded-xl border-2 p-2 md:rounded-2xl md:border-3 md:p-4">
         <CalendarHeader
           dir={direction}
@@ -155,7 +154,7 @@ export const CalendarApp = () => {
         <Button>Discard</Button>
         <Button variant="contained">Save</Button>
       </div>
-    </AppCard>
+    </div>
   );
 };
 

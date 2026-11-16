@@ -1,5 +1,4 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { AppCard } from "@/components/layouts/AppCard";
 import { ChartNoAxesCombined } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import {
@@ -13,7 +12,7 @@ import { manifest } from "./manifest";
 
 export const CycleInfoApp = () => {
   return (
-    <AppCard gap="md">
+    <div className="flex flex-col gap-2 md:gap-4">
       <Typography size={7} weight="bold">
         Cycle
       </Typography>
@@ -38,7 +37,7 @@ export const CycleInfoApp = () => {
         <ChartNoAxesCombined />
         Statistics
       </Button>
-    </AppCard>
+    </div>
   );
 };
 

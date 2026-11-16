@@ -1,5 +1,6 @@
+import { manifest as calendarAppManifest } from "@/apps/Calendar/manifest";
 import { PageLayout } from "@/components/layouts/PageLayout";
-import { CalendarApp } from "@/apps/Calendar/App";
+import { AppSlot } from "@/lib/host/AppSlot";
 import { Typography } from "@/components/ui/Typography";
 import { useActivePageId, useHideHeaderMenuButton } from "@/lib/host/hooks";
 
@@ -17,7 +18,7 @@ export const SetupPage = () => {
       >
         {"Let's mark the day of your\nlast period:"}
       </Typography>
-      <CalendarApp />
+      <AppSlot id={calendarAppManifest.id} />
     </PageLayout>
   );
 };

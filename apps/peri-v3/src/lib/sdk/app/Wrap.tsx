@@ -1,6 +1,5 @@
 import { Component, createContext } from "react";
 import type { ReactNode } from "react";
-import { AppCard } from "@/components/layouts/AppCard";
 import { Typography } from "@/components/ui/Typography";
 import type { AppEntry } from "@/services/apps/types";
 import { PermissionError } from "./errors";
@@ -50,11 +49,9 @@ export class AppBoundary extends Component<Props, State> {
       message = `"${id}" failed to render: ${reason}`;
     }
     return (
-      <AppCard gap="md">
-        <Typography size={3} color="secondary">
-          {message}
-        </Typography>
-      </AppCard>
+      <Typography size={3} color="secondary">
+        {message}
+      </Typography>
     );
   }
 }

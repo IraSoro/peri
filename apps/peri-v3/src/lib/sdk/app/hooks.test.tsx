@@ -64,11 +64,13 @@ describe("useCycles", () => {
 
 describe("usePredictions", () => {
   it("returns the predictions with predictions:read", () => {
-    expect(render(Predictions, community("predictions:read"))).toBe("<p>0</p>");
+    expect(render(Predictions, community("predictions:read"))).toContain(
+      "<p>0</p>",
+    );
   });
 
   it("returns the predictions to an internal app", () => {
-    expect(render(Predictions, internal)).toBe("<p>0</p>");
+    expect(render(Predictions, internal)).toContain("<p>0</p>");
   });
 });
 

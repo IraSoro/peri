@@ -1,4 +1,3 @@
-import { AppCard } from "@/components/layouts/AppCard";
 import { Info } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -9,10 +8,10 @@ import { manifest } from "./manifest";
 
 export const PeriodStatusApp = () => {
   return (
-    <AppCard gap="lg">
+    <div className="flex flex-col gap-4 md:gap-6">
       <PeriodCountdown />
       <PeriodInfo />
-    </AppCard>
+    </div>
   );
 };
 

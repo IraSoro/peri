@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { AppCard } from "@/components/layouts/AppCard";
 import { Typography } from "@/components/ui/Typography";
 import {
   Accordion,
@@ -20,7 +19,7 @@ import { manifest } from "./manifest";
 
 export const PhaseInfoApp = () => {
   return (
-    <AppCard>
+    <div className="flex flex-col gap-2 md:gap-4">
       <Typography size={7} weight="bold">
         Follicular phase
       </Typography>
@@ -70,7 +69,7 @@ Many people experience premenstrual symptoms during the later part of the luteal
           </CarouselItem>
         </CarouselContent>
       </Carousel>
-    </AppCard>
+    </div>
   );
 };
 
