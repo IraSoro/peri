@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { IconButton } from "../ui/IconButton";
 import { defineInternalWidget } from "@/lib/sdk/widget/api";
+import { manifest } from "./CalendarWidget.manifest";
 
 // Initial window size: how many months are rendered before/after the
 // current month on first mount.
@@ -375,12 +376,6 @@ const CalendarFooter = () => {
   );
 };
 
-void defineInternalWidget(
-  {
-    manifest_version: 1,
-    id: "com.peri.calendar",
-    name: "Calendar",
-    version: "1.0.0",
-  },
-  { component: CalendarWidget },
-);
+void defineInternalWidget(manifest, {
+  component: CalendarWidget,
+});

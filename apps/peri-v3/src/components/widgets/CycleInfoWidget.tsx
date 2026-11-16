@@ -9,6 +9,7 @@ import {
 } from "../ui/Collapsible";
 import { Button } from "../ui/Button";
 import { defineInternalWidget } from "@/lib/sdk/widget/api";
+import { manifest } from "./CycleInfoWidget.manifest";
 
 export const CycleInfoWidget = () => {
   return (
@@ -130,12 +131,6 @@ const CycleSummary = () => {
   );
 };
 
-void defineInternalWidget(
-  {
-    manifest_version: 1,
-    id: "com.peri.cycle_info",
-    name: "Cycle info",
-    version: "1.0.0",
-  },
-  { component: CycleInfoWidget },
-);
+void defineInternalWidget(manifest, {
+  component: CycleInfoWidget,
+});

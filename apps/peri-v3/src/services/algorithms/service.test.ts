@@ -32,7 +32,7 @@ function internal(
     version: "1.0.0",
     source: "internal",
     permissions: [],
-    type: type,
+    type,
   };
 }
 

@@ -16,6 +16,7 @@ import {
 import { cva, type VariantProps } from "class-variance-authority";
 import { useHeightTransition } from "@/lib/hooks/useHeightTransition";
 import { defineInternalWidget } from "@/lib/sdk/widget/api";
+import { manifest } from "./PhaseInfoWidget.manifest";
 
 export const PhaseInfoWidget = () => {
   return (
@@ -249,12 +250,6 @@ const ExpandableText = ({ text, maxLength }: ExpandableTextProps) => {
   );
 };
 
-void defineInternalWidget(
-  {
-    manifest_version: 1,
-    id: "com.peri.phase_info",
-    name: "Phase info",
-    version: "1.0.0",
-  },
-  { component: PhaseInfoWidget },
-);
+void defineInternalWidget(manifest, {
+  component: PhaseInfoWidget,
+});
