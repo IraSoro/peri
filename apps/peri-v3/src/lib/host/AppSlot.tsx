@@ -1,4 +1,4 @@
-import { WidgetLayout } from "@/components/layouts/WidgetLayout";
+import { AppCard } from "@/components/layouts/AppCard";
 import { Typography } from "@/components/ui/Typography";
 import { useStoreSelector } from "@/lib/hooks/useStoreSelector";
 import { service as apps } from "@/services/apps/service";
@@ -13,18 +13,18 @@ interface Props {
  * that would delete its data. It re-renders on store changes, so an app
  * registered later or replaced on hot reload shows up
  */
-export const App = ({ id }: Props) => {
+export const AppSlot = ({ id }: Props) => {
   useStoreSelector((config) => {
     return config.apps;
   });
   const entry = apps.get(id);
   if (!entry) {
     return (
-      <WidgetLayout>
+      <AppCard>
         <Typography size={3} color="secondary">
           {`"${id}" is not installed`}
         </Typography>
-      </WidgetLayout>
+      </AppCard>
     );
   }
   const Component = entry.component;

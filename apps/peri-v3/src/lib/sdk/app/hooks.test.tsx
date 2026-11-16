@@ -1,14 +1,10 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeAll, describe, expect, it } from "vitest";
 import { service as store } from "@/services/store/service";
-import {
-  InternalOnlyError,
-  OutsideWidgetError,
-  PermissionError,
-} from "./errors";
+import { InternalOnlyError, OutsideAppError, PermissionError } from "./errors";
 import { useCycles, usePredictions } from "./hooks";
-import { wrapWidget } from "./wrap";
-import type { WidgetContextValue } from "./wrap";
+import { wrapApp } from "./Wrap";
+import type { AppContextValue } from "./Wrap";
 
 function Cycles() {
   const [cycles] = useCycles();
@@ -21,16 +17,16 @@ function Predictions() {
 
 function render(
   component: () => React.JSX.Element,
-  access: WidgetContextValue,
+  access: AppContextValue,
 ): string {
-  const Wrapped = wrapWidget("w", { component }, access).component;
+  const Wrapped = wrapApp("w", { component }, access).component;
   return renderToStaticMarkup(<Wrapped />);
 }
 
-const community = (...permissions: string[]): WidgetContextValue => {
+const community = (...permissions: string[]): AppContextValue => {
   return { source: "community", permissions };
 };
-const internal: WidgetContextValue = { source: "internal", permissions: [] };
+const internal: AppContextValue = { source: "internal", permissions: [] };
 
 beforeAll(async () => {
   await store.update((config) => {
@@ -49,11 +45,11 @@ beforeAll(async () => {
 });
 
 describe("useCycles", () => {
-  it("returns the cycles to a community widget with cycles:read", () => {
+  it("returns the cycles to a community app with cycles:read", () => {
     expect(render(Cycles, community("cycles:read"))).toBe("<p>1</p>");
   });
 
-  it("returns the cycles to an internal widget without permissions", () => {
+  it("returns the cycles to an internal app without permissions", () => {
     expect(render(Cycles, internal)).toBe("<p>1</p>");
   });
 
@@ -71,13 +67,13 @@ describe("usePredictions", () => {
     expect(render(Predictions, community("predictions:read"))).toBe("<p>0</p>");
   });
 
-  it("returns the predictions to an internal widget", () => {
+  it("returns the predictions to an internal app", () => {
     expect(render(Predictions, internal)).toBe("<p>0</p>");
   });
 });
 
 describe("permission checks", () => {
-  it("throws PermissionError for a community widget without the scope", () => {
+  it("throws PermissionError for a community app without the scope", () => {
     expect(() => {
       render(Cycles, community("predictions:read"));
     }).toThrow(new PermissionError("cycles:read"));
@@ -89,10 +85,10 @@ describe("permission checks", () => {
     }).toThrow(new PermissionError("predictions:read"));
   });
 
-  it("throws OutsideWidgetError outside of a widget", () => {
+  it("throws OutsideAppError outside of a app", () => {
     expect(() => {
       renderToStaticMarkup(<Cycles />);
-    }).toThrow(OutsideWidgetError);
+    }).toThrow(OutsideAppError);
   });
 });
 
@@ -104,7 +100,7 @@ describe("setCycles", () => {
     return <p />;
   }
 
-  it("writes through for an internal widget", async () => {
+  it("writes through for an internal app", async () => {
     render(Grab, internal);
 
     const res = await setter(() => {
@@ -115,7 +111,7 @@ describe("setCycles", () => {
     expect(store.get().cycles[0]?.start_date).toBe("2025-02-01T00:00:00.000Z");
   });
 
-  it("throws InternalOnlyError when a community widget calls it", () => {
+  it("throws InternalOnlyError when a community app calls it", () => {
     render(Grab, community("cycles:read"));
 
     expect(() => {

@@ -46,7 +46,7 @@ const host = createHostApi({ store, core, cycles });
 /** Manifests of the registered algorithms */
 export const listAlgorithms = host.listAlgorithms;
 
-/** Manifests of the registered apps (widgets) */
+/** Manifests of the registered apps */
 export const listApps = host.listApps;
 
 /** Id of the algorithm chosen for a prediction type, undefined if none */

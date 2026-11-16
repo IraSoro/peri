@@ -3,18 +3,14 @@ import type { ConfigV2, Cycle } from "@repo/config-schema/config-v2.schema";
 import { useStoreSelector } from "@/lib/hooks/useStoreSelector";
 import type { KnownPermission } from "../permissions";
 import { service as cycles } from "@/services/cycles/service";
-import {
-  InternalOnlyError,
-  OutsideWidgetError,
-  PermissionError,
-} from "./errors";
-import { WidgetContext } from "./wrap";
-import type { WidgetContextValue } from "./wrap";
+import { InternalOnlyError, OutsideAppError, PermissionError } from "./errors";
+import { AppContext } from "./Wrap";
+import type { AppContextValue } from "./Wrap";
 
-function useAccess(permission?: KnownPermission): WidgetContextValue {
-  const access = useContext(WidgetContext);
+function useAccess(permission?: KnownPermission): AppContextValue {
+  const access = useContext(AppContext);
   if (access === null) {
-    throw new OutsideWidgetError();
+    throw new OutsideAppError();
   }
   if (
     permission &&

@@ -1,11 +1,11 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
-import { App } from "@/lib/host/App";
+import { AppSlot } from "@/lib/host/AppSlot";
 
 export const SecondPage = () => {
   return (
     <PageLayout>
-      <App id="com.peri.phase_info" />
-      <App id="com.peri.cycle_info" />
+      <AppSlot id="com.peri.phase_info" />
+      <AppSlot id="com.peri.cycle_info" />
     </PageLayout>
   );
 };

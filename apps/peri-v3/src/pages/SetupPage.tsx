@@ -1,5 +1,5 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
-import { CalendarWidget } from "@/components/widgets/CalendarWidget";
+import { CalendarApp } from "@/apps/Calendar/App";
 import { Typography } from "@/components/ui/Typography";
 import { useActivePageId, useHideHeaderMenuButton } from "@/lib/host/hooks";
 
@@ -17,7 +17,7 @@ export const SetupPage = () => {
       >
         {"Let's mark the day of your\nlast period:"}
       </Typography>
-      <CalendarWidget />
+      <CalendarApp />
     </PageLayout>
   );
 };

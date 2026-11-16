@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { WidgetLayout } from "@/components/layouts/WidgetLayout";
+import { AppCard } from "@/components/layouts/AppCard";
 import { Typography } from "@/components/ui/Typography";
 import {
   Accordion,
@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/Carousel";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useHeightTransition } from "@/lib/hooks/useHeightTransition";
-import { defineInternalWidget } from "@/lib/sdk/widget/api";
-import { manifest } from "./PhaseInfoWidget.manifest";
+import { defineInternalApp } from "@/lib/sdk/app/api";
+import { manifest } from "./manifest";
 
-export const PhaseInfoWidget = () => {
+export const PhaseInfoApp = () => {
   return (
-    <WidgetLayout>
+    <AppCard>
       <Typography size={7} weight="bold">
         Follicular phase
       </Typography>
@@ -70,7 +70,7 @@ Many people experience premenstrual symptoms during the later part of the luteal
           </CarouselItem>
         </CarouselContent>
       </Carousel>
-    </WidgetLayout>
+    </AppCard>
   );
 };
 
@@ -250,6 +250,6 @@ const ExpandableText = ({ text, maxLength }: ExpandableTextProps) => {
   );
 };
 
-void defineInternalWidget(manifest, {
-  component: PhaseInfoWidget,
+void defineInternalApp(manifest, {
+  component: PhaseInfoApp,
 });

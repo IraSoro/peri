@@ -5,10 +5,10 @@ import { initEmptyConfig } from "@/services/store/migrate";
 import { Service as AlgorithmsService } from "@/services/algorithms/service";
 import { Service as AppsService } from "@/services/apps/service";
 import { Service as CoreService } from "@/services/core/service";
-import { createWidgetApi } from "./api";
+import { createAppApi } from "./api";
 import type { CommunityAppManifest, InternalAppManifest } from "../types";
 
-const widget = { component: () => null };
+const app = { component: () => null };
 
 function community(id: string): CommunityAppManifest {
   return {
@@ -28,11 +28,11 @@ async function setup() {
     new AlgorithmsService(store),
     new AppsService(store),
   );
-  return { store, core, api: createWidgetApi(core) };
+  return { store, core, api: createAppApi(core) };
 }
 
-describe("widget api", () => {
-  describe("defineInternalWidget", () => {
+describe("app api", () => {
+  describe("defineInternalApp", () => {
     const internal: InternalAppManifest = {
       manifest_version: 1,
       id: "i",
@@ -42,19 +42,19 @@ describe("widget api", () => {
 
     it("rejects a second registration by default", async () => {
       const { api } = await setup();
-      await api.defineInternalWidget(internal, widget);
+      await api.defineInternalApp(internal, app);
 
-      const res = await api.defineInternalWidget(internal, widget);
+      const res = await api.defineInternalApp(internal, app);
 
       expect(res.ok).toBe(false);
     });
 
     it("replaces the registration with replaceInternal", async () => {
       const { store, core } = await setup();
-      const api = createWidgetApi(core, { replaceInternal: true });
-      await api.defineInternalWidget(internal, widget);
+      const api = createAppApi(core, { replaceInternal: true });
+      await api.defineInternalApp(internal, app);
 
-      const res = await api.defineInternalWidget(internal, widget);
+      const res = await api.defineInternalApp(internal, app);
 
       expect(res).toEqual({ ok: true });
       expect(store.get().apps).toHaveLength(1);
@@ -63,9 +63,9 @@ describe("widget api", () => {
     it("stores the manifest as internal without permissions", async () => {
       const { store, api } = await setup();
 
-      const res = await api.defineInternalWidget(
+      const res = await api.defineInternalApp(
         { manifest_version: 1, id: "i", name: "i", version: "1.0.0" },
-        widget,
+        app,
       );
 
       expect(res).toEqual({ ok: true });
@@ -76,11 +76,11 @@ describe("widget api", () => {
     });
   });
 
-  describe("defineWidget", () => {
+  describe("defineApp", () => {
     it("stores the manifest as community with an install date", async () => {
       const { store, api } = await setup();
 
-      const res = await api.defineWidget(community("w"), widget);
+      const res = await api.defineApp(community("w"), app);
 
       expect(res).toEqual({ ok: true });
       const stored = store.get().apps[0]?.manifest;
@@ -93,16 +93,16 @@ describe("widget api", () => {
       const { store, api } = await setup();
       const sneaky = { ...community("w"), source: "internal" } as never;
 
-      await api.defineWidget(sneaky, widget);
+      await api.defineApp(sneaky, app);
 
       expect(store.get().apps[0]?.manifest.source).toBe("community");
     });
 
     it("reports a duplicate id", async () => {
       const { api } = await setup();
-      await api.defineWidget(community("w"), widget);
+      await api.defineApp(community("w"), app);
 
-      const res = await api.defineWidget(community("w"), widget);
+      const res = await api.defineApp(community("w"), app);
 
       expect(res).toMatchObject({
         ok: false,

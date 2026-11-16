@@ -1,18 +1,18 @@
-import { WidgetLayout } from "@/components/layouts/WidgetLayout";
+import { AppCard } from "@/components/layouts/AppCard";
 import { Info } from "lucide-react";
-import { Typography } from "../ui/Typography";
+import { Typography } from "@/components/ui/Typography";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
-import { IconButton } from "../ui/IconButton";
-import { defineInternalWidget } from "@/lib/sdk/widget/api";
-import { manifest } from "./PeriodStatusWidget.manifest";
+import { IconButton } from "@/components/ui/IconButton";
+import { defineInternalApp } from "@/lib/sdk/app/api";
+import { manifest } from "./manifest";
 
-export const PeriodStatusWidget = () => {
+export const PeriodStatusApp = () => {
   return (
-    <WidgetLayout gap="lg">
+    <AppCard gap="lg">
       <PeriodCountdown />
       <PeriodInfo />
-    </WidgetLayout>
+    </AppCard>
   );
 };
 
@@ -74,6 +74,6 @@ const PeriodInfoIndicator = ({ label, color }: PeriodInfoIndicatorProps) => {
   );
 };
 
-void defineInternalWidget(manifest, {
-  component: PeriodStatusWidget,
+void defineInternalApp(manifest, {
+  component: PeriodStatusApp,
 });

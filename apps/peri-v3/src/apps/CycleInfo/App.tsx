@@ -1,19 +1,19 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { WidgetLayout } from "@/components/layouts/WidgetLayout";
+import { AppCard } from "@/components/layouts/AppCard";
 import { ChartNoAxesCombined } from "lucide-react";
-import { Typography } from "../ui/Typography";
+import { Typography } from "@/components/ui/Typography";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../ui/Collapsible";
-import { Button } from "../ui/Button";
-import { defineInternalWidget } from "@/lib/sdk/widget/api";
-import { manifest } from "./CycleInfoWidget.manifest";
+} from "@/components/ui/Collapsible";
+import { Button } from "@/components/ui/Button";
+import { defineInternalApp } from "@/lib/sdk/app/api";
+import { manifest } from "./manifest";
 
-export const CycleInfoWidget = () => {
+export const CycleInfoApp = () => {
   return (
-    <WidgetLayout gap="md">
+    <AppCard gap="md">
       <Typography size={7} weight="bold">
         Cycle
       </Typography>
@@ -38,7 +38,7 @@ export const CycleInfoWidget = () => {
         <ChartNoAxesCombined />
         Statistics
       </Button>
-    </WidgetLayout>
+    </AppCard>
   );
 };
 
@@ -131,6 +131,6 @@ const CycleSummary = () => {
   );
 };
 
-void defineInternalWidget(manifest, {
-  component: CycleInfoWidget,
+void defineInternalApp(manifest, {
+  component: CycleInfoApp,
 });

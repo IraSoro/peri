@@ -10,11 +10,11 @@ export type Page = {
   content: React.ReactNode;
 };
 
-type AppLayoutProps = {
+type HostAppLayoutProps = {
   pages: Page[];
 };
 
-export const AppLayout = ({ pages }: AppLayoutProps) => {
+export const HostAppLayout = ({ pages }: HostAppLayoutProps) => {
   const activePageId = useActivePageId();
   const activeIndex = pages.findIndex((page) => page.id === activePageId);
 

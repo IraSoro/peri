@@ -1,18 +1,18 @@
 import type { ConfigV2 } from "@repo/config-schema/config-v2.schema";
 import { manifest as medianMenstruationManifest } from "@/algorithms/median-menstruation/manifest";
 import { manifest as medianOvulationManifest } from "@/algorithms/median-ovulation/manifest";
-import { manifest as calendarWidgetManifest } from "@/components/widgets/CalendarWidget.manifest";
-import { manifest as cycleInfoWidgetManifest } from "@/components/widgets/CycleInfoWidget.manifest";
-import { manifest as periodStatusWidgetManifest } from "@/components/widgets/PeriodStatusWidget.manifest";
-import { manifest as phaseInfoWidgetManifest } from "@/components/widgets/PhaseInfoWidget.manifest";
+import { manifest as calendarAppManifest } from "@/apps/Calendar/manifest";
+import { manifest as cycleInfoAppManifest } from "@/apps/CycleInfo/manifest";
+import { manifest as periodStatusAppManifest } from "@/apps/PeriodStatus/manifest";
+import { manifest as phaseInfoAppManifest } from "@/apps/PhaseInfo/manifest";
 
 const ALGORITHMS = [medianMenstruationManifest, medianOvulationManifest];
 
 const APPS = [
-  periodStatusWidgetManifest,
-  calendarWidgetManifest,
-  phaseInfoWidgetManifest,
-  cycleInfoWidgetManifest,
+  periodStatusAppManifest,
+  calendarAppManifest,
+  phaseInfoAppManifest,
+  cycleInfoAppManifest,
 ];
 
 export function createEmptyConfig(): ConfigV2 {

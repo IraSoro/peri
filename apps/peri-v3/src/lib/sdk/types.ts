@@ -9,10 +9,10 @@ type HostFields = "source" | "installed_at" | "verified";
 /** The fields our own code writes, the schema allows no permissions or community-only fields there */
 type InternalFields = "manifest_version" | "id" | "name" | "version";
 
-/** What a community author writes for an app (widget) */
+/** What a community author writes for an app */
 export type CommunityAppManifest = Omit<AppManifest, HostFields>;
 
-/** What our own code writes for an app (widget) */
+/** What our own code writes for an app */
 export type InternalAppManifest = Pick<AppManifest, InternalFields>;
 
 /** What a community author writes for an algorithm, it declares the one type it predicts */

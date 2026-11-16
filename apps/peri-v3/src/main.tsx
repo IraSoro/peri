@@ -18,10 +18,10 @@ async function bootstrap() {
   await import("@/algorithms/median-menstruation/algorithm");
   await import("@/algorithms/median-ovulation/algorithm");
 
-  await import("@/components/widgets/CalendarWidget");
-  await import("@/components/widgets/CycleInfoWidget");
-  await import("@/components/widgets/PeriodStatusWidget");
-  await import("@/components/widgets/PhaseInfoWidget");
+  await import("@/apps/Calendar/App");
+  await import("@/apps/CycleInfo/App");
+  await import("@/apps/PeriodStatus/App");
+  await import("@/apps/PhaseInfo/App");
 
   // NOTE: Imported here, not at the top: App pulls in the services, which must
   // start before it

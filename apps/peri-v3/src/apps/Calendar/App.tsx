@@ -9,7 +9,7 @@ import {
 import { useDirection } from "@base-ui/react/direction-provider";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Button as ButtonPrimitive } from "@base-ui/react";
-import { WidgetLayout } from "@/components/layouts/WidgetLayout";
+import { AppCard } from "@/components/layouts/AppCard";
 import { Button } from "@/components/ui/Button";
 import { LazyMount } from "@/components/ui/LazyMount";
 import { cn } from "@/lib/utils/cn";
@@ -19,9 +19,9 @@ import {
   CircleQuestionMark,
   Settings,
 } from "lucide-react";
-import { IconButton } from "../ui/IconButton";
-import { defineInternalWidget } from "@/lib/sdk/widget/api";
-import { manifest } from "./CalendarWidget.manifest";
+import { IconButton } from "@/components/ui/IconButton";
+import { defineInternalApp } from "@/lib/sdk/app/api";
+import { manifest } from "./manifest";
 
 // Initial window size: how many months are rendered before/after the
 // current month on first mount.
@@ -33,7 +33,7 @@ const MONTHS_GROW = 6;
 // window before it triggers growth.
 const EDGE_THRESHOLD = 2;
 
-export const CalendarWidget = () => {
+export const CalendarApp = () => {
   const direction = useDirection();
 
   const [months, setMonths] = useState(() => {
@@ -113,7 +113,7 @@ export const CalendarWidget = () => {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <WidgetLayout>
+    <AppCard>
       <div className="border-base-ternary flex aspect-square flex-col rounded-xl border-2 p-2 md:rounded-2xl md:border-3 md:p-4">
         <CalendarHeader
           dir={direction}
@@ -155,7 +155,7 @@ export const CalendarWidget = () => {
         <Button>Discard</Button>
         <Button variant="contained">Save</Button>
       </div>
-    </WidgetLayout>
+    </AppCard>
   );
 };
 
@@ -376,6 +376,6 @@ const CalendarFooter = () => {
   );
 };
 
-void defineInternalWidget(manifest, {
-  component: CalendarWidget,
+void defineInternalApp(manifest, {
+  component: CalendarApp,
 });

@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 
-const widgetLayoutVariants = cva(
+const appCardVariants = cva(
   "flex w-full shrink-0 scrollbar-none flex-col overflow-y-auto",
   {
     variants: {
@@ -20,9 +20,9 @@ const widgetLayoutVariants = cva(
   },
 );
 
-type WidgetLayoutProps = VariantProps<typeof widgetLayoutVariants> &
+type AppCardProps = VariantProps<typeof appCardVariants> &
   Pick<ComponentProps<"div">, "children">;
 
-export const WidgetLayout = ({ gap, children }: WidgetLayoutProps) => {
-  return <div className={cn(widgetLayoutVariants({ gap }))}>{children}</div>;
+export const AppCard = ({ gap, children }: AppCardProps) => {
+  return <div className={cn(appCardVariants({ gap }))}>{children}</div>;
 };

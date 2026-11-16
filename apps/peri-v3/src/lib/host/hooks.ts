@@ -37,7 +37,7 @@ export const useAlgorithms = (): AlgorithmManifest[] => {
   });
 };
 
-/** Manifests of the registered apps (widgets) */
+/** Manifests of the registered apps */
 export const useApps = (): AppManifest[] => {
   const apps = useStoreSelector((config) => {
     return config.apps;

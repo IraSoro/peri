@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { PermissionError } from "./errors";
-import { WidgetBoundary, WidgetContext, wrapWidget } from "./wrap";
+import { AppBoundary, AppContext, wrapApp } from "./Wrap";
 
 function Permissions() {
-  const context = useContext(WidgetContext);
+  const context = useContext(AppContext);
   return (
     <p>
       {context?.source}:{context?.permissions.join(",")}
@@ -13,9 +13,9 @@ function Permissions() {
   );
 }
 
-describe("wrapWidget", () => {
-  it("gives the widget its permissions", () => {
-    const wrapped = wrapWidget(
+describe("wrapApp", () => {
+  it("gives the app its permissions", () => {
+    const wrapped = wrapApp(
       "w",
       { component: Permissions },
       { source: "community", permissions: ["cycles:read"] },
@@ -27,8 +27,8 @@ describe("wrapWidget", () => {
     );
   });
 
-  it("tells an internal widget apart", () => {
-    const wrapped = wrapWidget(
+  it("tells an internal app apart", () => {
+    const wrapped = wrapApp(
       "w",
       { component: Permissions },
       { source: "internal", permissions: [] },
@@ -39,7 +39,7 @@ describe("wrapWidget", () => {
   });
 
   it("keeps the other fields of the entry", () => {
-    const wrapped = wrapWidget(
+    const wrapped = wrapApp(
       "w",
       { component: Permissions },
       { source: "internal", permissions: [] },
@@ -49,20 +49,20 @@ describe("wrapWidget", () => {
   });
 });
 
-describe("WidgetBoundary", () => {
+describe("AppBoundary", () => {
   it("switches to the fallback state on an error", () => {
     const error = new Error("boom");
 
-    expect(WidgetBoundary.getDerivedStateFromError(error)).toEqual({
+    expect(AppBoundary.getDerivedStateFromError(error)).toEqual({
       error,
       failed: true,
     });
   });
 });
 
-describe("WidgetBoundary fallback", () => {
+describe("AppBoundary fallback", () => {
   function fallback(error: unknown): string {
-    const boundary = new WidgetBoundary({ widgetId: "w", children: null });
+    const boundary = new AppBoundary({ appId: "w", children: null });
     boundary.state = { error, failed: true };
     return renderToStaticMarkup(boundary.render());
   }
@@ -84,8 +84,8 @@ describe("WidgetBoundary fallback", () => {
   });
 
   it("renders the children while nothing has failed", () => {
-    const boundary = new WidgetBoundary({
-      widgetId: "w",
+    const boundary = new AppBoundary({
+      appId: "w",
       children: <p>fine</p>,
     });
 

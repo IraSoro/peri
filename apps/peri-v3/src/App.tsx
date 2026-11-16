@@ -1,5 +1,5 @@
 import { DirectionProvider } from "@base-ui/react/direction-provider";
-import { AppLayout, type Page } from "./components/layouts/AppLayout";
+import { HostAppLayout, type Page } from "./components/layouts/HostAppLayout";
 import { PagerProvider } from "./components/layouts/PagerProvider";
 import { HeaderProvider } from "./components/layouts/Header";
 import { FooterProvider } from "./components/layouts/Footer";
@@ -40,7 +40,7 @@ function App() {
       <PagerProvider pageIds={pages.map((page) => page.id)}>
         <HeaderProvider>
           <FooterProvider>
-            <AppLayout pages={pages} />
+            <HostAppLayout pages={pages} />
           </FooterProvider>
         </HeaderProvider>
       </PagerProvider>
