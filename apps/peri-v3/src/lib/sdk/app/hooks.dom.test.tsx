@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { act, cleanup, render } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { service as cycles } from "@/services/cycles/service";
 import { InternalOnlyError } from "./errors";
 import { useCycles } from "./hooks";
-import { wrapApp } from "./Wrap";
-import type { AppContextValue } from "./Wrap";
+import { AppContext } from "./context";
+import type { AppContextValue } from "./context";
 
 const JAN = { start_date: "2025-01-01T00:00:00.000Z", period_length: 5 };
 const FEB = { start_date: "2025-02-01T00:00:00.000Z", period_length: 5 };
@@ -25,8 +25,11 @@ function mount(access: AppContextValue) {
     handle.setCycles = setCycles;
     return <p data-testid="out">{list.length}</p>;
   };
-  const Wrapped = wrapApp("w", { component: App }, access).component;
-  const view = render(<Wrapped />);
+  const view = render(
+    <AppContext.Provider value={access}>
+      <App />
+    </AppContext.Provider>,
+  );
   return { view, handle };
 }
 
@@ -72,33 +75,5 @@ describe("useCycles in a mounted app", () => {
       });
     }).toThrow(InternalOnlyError);
     expect(view.getByTestId("out").textContent).toBe("0");
-  });
-});
-
-describe("AppBoundary in a mounted tree", () => {
-  it("shows the fallback for a app without the permission", () => {
-    const quiet = vi.spyOn(console, "error").mockImplementation(() => {});
-    const App = () => {
-      useCycles();
-      return <p>secret</p>;
-    };
-    const Broken = wrapApp("w", { component: App }, community()).component;
-    const Fine = wrapApp(
-      "ok",
-      { component: () => <p>fine</p> },
-      community(),
-    ).component;
-
-    const view = render(
-      <>
-        <Broken />
-        <Fine />
-      </>,
-    );
-    quiet.mockRestore();
-
-    expect(view.container.textContent).toContain('"cycles:read"');
-    expect(view.container.textContent).not.toContain("secret");
-    expect(view.container.textContent).toContain("fine");
   });
 });

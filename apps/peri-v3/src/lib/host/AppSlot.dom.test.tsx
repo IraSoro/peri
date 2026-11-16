@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
 import { act, cleanup, render } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { AppManifest } from "@repo/config-schema/config-v2.schema";
 import { service as apps } from "@/services/apps/service";
+import { useCycles } from "@/lib/sdk/app/hooks";
 import { AppSlot } from "./AppSlot";
 
 const manifest = (id: string): AppManifest => {
@@ -19,6 +20,7 @@ const manifest = (id: string): AppManifest => {
 afterEach(async () => {
   cleanup();
   await apps.unregister("test.app");
+  await apps.unregister("test.ok");
 });
 
 describe("AppSlot", () => {
@@ -49,5 +51,66 @@ describe("AppSlot", () => {
     });
 
     expect(view.getByText("late")).toBeTruthy();
+  });
+
+  it("gives a community app only the permissions of its manifest", async () => {
+    const quiet = vi.spyOn(console, "error").mockImplementation(() => {});
+    const ReadsCyclesWithoutPermission = () => {
+      useCycles();
+      return <p>secret</p>;
+    };
+    await apps.register(
+      {
+        ...manifest("test.app"),
+        source: "community",
+        permissions: [],
+        installed_at: "2025-01-01T00:00:00.000Z",
+      },
+      { component: ReadsCyclesWithoutPermission },
+    );
+    await apps.register(manifest("test.ok"), {
+      component: () => <p>fine</p>,
+    });
+
+    const view = render(
+      <>
+        <AppSlot id="test.app" />
+        <AppSlot id="test.ok" />
+      </>,
+    );
+    quiet.mockRestore();
+
+    expect(view.container.textContent).toContain('"cycles:read"');
+    expect(view.container.textContent).not.toContain("secret");
+    expect(view.container.textContent).toContain("fine");
+  });
+
+  it("shows the message of an app that fails to render", async () => {
+    const quiet = vi.spyOn(console, "error").mockImplementation(() => {});
+    await apps.register(manifest("test.app"), {
+      component: () => {
+        throw new Error("boom");
+      },
+    });
+
+    const view = render(<AppSlot id="test.app" />);
+    quiet.mockRestore();
+
+    expect(view.container.textContent).toContain("boom");
+  });
+
+  it("copes with a thrown value that is not an error", async () => {
+    const quiet = vi.spyOn(console, "error").mockImplementation(() => {});
+    await apps.register(manifest("test.app"), {
+      component: () => {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
+        throw "oops";
+      },
+    });
+
+    const view = render(<AppSlot id="test.app" />);
+    quiet.mockRestore();
+
+    expect(view.container.textContent).toContain("oops");
   });
 });

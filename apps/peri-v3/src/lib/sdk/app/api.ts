@@ -1,7 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { formatInstant } from "@/lib/utils/dates";
 import { service as core } from "@/services/core/service";
-import { wrapApp } from "./Wrap";
 import type { Service as CoreService } from "@/services/core/service";
 import type { CoreOperationResult } from "@/services/core/types";
 import type { CommunityAppManifest, InternalAppManifest } from "../types";
@@ -23,7 +22,7 @@ export function createAppApi(
     const start = performance.now();
     const res = await core.registerApp(
       { ...manifest, source: "internal", permissions: [] },
-      wrapApp(manifest.id, app, { source: "internal", permissions: [] }),
+      app,
       { replace: options.replaceInternal },
     );
     if (res.ok) {
@@ -50,10 +49,7 @@ export function createAppApi(
         source: "community",
         installed_at: formatInstant(Temporal.Now.instant()),
       },
-      wrapApp(manifest.id, app, {
-        source: "community",
-        permissions: manifest.permissions,
-      }),
+      app,
     );
     if (res.ok) {
       console.info(

@@ -3,8 +3,8 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { service as store } from "@/services/store/service";
 import { InternalOnlyError, OutsideAppError, PermissionError } from "./errors";
 import { useCycles, usePredictions } from "./hooks";
-import { wrapApp } from "./Wrap";
-import type { AppContextValue } from "./Wrap";
+import { AppContext } from "./context";
+import type { AppContextValue } from "./context";
 
 function Cycles() {
   const [cycles] = useCycles();
@@ -19,8 +19,12 @@ function render(
   component: () => React.JSX.Element,
   access: AppContextValue,
 ): string {
-  const Wrapped = wrapApp("w", { component }, access).component;
-  return renderToStaticMarkup(<Wrapped />);
+  const Component = component;
+  return renderToStaticMarkup(
+    <AppContext.Provider value={access}>
+      <Component />
+    </AppContext.Provider>,
+  );
 }
 
 const community = (...permissions: string[]): AppContextValue => {

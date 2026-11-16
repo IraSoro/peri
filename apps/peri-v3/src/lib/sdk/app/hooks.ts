@@ -4,8 +4,8 @@ import { useStoreSelector } from "@/lib/hooks/useStoreSelector";
 import type { KnownPermission } from "../permissions";
 import { service as cycles } from "@/services/cycles/service";
 import { InternalOnlyError, OutsideAppError, PermissionError } from "./errors";
-import { AppContext } from "./Wrap";
-import type { AppContextValue } from "./Wrap";
+import { AppContext } from "./context";
+import type { AppContextValue } from "./context";
 
 function useAccess(permission?: KnownPermission): AppContextValue {
   const access = useContext(AppContext);
