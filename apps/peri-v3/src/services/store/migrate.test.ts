@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { ConfigV2 } from "@repo/config-schema/config-v2.schema";
 import { validateConfigV2 } from "@repo/config-schema/validate-config-v2";
-import { createDefaultConfig } from "./defaults";
-import { initDefault, v1ToV2 } from "./migrate";
+import { createDefaultConfig, createEmptyConfig } from "./defaults";
+import { initDefaults, initEmptyConfig, v1ToV2 } from "./migrate";
 
 const v1 = (cycles: unknown[]) => ({
   version: 1,
@@ -17,17 +17,17 @@ const v1 = (cycles: unknown[]) => ({
 // v1 stored dates as `Date.prototype.toString()` output
 const v1Date = (iso: string) => new Date(iso).toString();
 
-describe("initDefault", () => {
-  it("replaces null with the default config", () => {
-    expect(initDefault(null)).toEqual({
+describe("initEmptyConfig", () => {
+  it("replaces null with the empty config", () => {
+    expect(initEmptyConfig(null)).toEqual({
       ok: true,
-      data: createDefaultConfig(),
+      data: createEmptyConfig(),
     });
   });
 
   it("passes any other data through", () => {
     const data = { version: 1 };
-    expect(initDefault(data)).toEqual({ ok: true, data });
+    expect(initEmptyConfig(data)).toEqual({ ok: true, data });
   });
 });
 
@@ -77,7 +77,7 @@ describe("v1ToV2", () => {
   it("converts an empty v1 config to an empty v2 config", () => {
     expect(v1ToV2(v1([]))).toEqual({
       ok: true,
-      data: createDefaultConfig(),
+      data: createEmptyConfig(),
     });
   });
 
@@ -151,5 +151,34 @@ describe("v1ToV2", () => {
       const validated = validateConfigV2(res.data);
       expect(validated.ok, JSON.stringify(validated)).toBe(true);
     }
+  });
+});
+
+describe("initDefaults", () => {
+  it("fills the apps, the algorithms and the active ones of an empty v2 config", () => {
+    const empty = createEmptyConfig();
+
+    const res = initDefaults(empty);
+
+    expect(res).toEqual({ ok: true, data: createDefaultConfig() });
+  });
+
+  it("keeps the apps and the algorithms that are already set", () => {
+    const config = createDefaultConfig();
+    config.apps = config.apps.slice(0, 1);
+    config.algorithms = config.algorithms.slice(0, 1);
+    config.core.data = { active_algorithms: {} };
+
+    const res = initDefaults(config);
+
+    expect(res).toEqual({ ok: true, data: config });
+  });
+
+  it("passes other data through", () => {
+    expect(initDefaults(null)).toEqual({ ok: true, data: null });
+    expect(initDefaults({ version: 1 })).toEqual({
+      ok: true,
+      data: { version: 1 },
+    });
   });
 });

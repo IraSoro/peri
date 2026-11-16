@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
+import { initEmptyConfig } from "@/services/store/migrate";
 import { Service } from "./service";
 import type { CycleInput } from "./types";
 
@@ -9,7 +10,7 @@ const JAN_29 = "2025-01-29T00:00:00.000Z";
 const FEB_26 = "2025-02-26T00:00:00.000Z";
 
 async function setup() {
-  const store = new StoreService(new Stub());
+  const store = new StoreService(new Stub(), [initEmptyConfig]);
   await store.load();
   return { store, service: new Service(store) };
 }

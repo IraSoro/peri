@@ -6,7 +6,7 @@ import type {
   StoreOperationResult,
 } from "./types";
 import { createDefaultConfig } from "./defaults";
-import { initDefault, v1ToV2 } from "./migrate";
+import { initDefaults, initEmptyConfig, v1ToV2 } from "./migrate";
 import { validateConfigV2 } from "@repo/config-schema/validate-config-v2";
 import { Stub } from "./backends/stub";
 
@@ -17,12 +17,15 @@ export class Service {
   #listeners: Set<StoreListener>;
   #migrations: MigrateOperation[];
 
-  constructor(backend: StoreBackend) {
+  constructor(
+    backend: StoreBackend,
+    migrations: MigrateOperation[] = [initEmptyConfig, v1ToV2, initDefaults],
+  ) {
     this.#backend = backend;
     this.#config = createDefaultConfig();
     this.#queue = Promise.resolve(undefined);
     this.#listeners = new Set();
-    this.#migrations = [initDefault, v1ToV2];
+    this.#migrations = migrations;
   }
 
   get(): ConfigV2 {

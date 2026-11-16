@@ -216,6 +216,11 @@ export class Service {
       const ids = new Set(Object.values(data.active_algorithms ?? {}));
       let failure: CoreOperationResult = { ok: true };
       for (const id of ids) {
+        // The default config stores the manifest before the code registers.
+        // Registering recomputes predictions
+        if (!this.#algorithms.isRegistered(id)) {
+          continue;
+        }
         const res = await this.#algorithms.run(id);
         if (!res.ok && failure.ok) {
           failure = {

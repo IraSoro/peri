@@ -1,13 +1,14 @@
 import { Temporal } from "temporal-polyfill";
 import { validateConfigV1 } from "@repo/config-schema/validate-config-v1";
-import type { Cycle } from "@repo/config-schema/config-v2.schema";
+import type { ConfigV2, Cycle } from "@repo/config-schema/config-v2.schema";
 import { formatInstant } from "@/lib/utils/dates";
-import { createDefaultConfig } from "./defaults";
+import type { CoreData } from "@/services/core/types";
+import { createDefaultConfig, createEmptyConfig } from "./defaults";
 import type { MigrateOperation } from "./types";
 
-export const initDefault: MigrateOperation = (data: unknown) => {
+export const initEmptyConfig: MigrateOperation = (data: unknown) => {
   if (data === null) {
-    data = createDefaultConfig();
+    data = createEmptyConfig();
   }
   return { ok: true, data };
 };
@@ -79,8 +80,40 @@ export const v1ToV2: MigrateOperation = (data: unknown) => {
   return {
     ok: true,
     data: {
-      ...createDefaultConfig(),
+      ...createEmptyConfig(),
       cycles: cycles.reverse(),
+    },
+  };
+};
+
+export const initDefaults: MigrateOperation = (data: unknown) => {
+  if (typeof data !== "object" || data === null || Array.isArray(data)) {
+    return { ok: true, data };
+  }
+  const config = data as Partial<ConfigV2>;
+  if (config.version !== 2) {
+    return { ok: true, data };
+  }
+
+  const defaults = createDefaultConfig();
+  const coreData: CoreData = config.core?.data ?? {};
+  const defaultData: CoreData = defaults.core.data;
+  return {
+    ok: true,
+    data: {
+      ...config,
+      core: {
+        ...config.core,
+        data: {
+          ...coreData,
+          active_algorithms:
+            coreData.active_algorithms ?? defaultData.active_algorithms,
+        },
+      },
+      algorithms: config.algorithms?.length
+        ? config.algorithms
+        : defaults.algorithms,
+      apps: config.apps?.length ? config.apps : defaults.apps,
     },
   };
 };

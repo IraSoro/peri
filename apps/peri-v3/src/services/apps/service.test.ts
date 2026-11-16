@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { AppManifest } from "@repo/config-schema/config-v2.schema";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
+import { initEmptyConfig } from "@/services/store/migrate";
 import { Service } from "./service";
 import type { AppEntry } from "./types";
 
@@ -29,7 +30,7 @@ function entry(): AppEntry {
 }
 
 async function setup() {
-  const store = new StoreService(new Stub());
+  const store = new StoreService(new Stub(), [initEmptyConfig]);
   await store.load();
   return { store, service: new Service(store) };
 }

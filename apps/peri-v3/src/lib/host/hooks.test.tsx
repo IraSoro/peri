@@ -56,12 +56,18 @@ describe("host hooks", () => {
     expect(html).toBe("<p>true-false</p>");
   });
 
-  it("lists the apps", () => {
+  it("lists the apps of the default config", () => {
     const Probe = () => {
-      return <p>{useApps().length}</p>;
+      return (
+        <p>
+          {useApps()
+            .map((m) => m.id)
+            .join()}
+        </p>
+      );
     };
 
-    expect(renderToStaticMarkup(<Probe />)).toBe("<p>0</p>");
+    expect(renderToStaticMarkup(<Probe />)).toContain("com.peri.calendar");
   });
 
   it("follows a registered and activated algorithm", async () => {
@@ -71,9 +77,11 @@ describe("host hooks", () => {
     await core.setActiveAlgorithm("menstruation", "host-test");
     const Probe = () => {
       const ids = useAlgorithms().map((m) => m.id);
-      return <p>{`${ids.join()}|${useActiveAlgorithm("menstruation")}`}</p>;
+      return (
+        <p>{`${ids.includes("host-test")}|${useActiveAlgorithm("menstruation")}`}</p>
+      );
     };
 
-    expect(renderToStaticMarkup(<Probe />)).toBe("<p>host-test|host-test</p>");
+    expect(renderToStaticMarkup(<Probe />)).toBe("<p>true|host-test</p>");
   });
 });

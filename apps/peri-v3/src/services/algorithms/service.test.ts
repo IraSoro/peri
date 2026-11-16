@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { AlgorithmManifest } from "@repo/config-schema/config-v2.schema";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
+import { initEmptyConfig } from "@/services/store/migrate";
 import { Service } from "./service";
 import type { AlgorithmInput, AlgorithmOutput } from "./types";
 
@@ -53,7 +54,7 @@ function entry(output: AlgorithmOutput = { days: [] }) {
 }
 
 async function setup() {
-  const store = new StoreService(new Stub());
+  const store = new StoreService(new Stub(), [initEmptyConfig]);
   await store.load();
   await store.update((config) => {
     return { ...config, cycles: [closedCycle, openCycle] };

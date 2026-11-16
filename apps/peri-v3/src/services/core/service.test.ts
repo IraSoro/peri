@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { AlgorithmManifest } from "@repo/config-schema/config-v2.schema";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
+import { initEmptyConfig } from "@/services/store/migrate";
 import { Service as AlgorithmsService } from "@/services/algorithms/service";
 import type { AlgorithmEntry } from "@/services/algorithms/types";
 import { Service as AppsService } from "@/services/apps/service";
@@ -38,7 +39,7 @@ function counting(): AlgorithmEntry & { calls: number } {
 }
 
 async function setup() {
-  const store = new StoreService(new Stub());
+  const store = new StoreService(new Stub(), [initEmptyConfig]);
   await store.load();
   const algorithms = new AlgorithmsService(store);
   const cycles = new CyclesService(store);
@@ -153,6 +154,21 @@ describe("core service", () => {
 
       expect(res).toEqual({ ok: true });
       expect(entry.calls).toBe(1);
+    });
+
+    it("skips an active algorithm whose code is not registered yet", async () => {
+      const { store, algorithms, service } = await setup();
+      await algorithms.register(manifest("a"), counting());
+      await service.setActiveAlgorithm("menstruation", "a");
+      const reloaded = new Service(
+        store,
+        new AlgorithmsService(store),
+        new AppsService(store),
+      );
+
+      const res = await reloaded.recompute();
+
+      expect(res).toEqual({ ok: true });
     });
 
     it("does not run an algorithm that is not active", async () => {

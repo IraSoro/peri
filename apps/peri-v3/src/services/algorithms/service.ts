@@ -119,6 +119,10 @@ export class Service {
     return { ok: true };
   }
 
+  isRegistered(id: string): boolean {
+    return this.#entries.has(id);
+  }
+
   async run(id: string): Promise<AlgorithmOperationResult> {
     const entry = this.#entries.get(id);
     const manifest = this.#store.get().algorithms.find((a) => {

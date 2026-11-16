@@ -15,6 +15,9 @@ async function bootstrap() {
   await import("@/services/cycles/service");
   await import("@/services/core/service");
 
+  await import("@/algorithms/median-menstruation/algorithm");
+  await import("@/algorithms/median-ovulation/algorithm");
+
   await import("@/components/widgets/CalendarWidget");
   await import("@/components/widgets/CycleInfoWidget");
   await import("@/components/widgets/PeriodStatusWidget");

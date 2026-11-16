@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
+import { initEmptyConfig } from "@/services/store/migrate";
 import { Service as AlgorithmsService } from "@/services/algorithms/service";
 import { Service as AppsService } from "@/services/apps/service";
 import { Service as CoreService } from "@/services/core/service";
@@ -20,7 +21,7 @@ function community(id: string): CommunityAppManifest {
 }
 
 async function setup() {
-  const store = new StoreService(new Stub());
+  const store = new StoreService(new Stub(), [initEmptyConfig]);
   await store.load();
   const core = new CoreService(
     store,
