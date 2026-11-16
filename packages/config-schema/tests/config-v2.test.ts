@@ -69,13 +69,8 @@ describe("config v2", () => {
     ).toBe(true);
   });
 
-  it("accepts a new prediction type", () => {
+  it("rejects an unknown prediction type", () => {
     const predictions = { fertile_window: { algorithm_id: "a", days: [] } };
-    expect(validate({ ...config, predictions })).toBe(true);
-  });
-
-  it("rejects an invalid prediction of a new type", () => {
-    const predictions = { fertile_window: { days: [] } };
     expect(validate({ ...config, predictions })).toBe(false);
   });
 

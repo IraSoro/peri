@@ -4,7 +4,7 @@ import { service as core } from "@/services/core/service";
 import { wrapWidget } from "./wrap";
 import type { Service as CoreService } from "@/services/core/service";
 import type { CoreOperationResult } from "@/services/core/types";
-import type { CommunityManifest, InternalManifest } from "../types";
+import type { CommunityAppManifest, InternalAppManifest } from "../types";
 import type { CommunityWidget, InternalWidget } from "./types";
 
 interface Options {
@@ -17,7 +17,7 @@ export function createWidgetApi(
   options: Options = {},
 ) {
   async function defineInternalWidget(
-    manifest: InternalManifest,
+    manifest: InternalAppManifest,
     widget: InternalWidget,
   ): Promise<CoreOperationResult> {
     const start = performance.now();
@@ -40,7 +40,7 @@ export function createWidgetApi(
   }
 
   async function defineWidget(
-    manifest: CommunityManifest,
+    manifest: CommunityAppManifest,
     widget: CommunityWidget,
   ): Promise<CoreOperationResult> {
     const start = performance.now();

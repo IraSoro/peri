@@ -1,4 +1,7 @@
-import type { ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type {
+  AlgorithmManifest,
+  AppManifest,
+} from "@repo/config-schema/config-v2.schema";
 import { service as core } from "@/services/core/service";
 import type { Service as CoreService } from "@/services/core/service";
 import { service as cycles } from "@/services/cycles/service";
@@ -17,13 +20,13 @@ interface Deps {
  * must never be handed to community code
  */
 export const createHostApi = (deps: Deps) => {
-  const listAlgorithms = (): ManifestBase[] => {
+  const listAlgorithms = (): AlgorithmManifest[] => {
     return deps.store.get().algorithms.map((algorithm) => {
       return algorithm.manifest;
     });
   };
 
-  const listApps = (): ManifestBase[] => {
+  const listApps = (): AppManifest[] => {
     return deps.store.get().apps.map((app) => {
       return app.manifest;
     });

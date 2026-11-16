@@ -6,18 +6,25 @@ import { Service as AppsService } from "@/services/apps/service";
 import { Service as CyclesService } from "@/services/cycles/service";
 import { Service as CoreService } from "@/services/core/service";
 import { createAlgorithmApi } from "./api";
-import type { CommunityManifest } from "../types";
+import type {
+  CommunityAlgorithmManifest,
+  InternalAlgorithmManifest,
+} from "../types";
 import type { CommunityAlgorithmInput } from "./types";
 
 const JAN_1 = "2025-01-01T00:00:00.000Z";
 
-function community(id: string, permissions: string[] = []): CommunityManifest {
+function community(
+  id: string,
+  permissions: string[] = [],
+): CommunityAlgorithmManifest {
   return {
     manifest_version: 1,
     id,
     name: id,
     version: "1.0.0",
     permissions,
+    type: "menstruation",
   };
 }
 
@@ -33,10 +40,16 @@ async function setup() {
   return { store, core, api: createAlgorithmApi(core) };
 }
 
-const internal = { manifest_version: 1, id: "b", name: "b", version: "1.0.0" };
+const internal: InternalAlgorithmManifest = {
+  manifest_version: 1,
+  id: "b",
+  name: "b",
+  version: "1.0.0",
+  type: "menstruation",
+};
 const algorithm = {
   run() {
-    return {};
+    return { days: [] };
   },
 };
 
@@ -51,7 +64,7 @@ describe("algorithm api", () => {
 
       const res = await api.defineAlgorithm(community("a"), {
         run() {
-          return {};
+          return { days: [] };
         },
       });
 
@@ -67,7 +80,7 @@ describe("algorithm api", () => {
 
       await api.defineAlgorithm(sneaky, {
         run() {
-          return {};
+          return { days: [] };
         },
       });
 
@@ -80,7 +93,7 @@ describe("algorithm api", () => {
       await api.defineAlgorithm(community("a", ["cycles:read"]), {
         run(input) {
           seen = input;
-          return {};
+          return { days: [] };
         },
       });
 
@@ -95,7 +108,7 @@ describe("algorithm api", () => {
       await api.defineAlgorithm(community("a"), {
         run(input) {
           seen = input;
-          return {};
+          return { days: [] };
         },
       });
 
@@ -108,7 +121,7 @@ describe("algorithm api", () => {
       const { api } = await setup();
       const algorithm = {
         run() {
-          return {};
+          return { days: [] };
         },
       };
       await api.defineAlgorithm(community("a"), algorithm);
@@ -146,14 +159,11 @@ describe("algorithm api", () => {
     it("stores the manifest as internal without permissions", async () => {
       const { store, api } = await setup();
 
-      const res = await api.defineInternalAlgorithm(
-        { manifest_version: 1, id: "b", name: "b", version: "1.0.0" },
-        {
-          run() {
-            return {};
-          },
+      const res = await api.defineInternalAlgorithm(internal, {
+        run() {
+          return { days: [] };
         },
-      );
+      });
 
       expect(res).toEqual({ ok: true });
       expect(store.get().algorithms[0]?.manifest).toMatchObject({
@@ -165,15 +175,12 @@ describe("algorithm api", () => {
     it("gives the whole input", async () => {
       const { core, api } = await setup();
       let cycles = 0;
-      await api.defineInternalAlgorithm(
-        { manifest_version: 1, id: "b", name: "b", version: "1.0.0" },
-        {
-          run(input) {
-            cycles = input.cycles.length;
-            return {};
-          },
+      await api.defineInternalAlgorithm(internal, {
+        run(input) {
+          cycles = input.cycles.length;
+          return { days: [] };
         },
-      );
+      });
 
       await core.setActiveAlgorithm("menstruation", "b");
 

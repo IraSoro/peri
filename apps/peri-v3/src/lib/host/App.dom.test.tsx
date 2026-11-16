@@ -1,16 +1,17 @@
 // @vitest-environment jsdom
 import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
+import type { AppManifest } from "@repo/config-schema/config-v2.schema";
 import { service as apps } from "@/services/apps/service";
 import { App } from "./App";
 
-const manifest = (id: string) => {
+const manifest = (id: string): AppManifest => {
   return {
     manifest_version: 1,
     id,
     name: id,
     version: "1.0.0",
-    source: "internal" as const,
+    source: "internal",
     permissions: [],
   };
 };

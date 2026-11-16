@@ -9,11 +9,24 @@
  * ISO 8601 date-time
  */
 export type IsoDate = string;
+/**
+ * Manifest of an algorithm
+ */
+export type AlgorithmManifest = ManifestBase & {
+  /**
+   * Key in `predictions` the algorithm writes to. One algorithm predicts one type
+   */
+  type: "menstruation" | "ovulation";
+};
 export type Semver = string;
 /**
  * Scope in `resource:action` snake_case format. Wildcards are not supported
  */
 export type Permission = string;
+/**
+ * Manifest of an app
+ */
+export type AppManifest = ManifestBase;
 
 /**
  * Peri config. Readers must ignore unknown fields, so additionalProperties is intentionally left open everywhere.
@@ -30,11 +43,9 @@ export interface ConfigV2 {
   core: Core;
   cycles: Cycle[];
   /**
-   * Predicted dates keyed by prediction type. Open for new types
+   * Predicted dates keyed by prediction type
    */
   predictions: {
-    menstruation?: Prediction;
-    ovulation?: Prediction;
     [k: string]: Prediction;
   };
   algorithms: Algorithm[];
@@ -89,7 +100,7 @@ export interface PredictionDay {
   date: IsoDate;
 }
 export interface Algorithm {
-  manifest: ManifestBase;
+  manifest: AlgorithmManifest;
 }
 export interface ManifestBase {
   manifest_version: number;
@@ -111,7 +122,7 @@ export interface ManifestBase {
   verified?: boolean;
 }
 export interface App {
-  manifest: ManifestBase;
+  manifest: AppManifest;
   /**
    * App KV storage. Format is up to the app
    */

@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import type { ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type { AppManifest } from "@repo/config-schema/config-v2.schema";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
 import { Service } from "./service";
 import type { AppEntry } from "./types";
 
-function internal(id: string): ManifestBase {
+function internal(id: string): AppManifest {
   return {
     manifest_version: 1,
     id,
@@ -16,7 +16,7 @@ function internal(id: string): ManifestBase {
   };
 }
 
-function community(id: string, installedAt: string): ManifestBase {
+function community(id: string, installedAt: string): AppManifest {
   return {
     ...internal(id),
     source: "community",

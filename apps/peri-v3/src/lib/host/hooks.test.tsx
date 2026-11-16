@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import type { AlgorithmManifest } from "@repo/config-schema/config-v2.schema";
 import { service as core } from "@/services/core/service";
 import { service as algorithms } from "@/services/algorithms/service";
 import { PagerProvider } from "@/components/layouts/PagerProvider";
@@ -13,13 +14,14 @@ import {
   usePredictions,
 } from "./hooks";
 
-const manifest = {
+const manifest: AlgorithmManifest = {
   manifest_version: 1,
   id: "host-test",
   name: "host-test",
   version: "1.0.0",
-  source: "internal" as const,
+  source: "internal",
   permissions: [],
+  type: "menstruation",
 };
 
 describe("host hooks", () => {
@@ -63,7 +65,9 @@ describe("host hooks", () => {
   });
 
   it("follows a registered and activated algorithm", async () => {
-    await algorithms.register(manifest, { run: () => ({}) });
+    await algorithms.register(manifest, {
+      run: () => ({ days: [] }),
+    });
     await core.setActiveAlgorithm("menstruation", "host-test");
     const Probe = () => {
       const ids = useAlgorithms().map((m) => m.id);

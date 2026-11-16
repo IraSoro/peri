@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type { AlgorithmManifest } from "@repo/config-schema/config-v2.schema";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
 import { Service } from "./service";
@@ -21,7 +21,10 @@ const openCycle = {
 
 const day = (date: string) => ({ date });
 
-function internal(id: string): ManifestBase {
+function internal(
+  id: string,
+  type: AlgorithmManifest["type"] = "menstruation",
+): AlgorithmManifest {
   return {
     manifest_version: 1,
     id,
@@ -29,10 +32,11 @@ function internal(id: string): ManifestBase {
     version: "1.0.0",
     source: "internal",
     permissions: [],
+    type: type,
   };
 }
 
-function community(id: string, installedAt: string): ManifestBase {
+function community(id: string, installedAt: string): AlgorithmManifest {
   return {
     ...internal(id),
     source: "community",
@@ -40,7 +44,7 @@ function community(id: string, installedAt: string): ManifestBase {
   };
 }
 
-function entry(output: AlgorithmOutput = {}) {
+function entry(output: AlgorithmOutput = { days: [] }) {
   return {
     run: vi.fn((_input: AlgorithmInput): AlgorithmOutput => {
       return output;
@@ -177,7 +181,7 @@ describe("algorithms service", () => {
     it("removes the predictions of the algorithm, keeps the others", async () => {
       const { store, service } = await setup();
       await service.register(internal("a"), entry());
-      await service.register(internal("b"), entry());
+      await service.register(internal("b", "ovulation"), entry());
       await service.run("a");
       await store.update((config) => {
         return {
@@ -243,17 +247,13 @@ describe("algorithms service", () => {
     it("stores the output with the algorithm id", async () => {
       const { store, service } = await setup();
       const days = [day("2025-06-28T00:00:00.000Z")];
-      await service.register(
-        internal("a"),
-        entry({ menstruation: days, ovulation: [] }),
-      );
+      await service.register(internal("a"), entry({ days }));
 
       const res = await service.run("a");
 
       expect(res).toEqual({ ok: true });
       expect(store.get().predictions).toEqual({
         menstruation: { algorithm_id: "a", days },
-        ovulation: { algorithm_id: "a", days: [] },
       });
     });
 
@@ -261,7 +261,7 @@ describe("algorithms service", () => {
       const { store, service } = await setup();
       const days = [day("2025-06-28T00:00:00.000Z")];
       await service.register(internal("a"), {
-        run: () => Promise.resolve({ menstruation: days }),
+        run: () => Promise.resolve({ days }),
       });
 
       expect(await service.run("a")).toEqual({ ok: true });
@@ -271,13 +271,14 @@ describe("algorithms service", () => {
     it("replaces earlier predictions of the algorithm", async () => {
       const { store, service } = await setup();
       let output: AlgorithmOutput = {
-        menstruation: [day("2025-06-28T00:00:00.000Z")],
-        ovulation: [day("2025-07-10T00:00:00.000Z")],
+        days: [day("2025-06-28T00:00:00.000Z")],
       };
       await service.register(internal("a"), { run: () => output });
       await service.run("a");
 
-      output = { menstruation: [day("2025-07-26T00:00:00.000Z")] };
+      output = {
+        days: [day("2025-07-26T00:00:00.000Z")],
+      };
       await service.run("a");
 
       expect(store.get().predictions).toEqual({
@@ -288,15 +289,42 @@ describe("algorithms service", () => {
       });
     });
 
+    it("stores the output under the prediction type of the manifest", async () => {
+      const { store, service } = await setup();
+      const days = [day("2025-07-10T00:00:00.000Z")];
+      await service.register(internal("a", "ovulation"), entry({ days }));
+
+      await service.run("a");
+
+      expect(store.get().predictions).toEqual({
+        ovulation: { algorithm_id: "a", days },
+      });
+    });
+
+    it("moves the prediction when a new manifest changes the type", async () => {
+      const { store, service } = await setup();
+      await service.register(internal("a"), entry());
+      await service.run("a");
+
+      await service.register(internal("a", "ovulation"), entry(), {
+        replace: true,
+      });
+      await service.run("a");
+
+      expect(Object.keys(store.get().predictions)).toEqual(["ovulation"]);
+    });
+
     it("keeps the predictions of other algorithms", async () => {
       const { store, service } = await setup();
       await service.register(
         internal("a"),
-        entry({ menstruation: [day("2025-06-28T00:00:00.000Z")] }),
+        entry({
+          days: [day("2025-06-28T00:00:00.000Z")],
+        }),
       );
       await service.register(
-        internal("b"),
-        entry({ ovulation: [day("2025-07-10T00:00:00.000Z")] }),
+        internal("b", "ovulation"),
+        entry({ days: [day("2025-07-10T00:00:00.000Z")] }),
       );
 
       await service.run("a");
@@ -308,7 +336,7 @@ describe("algorithms service", () => {
 
     it("bumps the store revision once per run", async () => {
       const { store, service } = await setup();
-      await service.register(internal("a"), entry({ menstruation: [] }));
+      await service.register(internal("a"), entry({ days: [] }));
       const before = store.get().revision;
 
       await service.run("a");
@@ -348,9 +376,11 @@ describe("algorithms service", () => {
       ["null", null],
       ["an array", []],
       ["a string", "x"],
-      ["a non-array value", { menstruation: 1 }],
-      ["days without a date", { menstruation: [{}] }],
-      ["a non-string date", { menstruation: [{ date: 1 }] }],
+      ["missing days", {}],
+      ["a non-array value", { days: 1 }],
+      ["days without a date", { days: [{}] }],
+      ["a non-string date", { days: [{ date: 1 }] }],
+      ["the old map of types", { menstruation: [], ovulation: [] }],
     ])("returns invalid_output for %s", async (_name, output) => {
       const { store, service } = await setup();
       await service.register(internal("a"), {
@@ -369,10 +399,7 @@ describe("algorithms service", () => {
 
     it("returns invalid_output when the store rejects the dates", async () => {
       const { store, service } = await setup();
-      await service.register(
-        internal("a"),
-        entry({ menstruation: [day("x")] }),
-      );
+      await service.register(internal("a"), entry({ days: [day("x")] }));
       const before = store.get();
 
       const res = await service.run("a");
@@ -387,12 +414,12 @@ describe("algorithms service", () => {
     it("keeps the old predictions when a new output is rejected", async () => {
       const { store, service } = await setup();
       let output: AlgorithmOutput = {
-        menstruation: [day("2025-06-28T00:00:00.000Z")],
+        days: [day("2025-06-28T00:00:00.000Z")],
       };
       await service.register(internal("a"), { run: () => output });
       await service.run("a");
 
-      output = { menstruation: [day("bad")] };
+      output = { days: [day("bad")] };
       await service.run("a");
 
       expect(store.get().predictions.menstruation?.days).toEqual([

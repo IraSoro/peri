@@ -67,6 +67,7 @@
         "name": "Menstruation calculator",
         "version": "1.0.0",
         "source": "internal",
+        "type": "menstruation",
         "permissions": []
       }
     },
@@ -77,6 +78,7 @@
         "name": "Ovulation calculator",
         "version": "1.0.0",
         "source": "internal",
+        "type": "ovulation",
         "permissions": []
       }
     }

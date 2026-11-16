@@ -5,11 +5,11 @@ import { Service as AlgorithmsService } from "@/services/algorithms/service";
 import { Service as AppsService } from "@/services/apps/service";
 import { Service as CoreService } from "@/services/core/service";
 import { createWidgetApi } from "./api";
-import type { CommunityManifest } from "../types";
+import type { CommunityAppManifest, InternalAppManifest } from "../types";
 
 const widget = { component: () => null };
 
-function community(id: string): CommunityManifest {
+function community(id: string): CommunityAppManifest {
   return {
     manifest_version: 1,
     id,
@@ -32,8 +32,8 @@ async function setup() {
 
 describe("widget api", () => {
   describe("defineInternalWidget", () => {
-    const internal = {
-      manifest_version: 1 as const,
+    const internal: InternalAppManifest = {
+      manifest_version: 1,
       id: "i",
       name: "i",
       version: "1.0.0",

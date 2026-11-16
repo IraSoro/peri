@@ -5,7 +5,10 @@ import type { AlgorithmInput } from "@/services/algorithms/types";
 import type { Service as CoreService } from "@/services/core/service";
 import type { CoreOperationResult } from "@/services/core/types";
 import { grantByPermissions } from "../permissions";
-import type { CommunityManifest, InternalManifest } from "../types";
+import type {
+  CommunityAlgorithmManifest,
+  InternalAlgorithmManifest,
+} from "../types";
 import type { CommunityAlgorithm, InternalAlgorithm } from "./types";
 
 interface Options {
@@ -18,7 +21,7 @@ export function createAlgorithmApi(
   options: Options = {},
 ) {
   async function defineInternalAlgorithm(
-    manifest: InternalManifest,
+    manifest: InternalAlgorithmManifest,
     algorithm: InternalAlgorithm,
   ): Promise<CoreOperationResult> {
     const start = performance.now();
@@ -41,7 +44,7 @@ export function createAlgorithmApi(
   }
 
   async function defineAlgorithm(
-    manifest: CommunityManifest,
+    manifest: CommunityAlgorithmManifest,
     algorithm: CommunityAlgorithm,
   ): Promise<CoreOperationResult> {
     const start = performance.now();

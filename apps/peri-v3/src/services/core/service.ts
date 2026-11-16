@@ -6,7 +6,10 @@ import type { Service as AppsService } from "@/services/apps/service";
 import type { AppEntry } from "@/services/apps/types";
 import { service as store } from "@/services/store/service";
 import type { Service as StoreService } from "@/services/store/service";
-import type { ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type {
+  AlgorithmManifest,
+  AppManifest,
+} from "@repo/config-schema/config-v2.schema";
 import type { CoreData, CoreOperationResult, PredictionType } from "./types";
 
 export class Service {
@@ -54,7 +57,7 @@ export class Service {
   }
 
   async registerAlgorithm(
-    manifest: ManifestBase,
+    manifest: AlgorithmManifest,
     entry: AlgorithmEntry,
     options: { replace?: boolean } = {},
   ): Promise<CoreOperationResult> {
@@ -63,6 +66,29 @@ export class Service {
       return {
         ok: false,
         error: { code: "registration_failed", message: res.error.message },
+      };
+    }
+    // A changed prediction type leaves the algorithm chosen for its old type.
+    // Only the stale entry is dropped, the algorithm isn't made active for
+    // the new type
+    const stale = await this.#store.update((config) => {
+      const data: CoreData = config.core.data;
+      const active = Object.fromEntries(
+        Object.entries(data.active_algorithms ?? {}).filter(
+          ([type, activeId]) => {
+            return activeId !== manifest.id || type === manifest.type;
+          },
+        ),
+      );
+      return {
+        ...config,
+        core: { ...config.core, data: { ...data, active_algorithms: active } },
+      };
+    });
+    if (!stale.ok) {
+      return {
+        ok: false,
+        error: { code: "invalid_data", message: stale.error.message },
       };
     }
     const data: CoreData = this.#store.get().core.data;
@@ -102,7 +128,7 @@ export class Service {
   }
 
   async registerApp(
-    manifest: ManifestBase,
+    manifest: AppManifest,
     entry: AppEntry,
     options: { replace?: boolean } = {},
   ): Promise<CoreOperationResult> {
@@ -136,15 +162,24 @@ export class Service {
     type: PredictionType,
     algorithmId: string,
   ): Promise<CoreOperationResult> {
-    const known = this.#store.get().algorithms.some((a) => {
+    const algorithm = this.#store.get().algorithms.find((a) => {
       return a.manifest.id === algorithmId;
     });
-    if (!known) {
+    if (!algorithm) {
       return {
         ok: false,
         error: {
           code: "unknown_algorithm",
           message: `algorithm "${algorithmId}" is not registered`,
+        },
+      };
+    }
+    if (algorithm.manifest.type !== type) {
+      return {
+        ok: false,
+        error: {
+          code: "type_mismatch",
+          message: `algorithm "${algorithmId}" predicts "${algorithm.manifest.type}", not "${type}"`,
         },
       };
     }

@@ -1,6 +1,6 @@
 import type {
+  AlgorithmManifest,
   ConfigV2,
-  ManifestBase,
 } from "@repo/config-schema/config-v2.schema";
 import { service as store } from "@/services/store/service";
 import type { Service as StoreService } from "@/services/store/service";
@@ -20,7 +20,7 @@ export class Service {
   }
 
   async register(
-    manifest: ManifestBase,
+    manifest: AlgorithmManifest,
     entry: AlgorithmEntry,
     options: { replace?: boolean } = {},
   ): Promise<AlgorithmOperationResult> {
@@ -53,7 +53,20 @@ export class Service {
       } else {
         algorithms[index] = next;
       }
-      return { ...config, algorithms };
+      // A changed prediction type leaves the predictions made for its old type.
+      // They are dropped in the same update, otherwise the store would reject
+      // it (the prediction key no longer matches the algorithm type). New
+      // predictions appear on the next run
+      const typeChanged =
+        index !== -1 &&
+        config.algorithms[index]?.manifest.type !== manifest.type;
+      return {
+        ...config,
+        algorithms,
+        predictions: typeChanged
+          ? this.#omitPredictionsOf(config.predictions, manifest.id)
+          : config.predictions,
+      };
     });
     if (!res.ok) {
       if (previous) {
@@ -108,7 +121,10 @@ export class Service {
 
   async run(id: string): Promise<AlgorithmOperationResult> {
     const entry = this.#entries.get(id);
-    if (!entry) {
+    const manifest = this.#store.get().algorithms.find((a) => {
+      return a.manifest.id === id;
+    })?.manifest;
+    if (!entry || !manifest) {
       return {
         ok: false,
         error: {
@@ -143,12 +159,10 @@ export class Service {
     const made = output;
     const res = await this.#store.update((config) => {
       const predictions = this.#omitPredictionsOf(config.predictions, id);
-      for (const [type, days] of Object.entries(made)) {
-        if (days === undefined) {
-          continue;
-        }
-        predictions[type] = { algorithm_id: id, days };
-      }
+      predictions[manifest.type] = {
+        algorithm_id: id,
+        days: made.days,
+      };
       return { ...config, predictions };
     });
     if (!res.ok) {
@@ -165,17 +179,16 @@ export class Service {
     if (typeof value !== "object" || value === null || Array.isArray(value)) {
       return false;
     }
-    return Object.values(value).every((days) => {
-      if (!Array.isArray(days)) {
-        return false;
-      }
-      return days.every((day) => {
-        return (
-          typeof day === "object" &&
-          day !== null &&
-          typeof (day as { date?: unknown }).date === "string"
-        );
-      });
+    const { days } = value as { days?: unknown };
+    if (!Array.isArray(days)) {
+      return false;
+    }
+    return days.every((day) => {
+      return (
+        typeof day === "object" &&
+        day !== null &&
+        typeof (day as { date?: unknown }).date === "string"
+      );
     });
   }
 

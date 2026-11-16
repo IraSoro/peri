@@ -8,7 +8,11 @@ export type {
   SchemaValidationResult,
 } from "./schema-errors.js";
 
-type ConfigErrorCode = "duplicate_id" | "unknown_algorithm" | "open_cycle";
+type ConfigErrorCode =
+  | "duplicate_id"
+  | "unknown_algorithm"
+  | "prediction_type_mismatch"
+  | "open_cycle";
 
 export interface ConfigError {
   code: SchemaErrorCode | ConfigErrorCode;
@@ -73,6 +77,22 @@ const predictionsUseKnownAlgorithms: Rule = (config) => {
     }));
 };
 
+const predictionsMatchAlgorithmType: Rule = (config) => {
+  const types = new Map(
+    config.algorithms.map((a) => [a.manifest.id, a.manifest.type]),
+  );
+  return Object.entries(config.predictions)
+    .filter(([type, prediction]) => {
+      const predicts = types.get(prediction.algorithm_id);
+      return predicts !== undefined && predicts !== type;
+    })
+    .map(([type, prediction]) => ({
+      code: "prediction_type_mismatch",
+      path: `/predictions/${escapePointer(type)}/algorithm_id`,
+      message: `Prediction "${type}" comes from "${prediction.algorithm_id}", which predicts "${types.get(prediction.algorithm_id)}"`,
+    }));
+};
+
 const onlyCurrentCycleIsOpen: Rule = (config) => {
   let current = -1;
   let latest = -Infinity;
@@ -113,6 +133,7 @@ export function validateConfigV2(data: unknown): ConfigValidationResult {
     allAppIdsAreUnique,
     allAlgorithmIdsAreUnique,
     predictionsUseKnownAlgorithms,
+    predictionsMatchAlgorithmType,
     onlyCurrentCycleIsOpen,
   ]) {
     errors.push(...rule(config));

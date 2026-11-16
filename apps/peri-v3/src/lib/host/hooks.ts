@@ -1,8 +1,9 @@
 import { useEffect, useId } from "react";
 import type {
+  AlgorithmManifest,
   ConfigV2,
   Cycle,
-  ManifestBase,
+  AppManifest,
 } from "@repo/config-schema/config-v2.schema";
 import { useStoreSelector } from "@/lib/hooks/useStoreSelector";
 import type { CoreData, PredictionType } from "@/services/core/types";
@@ -27,7 +28,7 @@ export const usePredictions = (): ConfigV2["predictions"] => {
 };
 
 /** Manifests of the registered algorithms */
-export const useAlgorithms = (): ManifestBase[] => {
+export const useAlgorithms = (): AlgorithmManifest[] => {
   const algorithms = useStoreSelector((config) => {
     return config.algorithms;
   });
@@ -37,7 +38,7 @@ export const useAlgorithms = (): ManifestBase[] => {
 };
 
 /** Manifests of the registered apps (widgets) */
-export const useApps = (): ManifestBase[] => {
+export const useApps = (): AppManifest[] => {
   const apps = useStoreSelector((config) => {
     return config.apps;
   });

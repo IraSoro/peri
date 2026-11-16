@@ -129,23 +129,56 @@ describe("validateConfigV2", () => {
       ]);
     });
 
-    it("checks custom prediction types and escapes their keys in the path", () => {
-      const config = validConfig();
-      config.predictions["pms/mood"] = {
-        algorithm_id: "com.missing.algorithm",
-        days: [],
-      };
-      expect(errorsOf(config)).toEqual([
-        expect.objectContaining({
-          path: "/predictions/pms~1mood/algorithm_id",
-        }),
-      ]);
-    });
-
     it("does not match an algorithm id from apps", () => {
       const config = validConfig();
       config.predictions.ovulation!.algorithm_id = config.apps[0].manifest.id;
       expect(errorsOf(config)).toHaveLength(1);
+    });
+  });
+
+  describe("algorithm prediction type", () => {
+    it("requires type in an algorithm manifest", () => {
+      const config = validConfig();
+      delete (config.algorithms[0].manifest as { type?: string }).type;
+      expect(errorsOf(config)).toContainEqual(
+        expect.objectContaining({
+          code: "required",
+          path: "/algorithms/0/manifest/type",
+        }),
+      );
+    });
+
+    it("rejects an unknown type", () => {
+      const config = validConfig();
+      config.algorithms[0].manifest.type = "fertile_window";
+      expect(errorsOf(config)).not.toEqual([]);
+    });
+
+    it("does not require type in an app manifest", () => {
+      expect(validateConfigV2(validConfig()).ok).toBe(true);
+    });
+
+    it("rejects a prediction made by an algorithm of another type", () => {
+      const config = validConfig();
+      config.predictions.ovulation!.algorithm_id = config.algorithms.find(
+        (a) => {
+          return a.manifest.type === "menstruation";
+        },
+      )!.manifest.id;
+      expect(errorsOf(config)).toEqual([
+        expect.objectContaining({
+          code: "prediction_type_mismatch",
+          path: "/predictions/ovulation/algorithm_id",
+        }),
+      ]);
+    });
+
+    it("does not report a mismatch for an unknown algorithm", () => {
+      const config = validConfig();
+      config.predictions.ovulation!.algorithm_id = "com.missing.algorithm";
+      expect(errorsOf(config)).toEqual([
+        expect.objectContaining({ code: "unknown_algorithm" }),
+      ]);
     });
   });
 

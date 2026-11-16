@@ -1,12 +1,13 @@
 import { describe, expect, it, vi } from "vitest";
 import type {
+  AlgorithmManifest,
+  AppManifest,
   ConfigV2,
-  ManifestBase,
 } from "@repo/config-schema/config-v2.schema";
 import type { CycleInput } from "@/services/cycles/types";
 import { createHostApi } from "./api";
 
-const manifest = (id: string): ManifestBase => {
+const manifest = (id: string): AppManifest => {
   return {
     manifest_version: 1,
     id,
@@ -17,9 +18,13 @@ const manifest = (id: string): ManifestBase => {
   };
 };
 
+const algorithmManifest = (id: string): AlgorithmManifest => {
+  return { ...manifest(id), type: "menstruation" };
+};
+
 const setup = () => {
   const config = {
-    algorithms: [{ manifest: manifest("a") }],
+    algorithms: [{ manifest: algorithmManifest("a") }],
     apps: [{ manifest: manifest("w") }],
   } as unknown as ConfigV2;
   const core = {

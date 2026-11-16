@@ -1,13 +1,25 @@
-import type { ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type {
+  AlgorithmManifest,
+  AppManifest,
+} from "@repo/config-schema/config-v2.schema";
 
-/** What a community author writes, the host sets `source`, `installed_at` and `verified` */
-export type CommunityManifest = Omit<
-  ManifestBase,
-  "source" | "installed_at" | "verified"
->;
+/** The host sets `source`, `installed_at` and `verified`, a community author does not write them */
+type HostFields = "source" | "installed_at" | "verified";
 
-/** What our own code writes, the schema allows no permissions or community-only fields here */
-export type InternalManifest = Pick<
-  ManifestBase,
-  "manifest_version" | "id" | "name" | "version"
+/** The fields our own code writes, the schema allows no permissions or community-only fields there */
+type InternalFields = "manifest_version" | "id" | "name" | "version";
+
+/** What a community author writes for an app (widget) */
+export type CommunityAppManifest = Omit<AppManifest, HostFields>;
+
+/** What our own code writes for an app (widget) */
+export type InternalAppManifest = Pick<AppManifest, InternalFields>;
+
+/** What a community author writes for an algorithm, it declares the one type it predicts */
+export type CommunityAlgorithmManifest = Omit<AlgorithmManifest, HostFields>;
+
+/** What our own code writes for an algorithm */
+export type InternalAlgorithmManifest = Pick<
+  AlgorithmManifest,
+  InternalFields | "type"
 >;

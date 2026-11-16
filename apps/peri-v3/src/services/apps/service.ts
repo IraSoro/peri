@@ -1,4 +1,4 @@
-import type { ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type { AppManifest } from "@repo/config-schema/config-v2.schema";
 import { service as store } from "@/services/store/service";
 import type { Service as StoreService } from "@/services/store/service";
 import type { AppData, AppEntry, AppOperationResult } from "./types";
@@ -15,7 +15,7 @@ export class Service {
   }
 
   async register(
-    manifest: ManifestBase,
+    manifest: AppManifest,
     entry: AppEntry,
     options: { replace?: boolean } = {},
   ): Promise<AppOperationResult> {

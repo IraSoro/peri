@@ -74,6 +74,10 @@
       },
       "required": ["start_date", "end_date", "period_length", "cycle_length"]
     },
+    "PredictionType": {
+      "description": "Prediction types the app supports",
+      "enum": ["menstruation", "ovulation"]
+    },
     "PredictionDay": {
       "type": "object",
       "properties": {
@@ -199,11 +203,37 @@
         }
       }
     },
+    "AppManifest": {
+      "description": "Manifest of an app",
+      "allOf": [
+        {
+          "$ref": "#/$defs/ManifestBase"
+        }
+      ]
+    },
+    "AlgorithmManifest": {
+      "description": "Manifest of an algorithm",
+      "allOf": [
+        {
+          "$ref": "#/$defs/ManifestBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "description": "Key in `predictions` the algorithm writes to. One algorithm predicts one type",
+              "$ref": "#/$defs/PredictionType"
+            }
+          },
+          "required": ["type"]
+        }
+      ]
+    },
     "Algorithm": {
       "type": "object",
       "properties": {
         "manifest": {
-          "$ref": "#/$defs/ManifestBase"
+          "$ref": "#/$defs/AlgorithmManifest"
         }
       },
       "required": ["manifest"]
@@ -212,7 +242,7 @@
       "type": "object",
       "properties": {
         "manifest": {
-          "$ref": "#/$defs/ManifestBase"
+          "$ref": "#/$defs/AppManifest"
         },
         "data": {
           "description": "App KV storage. Format is up to the app",
@@ -242,15 +272,10 @@
       }
     },
     "predictions": {
-      "description": "Predicted dates keyed by prediction type. Open for new types",
+      "description": "Predicted dates keyed by prediction type",
       "type": "object",
-      "properties": {
-        "menstruation": {
-          "$ref": "#/$defs/Prediction"
-        },
-        "ovulation": {
-          "$ref": "#/$defs/Prediction"
-        }
+      "propertyNames": {
+        "$ref": "#/$defs/PredictionType"
       },
       "additionalProperties": {
         "$ref": "#/$defs/Prediction"

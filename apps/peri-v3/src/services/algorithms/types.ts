@@ -1,8 +1,4 @@
-import type {
-  ConfigV2,
-  Cycle,
-  Prediction,
-} from "@repo/config-schema/config-v2.schema";
+import type { Cycle, Prediction } from "@repo/config-schema/config-v2.schema";
 
 export type AlgorithmErrorCode =
   | "already_registered"
@@ -19,9 +15,10 @@ export interface AlgorithmInput {
   cycles: readonly Cycle[];
 }
 
-export type AlgorithmOutput = {
-  [Type in keyof ConfigV2["predictions"]]?: Prediction["days"];
-};
+export interface AlgorithmOutput {
+  /** Predicted days for the algorithm type */
+  days: Prediction["days"];
+}
 
 export interface AlgorithmEntry {
   run(input: AlgorithmInput): AlgorithmOutput | Promise<AlgorithmOutput>;

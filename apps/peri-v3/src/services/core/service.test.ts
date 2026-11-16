@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { ManifestBase } from "@repo/config-schema/config-v2.schema";
+import type { AlgorithmManifest } from "@repo/config-schema/config-v2.schema";
 import { Service as StoreService } from "@/services/store/service";
 import { Stub } from "@/services/store/backends/stub";
 import { Service as AlgorithmsService } from "@/services/algorithms/service";
@@ -11,7 +11,10 @@ import { Service } from "./service";
 const JAN_1 = "2025-01-01T00:00:00.000Z";
 const JAN_29 = "2025-01-29T00:00:00.000Z";
 
-function manifest(id: string): ManifestBase {
+function manifest(
+  id: string,
+  type: AlgorithmManifest["type"] = "menstruation",
+): AlgorithmManifest {
   return {
     manifest_version: 1,
     id,
@@ -19,6 +22,7 @@ function manifest(id: string): ManifestBase {
     version: "1.0.0",
     source: "internal",
     permissions: [],
+    type: type,
   };
 }
 
@@ -27,7 +31,7 @@ function counting(): AlgorithmEntry & { calls: number } {
     calls: 0,
     run() {
       entry.calls += 1;
-      return { menstruation: [{ date: JAN_29 }] };
+      return { days: [{ date: JAN_29 }] };
     },
   };
   return entry;
@@ -54,6 +58,34 @@ describe("core service", () => {
         ok: false,
         error: { code: "unknown_algorithm" },
       });
+      expect(service.getActiveAlgorithm("menstruation")).toBeUndefined();
+    });
+
+    it("rejects an algorithm that predicts another type", async () => {
+      const { store, algorithms, service } = await setup();
+      const entry = counting();
+      await algorithms.register(manifest("a", "ovulation"), entry);
+
+      const res = await service.setActiveAlgorithm("menstruation", "a");
+
+      expect(res).toMatchObject({
+        ok: false,
+        error: { code: "type_mismatch" },
+      });
+      expect(service.getActiveAlgorithm("menstruation")).toBeUndefined();
+      expect(entry.calls).toBe(0);
+      expect(store.get().predictions).toEqual({});
+    });
+
+    it("drops the choice when a new manifest changes the type", async () => {
+      const { service } = await setup();
+      await service.registerAlgorithm(manifest("a"), counting());
+      await service.setActiveAlgorithm("menstruation", "a");
+
+      await service.registerAlgorithm(manifest("a", "ovulation"), counting(), {
+        replace: true,
+      });
+
       expect(service.getActiveAlgorithm("menstruation")).toBeUndefined();
     });
 
@@ -92,7 +124,7 @@ describe("core service", () => {
           throw new Error("boom");
         },
       });
-      await algorithms.register(manifest("good"), good);
+      await algorithms.register(manifest("good", "ovulation"), good);
       await service.setActiveAlgorithm("menstruation", "bad");
       await service.setActiveAlgorithm("ovulation", "good");
       good.calls = 0;
@@ -169,7 +201,7 @@ describe("core service", () => {
       const { service } = await setup();
       const kept = counting();
       await service.registerAlgorithm(manifest("gone"), counting());
-      await service.registerAlgorithm(manifest("kept"), kept);
+      await service.registerAlgorithm(manifest("kept", "ovulation"), kept);
       await service.setActiveAlgorithm("menstruation", "gone");
       await service.setActiveAlgorithm("ovulation", "kept");
       await service.unregisterAlgorithm("gone");
@@ -215,19 +247,6 @@ describe("core service", () => {
       expect(store.get().apps).toHaveLength(0);
     });
 
-    it("runs an algorithm once even when it serves several types", async () => {
-      const { algorithms, service } = await setup();
-      const entry = counting();
-      await algorithms.register(manifest("a"), entry);
-      await service.setActiveAlgorithm("menstruation", "a");
-      await service.setActiveAlgorithm("ovulation", "a");
-      entry.calls = 0;
-
-      await service.recompute();
-
-      expect(entry.calls).toBe(1);
-    });
-
     it("never overlaps two runs", async () => {
       const { algorithms, service } = await setup();
       let active = 0;
@@ -238,7 +257,7 @@ describe("core service", () => {
           peak = Math.max(peak, active);
           await Promise.resolve();
           active -= 1;
-          return {};
+          return { days: [] };
         },
       });
       await service.setActiveAlgorithm("menstruation", "a");
