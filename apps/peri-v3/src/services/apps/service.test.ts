@@ -178,10 +178,33 @@ describe("apps service", () => {
   });
 
   describe("get", () => {
+    it("returns the registered entry", async () => {
+      const { service } = await setup();
+      const e = entry();
+      await service.register(internal("a"), e);
+
+      expect(service.get("a")).toBe(e);
+    });
+
+    it("returns undefined for an app with no registered code", async () => {
+      const { store, service } = await setup();
+      await store.update((config) => {
+        return {
+          ...config,
+          apps: [{ manifest: internal("stored"), data: {} }],
+        };
+      });
+
+      expect(service.get("stored")).toBeUndefined();
+      expect(service.get("unknown")).toBeUndefined();
+    });
+  });
+
+  describe("getData", () => {
     it("returns undefined for an unknown app", async () => {
       const { service } = await setup();
 
-      expect(service.get("a")).toBeUndefined();
+      expect(service.getData("a")).toBeUndefined();
     });
 
     it("returns the data of the app", async () => {
@@ -189,7 +212,7 @@ describe("apps service", () => {
       await service.register(internal("a"), entry());
       await service.update("a", () => ({ theme: "dark" }));
 
-      expect(service.get("a")).toEqual({ theme: "dark" });
+      expect(service.getData("a")).toEqual({ theme: "dark" });
     });
 
     it("returns a copy, mutating it does not change the store", async () => {
@@ -197,10 +220,10 @@ describe("apps service", () => {
       await service.register(internal("a"), entry());
       await service.update("a", () => ({ list: [1] }));
 
-      const data = service.get("a") as { list: number[] };
+      const data = service.getData("a") as { list: number[] };
       data.list.push(2);
 
-      expect(service.get("a")).toEqual({ list: [1] });
+      expect(service.getData("a")).toEqual({ list: [1] });
     });
   });
 
@@ -229,7 +252,7 @@ describe("apps service", () => {
       });
 
       expect(res).toEqual({ ok: true });
-      expect(service.get("a")).toEqual({ count: 2 });
+      expect(service.getData("a")).toEqual({ count: 2 });
       expect(store.get().revision).toBe(revision + 1);
     });
 
@@ -241,7 +264,7 @@ describe("apps service", () => {
 
       await service.update("a", () => ({ x: 1 }));
 
-      expect(service.get("b")).toEqual({ keep: true });
+      expect(service.getData("b")).toEqual({ keep: true });
       expect(store.get().apps.map((a) => a.manifest.id)).toEqual(["a", "b"]);
       expect(store.get().apps[0]?.manifest).toEqual(internal("a"));
     });
@@ -259,7 +282,7 @@ describe("apps service", () => {
         ok: false,
         error: { code: "invalid_data" },
       });
-      expect(service.get("a")).toEqual({ keep: true });
+      expect(service.getData("a")).toEqual({ keep: true });
     });
 
     it("hands the change a copy, so mutating it cannot corrupt the store", async () => {
@@ -272,7 +295,7 @@ describe("apps service", () => {
         return [];
       });
 
-      expect(service.get("a")).toEqual({ list: [1] });
+      expect(service.getData("a")).toEqual({ list: [1] });
     });
 
     it("runs concurrent updates one after another", async () => {
@@ -289,7 +312,7 @@ describe("apps service", () => {
         service.update("a", increment),
       ]);
 
-      expect(service.get("a")).toEqual({ count: 3 });
+      expect(service.getData("a")).toEqual({ count: 3 });
     });
 
     it("rejects when the change throws and keeps working", async () => {

@@ -67,7 +67,46 @@ export class Service {
     return { ok: true };
   }
 
-  get(id: string): AppData | undefined {
+  async unregister(id: string): Promise<AppOperationResult> {
+    const known =
+      this.#apps.has(id) ||
+      this.#store.get().apps.some((a) => {
+        return a.manifest.id === id;
+      });
+    if (!known) {
+      return {
+        ok: false,
+        error: {
+          code: "unknown_app",
+          message: `app "${id}" is not registered`,
+        },
+      };
+    }
+
+    const res = await this.#store.update((config) => {
+      return {
+        ...config,
+        apps: config.apps.filter((a) => {
+          return a.manifest.id !== id;
+        }),
+      };
+    });
+    if (!res.ok) {
+      return {
+        ok: false,
+        error: { code: "invalid_manifest", message: res.error.message },
+      };
+    }
+
+    this.#apps.delete(id);
+    return { ok: true };
+  }
+
+  get(id: string): AppEntry | undefined {
+    return this.#apps.get(id);
+  }
+
+  getData(id: string): AppData | undefined {
     const app = this.#store.get().apps.find((a) => {
       return a.manifest.id === id;
     });
@@ -111,41 +150,6 @@ export class Service {
       };
     }
 
-    return { ok: true };
-  }
-
-  async unregister(id: string): Promise<AppOperationResult> {
-    const known =
-      this.#apps.has(id) ||
-      this.#store.get().apps.some((a) => {
-        return a.manifest.id === id;
-      });
-    if (!known) {
-      return {
-        ok: false,
-        error: {
-          code: "unknown_app",
-          message: `app "${id}" is not registered`,
-        },
-      };
-    }
-
-    const res = await this.#store.update((config) => {
-      return {
-        ...config,
-        apps: config.apps.filter((a) => {
-          return a.manifest.id !== id;
-        }),
-      };
-    });
-    if (!res.ok) {
-      return {
-        ok: false,
-        error: { code: "invalid_manifest", message: res.error.message },
-      };
-    }
-
-    this.#apps.delete(id);
     return { ok: true };
   }
 }

@@ -15,8 +15,13 @@ async function bootstrap() {
   await import("@/services/cycles/service");
   await import("@/services/core/service");
 
-  // NOTE: Imported here, not at the top: App pulls in the services and the widget
-  // registration, which must start after the services above
+  await import("@/components/widgets/CalendarWidget");
+  await import("@/components/widgets/CycleInfoWidget");
+  await import("@/components/widgets/PeriodStatusWidget");
+  await import("@/components/widgets/PhaseInfoWidget");
+
+  // NOTE: Imported here, not at the top: App pulls in the services, which must
+  // start before it
   const { default: App } = await import("@/App");
 
   console.info(

@@ -1,12 +1,11 @@
 import { PageLayout } from "@/components/layouts/PageLayout";
-import { CycleInfoWidget } from "@/components/widgets/CycleInfoWidget";
-import { PhaseInfoWidget } from "@/components/widgets/PhaseInfoWidget";
+import { App } from "@/lib/host/App";
 
 export const SecondPage = () => {
   return (
     <PageLayout>
-      <PhaseInfoWidget />
-      <CycleInfoWidget />
+      <App id="com.peri.phase_info" />
+      <App id="com.peri.cycle_info" />
     </PageLayout>
   );
 };
