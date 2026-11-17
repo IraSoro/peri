@@ -18,6 +18,11 @@ async function bootstrap() {
   await import("@/algorithms/median-menstruation/algorithm");
   await import("@/algorithms/median-ovulation/algorithm");
 
+  // Dev only, `?seed=<name>` loads test cycles. Vite drops it from a build
+  if (import.meta.env.DEV) {
+    await import("@/dev/seed");
+  }
+
   await import("@/apps/Calendar/App");
   await import("@/apps/CycleInfo/App");
   await import("@/apps/PeriodStatus/App");

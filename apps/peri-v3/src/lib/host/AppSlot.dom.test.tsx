@@ -3,6 +3,7 @@ import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { AppManifest } from "@repo/config-schema/config-v2.schema";
 import { service as apps } from "@/services/apps/service";
+import { service as cycles } from "@/services/cycles/service";
 import { useCycles } from "@/lib/sdk/app/hooks";
 import { AppSlot } from "./AppSlot";
 
@@ -21,6 +22,9 @@ afterEach(async () => {
   cleanup();
   await apps.unregister("test.app");
   await apps.unregister("test.ok");
+  await cycles.update(() => {
+    return [];
+  });
 });
 
 describe("AppSlot", () => {
@@ -112,5 +116,28 @@ describe("AppSlot", () => {
     quiet.mockRestore();
 
     expect(view.container.textContent).toContain("oops");
+  });
+
+  it("renders a failed app again once the data changes", async () => {
+    const quiet = vi.spyOn(console, "error").mockImplementation(() => {});
+    const NeedsCycles = () => {
+      const [list] = useCycles();
+      if (list.length === 0) {
+        throw new Error("no cycles yet");
+      }
+      return <p>ready</p>;
+    };
+    await apps.register(manifest("test.app"), { component: NeedsCycles });
+    const view = render(<AppSlot id="test.app" />);
+    expect(view.getByText(/no cycles yet/)).toBeTruthy();
+
+    await act(async () => {
+      await cycles.update(() => {
+        return [{ start_date: "2025-01-01T00:00:00.000Z", period_length: 5 }];
+      });
+    });
+
+    expect(view.getByText("ready")).toBeTruthy();
+    quiet.mockRestore();
   });
 });

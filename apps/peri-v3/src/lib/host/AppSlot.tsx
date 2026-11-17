@@ -11,7 +11,8 @@ interface Props {
 
 /**
  * Renders a registered app by id with its access and an error boundary, so a
- * broken app does not take the screen down. An app with no code gets a
+ * broken app does not take the screen down and retries when the data changes.
+ * An app with no code gets a
  * placeholder, it is never unregistered because that would delete its data
  */
 export const AppSlot = ({ id }: Props) => {
@@ -20,11 +21,17 @@ export const AppSlot = ({ id }: Props) => {
       return app.manifest.id === id;
     })?.manifest;
   });
+  // Any change of the data lets a failed app try again, it may have failed
+  // only because the data it needs was not there yet
+  const revision = useStoreSelector((config) => {
+    return config.revision;
+  });
   const Component = apps.get(id)?.component;
   return (
     <div className="flex w-full shrink-0 scrollbar-none flex-col overflow-y-auto">
       {Component && manifest ? (
         <ErrorBoundary
+          resetKeys={[revision]}
           fallbackRender={({ error }) => {
             const reason =
               error instanceof Error ? error.message : String(error);

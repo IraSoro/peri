@@ -23,3 +23,6 @@ export type InternalAlgorithmManifest = Pick<
   AlgorithmManifest,
   InternalFields | "type"
 >;
+
+/** The phase of the cycle */
+export type Phase = "menstrual" | "follicular" | "ovulation" | "luteal";

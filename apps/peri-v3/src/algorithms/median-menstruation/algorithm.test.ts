@@ -49,8 +49,9 @@ describe("medianMenstruationAlgorithm", () => {
       cycles: [open("2025-01-01", 4)],
     });
 
-    // Next start is Jan 29, the period length is the median of the history, 4
-    expect(dates(out.days).slice(0, 4)).toEqual([
+    // The current period takes the first 4 days. The next start is Jan 29, the
+    // period length is the median of the history, 4
+    expect(dates(out.days).slice(4, 8)).toEqual([
       "2025-01-29",
       "2025-01-30",
       "2025-01-31",
@@ -68,8 +69,9 @@ describe("medianMenstruationAlgorithm", () => {
       ],
     });
 
-    // Median cycle 28 and median period 5: next start is Apr 23
-    expect(dates(out.days).slice(0, 5)).toEqual([
+    // Median cycle 28 and median period 5: next start is Apr 23, after the 5
+    // days of the current period
+    expect(dates(out.days).slice(5, 10)).toEqual([
       "2025-04-23",
       "2025-04-24",
       "2025-04-25",
@@ -88,16 +90,22 @@ describe("medianMenstruationAlgorithm", () => {
     });
 
     // Median of 27 and 30 is 28.5, rounded to 29: next start is Mar 28
-    expect(dates(out.days)[0]).toBe("2025-03-28");
+    expect(dates(out.days)[5]).toBe("2025-03-28");
   });
 
-  it("predicts 6 future periods and none for the current cycle", () => {
+  it("predicts the current period and 6 future ones", () => {
     const out = run({
       cycles: [open("2025-01-01", 5)],
     });
 
-    expect(out.days).toHaveLength(6 * 5);
-    expect(dates(out.days)).not.toContain("2025-01-01");
+    expect(out.days).toHaveLength(7 * 5);
+    expect(dates(out.days).slice(0, 5)).toEqual([
+      "2025-01-01",
+      "2025-01-02",
+      "2025-01-03",
+      "2025-01-04",
+      "2025-01-05",
+    ]);
   });
 
   it("keeps the dates as ISO instants with milliseconds", () => {
@@ -105,6 +113,6 @@ describe("medianMenstruationAlgorithm", () => {
       cycles: [open("2025-01-01", 5)],
     });
 
-    expect(out.days[0]?.date).toBe("2025-01-29T00:00:00.000Z");
+    expect(out.days[5]?.date).toBe("2025-01-29T00:00:00.000Z");
   });
 });

@@ -39,8 +39,8 @@ const medianPeriodLength = (cycles: readonly Cycle[]): number => {
 };
 
 /**
- * Predicts the periods of the next 6 cycles from the median cycle and period
- * length of the history. Cycles must be sorted oldest first, as the cycles
+ * Predicts the period of the current cycle and of the next 6 from the median
+ * cycle and period length of the history. Cycles must be sorted oldest first, as the cycles
  * service keeps them
  */
 export function run(input: AlgorithmInput): AlgorithmOutput {
@@ -55,8 +55,7 @@ export function run(input: AlgorithmInput): AlgorithmOutput {
     "UTC",
   );
   const days: { date: string }[] = [];
-  // The current cycle is history, only the next ones have a predicted period
-  for (let i = 1; i <= FUTURE_CYCLES; i++) {
+  for (let i = 0; i <= FUTURE_CYCLES; i++) {
     const start = lastStart.add({ days: i * cycleLength });
     for (let day = 0; day < periodLength; day++) {
       days.push({
