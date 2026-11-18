@@ -149,16 +149,17 @@ const ErrorFallback = ({
   const copy = () => {
     // The clipboard API exists only on secure pages, a dev server opened by
     // IP address on a phone is not one. Then the old way has to do
-    const done = navigator.clipboard
-      ? navigator.clipboard.writeText(details).then(
-          () => {
-            return true;
-          },
-          () => {
-            return copyWithSelection(details);
-          },
-        )
-      : Promise.resolve(copyWithSelection(details));
+    const done =
+      window.isSecureContext && navigator.clipboard
+        ? navigator.clipboard.writeText(details).then(
+            () => {
+              return true;
+            },
+            () => {
+              return copyWithSelection(details);
+            },
+          )
+        : Promise.resolve(copyWithSelection(details));
     void done.then((ok) => {
       if (ok) {
         showAlert({

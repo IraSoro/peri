@@ -43,6 +43,10 @@ const manifest = (id: string): AppManifest => {
 /** Clicks "Copy details" of the failed app and returns what it copied */
 async function copiedDetails(view: ReturnType<typeof render>) {
   const writeText = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(window, "isSecureContext", {
+    value: true,
+    configurable: true,
+  });
   Object.defineProperty(navigator, "clipboard", {
     value: { writeText },
     configurable: true,
@@ -203,8 +207,8 @@ describe("AppSlot", () => {
     });
     const view = render(<AppSlot id="test.app" />);
     quiet.mockRestore();
-    Object.defineProperty(navigator, "clipboard", {
-      value: undefined,
+    Object.defineProperty(window, "isSecureContext", {
+      value: false,
       configurable: true,
     });
     let selected = "";
