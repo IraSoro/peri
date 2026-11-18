@@ -2,6 +2,7 @@ import { Temporal } from "temporal-polyfill";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import { AppContext } from "@/lib/sdk/app/context";
+import { NoDataError } from "@/lib/sdk/app/errors";
 import { service as store } from "@/services/store/service";
 import { service as cycles } from "@/services/cycles/service";
 import { service as algorithms } from "@/services/algorithms/service";
@@ -158,11 +159,9 @@ describe("PeriodStatusApp countdown", () => {
 });
 
 describe("PeriodStatusApp without cycles", () => {
-  it("asks for the last period instead of the countdown", () => {
-    const out = html();
-
-    expect(out).toContain("Add your last period");
-    expect(out).toContain("Period started today");
-    expect(out).not.toContain("Period in");
+  it("throws NoDataError instead of rendering the countdown", () => {
+    expect(() => {
+      return html();
+    }).toThrow(NoDataError);
   });
 });

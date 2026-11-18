@@ -24,3 +24,10 @@ export class InternalOnlyError extends Error {
     this.action = action;
   }
 }
+
+/**
+ * Thrown by an app that has nothing to show yet. The host shows its empty
+ * state with the message as the description, and renders the app again once
+ * the data changes
+ */
+export class NoDataError extends Error {}

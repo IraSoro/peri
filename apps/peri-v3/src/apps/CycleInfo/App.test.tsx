@@ -2,6 +2,7 @@ import { Temporal } from "temporal-polyfill";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import { AppContext } from "@/lib/sdk/app/context";
+import { NoDataError } from "@/lib/sdk/app/errors";
 import { service as store } from "@/services/store/service";
 import { service as cycles } from "@/services/cycles/service";
 import { service as algorithms } from "@/services/algorithms/service";
@@ -44,8 +45,10 @@ afterEach(async () => {
 });
 
 describe("CycleInfoApp", () => {
-  it("shows a placeholder without cycles", () => {
-    expect(html()).toContain("No cycles yet");
+  it("throws NoDataError without cycles", () => {
+    expect(() => {
+      return html();
+    }).toThrow(NoDataError);
   });
 
   it("shows the day of the cycle and the lengths of logged cycles", async () => {

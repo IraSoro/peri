@@ -3,7 +3,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react";
 import { cn } from "@/lib/utils/cn";
 
 const buttonVariants = cva(
-  "flex items-center justify-center transition duration-150",
+  "flex items-center justify-center transition duration-150 active:duration-0",
   {
     variants: {
       variant: {
@@ -23,6 +23,13 @@ const buttonVariants = cva(
           "[--c-bg:theme(--color-base-primary)] [--c-text:theme(--color-base-primary-inverse)]",
         menstrual:
           "[--c-bg:theme(--color-menstrual-primary)] [--c-text:theme(--color-base-primary-inverse)] [--c-border:theme(--color-menstrual-primary)]",
+        warning:
+          "[--c-bg:theme(--color-warning-primary)] [--c-text:theme(--color-warning-primary-inverse)] [--c-border:theme(--color-warning-primary)]",
+        error:
+          "[--c-bg:theme(--color-error-primary)] [--c-text:theme(--color-error-primary-inverse)] [--c-border:theme(--color-error-primary)]",
+        info: "[--c-bg:theme(--color-info-primary)] [--c-text:theme(--color-info-primary-inverse)] [--c-border:theme(--color-info-primary)]",
+        success:
+          "[--c-bg:theme(--color-success-primary)] [--c-text:theme(--color-success-primary-inverse)] [--c-border:theme(--color-success-primary)]",
       },
       disabled: {
         true: "border-base-disabled text-base-disabled bg-transparent border",

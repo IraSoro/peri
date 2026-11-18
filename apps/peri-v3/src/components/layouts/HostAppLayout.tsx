@@ -2,6 +2,7 @@ import { PagerViewport } from "./PagerProvider";
 import { Header } from "./Header";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
+import { AlertStack } from "./Alerts";
 import { LazyMount } from "@/components/ui/LazyMount";
 import { useActivePageId } from "@/lib/host/hooks";
 
@@ -44,6 +45,7 @@ export const HostAppLayout = ({ pages }: HostAppLayoutProps) => {
           </PagerViewport>
         </Content>
         <Footer />
+        <AlertStack />
       </div>
     </div>
   );

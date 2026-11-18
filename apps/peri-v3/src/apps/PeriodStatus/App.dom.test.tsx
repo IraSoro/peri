@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { Temporal } from "temporal-polyfill";
-import { act, cleanup, fireEvent, render } from "@testing-library/react";
+import { cleanup, fireEvent, render } from "@testing-library/react";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import { AppContext } from "@/lib/sdk/app/context";
 import { service as store } from "@/services/store/service";
@@ -71,29 +71,5 @@ describe("info icons", () => {
     fireEvent.click(view.getByLabelText("About Low"));
 
     expect(await view.findByText(/Chance of getting pregnant/)).toBeTruthy();
-  });
-});
-
-describe("Period started today", () => {
-  it("adds a cycle that starts today", async () => {
-    await cycles.update(() => {
-      return [];
-    });
-    const view = render(
-      <AppContext.Provider value={{ source: "internal", permissions: [] }}>
-        <PeriodStatusApp />
-      </AppContext.Provider>,
-    );
-
-    await act(async () => {
-      fireEvent.click(view.getByText("Period started today"));
-      await Promise.resolve();
-    });
-
-    const today = Temporal.Now.plainDateISO("UTC").toString();
-    expect(store.get().cycles).toMatchObject([
-      { start_date: `${today}T00:00:00.000Z`, period_length: 5 },
-    ]);
-    expect(view.queryByText("Add your last period")).toBeNull();
   });
 });

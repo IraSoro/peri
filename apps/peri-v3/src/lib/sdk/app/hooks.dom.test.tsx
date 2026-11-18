@@ -4,7 +4,8 @@ import { afterEach, describe, expect, it } from "vitest";
 import { service as cycles } from "@/services/cycles/service";
 import { InternalOnlyError } from "./errors";
 import { service as core } from "@/services/core/service";
-import { useCycles, usePastPrediction } from "./hooks";
+import { useAlert, useCycles, usePastPrediction } from "./hooks";
+import { AlertProvider, AlertStack } from "@/components/layouts/Alerts";
 import { AppContext } from "./context";
 import type { AppContextValue } from "./context";
 
@@ -163,5 +164,43 @@ describe("usePastPrediction", () => {
     });
 
     expect(view.getByTestId("out").textContent).toBe("");
+  });
+});
+
+describe("useAlert", () => {
+  const mountAlert = (access: AppContextValue) => {
+    const handle: { show?: ReturnType<typeof useAlert>["show"] } = {};
+    const App = () => {
+      handle.show = useAlert().show;
+      return null;
+    };
+    render(
+      <AppContext.Provider value={access}>
+        <AlertProvider>
+          <App />
+          <AlertStack />
+        </AlertProvider>
+      </AppContext.Provider>,
+    );
+    return handle;
+  };
+  const alert = { type: "info", title: "Hello", message: "Text" } as const;
+
+  it("lets an internal app show an alert", () => {
+    const handle = mountAlert(internal);
+
+    act(() => {
+      handle.show?.(alert);
+    });
+
+    expect(document.body.textContent).toContain("Hello");
+  });
+
+  it("refuses a community app", () => {
+    const handle = mountAlert(community("cycles:read"));
+
+    expect(() => {
+      return handle.show?.(alert);
+    }).toThrow(InternalOnlyError);
   });
 });

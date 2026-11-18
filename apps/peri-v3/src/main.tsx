@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@/tailwind.css";
+import { NoDataError } from "@/lib/sdk/app/errors";
 
 async function bootstrap() {
   const start = performance.now();
@@ -39,7 +40,15 @@ async function bootstrap() {
   return { App };
 }
 
-const root = createRoot(document.getElementById("root")!);
+const root = createRoot(document.getElementById("root")!, {
+  // An app with no data throws NoDataError on purpose, React would log it as
+  // a failure each time. The rest is logged as React does by default
+  onCaughtError: (error, info) => {
+    if (!(error instanceof NoDataError)) {
+      console.error(error, info.componentStack);
+    }
+  },
+});
 bootstrap()
   .then(({ App }) =>
     root.render(

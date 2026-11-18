@@ -9,6 +9,8 @@ import type { KnownPermission } from "../permissions";
 import { service as algorithms } from "@/services/algorithms/service";
 import type { CoreData, PredictionType } from "@/services/core/types";
 import { service as cycles } from "@/services/cycles/service";
+import { useAlertsContext } from "@/components/layouts/Alerts";
+import type { AlertInput } from "@/components/layouts/Alerts";
 import { historyAt } from "../calculations/cycles";
 import { InternalOnlyError, OutsideAppError, PermissionError } from "./errors";
 import { AppContext } from "./context";
@@ -101,4 +103,26 @@ export function usePastPrediction(
     };
   }, [activeId, predictedBy, history]);
   return days;
+}
+
+/**
+ * Shows an alert at the bottom of the app, `show` returns an id for `dismiss`.
+ * An alert without actions closes by itself after a few seconds. Only
+ * internal apps can show alerts
+ */
+export function useAlert(): {
+  show: (alert: AlertInput) => number;
+  dismiss: (id: number) => void;
+} {
+  const access = useAccess();
+  const { showAlert, dismissAlert } = useAlertsContext();
+  if (access.source !== "internal") {
+    return {
+      show: () => {
+        throw new InternalOnlyError("show alerts");
+      },
+      dismiss: dismissAlert,
+    };
+  }
+  return { show: showAlert, dismiss: dismissAlert };
 }

@@ -9,7 +9,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 
 const iconButtonVariants = cva(
-  "flex items-center justify-center transition duration-150",
+  "flex items-center justify-center transition duration-150 active:duration-0",
   {
     variants: {
       size: {

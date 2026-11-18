@@ -2,6 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { ChartNoAxesCombined } from "lucide-react";
 import type { Cycle } from "@repo/config-schema/config-v2.schema";
 import { defineInternalApp } from "@/lib/sdk/app/api";
+import { NoDataError } from "@/lib/sdk/app/errors";
 import {
   useCycles,
   usePastPrediction,
@@ -35,22 +36,9 @@ export const CycleInfoApp = () => {
   const [cycles] = useCycles();
   const last = cycles.at(-1);
   if (!last) {
-    return <NoDataFallback />;
+    throw new NoDataError("Your cycle appears here once a period is logged.");
   }
   return <CycleInfo cycles={cycles} last={last} />;
-};
-
-const NoDataFallback = () => {
-  return (
-    <div className="flex flex-col gap-2 md:gap-4">
-      <Typography size={7} weight="bold">
-        Cycle
-      </Typography>
-      <Typography size={1} weight="bold" color="secondary">
-        No cycles yet
-      </Typography>
-    </div>
-  );
 };
 
 const formatDate = (iso: string): string => {
