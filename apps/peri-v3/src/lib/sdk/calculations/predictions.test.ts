@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { Temporal } from "temporal-polyfill";
-import { periodStatus, phasesByDay } from "./predictions";
+import {
+  daysLeftInPhase,
+  daysUntilPhase,
+  periodStatus,
+  phasesByDay,
+} from "./predictions";
 
 const TODAY = Temporal.PlainDate.from("2025-01-10");
 
@@ -200,5 +205,94 @@ describe("phasesByDay", () => {
       "follicular",
       "follicular",
     ]);
+  });
+});
+
+describe("daysLeftInPhase", () => {
+  const cycle = [
+    {
+      start_date: "2025-01-01T00:00:00.000Z",
+      end_date: null,
+      period_length: 3,
+      cycle_length: null,
+    },
+  ];
+  const days = {
+    menstruation: { algorithm_id: "a", days: at("2025-01-01", "2025-01-09") },
+    ovulation: { algorithm_id: "b", days: at("2025-01-05", "2025-01-06") },
+  };
+  const left = (date: string) => {
+    return daysLeftInPhase(days, cycle, Temporal.PlainDate.from(date));
+  };
+
+  it("counts today, so the last day of a phase has 1 left", () => {
+    expect(left("2025-01-01")).toBe(3);
+    expect(left("2025-01-03")).toBe(1);
+    expect(left("2025-01-05")).toBe(2);
+    expect(left("2025-01-07")).toBe(2);
+  });
+
+  it("is undefined outside of the current cycle or without cycles", () => {
+    expect(left("2025-01-09")).toBeUndefined();
+    expect(daysLeftInPhase(days, [], TODAY)).toBeUndefined();
+  });
+});
+
+describe("daysUntilPhase", () => {
+  const cycle = [
+    {
+      start_date: "2025-01-01T00:00:00.000Z",
+      end_date: null,
+      period_length: 3,
+      cycle_length: null,
+    },
+  ];
+  const days = {
+    menstruation: {
+      algorithm_id: "a",
+      days: at("2025-01-01", "2025-01-09", "2025-01-17"),
+    },
+    ovulation: {
+      algorithm_id: "b",
+      days: at("2025-01-05", "2025-01-06", "2025-01-13", "2025-01-14"),
+    },
+  };
+  const until = (date: string, phase: Parameters<typeof daysUntilPhase>[2]) => {
+    return daysUntilPhase(days, cycle, phase, Temporal.PlainDate.from(date));
+  };
+
+  it("counts the days to the start of a later phase", () => {
+    expect(until("2025-01-02", "follicular")).toBe(2);
+    expect(until("2025-01-02", "ovulation")).toBe(3);
+    expect(until("2025-01-02", "luteal")).toBe(5);
+    expect(until("2025-01-04", "ovulation")).toBe(1);
+  });
+
+  it("counts to the next cycle for a phase that is not ahead", () => {
+    // The cycle has 8 days, so the next period starts on Jan 9
+    expect(until("2025-01-05", "menstrual")).toBe(4);
+    expect(until("2025-01-05", "follicular")).toBe(7);
+    expect(until("2025-01-07", "ovulation")).toBe(6);
+  });
+
+  it("adds the delay to the predicted dates when the period is late", () => {
+    // The next cycle is predicted for Jan 9, today it is 3 days late. The
+    // cycle after it starts on Jan 17 and has 8 days like the first
+    expect(until("2025-01-12", "menstrual")).toBe(0);
+    expect(until("2025-01-12", "follicular")).toBe(3);
+    expect(until("2025-01-12", "ovulation")).toBe(4);
+    expect(until("2025-01-12", "luteal")).toBe(6);
+  });
+
+  it("is undefined outside of the cycle, without cycles or the phase", () => {
+    expect(daysUntilPhase(days, [], "luteal", TODAY)).toBeUndefined();
+    expect(
+      daysUntilPhase(
+        { menstruation: days.menstruation },
+        cycle,
+        "ovulation",
+        Temporal.PlainDate.from("2025-01-02"),
+      ),
+    ).toBeUndefined();
   });
 });

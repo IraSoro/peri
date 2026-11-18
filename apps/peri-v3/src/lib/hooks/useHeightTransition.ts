@@ -66,6 +66,17 @@ export function useHeightTransition(
       (open ? (collapsedHeight ?? 0) : naturalHeight);
     capturedHeightRef.current = null;
 
+    // Nothing to animate. Setting the same height would leave a fixed value
+    // behind, because no transition ends, and the box would keep that height
+    // when its content changes later. StrictMode runs this effect twice on
+    // mount, which is how that happens
+    if (startHeight === targetHeight) {
+      if (open || !usesFixedCollapse) {
+        el.style.height = "auto";
+      }
+      return;
+    }
+
     el.style.height = `${startHeight}px`;
     // Force a reflow so the browser registers the start height before we
     // switch on the transition and change the target height.

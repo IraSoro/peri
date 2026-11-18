@@ -155,6 +155,83 @@ export const phasesByDay = (
   return phasesOfCycle(last, length, predictions.ovulation?.days);
 };
 
+/**
+ * How many days the phase of today lasts, today included, so 1 on its last
+ * day. Undefined when today is outside of the current cycle, for example when
+ * the period is late
+ */
+export const daysLeftInPhase = (
+  predictions: ConfigV2["predictions"],
+  cycles: Cycle[],
+  today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC"),
+): number | undefined => {
+  const start = lastStart(cycles);
+  if (!start) {
+    return undefined;
+  }
+  const phases = phasesByDay(predictions, cycles);
+  const index = start.until(today, { largestUnit: "days" }).days;
+  const phase = phases[index];
+  if (phase === undefined) {
+    return undefined;
+  }
+  let end = index;
+  while (phases[end + 1] === phase) {
+    end += 1;
+  }
+  return end - index + 1;
+};
+
+/**
+ * How many days until the given phase starts, 1 for tomorrow. A phase that
+ * is not ahead in the current cycle starts in the next one, which is taken to
+ * have the same phases. When the period is late the predicted next cycle is
+ * moved to start today, so the delay is added to every predicted date.
+ * Undefined when there is nothing to count from or the phase is not in the
+ * cycle
+ */
+export const daysUntilPhase = (
+  predictions: ConfigV2["predictions"],
+  cycles: Cycle[],
+  phase: Phase,
+  today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC"),
+): number | undefined => {
+  const start = lastStart(cycles);
+  const last = cycles.at(-1);
+  if (!start || !last) {
+    return undefined;
+  }
+  const phases = phasesByDay(predictions, cycles);
+  const index = start.until(today, { largestUnit: "days" }).days;
+  if (phases[index] !== undefined) {
+    const ahead = phases.indexOf(phase, index + 1);
+    if (ahead !== -1) {
+      return ahead - index;
+    }
+    const first = phases.indexOf(phase);
+    return first === -1 ? undefined : phases.length + first - index;
+  }
+  // The predicted period has not been logged, the next cycle starts today
+  const next = nextStart(predictions.menstruation?.days, start);
+  const after = next && nextStart(predictions.menstruation?.days, next);
+  if (!next || !after || Temporal.PlainDate.compare(next, today) > 0) {
+    return undefined;
+  }
+  const upcoming = phasesOfCycle(
+    { ...last, start_date: `${next.toString()}T00:00:00.000Z` },
+    next.until(after, { largestUnit: "days" }).days,
+    (predictions.ovulation?.days ?? []).filter((day) => {
+      const date = toPlainDate(day.date);
+      return (
+        Temporal.PlainDate.compare(date, next) >= 0 &&
+        Temporal.PlainDate.compare(date, after) < 0
+      );
+    }),
+  );
+  const first = upcoming.indexOf(phase);
+  return first === -1 ? undefined : first;
+};
+
 export type PeriodStatus = {
   /** The phase today falls in */
   phase: Phase;
