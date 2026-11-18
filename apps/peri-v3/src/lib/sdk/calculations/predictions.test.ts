@@ -1,37 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { Temporal } from "temporal-polyfill";
-import {
-  currentPhase,
-  phasesByDay,
-  dayOfPeriod,
-  daysLate,
-  daysUntilPeriod,
-} from "./predictions";
+import { periodStatus, phasesByDay } from "./predictions";
 
 const TODAY = Temporal.PlainDate.from("2025-01-10");
-
-describe("daysUntilPeriod", () => {
-  it("returns undefined without days", () => {
-    expect(daysUntilPeriod(undefined, TODAY)).toBeUndefined();
-    expect(daysUntilPeriod([], TODAY)).toBeUndefined();
-  });
-
-  it("ignores past days and picks the nearest upcoming one", () => {
-    const days = [
-      { date: "2025-01-05T00:00:00.000Z" },
-      { date: "2025-01-25T00:00:00.000Z" },
-      { date: "2025-01-22T00:00:00.000Z" },
-    ];
-
-    expect(daysUntilPeriod(days, TODAY)).toBe(12);
-  });
-
-  it("returns 0 when a day is today", () => {
-    expect(daysUntilPeriod([{ date: "2025-01-10T00:00:00.000Z" }], TODAY)).toBe(
-      0,
-    );
-  });
-});
 
 const at = (...dates: string[]) => {
   return dates.map((date) => {
@@ -39,29 +10,12 @@ const at = (...dates: string[]) => {
   });
 };
 
-const predictions = (menstruation: string[], ovulation: string[]) => {
+const predictions = (menstruation: string[], ovulation: string[] = []) => {
   return {
     menstruation: { algorithm_id: "a", days: at(...menstruation) },
     ovulation: { algorithm_id: "b", days: at(...ovulation) },
   };
 };
-
-describe("dayOfPeriod", () => {
-  it("returns undefined when today is not a predicted day", () => {
-    expect(dayOfPeriod(at("2025-01-11"), TODAY)).toBeUndefined();
-    expect(dayOfPeriod(undefined, TODAY)).toBeUndefined();
-  });
-
-  it("counts the consecutive days up to today", () => {
-    const days = at("2025-01-08", "2025-01-09", "2025-01-10", "2025-01-11");
-
-    expect(dayOfPeriod(days, TODAY)).toBe(3);
-  });
-
-  it("starts again after a gap", () => {
-    expect(dayOfPeriod(at("2025-01-08", "2025-01-10"), TODAY)).toBe(1);
-  });
-});
 
 const logged = (start: string) => {
   return {
@@ -72,79 +26,120 @@ const logged = (start: string) => {
   };
 };
 
-describe("daysLate", () => {
-  it("counts the days since the predicted start", () => {
-    const days = at("2025-01-08", "2025-01-09", "2025-02-05");
+/** The status for a logged cycle start and predicted days, today is Jan 10 */
+const status = (
+  start: string | undefined,
+  menstruation: string[],
+  ovulation: string[] = [],
+) => {
+  return periodStatus(
+    predictions(menstruation, ovulation),
+    start ? [logged(start)] : [],
+    TODAY,
+  );
+};
 
-    expect(daysLate(days, [logged("2024-12-10")], TODAY)).toBe(2);
+describe("periodStatus daysUntilPeriod", () => {
+  it("is undefined without days", () => {
+    expect(periodStatus({}, [], TODAY).daysUntilPeriod).toBeUndefined();
+    expect(status("2024-12-10", []).daysUntilPeriod).toBeUndefined();
   });
 
-  it("is undefined while the predicted start is not past", () => {
-    expect(daysLate(at("2025-01-10"), [logged("2024-12-10")], TODAY)).toBe(
-      undefined,
-    );
-    expect(daysLate(at("2025-01-12"), [logged("2024-12-10")], TODAY)).toBe(
-      undefined,
-    );
+  it("ignores past days and picks the nearest upcoming one", () => {
+    const out = status("2025-01-01", [
+      "2025-01-05",
+      "2025-01-25",
+      "2025-01-22",
+    ]);
+
+    expect(out.daysUntilPeriod).toBe(12);
   });
 
-  it("ignores the period of the logged cycle itself", () => {
-    expect(daysLate(at("2025-01-08"), [logged("2025-01-08")], TODAY)).toBe(
-      undefined,
-    );
-  });
-
-  it("is undefined without cycles or predictions", () => {
-    expect(daysLate(at("2025-01-08"), [], TODAY)).toBeUndefined();
-    expect(daysLate(undefined, [logged("2024-12-10")], TODAY)).toBeUndefined();
+  it("is 0 when a day is today", () => {
+    expect(status("2025-01-01", ["2025-01-10"]).daysUntilPeriod).toBe(0);
   });
 });
 
-describe("currentPhase", () => {
-  it("is luteal while the period is late", () => {
-    const late = predictions(["2025-01-08", "2025-01-09", "2025-01-10"], []);
+describe("periodStatus dayOfPeriod", () => {
+  it("is undefined when today is not a predicted day", () => {
+    expect(status("2025-01-01", ["2025-01-11"]).dayOfPeriod).toBeUndefined();
+    expect(periodStatus({}, [], TODAY).dayOfPeriod).toBeUndefined();
+  });
 
-    expect(currentPhase(late, [logged("2024-12-10")], TODAY)).toBe("luteal");
+  it("counts the consecutive days up to today", () => {
+    const days = ["2025-01-08", "2025-01-09", "2025-01-10", "2025-01-11"];
+
+    expect(status("2025-01-08", days).dayOfPeriod).toBe(3);
+  });
+
+  it("starts again after a gap", () => {
+    expect(status("2025-01-01", ["2025-01-08", "2025-01-10"]).dayOfPeriod).toBe(
+      1,
+    );
+  });
+});
+
+describe("periodStatus late", () => {
+  it("counts the days since the predicted start", () => {
+    const days = ["2025-01-08", "2025-01-09", "2025-02-05"];
+
+    expect(status("2024-12-10", days).late).toBe(2);
+  });
+
+  it("is undefined while the predicted start is not past", () => {
+    expect(status("2024-12-10", ["2025-01-10"]).late).toBeUndefined();
+    expect(status("2024-12-10", ["2025-01-12"]).late).toBeUndefined();
+  });
+
+  it("ignores the period of the logged cycle itself", () => {
+    expect(status("2025-01-08", ["2025-01-08"]).late).toBeUndefined();
+  });
+
+  it("is undefined without cycles or predictions", () => {
+    expect(status(undefined, ["2025-01-08"]).late).toBeUndefined();
+    expect(
+      periodStatus({}, [logged("2024-12-10")], TODAY).late,
+    ).toBeUndefined();
+  });
+});
+
+describe("periodStatus phase", () => {
+  it("is luteal while the period is late", () => {
+    const days = ["2025-01-08", "2025-01-09", "2025-01-10"];
+
+    expect(status("2024-12-10", days).phase).toBe("luteal");
   });
 
   it("is menstrual on a predicted period day", () => {
-    const all = predictions(["2025-01-09", "2025-01-10"], ["2025-01-24"]);
+    const out = status(
+      "2025-01-09",
+      ["2025-01-09", "2025-01-10"],
+      ["2025-01-24"],
+    );
 
-    expect(currentPhase(all, [logged("2025-01-09")], TODAY)).toBe("menstrual");
+    expect(out.phase).toBe("menstrual");
   });
 
   it("is ovulation on a predicted ovulation day", () => {
-    expect(
-      currentPhase(
-        predictions(["2025-02-01"], ["2025-01-10"]),
-        [logged("2025-01-01")],
-        TODAY,
-      ),
-    ).toBe("ovulation");
+    expect(status("2025-01-01", ["2025-02-01"], ["2025-01-10"]).phase).toBe(
+      "ovulation",
+    );
   });
 
   it("is follicular while the ovulation is still ahead", () => {
-    expect(
-      currentPhase(
-        predictions(["2025-02-01"], ["2025-01-20"]),
-        [logged("2025-01-01")],
-        TODAY,
-      ),
-    ).toBe("follicular");
+    expect(status("2025-01-01", ["2025-02-01"], ["2025-01-20"]).phase).toBe(
+      "follicular",
+    );
   });
 
   it("is luteal once the ovulation has passed", () => {
-    expect(
-      currentPhase(
-        predictions(["2025-02-01"], ["2025-01-05"]),
-        [logged("2025-01-01")],
-        TODAY,
-      ),
-    ).toBe("luteal");
+    expect(status("2025-01-01", ["2025-02-01"], ["2025-01-05"]).phase).toBe(
+      "luteal",
+    );
   });
 
   it("is follicular without ovulation predictions", () => {
-    expect(currentPhase({}, [], TODAY)).toBe("follicular");
+    expect(periodStatus({}, [], TODAY).phase).toBe("follicular");
   });
 });
 

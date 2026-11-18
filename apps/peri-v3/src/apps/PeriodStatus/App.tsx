@@ -1,9 +1,6 @@
 import { Info } from "lucide-react";
 import { Temporal } from "temporal-polyfill";
-import type {
-  Cycle,
-  PredictionDay,
-} from "@repo/config-schema/config-v2.schema";
+import type { Cycle } from "@repo/config-schema/config-v2.schema";
 import { Typography } from "@/components/ui/Typography";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
@@ -18,10 +15,8 @@ import {
 import { defineInternalApp } from "@/lib/sdk/app/api";
 import { useCycles, usePredictions } from "@/lib/sdk/app/hooks";
 import {
-  currentPhase,
-  dayOfPeriod,
-  daysLate,
-  daysUntilPeriod,
+  periodStatus,
+  type PeriodStatus as Status,
 } from "@/lib/sdk/calculations/predictions";
 import type { Phase } from "@/lib/sdk/types";
 import { manifest } from "./manifest";
@@ -75,48 +70,43 @@ const NoDataFallback = () => {
 };
 
 const PeriodStatus = ({ cycles }: { cycles: Cycle[] }) => {
-  const predictions = usePredictions();
-  const menstruationDays = predictions.menstruation?.days;
-  const phase = currentPhase(predictions, cycles);
+  const status = periodStatus(usePredictions(), cycles);
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <PeriodCountdown
-        phase={phase}
-        menstruationDays={menstruationDays}
-        late={daysLate(menstruationDays, cycles)}
-      />
-      <PeriodInfo phase={phase} />
+      <PeriodCountdown status={status} />
+      <PeriodInfo phase={status.phase} />
     </div>
   );
 };
 
-const PeriodCountdown = ({
-  phase,
-  menstruationDays,
-  late,
-}: {
-  phase: Phase;
-  menstruationDays: PredictionDay[] | undefined;
-  late: number | undefined;
-}) => {
+const PeriodCountdown = ({ status }: { status: Status }) => {
+  const { phase, late, dayOfPeriod, daysUntilPeriod } = status;
   if (late !== undefined) {
     return (
       <CountdownText title="Delay" value={formatDays(late)} color="delayed" />
     );
   }
   if (phase === "menstrual") {
-    const day = dayOfPeriod(menstruationDays) ?? 1;
-    return <CountdownText title="Period" value={`Day ${day}`} color={phase} />;
+    return (
+      <CountdownText
+        title="Period"
+        value={`Day ${dayOfPeriod ?? 1}`}
+        color={phase}
+      />
+    );
   }
-  const daysLeft = daysUntilPeriod(menstruationDays);
   // The period is predicted for today and not logged yet
-  if (daysLeft === 0) {
+  if (daysUntilPeriod === 0) {
     return <CountdownText title="Period" value="Today" color={phase} />;
   }
   return (
     <CountdownText
       title="Period in"
-      value={daysLeft === undefined ? "No prediction" : formatDays(daysLeft)}
+      value={
+        daysUntilPeriod === undefined
+          ? "No prediction"
+          : formatDays(daysUntilPeriod)
+      }
       color={phase}
     />
   );

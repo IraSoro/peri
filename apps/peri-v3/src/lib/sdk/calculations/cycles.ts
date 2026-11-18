@@ -6,6 +6,7 @@ import type {
 } from "@repo/config-schema/config-v2.schema";
 import type { Phase } from "../types";
 import { phasesOfCycle } from "./predictions";
+import { toPlainDate } from "./shared";
 
 export type CycleStats = {
   /** Average cycle length in days and the largest deviation from it */
@@ -53,9 +54,7 @@ export const dayOfCycle = (
   cycle: Cycle,
   today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC"),
 ): number => {
-  const start = Temporal.Instant.from(cycle.start_date)
-    .toZonedDateTimeISO("UTC")
-    .toPlainDate();
+  const start = toPlainDate(cycle.start_date);
   return start.until(today, { largestUnit: "days" }).days + 1;
 };
 

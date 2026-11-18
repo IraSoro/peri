@@ -1,13 +1,19 @@
 import { Temporal } from "temporal-polyfill";
 import type { Phase } from "../types";
+import { toPlainDate } from "./shared";
 import type {
   ConfigV2,
   Cycle,
   PredictionDay,
 } from "@repo/config-schema/config-v2.schema";
 
-const toPlainDate = (iso: string): Temporal.PlainDate => {
-  return Temporal.Instant.from(iso).toZonedDateTimeISO("UTC").toPlainDate();
+/** The dates of the days as "2025-01-31" strings, each once */
+const dateSet = (days: PredictionDay[] | undefined): Set<string> => {
+  return new Set(
+    (days ?? []).map((day) => {
+      return toPlainDate(day.date).toString();
+    }),
+  );
 };
 
 /** Day offsets from today, negative for past days */
@@ -29,31 +35,18 @@ const nearest = (counts: number[]): number | undefined => {
 };
 
 /**
- * Days from today to the first predicted day that is not in the past, or
- * undefined when there is no such day. Today is the current UTC date unless given
+ * Which day of a period today is, from the offsets of its predicted days.
+ * Predicted days that follow each other form one period, so with days on Jan
+ * 8, 9, 10 and 11 and today on Jan 10 the result is 3. Undefined when today
+ * is not a predicted day
  */
-export const daysUntilPeriod = (
-  days: PredictionDay[] | undefined,
-  today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC"),
-): number | undefined => {
-  return nearest(offsets(days, today));
-};
-
-/**
- * Which day of the predicted period today is. Predicted days that follow each
- * other form one period, so with predicted days Jan 8, 9, 10 and 11 and today
- * on Jan 10 the result is 3. Undefined when today is not a predicted day
- */
-export const dayOfPeriod = (
-  days: PredictionDay[] | undefined,
-  today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC"),
-): number | undefined => {
-  const past = new Set(offsets(days, today));
-  if (!past.has(0)) {
+const dayOfPeriod = (offsets: number[]): number | undefined => {
+  const days = new Set(offsets);
+  if (!days.has(0)) {
     return undefined;
   }
   let number = 1;
-  while (past.has(-number)) {
+  while (days.has(-number)) {
     number += 1;
   }
   return number;
@@ -73,11 +66,7 @@ const nextStart = (
   days: PredictionDay[] | undefined,
   after: Temporal.PlainDate,
 ): Temporal.PlainDate | undefined => {
-  const dates = new Set(
-    (days ?? []).map((day) => {
-      return toPlainDate(day.date).toString();
-    }),
-  );
+  const dates = dateSet(days);
   const starts = [...dates]
     .map((date) => {
       return Temporal.PlainDate.from(date);
@@ -100,7 +89,7 @@ const nextStart = (
  * before today and no new cycle was logged, the period is late by the days
  * since then. Undefined when it is not late
  */
-export const daysLate = (
+const daysLate = (
   days: PredictionDay[] | undefined,
   cycles: Cycle[],
   today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC"),
@@ -130,11 +119,7 @@ export const phasesOfCycle = (
   ovulationDays: PredictionDay[] | undefined,
 ): Phase[] => {
   const start = toPlainDate(cycle.start_date);
-  const ovulation = new Set(
-    (ovulationDays ?? []).map((day) => {
-      return toPlainDate(day.date).toString();
-    }),
-  );
+  const ovulation = dateSet(ovulationDays);
   const first = [...ovulation].sort()[0];
   return Array.from({ length }, (_, index): Phase => {
     const date = start.add({ days: index }).toString();
@@ -170,38 +155,54 @@ export const phasesByDay = (
   return phasesOfCycle(last, length, predictions.ovulation?.days);
 };
 
+export type PeriodStatus = {
+  /** The phase today falls in */
+  phase: Phase;
+  /** How many days the period is late, undefined when it is not */
+  late: number | undefined;
+  /** Which day of the predicted period today is, undefined outside of it */
+  dayOfPeriod: number | undefined;
+  /** Days to the nearest predicted period day, 0 when it is today */
+  daysUntilPeriod: number | undefined;
+};
+
 /**
- * The phase today falls in. A day of the logged period is menstrual and a
+ * Where today is in the cycle. A day of the logged period is menstrual and a
  * late period counts as luteal. Otherwise an ovulation day is ovulation, the
  * days before the next ovulation are follicular and the days after the last
  * one are luteal. Follicular is the default
  */
-export const currentPhase = (
+export const periodStatus = (
   predictions: ConfigV2["predictions"],
   cycles: Cycle[],
   today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC"),
-): Phase => {
-  const day = dayOfPeriod(predictions.menstruation?.days, today);
+): PeriodStatus => {
+  const menstruation = offsets(predictions.menstruation?.days, today);
+  const ovulation = offsets(predictions.ovulation?.days, today);
+  const day = dayOfPeriod(menstruation);
+  const daysUntilPeriod = nearest(menstruation);
+  const late = daysLate(predictions.menstruation?.days, cycles, today);
+  const status = { late, dayOfPeriod: day, daysUntilPeriod };
   const last = lastStart(cycles);
   // The period of the last logged cycle is the predicted run that starts with it
   if (day !== undefined && last?.equals(today.subtract({ days: day - 1 }))) {
-    return "menstrual";
+    return { ...status, phase: "menstrual" };
   }
-  if (daysLate(predictions.menstruation?.days, cycles, today) !== undefined) {
-    return "luteal";
+  if (late !== undefined) {
+    return { ...status, phase: "luteal" };
   }
-  const ovulation = offsets(predictions.ovulation?.days, today);
   if (ovulation.includes(0)) {
-    return "ovulation";
+    return { ...status, phase: "ovulation" };
   }
-  const nextPeriod = nearest(offsets(predictions.menstruation?.days, today));
   const nextOvulation = nearest(ovulation);
-  if (nextOvulation !== undefined && nextOvulation < (nextPeriod ?? Infinity)) {
-    return "follicular";
+  if (
+    nextOvulation !== undefined &&
+    nextOvulation < (daysUntilPeriod ?? Infinity)
+  ) {
+    return { ...status, phase: "follicular" };
   }
-  return ovulation.some((count) => {
+  const passed = ovulation.some((count) => {
     return count < 0;
-  })
-    ? "luteal"
-    : "follicular";
+  });
+  return { ...status, phase: passed ? "luteal" : "follicular" };
 };
