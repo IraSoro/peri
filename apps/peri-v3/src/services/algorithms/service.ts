@@ -1,11 +1,15 @@
 import type {
   AlgorithmManifest,
   ConfigV2,
+  Cycle,
+  Prediction,
 } from "@repo/config-schema/config-v2.schema";
 import { service as store } from "@/services/store/service";
 import type { Service as StoreService } from "@/services/store/service";
 import type {
+  AlgorithmDryRunResult,
   AlgorithmEntry,
+  AlgorithmError,
   AlgorithmOperationResult,
   AlgorithmOutput,
 } from "./types";
@@ -124,6 +128,42 @@ export class Service {
   }
 
   async run(id: string): Promise<AlgorithmOperationResult> {
+    const made = await this.#execute(id, this.#store.get().cycles);
+    if (!made.ok) {
+      return made;
+    }
+
+    const { type, days } = made;
+    const res = await this.#store.update((config) => {
+      const predictions = this.#omitPredictionsOf(config.predictions, id);
+      predictions[type] = { algorithm_id: id, days };
+      return { ...config, predictions };
+    });
+    if (!res.ok) {
+      return {
+        ok: false,
+        error: { code: "invalid_output", message: res.error.message },
+      };
+    }
+
+    return { ok: true };
+  }
+
+  async dryRun(
+    id: string,
+    cycles: readonly Cycle[],
+  ): Promise<AlgorithmDryRunResult> {
+    const made = await this.#execute(id, cycles);
+    return made.ok ? { ok: true, days: made.days } : made;
+  }
+
+  async #execute(
+    id: string,
+    cycles: readonly Cycle[],
+  ): Promise<
+    | { ok: true; type: AlgorithmManifest["type"]; days: Prediction["days"] }
+    | { ok: false; error: AlgorithmError }
+  > {
     const entry = this.#entries.get(id);
     const manifest = this.#store.get().algorithms.find((a) => {
       return a.manifest.id === id;
@@ -140,7 +180,7 @@ export class Service {
 
     let output: unknown;
     try {
-      output = await entry.run({ cycles: this.#store.get().cycles });
+      output = await entry.run({ cycles });
     } catch (err) {
       return {
         ok: false,
@@ -160,23 +200,7 @@ export class Service {
       };
     }
 
-    const made = output;
-    const res = await this.#store.update((config) => {
-      const predictions = this.#omitPredictionsOf(config.predictions, id);
-      predictions[manifest.type] = {
-        algorithm_id: id,
-        days: made.days,
-      };
-      return { ...config, predictions };
-    });
-    if (!res.ok) {
-      return {
-        ok: false,
-        error: { code: "invalid_output", message: res.error.message },
-      };
-    }
-
-    return { ok: true };
+    return { ok: true, type: manifest.type, days: output.days };
   }
 
   #isAlgorithmOutput(value: unknown): value is AlgorithmOutput {

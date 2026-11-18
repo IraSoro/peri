@@ -7,9 +7,13 @@ export type AlgorithmErrorCode =
   | "invalid_output"
   | "run_failed";
 
+export type AlgorithmError = { code: AlgorithmErrorCode; message: string };
+
 export type AlgorithmOperationResult =
-  | { ok: true }
-  | { ok: false; error: { code: AlgorithmErrorCode; message: string } };
+  { ok: true } | { ok: false; error: AlgorithmError };
+
+export type AlgorithmDryRunResult =
+  { ok: true; days: Prediction["days"] } | { ok: false; error: AlgorithmError };
 
 export interface AlgorithmInput {
   cycles: readonly Cycle[];

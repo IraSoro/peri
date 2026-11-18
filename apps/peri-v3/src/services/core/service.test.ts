@@ -130,7 +130,8 @@ describe("core service", () => {
       await service.setActiveAlgorithm("ovulation", "good");
       good.calls = 0;
 
-      const res = await service.recompute();
+      const res = await service.start();
+      service.stop();
 
       expect(res).toMatchObject({
         ok: false,
@@ -166,7 +167,8 @@ describe("core service", () => {
         new AppsService(store),
       );
 
-      const res = await reloaded.recompute();
+      const res = await reloaded.start();
+      reloaded.stop();
 
       expect(res).toEqual({ ok: true });
     });
@@ -223,7 +225,8 @@ describe("core service", () => {
       await service.unregisterAlgorithm("gone");
       kept.calls = 0;
 
-      const res = await service.recompute();
+      const res = await service.start();
+      service.stop();
 
       expect(res).toEqual({ ok: true });
       expect(service.getActiveAlgorithm("ovulation")).toBe("kept");
@@ -264,12 +267,14 @@ describe("core service", () => {
     });
 
     it("never overlaps two runs", async () => {
-      const { algorithms, service } = await setup();
+      const { algorithms, cycles, service } = await setup();
       let active = 0;
       let peak = 0;
+      let runs = 0;
       await algorithms.register(manifest("a"), {
         async run() {
           active += 1;
+          runs += 1;
           peak = Math.max(peak, active);
           await Promise.resolve();
           active -= 1;
@@ -277,13 +282,22 @@ describe("core service", () => {
         },
       });
       await service.setActiveAlgorithm("menstruation", "a");
+      await service.start();
 
-      await Promise.all([
-        service.recompute(),
-        service.recompute(),
-        service.recompute(),
-      ]);
+      // Each change of the cycles asks for a run while the last one is going
+      await Promise.all(
+        [3, 4, 5].map((period) => {
+          return cycles.update(() => {
+            return [{ start_date: JAN_1, period_length: period }];
+          });
+        }),
+      );
+      await new Promise((resolve) => {
+        setTimeout(resolve, 20);
+      });
+      service.stop();
 
+      expect(runs).toBeGreaterThan(1);
       expect(peak).toBe(1);
     });
   });
@@ -333,7 +347,9 @@ describe("core service", () => {
         expect(entry.calls).toBeGreaterThan(1);
       });
 
-      await service.recompute();
+      await new Promise((resolve) => {
+        setTimeout(resolve, 20);
+      });
       const settled = entry.calls;
       await new Promise((resolve) => {
         setTimeout(resolve, 20);

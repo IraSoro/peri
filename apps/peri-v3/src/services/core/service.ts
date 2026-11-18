@@ -44,11 +44,11 @@ export class Service {
         return;
       }
       this.#cyclesSnapshot = next;
-      this.recompute().catch((err: unknown) => {
+      this.#recompute().catch((err: unknown) => {
         console.error(`[core] recompute failed: ${(err as Error).message}`);
       });
     });
-    return this.recompute();
+    return this.#recompute();
   }
 
   stop() {
@@ -95,7 +95,7 @@ export class Service {
     const active = Object.values(data.active_algorithms ?? {}).includes(
       manifest.id,
     );
-    return active ? this.recompute() : { ok: true };
+    return active ? this.#recompute() : { ok: true };
   }
 
   async unregisterAlgorithm(id: string): Promise<CoreOperationResult> {
@@ -207,10 +207,10 @@ export class Service {
       };
     }
 
-    return this.recompute();
+    return this.#recompute();
   }
 
-  recompute(): Promise<CoreOperationResult> {
+  #recompute(): Promise<CoreOperationResult> {
     const run = this.#queue.then(async (): Promise<CoreOperationResult> => {
       const data: CoreData = this.#store.get().core.data;
       const ids = new Set(Object.values(data.active_algorithms ?? {}));

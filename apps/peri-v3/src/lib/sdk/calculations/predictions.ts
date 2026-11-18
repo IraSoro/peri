@@ -66,6 +66,35 @@ const lastStart = (cycles: Cycle[]): Temporal.PlainDate | undefined => {
 };
 
 /**
+ * The first predicted period start after the given date. Predicted days that
+ * follow each other form one period, and its start is the first of them
+ */
+const nextStart = (
+  days: PredictionDay[] | undefined,
+  after: Temporal.PlainDate,
+): Temporal.PlainDate | undefined => {
+  const dates = new Set(
+    (days ?? []).map((day) => {
+      return toPlainDate(day.date).toString();
+    }),
+  );
+  const starts = [...dates]
+    .map((date) => {
+      return Temporal.PlainDate.from(date);
+    })
+    .filter((date) => {
+      return (
+        Temporal.PlainDate.compare(date, after) > 0 &&
+        !dates.has(date.subtract({ days: 1 }).toString())
+      );
+    })
+    .sort((a, b) => {
+      return Temporal.PlainDate.compare(a, b);
+    });
+  return starts[0];
+};
+
+/**
  * How many days the period is late. The next period is predicted to start on
  * the first predicted day after the last logged cycle began. If that day is
  * before today and no new cycle was logged, the period is late by the days
@@ -80,30 +109,65 @@ export const daysLate = (
   if (!last) {
     return undefined;
   }
-  const dates = new Set(
-    (days ?? []).map((day) => {
-      return toPlainDate(day.date).toString();
-    }),
-  );
-  const starts = [...dates]
-    .map((date) => {
-      return Temporal.PlainDate.from(date);
-    })
-    .filter((date) => {
-      return (
-        Temporal.PlainDate.compare(date, last) > 0 &&
-        !dates.has(date.subtract({ days: 1 }).toString())
-      );
-    })
-    .sort((a, b) => {
-      return Temporal.PlainDate.compare(a, b);
-    });
-  const next = starts[0];
+  const next = nextStart(days, last);
   if (!next) {
     return undefined;
   }
   const late = next.until(today, { largestUnit: "days" }).days;
   return late >= 1 ? late : undefined;
+};
+
+/**
+ * The phase of every day of a cycle that lasts `length` days. The first days
+ * of the logged period are menstrual, the ovulation days are ovulation, the
+ * days before the first of them are follicular and the days after luteal. The
+ * ovulation days come from the ovulation algorithm, the days of other cycles
+ * among them are ignored
+ */
+export const phasesOfCycle = (
+  cycle: Cycle,
+  length: number,
+  ovulationDays: PredictionDay[] | undefined,
+): Phase[] => {
+  const start = toPlainDate(cycle.start_date);
+  const ovulation = new Set(
+    (ovulationDays ?? []).map((day) => {
+      return toPlainDate(day.date).toString();
+    }),
+  );
+  const first = [...ovulation].sort()[0];
+  return Array.from({ length }, (_, index): Phase => {
+    const date = start.add({ days: index }).toString();
+    if (index < cycle.period_length) {
+      return "menstrual";
+    }
+    if (ovulation.has(date)) {
+      return "ovulation";
+    }
+    return first === undefined || date < first ? "follicular" : "luteal";
+  });
+};
+
+/**
+ * The phase of every day of the current cycle, from the day the last logged
+ * cycle started to the day before the next predicted period. Empty when there
+ * is no cycle or no predicted next period
+ */
+export const phasesByDay = (
+  predictions: ConfigV2["predictions"],
+  cycles: Cycle[],
+): Phase[] => {
+  const last = cycles.at(-1);
+  const start = lastStart(cycles);
+  if (!last || !start) {
+    return [];
+  }
+  const end = nextStart(predictions.menstruation?.days, start);
+  if (!end) {
+    return [];
+  }
+  const length = start.until(end, { largestUnit: "days" }).days;
+  return phasesOfCycle(last, length, predictions.ovulation?.days);
 };
 
 /**

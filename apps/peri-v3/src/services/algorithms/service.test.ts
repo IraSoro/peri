@@ -222,6 +222,68 @@ describe("algorithms service", () => {
     });
   });
 
+  describe("dryRun", () => {
+    it("rejects an unknown id", async () => {
+      const { service } = await setup();
+
+      expect(await service.dryRun("a", [])).toMatchObject({
+        ok: false,
+        error: { code: "unknown_algorithm" },
+      });
+    });
+
+    it("runs the algorithm on the given cycles and returns the days", async () => {
+      const { service } = await setup();
+      const days = [day("2025-06-28T00:00:00.000Z")];
+      const algorithm = entry({ days });
+      await service.register(internal("a"), algorithm);
+
+      const res = await service.dryRun("a", [closedCycle]);
+
+      expect(res).toEqual({ ok: true, days });
+      expect(algorithm.run).toHaveBeenCalledWith({ cycles: [closedCycle] });
+    });
+
+    it("leaves the stored predictions and the revision alone", async () => {
+      const { store, service } = await setup();
+      await service.register(
+        internal("a"),
+        entry({ days: [day("2025-06-28T00:00:00.000Z")] }),
+      );
+      const before = store.get();
+
+      await service.dryRun("a", [closedCycle]);
+
+      expect(store.get()).toEqual(before);
+    });
+
+    it("returns run_failed when the algorithm throws", async () => {
+      const { service } = await setup();
+      await service.register(internal("a"), {
+        run: () => {
+          throw new Error("boom");
+        },
+      });
+
+      expect(await service.dryRun("a", [])).toMatchObject({
+        ok: false,
+        error: { code: "run_failed" },
+      });
+    });
+
+    it("returns invalid_output for a wrong output", async () => {
+      const { service } = await setup();
+      await service.register(internal("a"), {
+        run: () => ({ days: 1 }) as unknown as AlgorithmOutput,
+      });
+
+      expect(await service.dryRun("a", [])).toMatchObject({
+        ok: false,
+        error: { code: "invalid_output" },
+      });
+    });
+  });
+
   describe("run", () => {
     it("rejects an unknown id", async () => {
       const { service } = await setup();

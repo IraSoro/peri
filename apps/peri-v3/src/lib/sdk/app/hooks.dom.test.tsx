@@ -3,7 +3,8 @@ import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { service as cycles } from "@/services/cycles/service";
 import { InternalOnlyError } from "./errors";
-import { useCycles } from "./hooks";
+import { service as core } from "@/services/core/service";
+import { useCycles, usePastPrediction } from "./hooks";
 import { AppContext } from "./context";
 import type { AppContextValue } from "./context";
 
@@ -75,5 +76,92 @@ describe("useCycles in a mounted app", () => {
       });
     }).toThrow(InternalOnlyError);
     expect(view.getByTestId("out").textContent).toBe("0");
+  });
+});
+
+describe("usePastPrediction", () => {
+  const OLD = { ...JAN, end_date: FEB.start_date, cycle_length: 31 };
+
+  afterEach(async () => {
+    await core.unregisterAlgorithm("test.ovulation");
+  });
+
+  // Renders the days the hook gives for the first cycle, "loading" before
+  function mountPrediction() {
+    const App = () => {
+      const [list] = useCycles();
+      const first = list[0];
+      const days = usePastPrediction("ovulation", first ?? JAN);
+      return (
+        <p data-testid="out">
+          {days
+            ? days
+                .map((day) => {
+                  return day.date.slice(0, 10);
+                })
+                .join(",")
+            : "loading"}
+        </p>
+      );
+    };
+    return render(
+      <AppContext.Provider value={internal}>
+        <App />
+      </AppContext.Provider>,
+    );
+  }
+
+  it("runs the active algorithm on the history of the cycle", async () => {
+    const seen: number[] = [];
+    await core.registerAlgorithm(
+      {
+        manifest_version: 1,
+        id: "test.ovulation",
+        name: "test",
+        version: "1.0.0",
+        source: "internal",
+        permissions: [],
+        type: "ovulation",
+      },
+      {
+        run: ({ cycles: history }) => {
+          seen.push(history.length);
+          return { days: [{ date: "2025-01-15T00:00:00.000Z" }] };
+        },
+      },
+    );
+    await core.setActiveAlgorithm("ovulation", "test.ovulation");
+    await act(async () => {
+      await cycles.update(() => {
+        return [JAN, FEB];
+      });
+    });
+    seen.length = 0;
+
+    const view = mountPrediction();
+    expect(view.getByTestId("out").textContent).toBe("loading");
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(view.getByTestId("out").textContent).toBe("2025-01-15");
+    // The history of the first cycle is the cycle itself
+    expect(seen).toContain(1);
+  });
+
+  it("gives no days when no algorithm is active", async () => {
+    await act(async () => {
+      await cycles.update(() => {
+        return [OLD, FEB];
+      });
+    });
+
+    const view = mountPrediction();
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(view.getByTestId("out").textContent).toBe("");
   });
 });

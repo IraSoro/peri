@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { Temporal } from "temporal-polyfill";
 import {
   currentPhase,
+  phasesByDay,
   dayOfPeriod,
   daysLate,
   daysUntilPeriod,
@@ -144,5 +145,65 @@ describe("currentPhase", () => {
 
   it("is follicular without ovulation predictions", () => {
     expect(currentPhase({}, [], TODAY)).toBe("follicular");
+  });
+});
+
+describe("phasesByDay", () => {
+  const logged = [
+    {
+      start_date: "2025-01-01T00:00:00.000Z",
+      end_date: null,
+      period_length: 3,
+      cycle_length: null,
+    },
+  ];
+
+  it("is empty without cycles or a next period", () => {
+    expect(phasesByDay({}, [])).toEqual([]);
+    expect(phasesByDay({}, logged)).toEqual([]);
+  });
+
+  it("gives a phase to every day up to the next period", () => {
+    const phases = phasesByDay(
+      {
+        menstruation: {
+          algorithm_id: "a",
+          days: at("2025-01-01", "2025-01-09"),
+        },
+        ovulation: { algorithm_id: "b", days: at("2025-01-05", "2025-01-06") },
+      },
+      logged,
+    );
+
+    expect(phases).toEqual([
+      "menstrual",
+      "menstrual",
+      "menstrual",
+      "follicular",
+      "ovulation",
+      "ovulation",
+      "luteal",
+      "luteal",
+    ]);
+  });
+
+  it("is follicular after the period when there is no ovulation", () => {
+    const phases = phasesByDay(
+      {
+        menstruation: {
+          algorithm_id: "a",
+          days: at("2025-01-01", "2025-01-06"),
+        },
+      },
+      logged,
+    );
+
+    expect(phases).toEqual([
+      "menstrual",
+      "menstrual",
+      "menstrual",
+      "follicular",
+      "follicular",
+    ]);
   });
 });
