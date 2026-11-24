@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Temporal } from "temporal-polyfill";
 import { usePredictions } from "@/lib/sdk/app/hooks";
 import { toLocalDate } from "@/lib/sdk/calculations/dates";
 import type { Period } from "../periods";
@@ -14,19 +15,35 @@ export const useCalendarModifiers = (periods: Period[], editing: boolean) => {
         });
       }),
     );
+    const today = Temporal.Now.plainDateISO();
+    const predictedDays = (days: { date: string }[] | undefined) => {
+      return (days ?? []).map((day) => {
+        return toLocalDate(day.date);
+      });
+    };
+    // NOTE: A predicted day that has passed without being logged is not shown,
+    // it only keeps the old cycles on the screen after a wrong mark
+    const upcoming = (day: Temporal.PlainDate) => {
+      return Temporal.PlainDate.compare(day, today) >= 0;
+    };
+
     const menstrual = new Set([
       ...logged,
       // NOTE: Predictions are hidden in edit mode, a predicted period would
       // stay on the days the user just removed from a logged one
-      ...(editing ? [] : (predictions.menstruation?.days ?? [])).map((day) => {
-        return toLocalDate(day.date).toString();
-      }),
+      ...(editing ? [] : predictedDays(predictions.menstruation?.days))
+        .filter(upcoming)
+        .map((day) => {
+          return day.toString();
+        }),
     ]);
 
     const ovulation = new Set(
-      (editing ? [] : (predictions.ovulation?.days ?? [])).map((day) => {
-        return toLocalDate(day.date).toString();
-      }),
+      (editing ? [] : predictedDays(predictions.ovulation?.days))
+        .filter(upcoming)
+        .map((day) => {
+          return day.toString();
+        }),
     );
 
     return {

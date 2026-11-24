@@ -10,7 +10,14 @@ import type {
   AlgorithmManifest,
   AppManifest,
 } from "@repo/config-schema/config-v2.schema";
-import type { CoreData, CoreOperationResult, PredictionType } from "./types";
+import type {
+  CoreData,
+  CoreOperationResult,
+  PredictionType,
+  ModifyData,
+  ModifyOperation,
+} from "./types";
+import { trimToLoggedPeriod, dropOvulationInPeriod } from "./modify";
 
 export class Service {
   #store: StoreService;
@@ -19,6 +26,7 @@ export class Service {
   #queue: Promise<unknown>;
   #cyclesSnapshot: string;
   #unsubscribe: (() => void) | undefined;
+  #predictionModifiers: ModifyOperation[];
 
   constructor(
     store: StoreService,
@@ -31,6 +39,7 @@ export class Service {
     this.#queue = Promise.resolve();
     this.#cyclesSnapshot = "";
     this.#unsubscribe = undefined;
+    this.#predictionModifiers = [trimToLoggedPeriod, dropOvulationInPeriod];
   }
 
   async start(): Promise<CoreOperationResult> {
@@ -212,24 +221,64 @@ export class Service {
 
   #recompute(): Promise<CoreOperationResult> {
     const run = this.#queue.then(async (): Promise<CoreOperationResult> => {
-      const data: CoreData = this.#store.get().core.data;
+      const snapshot = this.#store.get();
+      const data: CoreData = snapshot.core.data;
       const ids = new Set(Object.values(data.active_algorithms ?? {}));
-      let failure: CoreOperationResult = { ok: true };
+      let result: CoreOperationResult = { ok: true };
+      // The new predictions are kept here and checked before anything is
+      // saved. An algorithm that failed keeps its old predictions
+      let predictions = snapshot.predictions;
       for (const id of ids) {
         // The default config stores the manifest before the code registers.
         // Registering recomputes predictions
         if (!this.#algorithms.isRegistered(id)) {
           continue;
         }
-        const res = await this.#algorithms.run(id);
-        if (!res.ok && failure.ok) {
-          failure = {
-            ok: false,
-            error: { code: "algorithm_failed", message: res.error.message },
-          };
+        const type = snapshot.algorithms.find((a) => {
+          return a.manifest.id === id;
+        })?.manifest.type;
+        const made = await this.#algorithms.dryRun(id, snapshot.cycles);
+        if (!made.ok || type === undefined) {
+          if (result.ok) {
+            result = {
+              ok: false,
+              error: {
+                code: "algorithm_failed",
+                message: made.ok
+                  ? `algorithm "${id}" is not registered`
+                  : made.error.message,
+              },
+            };
+          }
+          continue;
         }
+        predictions = {
+          ...Object.fromEntries(
+            Object.entries(predictions).filter(([, prediction]) => {
+              return prediction.algorithm_id !== id;
+            }),
+          ),
+          [type]: { algorithm_id: id, days: made.days },
+        };
       }
-      return failure;
+
+      // The predictions of different algorithms must agree with each other
+      // and with the logged cycles
+      let adjusted: ModifyData = { cycles: snapshot.cycles, predictions };
+      for (const modify of this.#predictionModifiers) {
+        adjusted = modify(adjusted);
+      }
+
+      const res = await this.#store.update((config) => {
+        return { ...config, predictions: adjusted.predictions };
+      });
+      if (!res.ok && result.ok) {
+        result = {
+          ok: false,
+          error: { code: "invalid_data", message: res.error.message },
+        };
+      }
+      return result;
     });
     this.#queue = run.catch(() => {
       return undefined;

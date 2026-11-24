@@ -1,4 +1,7 @@
-import type { AlgorithmManifest } from "@repo/config-schema/config-v2.schema";
+import type {
+  AlgorithmManifest,
+  ConfigV2,
+} from "@repo/config-schema/config-v2.schema";
 
 export type PredictionType = AlgorithmManifest["type"];
 
@@ -15,3 +18,10 @@ export type CoreOperationResult =
 export interface CoreData {
   active_algorithms?: Record<string, string>;
 }
+
+export interface ModifyData {
+  cycles: ConfigV2["cycles"];
+  predictions: ConfigV2["predictions"];
+}
+
+export type ModifyOperation = (data: ModifyData) => ModifyData;

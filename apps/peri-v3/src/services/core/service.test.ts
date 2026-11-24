@@ -302,6 +302,85 @@ describe("core service", () => {
     });
   });
 
+  describe("modifiers", () => {
+    const days = (...dates: string[]) => {
+      return {
+        run() {
+          return {
+            days: dates.map((date) => ({ date: `${date}T00:00:00.000Z` })),
+          };
+        },
+      };
+    };
+    const dates = (list: { date: string }[] | undefined) => {
+      return (list ?? []).map((day) => day.date.slice(0, 10));
+    };
+
+    it("keeps the logged length of the last period, not the predicted one", async () => {
+      const { store, algorithms, cycles, service } = await setup();
+      await cycles.update(() => [
+        { start_date: "2025-01-01T00:00:00.000Z", period_length: 3 },
+      ]);
+      await algorithms.register(
+        manifest("m"),
+        days(
+          "2025-01-01",
+          "2025-01-02",
+          "2025-01-03",
+          "2025-01-04",
+          "2025-01-05",
+          "2025-01-29",
+          "2025-01-30",
+        ),
+      );
+
+      await service.setActiveAlgorithm("menstruation", "m");
+
+      expect(dates(store.get().predictions.menstruation?.days)).toEqual([
+        "2025-01-01",
+        "2025-01-02",
+        "2025-01-03",
+        "2025-01-29",
+        "2025-01-30",
+      ]);
+    });
+
+    it("drops ovulation days that fall on a predicted period", async () => {
+      const { store, algorithms, cycles, service } = await setup();
+      await cycles.update(() => [
+        { start_date: "2025-01-01T00:00:00.000Z", period_length: 3 },
+      ]);
+      await algorithms.register(
+        manifest("m"),
+        days(
+          "2025-01-01",
+          "2025-01-02",
+          "2025-01-03",
+          "2025-01-10",
+          "2025-01-11",
+        ),
+      );
+      await algorithms.register(
+        manifest("o", "ovulation"),
+        days(
+          "2025-01-02",
+          "2025-01-03",
+          "2025-01-04",
+          "2025-01-11",
+          "2025-01-12",
+        ),
+      );
+
+      await service.setActiveAlgorithm("menstruation", "m");
+      await service.setActiveAlgorithm("ovulation", "o");
+
+      expect(dates(store.get().predictions.ovulation?.days)).toEqual([
+        "2025-01-04",
+        "2025-01-12",
+      ]);
+    });
+  });
+
   describe("start", () => {
     it("runs the active algorithms right away", async () => {
       const { algorithms, service } = await setup();
