@@ -52,6 +52,21 @@ const daysSinceStart: Record<Phase | "today" | "delay", number> = {
   delay: 30,
 };
 
+// The length of the median cycle the next period is predicted from
+const CYCLE_LENGTH = 28;
+
+/**
+ * `?periodIn=<days>` puts the next period that many days ahead, 0 is today and
+ * a negative number is a period that is late. Takes the place of `seed`
+ */
+const parsePeriodIn = (value: string | null): number | null => {
+  if (value === null || !/^-?\d+$/.test(value)) {
+    return null;
+  }
+  const days = Number(value);
+  return days <= CYCLE_LENGTH ? days : null;
+};
+
 const isSeed = (value: string | null): value is keyof typeof daysSinceStart => {
   return value !== null && value in daysSinceStart;
 };
@@ -61,16 +76,22 @@ const isSeed = (value: string | null): value is keyof typeof daysSinceStart => {
  * history that puts today in that phase, because the store is in memory and
  * starts empty on every reload. Add `&history=varied` for several cycles of
  * different lengths or `&history=long` for twelve, the default `single` has
- * one finished cycle
+ * one finished cycle. `?periodIn=5` puts the next period in 5 days instead of
+ * choosing a phase
  */
 const params = new URLSearchParams(window.location.search);
 const seed = params.get("seed");
 const historyName = params.get("history");
 const history = histories[isHistory(historyName) ? historyName : "single"];
-if (isSeed(seed)) {
-  const last = Temporal.Now.plainDateISO("UTC").subtract({
-    days: daysSinceStart[seed],
-  });
+const periodIn = parsePeriodIn(params.get("periodIn"));
+let sinceStart: number | null = null;
+if (periodIn !== null) {
+  sinceStart = CYCLE_LENGTH - periodIn;
+} else if (isSeed(seed)) {
+  sinceStart = daysSinceStart[seed];
+}
+if (sinceStart !== null) {
+  const last = Temporal.Now.plainDateISO("UTC").subtract({ days: sinceStart });
   const start = (date: Temporal.PlainDate) => {
     return formatInstant(date.toZonedDateTime("UTC").toInstant());
   };
@@ -85,5 +106,7 @@ if (isSeed(seed)) {
       return { start_date: start(row.date), period_length: row.period };
     });
   });
-  console.info(`[seed] ${seed}: ${res.ok ? "ok" : res.error.message}`);
+  console.info(
+    `[seed] ${periodIn ?? seed}: ${res.ok ? "ok" : res.error.message}`,
+  );
 }

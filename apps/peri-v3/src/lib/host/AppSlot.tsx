@@ -65,6 +65,7 @@ export const AppSlot = ({ id }: Props) => {
         >
           <AppContext.Provider
             value={{
+              id: manifest.id,
               source: manifest.source,
               permissions: manifest.permissions,
             }}

@@ -8,6 +8,8 @@ import { useStoreSelector } from "@/lib/hooks/useStoreSelector";
 import type { KnownPermission } from "../permissions";
 import { service as algorithms } from "@/services/algorithms/service";
 import type { CoreData, PredictionType } from "@/services/core/types";
+import { service as apps } from "@/services/apps/service";
+import type { AppData } from "@/services/apps/types";
 import { service as cycles } from "@/services/cycles/service";
 import { useAlertsContext } from "@/components/layouts/Alerts";
 import type { AlertInput } from "@/components/layouts/Alerts";
@@ -125,4 +127,24 @@ export function useAlert(): {
     };
   }
   return { show: showAlert, dismiss: dismissAlert };
+}
+
+export function useAppData(): [
+  AppData,
+  (change: (data: AppData) => AppData) => ReturnType<typeof apps.update>,
+] {
+  const { id } = useAccess();
+  const data = useStoreSelector((config) => {
+    return (
+      config.apps.find((app) => {
+        return app.manifest.id === id;
+      })?.data ?? {}
+    );
+  });
+  return [
+    data,
+    (change) => {
+      return apps.update(id, change);
+    },
+  ];
 }

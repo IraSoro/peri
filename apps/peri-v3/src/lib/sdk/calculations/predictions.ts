@@ -1,6 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import type { Phase } from "../types";
-import { toPlainDate } from "./shared";
+import { toPlainDate } from "./dates";
 import type {
   ConfigV2,
   Cycle,

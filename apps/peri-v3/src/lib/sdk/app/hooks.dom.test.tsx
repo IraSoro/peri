@@ -4,7 +4,8 @@ import { afterEach, describe, expect, it } from "vitest";
 import { service as cycles } from "@/services/cycles/service";
 import { InternalOnlyError } from "./errors";
 import { service as core } from "@/services/core/service";
-import { useAlert, useCycles, usePastPrediction } from "./hooks";
+import { useAlert, useAppData, useCycles, usePastPrediction } from "./hooks";
+import { service as store } from "@/services/store/service";
 import { AlertProvider, AlertStack } from "@/components/layouts/Alerts";
 import { AppContext } from "./context";
 import type { AppContextValue } from "./context";
@@ -13,9 +14,13 @@ const JAN = { start_date: "2025-01-01T00:00:00.000Z", period_length: 5 };
 const FEB = { start_date: "2025-02-01T00:00:00.000Z", period_length: 5 };
 
 const community = (...permissions: string[]): AppContextValue => {
-  return { source: "community", permissions };
+  return { id: "test", source: "community", permissions };
 };
-const internal: AppContextValue = { source: "internal", permissions: [] };
+const internal: AppContextValue = {
+  id: "test",
+  source: "internal",
+  permissions: [],
+};
 
 type SetCycles = ReturnType<typeof useCycles>[1];
 
@@ -202,5 +207,65 @@ describe("useAlert", () => {
     expect(() => {
       return handle.show?.(alert);
     }).toThrow(InternalOnlyError);
+  });
+});
+
+describe("useAppData", () => {
+  const manifest = {
+    manifest_version: 1 as const,
+    id: "test",
+    name: "test",
+    version: "1.0.0",
+    source: "internal" as const,
+    permissions: [],
+  };
+
+  const setData = async (data: Record<string, unknown>) => {
+    await store.update((config) => {
+      return { ...config, apps: [{ manifest, data }] };
+    });
+  };
+
+  afterEach(async () => {
+    await store.update((config) => {
+      return { ...config, apps: [] };
+    });
+  });
+
+  function mountData(access: AppContextValue) {
+    const handle: { update?: ReturnType<typeof useAppData>[1] } = {};
+    const App = () => {
+      const [data, update] = useAppData();
+      handle.update = update;
+      return <p data-testid="out">{JSON.stringify(data)}</p>;
+    };
+    const view = render(
+      <AppContext.Provider value={access}>
+        <App />
+      </AppContext.Provider>,
+    );
+    return { view, handle };
+  }
+
+  it("gives the data of the app itself", async () => {
+    await setData({ color: "red" });
+    const { view } = mountData(internal);
+    expect(view.getByTestId("out").textContent).toBe('{"color":"red"}');
+  });
+
+  it("gives an empty object for an app that is not stored", () => {
+    const { view } = mountData({ ...internal, id: "unknown" });
+    expect(view.getByTestId("out").textContent).toBe("{}");
+  });
+
+  it("writes the data of the app and re-renders", async () => {
+    await setData({});
+    const { view, handle } = mountData(internal);
+    await act(async () => {
+      await handle.update?.((data) => {
+        return { ...data, color: "blue" };
+      });
+    });
+    expect(view.getByTestId("out").textContent).toBe('{"color":"blue"}');
   });
 });

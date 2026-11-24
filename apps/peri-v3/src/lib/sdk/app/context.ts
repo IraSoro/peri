@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 export interface AppContextValue {
+  id: string;
   source: "internal" | "community";
   permissions: readonly string[];
 }

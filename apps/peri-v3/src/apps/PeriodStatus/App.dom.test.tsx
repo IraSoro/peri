@@ -50,7 +50,9 @@ afterEach(() => {
 describe("info icons", () => {
   it("show what the phase is on click", async () => {
     const view = render(
-      <AppContext.Provider value={{ source: "internal", permissions: [] }}>
+      <AppContext.Provider
+        value={{ id: "test", source: "internal", permissions: [] }}
+      >
         <PeriodStatusApp />
       </AppContext.Provider>,
     );
@@ -63,7 +65,9 @@ describe("info icons", () => {
 
   it("show what the pregnancy chance is on click", async () => {
     const view = render(
-      <AppContext.Provider value={{ source: "internal", permissions: [] }}>
+      <AppContext.Provider
+        value={{ id: "test", source: "internal", permissions: [] }}
+      >
         <PeriodStatusApp />
       </AppContext.Provider>,
     );

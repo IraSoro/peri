@@ -40,7 +40,9 @@ function App() {
       <PagerProvider pageIds={pages.map((page) => page.id)}>
         <HeaderProvider>
           <FooterProvider>
-            <HostAppLayout pages={pages} />
+            <AlertProvider>
+              <HostAppLayout pages={pages} />
+            </AlertProvider>
           </FooterProvider>
         </HeaderProvider>
       </PagerProvider>

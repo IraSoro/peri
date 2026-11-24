@@ -12,7 +12,9 @@ const iso = (date: Temporal.PlainDate) => {
 
 function view() {
   return render(
-    <AppContext.Provider value={{ source: "internal", permissions: [] }}>
+    <AppContext.Provider
+      value={{ id: "test", source: "internal", permissions: [] }}
+    >
       <CycleInfoApp />
     </AppContext.Provider>,
   );

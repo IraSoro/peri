@@ -10,7 +10,9 @@ import { CycleInfoApp } from "./App";
 
 function html(): string {
   return renderToStaticMarkup(
-    <AppContext.Provider value={{ source: "internal", permissions: [] }}>
+    <AppContext.Provider
+      value={{ id: "test", source: "internal", permissions: [] }}
+    >
       <CycleInfoApp />
     </AppContext.Provider>,
   );

@@ -16,6 +16,7 @@ import {
 } from "@/lib/sdk/calculations/cycles";
 import { phasesByDay } from "@/lib/sdk/calculations/predictions";
 import type { Phase } from "@/lib/sdk/types";
+import { toLocalDate } from "@/lib/sdk/calculations/dates";
 import { Typography } from "@/components/ui/Typography";
 import {
   Collapsible,
@@ -42,10 +43,10 @@ export const CycleInfoApp = () => {
 };
 
 const formatDate = (iso: string): string => {
-  return new Intl.DateTimeFormat("en-US", {
+  return toLocalDate(iso).toLocaleString("en-US", {
     month: "long",
     day: "numeric",
-  }).format(new Date(iso));
+  });
 };
 
 const CycleInfo = ({ cycles, last }: { cycles: Cycle[]; last: Cycle }) => {

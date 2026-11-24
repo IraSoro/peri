@@ -7,7 +7,9 @@ import { PhaseInfoApp } from "./App";
 
 const render = () => {
   return renderToStaticMarkup(
-    <AppContext.Provider value={{ source: "internal", permissions: [] }}>
+    <AppContext.Provider
+      value={{ id: "test", source: "internal", permissions: [] }}
+    >
       <PhaseInfoApp />
     </AppContext.Provider>,
   );

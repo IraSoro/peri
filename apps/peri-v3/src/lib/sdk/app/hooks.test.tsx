@@ -28,9 +28,13 @@ function render(
 }
 
 const community = (...permissions: string[]): AppContextValue => {
-  return { source: "community", permissions };
+  return { id: "test", source: "community", permissions };
 };
-const internal: AppContextValue = { source: "internal", permissions: [] };
+const internal: AppContextValue = {
+  id: "test",
+  source: "internal",
+  permissions: [],
+};
 
 beforeAll(async () => {
   await store.update((config) => {
